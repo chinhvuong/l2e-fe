@@ -1,0 +1,17 @@
+.modal {
+    transition: opacity 0.25s ease;
+    .modal-body {
+        max-height: calc(100vh - 2rem);
+        min-height: 100px;
+        overflow-y: scroll;
+        transform: translateY(-50vh);
+        transition: transform 0.25s ease;
+
+        &.open {
+            transform: translateY(-50%);
+        }
+    }
+
+  
+}
+
