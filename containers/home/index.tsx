@@ -2,35 +2,37 @@ import React from 'react'
 import './style.scss'
 import Button from '@/components/core/button'
 import Modal, { openModal } from '@/components/core/modal'
-import Slide from '@/components/core/slide'
-
+// import Slide from '@/components/core/slide'
+import Accordion from '@/components/core/accordion'
 const modalId = 'modalId'
+import DasboardIcon from '@/public/svgs/dashboard.svg'
+console.log('🚀 ~ file: index.tsx ~ line 9 ~ DasboardIcon', DasboardIcon)
 // Import Swiper React components
 
-const data = [
-    {
-        name: 'Hello how are you',
-    },
-    {
-        name: 'Hello how are you',
-    },
-    {
-        name: 'Hello how are you',
-    },
-    {
-        name: 'Hello how are you',
-    },
-    {
-        name: 'Hello how are you',
-    },
-    {
-        name: 'Hello how are you',
-    },
-]
+// const data = [
+//     {
+//         name: 'Hello how are you',
+//     },
+//     {
+//         name: 'Hello how are you',
+//     },
+//     {
+//         name: 'Hello how are you',
+//     },
+//     {
+//         name: 'Hello how are you',
+//     },
+//     {
+//         name: 'Hello how are you',
+//     },
+//     {
+//         name: 'Hello how are you',
+//     },
+// ]
 const HomePageContainer = () => {
-    const renderItem = (data: any) => {
-        return <div className="h-[100px] bg-red-500">{data?.name}</div>
-    }
+    // const renderItem = (data: any) => {
+    //     return <div className="h-[100px] bg-red-500">{data?.name}</div>
+    // }
     return (
         <div className="">
             HomePageContainer
@@ -46,33 +48,10 @@ const HomePageContainer = () => {
                     <img src="" alt="" />
                 </div>
             </Modal>
-            <div className="p-4">
-                <Slide
-                    data={data}
-                    renderItem={renderItem}
-                    // slidesPerView={3}
-                    breakpoints={{
-                        // when window width is >= 640px
-                        640: {
-                            //   width: 640,
-                            slidesPerView: 2,
-                        },
-                        // when window width is >= 768px
-                        768: {
-                            //   width: 768,
-                            slidesPerView: 2,
-                        },
-
-                        1280: {
-                            //   width: 768,
-                            slidesPerView: 3,
-                        },
-                        1480: {
-                            //   width: 768,
-                            slidesPerView: 4,
-                        },
-                    }}
-                />
+            <div className="max-w-[500px]">
+                <Accordion title="Allo" icon={<DasboardIcon />}>
+                    Alo
+                </Accordion>
             </div>
         </div>
     )
