@@ -41,6 +41,10 @@
     align-items: center;
     cursor: pointer;
 
-    @apply bg-text-01/20 hover:bg-text-01/50 transition-colors text-text-02;
-    
+
+}
+
+.limit {
+    max-width: 1600px;
+    @apply px-4 mx-auto;
 }
