@@ -3,6 +3,7 @@ import { NextPage } from 'next'
 import '@/styles/global-style.css'
 import '@/styles/base.scss'
 import '@/styles/utils.scss'
+
 import { AppProps } from 'next/app'
 import Layout from '@/layout'
 type NextPageWithLayout = NextPage & {

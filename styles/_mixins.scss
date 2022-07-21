@@ -1,0 +1,40 @@
+@mixin respond($type) {
+    @if($type == phone or $type == sm) {
+        @media only screen and (max-width: 639.98px) {
+            @content;
+        }
+    }
+
+    @if($type == tablet or $type == md) {
+        @media only screen and (max-width: 767.98px) {
+            @content;
+        }
+    }
+
+    @if($type == desktop or $type == lg) {
+        @media only screen and (max-width: 1023.98px) {
+            @content;
+        }
+    }
+
+    @if($type == big-desktop or $type == xl) {
+        @media only screen and (max-width: 1279.98px) {
+            @content;
+        }
+    }
+    
+    @if($type == 4k-desktop or $type == 2xl) {
+        @media only screen and (max-width: 1591.98px) {
+            @content;
+        }
+    }
+}
+
+@mixin truncate($line) {
+    display:-webkit-box;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
