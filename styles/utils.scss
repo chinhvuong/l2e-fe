@@ -40,5 +40,11 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    
+
+
+}
+
+.limit {
+    max-width: 1600px;
+    @apply px-4 mx-auto;
 }
