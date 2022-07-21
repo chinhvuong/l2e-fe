@@ -9,6 +9,41 @@ import 'swiper/css/bundle'
 import './style.scss'
 
 import { ReactElement } from 'react'
+export const FIVE = {
+    // when window width is >= 320px
+    320: {
+        slidesPerView: 2,
+        spaceBetween: 16,
+    },
+    // when window width is >= 480px
+    640: {
+        slidesPerView: 3,
+        spaceBetween: 24,
+    },
+    // when window width is >= 640px
+    989: {
+        slidesPerView: 5,
+        spaceBetween: 32,
+    },
+}
+
+export const FOUR = {
+    // when window width is >= 320px
+    320: {
+        slidesPerView: 2,
+        spaceBetween: 16,
+    },
+    // when window width is >= 480px
+    640: {
+        slidesPerView: 3,
+        spaceBetween: 24,
+    },
+    // when window width is >= 640px
+    989: {
+        slidesPerView: 4,
+        spaceBetween: 32,
+    },
+}
 
 type SlideProps = {
     data: any[]
@@ -25,23 +60,7 @@ const Slide = ({ data, renderItem, ...rest }: SlideProps & SwiperProps) => {
             onSwiper={(swiper) => console.log(swiper)}
             pagination={true}
             modules={[Pagination]}
-            breakpoints={{
-                // when window width is >= 320px
-                320: {
-                    slidesPerView: 2,
-                    spaceBetween: 16,
-                },
-                // when window width is >= 480px
-                480: {
-                    slidesPerView: 3,
-                    spaceBetween: 24,
-                },
-                // when window width is >= 640px
-                640: {
-                    slidesPerView: 4,
-                    spaceBetween: 32,
-                },
-            }}
+            breakpoints={FIVE}
             {...rest}
         >
             {data &&
