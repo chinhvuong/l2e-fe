@@ -6,6 +6,9 @@ import Modal, { openModal } from '@/components/core/modal'
 import Accordion from '@/components/core/accordion'
 const modalId = 'modalId'
 import DasboardIcon from '@/public/svgs/dashboard.svg'
+import TextField from '@/components/core/textfield'
+import TextArea from '@/components/core/textarea'
+
 // import Breadcrumb from '@/components/core/breadcrumb'
 
 // const data = [
@@ -50,6 +53,17 @@ const HomePageContainer = () => {
                 <Accordion title="Allo" icon={<DasboardIcon />}>
                     Alo
                 </Accordion>
+            </div>
+            <div>
+                <TextField
+                    placeholder="Tên sản phẩm"
+                    label="Tên sản phẩm"
+                    required
+                />
+
+                <TextArea label="Mô tả" required={true} placeholder="Mô tả">
+                    Abl
+                </TextArea>
             </div>
         </div>
     )

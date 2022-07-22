@@ -40,6 +40,10 @@ module.exports = {
                 20: '0px 2px 20px rgba(20, 19, 19, 0.05)',
                 30: '0px 2px 30px rgba(20, 19, 19, 0.05)',
                 40: '0px 2px 40px rgba(0, 0, 0, 0.05)',
+                form: '0px 2px 30px rgba(20, 19, 19, 0.05)',
+            },
+            blur: {
+                shadow: 'drop-shadow(0px 2px 30px rgba(20, 19, 19, 0.05))',
             },
             screens: {
                 xl: { max: '1279px' },
