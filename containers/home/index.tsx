@@ -6,42 +6,19 @@ import Modal, { openModal } from '@/components/core/modal'
 import Accordion from '@/components/core/accordion'
 const modalId = 'modalId'
 import DasboardIcon from '@/public/svgs/dashboard.svg'
-import Breadcrumb from '@/components/core/breadcrumb'
-
-console.log('🚀 ~ file: index.tsx ~ line 9 ~ DasboardIcon', DasboardIcon)
-// Import Swiper React components
+// import Breadcrumb from '@/components/core/breadcrumb'
 
 // const data = [
 //     {
-//         name: 'Hello how are you',
+//         text: 'Trang chủ',
+//         href: '/',
 //     },
 //     {
-//         name: 'Hello how are you',
-//     },
-//     {
-//         name: 'Hello how are you',
-//     },
-//     {
-//         name: 'Hello how are you',
-//     },
-//     {
-//         name: 'Hello how are you',
-//     },
-//     {
-//         name: 'Hello how are you',
+//         text: 'Chủ gian hàng',
+//         href: '/dashboard',
+//         active: true,
 //     },
 // ]
-const data = [
-    {
-        text: 'Trang chủ',
-        href: '/',
-    },
-    {
-        text: 'Chủ gian hàng',
-        href: '/dashboard',
-        active: true,
-    },
-]
 
 const HomePageContainer = () => {
     // const renderItem = (data: any) => {
@@ -49,8 +26,7 @@ const HomePageContainer = () => {
     // }
     return (
         <div className="">
-            <Breadcrumb data={data} />
-            HomePageContainer
+            {/* <Breadcrumb data={data} /> */}
             <Button onClick={() => openModal(modalId)}>Alo</Button>
             <Button
                 className="btn-pri-outline"
