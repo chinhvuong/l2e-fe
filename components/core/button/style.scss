@@ -1,0 +1,10 @@
+.btn-pri {
+    @apply bg-pri hover:bg-pri/90 text-white font-medium text-sm border border-pri;
+
+}
+
+.btn-pri-outline {
+    border: 1px solid;
+    box-sizing: border-box;
+    @apply bg-white text-pri  font-medium text-sm border border-pri;
+}

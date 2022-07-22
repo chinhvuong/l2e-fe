@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, ReactNode, ReactText } from 'react'
-
+import './style.scss'
 type Props = {
     children: ReactNode | ReactText
 }
@@ -11,7 +11,7 @@ function Button({
     return (
         <button
             {...rest}
-            className={`px-4 py-2 rounded-sm shadow-sm bg-primary hover:bg-primary/95 ${rest.className}`}
+            className={`px-4 py-2 rounded-sm shadow-sm btn-pri hover:bg-primary/95 ${rest.className}`}
         >
             {children}
         </button>
