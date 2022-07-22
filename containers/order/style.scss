@@ -1,3 +1,11 @@
 .alo {
     color: green;
 }
+.cart-order {
+    max-width: 857px;
+    max-height: 841px;
+}
+
+.details-order-name {
+    @apply flex gap-4 align-middle;
+}

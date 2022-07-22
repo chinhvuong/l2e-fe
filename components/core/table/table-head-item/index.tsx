@@ -2,12 +2,14 @@ import React from 'react'
 import './styles.scss'
 
 type Props = {
-    item: string
+    item: string | JSX.Element
+    styleItem: string
 }
-const TableHeadItem = ({ item }: Props) => {
+
+const TableHeadItem = ({ item, styleItem }: Props) => {
     return (
         <>
-            <th>{item}</th>
+            <th className={styleItem}>{item}</th>
         </>
     )
 }
