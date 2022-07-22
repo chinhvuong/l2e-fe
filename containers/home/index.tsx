@@ -8,6 +8,7 @@ const modalId = 'modalId'
 import DasboardIcon from '@/public/svgs/dashboard.svg'
 import TextField from '@/components/core/textfield'
 import TextArea from '@/components/core/textarea'
+import Searchbox from '@/components/common/search-box'
 
 // import Breadcrumb from '@/components/core/breadcrumb'
 
@@ -64,6 +65,9 @@ const HomePageContainer = () => {
                 <TextArea label="Mô tả" required={true} placeholder="Mô tả">
                     Abl
                 </TextArea>
+            </div>
+            <div>
+                <Searchbox placeholder="Alo" />
             </div>
         </div>
     )
