@@ -17,9 +17,9 @@ type Props = {
 
 function Table({ columns, data }: Props) {
     return (
-        <table>
+        <table className="table">
             <thead>
-                <tr>
+                <tr className="thead-table">
                     {columns.map((item, index) => (
                         <TableHeadItem key={index} item={item.heading} />
                     ))}

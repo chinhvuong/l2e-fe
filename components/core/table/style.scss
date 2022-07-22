@@ -1,4 +1,14 @@
 td,
 th {
-    @apply border-2 border-black px-2 py-1;
+    @apply px-6 py-4;
+}
+
+.table {
+    @apply shadow-40 overflow-hidden rounded-t-lg;
+    overflow: hidden;
+}
+
+.thead-table {
+    border-radius: 10px;
+    @apply bg-pri-17 overflow-hidden;
 }
