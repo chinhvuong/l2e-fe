@@ -1,3 +1,5 @@
+import { EStatusOrder } from './common'
+
 export interface Column {
     heading: string | JSX.Element
     style: string
@@ -15,7 +17,7 @@ export interface IDetailOrder {
 export interface ICanceledOrder {
     id: string
     name: string
-    status: number
+    status: typeof EStatusOrder
     total: string
     cashout: string
     date: string
@@ -24,7 +26,7 @@ export interface ICanceledOrder {
 export interface IProduct {
     name: string
     category: string
-    status: number
+    status: typeof EStatusOrder
     price: string
     cashout: string
     image: string

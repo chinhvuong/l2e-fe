@@ -1,4 +1,4 @@
-import { EStatusOrder } from '@/contants/interfaces'
+import { EStatusOrder } from '@/contants/common'
 
 export const dataOrderDetails = [
     {
