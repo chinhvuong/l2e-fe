@@ -6,7 +6,7 @@ const Footer = () => {
         <>
             <div className="footer-container">
                 <div className="footer-inner">
-                    <div className="flex">
+                    <div className="flex justify-between">
                         <div>
                             <p>Bảo trợ bởi tập đoàn MB</p>
                         </div>

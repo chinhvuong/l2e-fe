@@ -5,7 +5,7 @@
         display: none;
     }
     .footer-inner {
-        @apply w-10/12 gap-x-4;
+        @apply w-10/12 gap-4;
         & p {
             font-size: 14px;
             @apply m-auto;
@@ -16,8 +16,11 @@
     }
 
     .footer-inner__right {
-        @apply flex justify-between;
+        @apply flex justify-between gap-x-20;
         @include respond(lg) {
+            @apply gap-x-10;
+        }
+        @include respond(md) {
             @apply gap-x-4;
         }
     }
