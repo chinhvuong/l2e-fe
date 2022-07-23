@@ -36,6 +36,7 @@ module.exports = {
                 'gray-d9-28': 'rgba(216, 216, 216, 0.28)',
                 'gray-d9-30': 'rgba(216, 216, 216, 0.3)',
                 'gray-d8-30': 'rgba(216, 216, 216, 0.3)',
+                'gray-07': 'rgba(217, 217, 217, 0.7)',
 
                 'gray-c4': '#C4C4C4',
                 primary: '#2962ff',

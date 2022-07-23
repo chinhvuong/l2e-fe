@@ -4,10 +4,6 @@ import { useTransHook } from '@/locales/hooks'
 
 const Notification = () => {
     const { t } = useTransHook()
-    console.log(
-        '🚀 ~ file: notification.tsx ~ line 7 ~ Notification ~ t',
-        t('NOTIFICATION'),
-    )
     return (
         <div className="flex items-center gap-1 cursor-pointer">
             <Noti className="sm:scale-[1.111]" />
