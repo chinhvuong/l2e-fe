@@ -1,9 +1,12 @@
+@import '@/styles/_mixins.scss';
+
 .alo {
     color: green;
 }
 .cart-order {
-    max-width: 857px;
-    max-height: 841px;
+    @include respond(sm) {
+        overflow-x: scroll;
+    }
 }
 
 .details-order-name {

@@ -47,13 +47,13 @@ const ProductName = ({ name, image }: { name: string; image: string }) => {
 const renderRow = (data: IDetailOrder, index: number) => {
     return (
         <tr key={index}>
-            <td>
+            <td className="text-left">
                 <ProductName name={data.name} image={data.image} />
             </td>
-            <td>{data.quantity}</td>
-            <td>{data.cashout}</td>
-            <td>{data.price}</td>
-            <td>{data.total}</td>
+            <td className="text-center">{data.quantity}</td>
+            <td className="text-center">{data.cashout}</td>
+            <td className="text-center">{data.price}</td>
+            <td className="text-center">{data.total}</td>
         </tr>
     )
 }
