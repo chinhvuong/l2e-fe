@@ -1,0 +1,16 @@
+@import '@/styles/_mixins.scss';
+td,
+th {
+    @apply px-6 py-4;
+}
+
+.table {
+    @apply shadow-40 overflow-hidden rounded-t-lg w-full border-2;
+    table-layout: auto;
+    width: 100%;
+}
+
+.thead-table {
+    border-radius: 10px;
+    @apply bg-pri-17 overflow-hidden;
+}
