@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
     i18n: {
-        defaultLocale: 'en',
+        defaultLocale: 'vi',
         locales: ['en', 'vi', 'ja', 'zh-hans'],
         defaultNS: 'common',
         localePath: path.resolve('./locales/resources'),
