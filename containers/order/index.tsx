@@ -1,75 +1,74 @@
 import React from 'react'
 import Table from '@/components/core/table'
-import { ComponentType } from '@/contants/common'
+import { IDetailOrder } from '@/contants/common'
+import './style.scss'
+import { dataOrderDetails } from '@/data/detail-order'
 
-const columns = [
+const columnComponent = [
     {
         heading: 'Tên sản phẩm',
-        value: 'name',
-        style: '',
-        type: ComponentType.normal,
+        value: 'name,image',
+        style: 'text-left min-w-[300px]',
     },
     {
-        heading: 'Tổng đơn hàng',
-        value: 'total',
+        heading: 'Số lượng',
+        value: 'quantity',
         style: '',
-        type: ComponentType.normal,
     },
+
     {
         heading: 'Cashout',
         value: 'cashout',
         style: '',
-        type: ComponentType.normal,
     },
     {
-        heading: 'Trạng thái',
-        value: 'state',
+        heading: 'Giá',
+        value: 'price',
         style: '',
-        type: ComponentType.normal,
     },
     {
-        heading: 'Hoạt động',
-        value: 'status',
+        heading: 'Thành tiền',
+        value: 'total',
         style: '',
-        type: ComponentType.component,
     },
 ]
 
-const dataColumn = [
-    {
-        name: 'currency',
-        total: 0,
-        cashout: 'làng SOS',
-        state: 'Đang giao',
-        status: <div>abc</div>,
-    },
-    {
-        name: 'currency',
-        total: 0,
-        cashout: 'làng SOS',
-        state: 'Đang giao',
-        status: <div>abc</div>,
-    },
-    {
-        name: 'currency',
-        total: 0,
-        cashout: 'làng SOS',
-        state: 'Đang giao',
-        status: <div>abc</div>,
-    },
-    {
-        name: 'currency',
-        total: 0,
-        cashout: 'làng SOS',
-        state: 'Đang giao',
-        status: <div>abc</div>,
-    },
-]
+const ProductName = ({ name, image }: { name: string; image: string }) => {
+    return (
+        <div className="details-order-name">
+            <div className="flex-center p-2 flex-shrink-0">
+                <img src={image} alt="" className="w-10" />
+            </div>
+            <p className="flex-center">{name}</p>
+        </div>
+    )
+}
+
+const renderRow = (data: IDetailOrder, index: number) => {
+    return (
+        <tr key={index}>
+            <td className="text-left">
+                <ProductName name={data.name} image={data.image} />
+            </td>
+            <td className="text-center">{data.quantity}</td>
+            <td className="text-center">{data.cashout}</td>
+            <td className="text-center">{data.price}</td>
+            <td className="text-center">{data.total}</td>
+        </tr>
+    )
+}
 
 const Order = () => {
     return (
         <div>
-            <Table columns={columns} data={dataColumn} />
+            {/* <Table columns={columns} data={dataColumn} /> */}
+            <div className="cart-order">
+                <Table
+                    columns={columnComponent}
+                    data={dataOrderDetails}
+                    renderRow={renderRow}
+                />
+            </div>
         </div>
     )
 }

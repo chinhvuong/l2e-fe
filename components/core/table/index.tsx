@@ -1,36 +1,38 @@
 import React from 'react'
 import './style.scss'
 import TableHeadItem from './table-head-item'
-import TableRow from './table-body-item'
-import { ComponentType } from '@/contants/common'
-interface Column {
-    heading: string
-    value: string
-    style: string
-    type: ComponentType
-}
+import { Column } from '@/contants/common'
 
 type Props = {
     columns: Column[]
     data: any[]
+    // eslint-disable-next-line no-unused-vars
+    renderRow: (data: any, index: number) => JSX.Element
 }
 
-function Table({ columns, data }: Props) {
+function Table({ columns, data, renderRow }: Props) {
+    const columnsHeading = columns.map((column) => {
+        column.style = column.style ? column.style : 'text-center'
+        return column
+    })
+
     return (
-        <table className="table">
-            <thead>
-                <tr className="thead-table">
-                    {columns.map((item, index) => (
-                        <TableHeadItem key={index} item={item.heading} />
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {data.map((row, index) => (
-                    <TableRow key={index} row={row} col={columns} />
-                ))}
-            </tbody>
-        </table>
+        <div className="scrollbar-horizontal">
+            <table className="table">
+                <thead>
+                    <tr className="thead-table">
+                        {columns.map((item, index) => (
+                            <TableHeadItem
+                                key={index}
+                                item={item.heading}
+                                styleItem={columnsHeading[index].style}
+                            />
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>{data.map((row, index) => renderRow(row, index))}</tbody>
+            </table>
+        </div>
     )
 }
 

@@ -27,19 +27,18 @@ module.exports = {
                 'black-20': 'rgba(0, 0, 0, 0.20)',
                 'black-07': 'rgba(0, 0, 0, 0.07)',
 
+                'grey-1': 'rgba(55, 63, 79, 1)',
+
                 white: '#FFFFFF',
 
                 'gray-d9': '#D9D9D9',
+                'gray-38': 'rgba(217, 217, 217, 0.38)',
                 'gray-d9-28': 'rgba(216, 216, 216, 0.28)',
                 'gray-d9-30': 'rgba(216, 216, 216, 0.3)',
                 'gray-d8-30': 'rgba(216, 216, 216, 0.3)',
 
                 'gray-c4': '#C4C4C4',
                 primary: '#2962ff',
-                secondary: '#1e222d',
-                'light-orange': '##EE4600',
-                'text-01': '#d1d4dc',
-                'text-02': '#868993',
                 error: '#f23645',
             },
             backgroundImage: {
