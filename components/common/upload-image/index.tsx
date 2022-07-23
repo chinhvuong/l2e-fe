@@ -39,7 +39,7 @@ function UploadImg({ image, label, iconClass, onChange }: Props) {
     }
     return (
         <div
-            className="flex-center cursor-pointer w-full pt-[100%] relative border-2 border-dashed border-black/40 rounded-2xl"
+            className="group flex-center cursor-pointer w-full pt-[100%] relative border-2 border-dashed border-black/40 rounded-2xl hover:border-pri transition-colors"
             onClick={onSelect}
         >
             {image ? (
@@ -52,7 +52,9 @@ function UploadImg({ image, label, iconClass, onChange }: Props) {
                 </div>
             ) : (
                 <div className="flex-center flex-col w-fit-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <div className={`w-8 h-8 ${iconClass}`}>
+                    <div
+                        className={`w-8 h-8 group-hover:text-pri ${iconClass}`}
+                    >
                         {iconClass ? (
                             <AddIcon94 className={`w-full h-full`} />
                         ) : (
@@ -60,7 +62,9 @@ function UploadImg({ image, label, iconClass, onChange }: Props) {
                         )}
                     </div>
 
-                    <span className="text-black-70 ">{label}</span>
+                    <span className="group-hover:text-pri text-black-70 md:text-sm whitespace-nowrap">
+                        {label}
+                    </span>
                 </div>
             )}
         </div>

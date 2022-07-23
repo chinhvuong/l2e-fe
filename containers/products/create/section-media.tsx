@@ -6,7 +6,7 @@ const SectionMedia = () => {
     const { t } = useTransHook()
 
     return (
-        <div className="grid grid-cols-3 gap-6 w-full">
+        <div className="grid grid-cols-3 gap-6 lg:gap-4 w-full">
             <div className="col-span-3">
                 <UploadImg
                     iconClass="w-[94px] h-[94px]"

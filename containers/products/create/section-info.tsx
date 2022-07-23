@@ -7,7 +7,7 @@ const SectionInfo = () => {
     const { t } = useTransHook()
 
     return (
-        <div className="flex flex-col gap-[30px]">
+        <div className="flex flex-col gap-[30px] lg:gap-6">
             <TextField
                 placeholder={t('PRODUCT_NAME')}
                 label={t('PRODUCT_NAME')}
@@ -20,7 +20,7 @@ const SectionInfo = () => {
                 placeholder={t('PRODUCT_INFO')}
             />
 
-            <div className="flex gap-[30px]">
+            <div className="flex gap-[30px] lg:gap-4">
                 <div className="grow">
                     <TextField
                         placeholder={t('PRICE')}

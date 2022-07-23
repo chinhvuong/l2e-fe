@@ -89,7 +89,7 @@ const HomePageContainer = () => {
                     // </div>
                 ))}
             </div>
-            <Checkbox onChange={console.log} type={'radio'} checked={true} />
+            <Checkbox onToggle={console.log} type={'radio'} checked={true} />
         </div>
     )
 }
