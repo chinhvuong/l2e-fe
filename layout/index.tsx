@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
     return (
         <div>
             <Header />
-            <main className="limit h-screen">{children}</main>
+            <main className="limit">{children}</main>
             <Footer />
         </div>
     )
