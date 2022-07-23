@@ -5,9 +5,9 @@ th {
 }
 
 .table {
-    @apply shadow-40 overflow-hidden rounded-t-lg;
-    overflow: hidden;
-    min-width: 750px;
+    @apply shadow-40 overflow-hidden rounded-t-lg w-full border-2;
+    table-layout: auto;
+    width: 100%;
 }
 
 .thead-table {

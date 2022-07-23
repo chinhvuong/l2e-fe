@@ -8,7 +8,7 @@ const columnComponent = [
     {
         heading: 'Tên sản phẩm',
         value: 'name,image',
-        style: 'text-left',
+        style: 'text-left min-w-[300px]',
     },
     {
         heading: 'Số lượng',
@@ -36,7 +36,7 @@ const columnComponent = [
 const ProductName = ({ name, image }: { name: string; image: string }) => {
     return (
         <div className="details-order-name">
-            <div className="flex-center p-2">
+            <div className="flex-center p-2 flex-shrink-0">
                 <img src={image} alt="" className="w-10" />
             </div>
             <p className="flex-center">{name}</p>

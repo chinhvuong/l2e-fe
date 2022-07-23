@@ -17,20 +17,22 @@ function Table({ columns, data, renderRow }: Props) {
     })
 
     return (
-        <table className="table">
-            <thead>
-                <tr className="thead-table">
-                    {columns.map((item, index) => (
-                        <TableHeadItem
-                            key={index}
-                            item={item.heading}
-                            styleItem={columnsHeading[index].style}
-                        />
-                    ))}
-                </tr>
-            </thead>
-            <tbody>{data.map((row, index) => renderRow(row, index))}</tbody>
-        </table>
+        <div className="scrollbar-horizontal">
+            <table className="table">
+                <thead>
+                    <tr className="thead-table">
+                        {columns.map((item, index) => (
+                            <TableHeadItem
+                                key={index}
+                                item={item.heading}
+                                styleItem={columnsHeading[index].style}
+                            />
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>{data.map((row, index) => renderRow(row, index))}</tbody>
+            </table>
+        </div>
     )
 }
 

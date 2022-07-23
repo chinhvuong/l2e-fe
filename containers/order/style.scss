@@ -4,9 +4,6 @@
     color: green;
 }
 .cart-order {
-    @include respond(sm) {
-        overflow-x: scroll;
-    }
 }
 
 .details-order-name {

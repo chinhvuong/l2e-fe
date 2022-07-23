@@ -10,20 +10,19 @@
     @apply flex items-center;
 }
 
-
 .scrollbar {
     overflow-y: overlay;
-    
+
     /* width */
     &::-webkit-scrollbar {
         width: 10px;
     }
-    
+
     /* Track */
     &::-webkit-scrollbar-track {
         border-radius: 8px;
     }
-    
+
     /* Handle */
     &::-webkit-scrollbar-thumb {
         border-radius: 8px;
@@ -40,10 +39,31 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-
-
 }
 
+.scrollbar-horizontal {
+    @apply overflow-x-auto w-full;
+
+    &::-webkit-scrollbar {
+        width: 3px;
+        height: 6px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        @apply bg-gray-38;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        @apply bg-gray-d9;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-500;
+    }
+}
 .limit {
     max-width: 1600px;
     @apply px-4 mx-auto;
