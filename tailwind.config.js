@@ -36,6 +36,9 @@ module.exports = {
                 'gray-c4': '#C4C4C4',
                 error: '#f23645',
             },
+            backgroundImage: {
+                gradient: 'linear-gradient(180deg, #EE4600 0%, #FF864A 100%)',
+            },
             boxShadow: {
                 20: '0px 2px 20px rgba(20, 19, 19, 0.05)',
                 30: '0px 2px 30px rgba(20, 19, 19, 0.05)',
