@@ -1,0 +1,46 @@
+@import '@/styles/_mixins.scss';
+.footer-container {
+    @apply h-32 border-t-2 flex py-5 justify-center;
+    @include respond(sm) {
+        display: none;
+    }
+    .footer-inner {
+        @apply w-10/12 gap-x-4;
+        & p {
+            font-size: 14px;
+            @apply m-auto;
+        }
+        & div {
+            @apply my-auto;
+        }
+    }
+
+    .footer-inner__right {
+        @apply flex justify-between;
+        @include respond(lg) {
+            @apply gap-x-4;
+        }
+    }
+}
+
+.footer-mobile-container {
+    @apply hidden;
+
+    @include respond(sm) {
+        display: block;
+        @apply border-t-2 py-5 flex justify-center;
+        .footer-inner {
+            @apply w-10/12;
+            & p {
+                font-size: 12px;
+                @apply m-auto;
+            }
+            & div {
+                @apply my-auto;
+            }
+            &__right {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
