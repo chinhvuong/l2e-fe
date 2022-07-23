@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-
+/locales/resources
 # next.js
 /.vscode/
 /.next/

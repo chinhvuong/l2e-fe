@@ -6,6 +6,11 @@ import Modal, { openModal } from '@/components/core/modal'
 import Accordion from '@/components/core/accordion'
 const modalId = 'modalId'
 import DasboardIcon from '@/public/svgs/dashboard.svg'
+import TextField from '@/components/core/textfield'
+import TextArea from '@/components/core/textarea'
+import Searchbox from '@/components/common/search-box'
+import UploadImg from '@/components/common/upload-image'
+
 // import Breadcrumb from '@/components/core/breadcrumb'
 
 // const data = [
@@ -50,6 +55,39 @@ const HomePageContainer = () => {
                 <Accordion title="Allo" icon={<DasboardIcon />}>
                     Alo
                 </Accordion>
+            </div>
+            <div>
+                <TextField
+                    placeholder="Tên sản phẩm"
+                    label="Tên sản phẩm"
+                    required
+                />
+
+                <TextArea label="Mô tả" required={true} placeholder="Mô tả" />
+            </div>
+            <div>
+                <Searchbox placeholder="Alo" />
+            </div>
+
+            <div className="grid grid-cols-3 gap-6 max-w-[413px]">
+                <div className="col-span-3">
+                    <UploadImg
+                        iconClass="w-[94px] h-[94px]"
+                        label="Thêm ảnh chính"
+                        image={''}
+                        onChange={(e) => console.log(e)}
+                    />
+                </div>
+                {Array.from(Array(9).keys()).map((item) => (
+                    // <div key={item}>
+                    <UploadImg
+                        key={item}
+                        label={`Ảnh ${1}`}
+                        image={''}
+                        onChange={(e) => console.log(e)}
+                    />
+                    // </div>
+                ))}
             </div>
         </div>
     )
