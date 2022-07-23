@@ -1,0 +1,31 @@
+.checkbox {
+    &-radio {
+        $w: 20px;
+        width: $w;
+        height: $w;
+        border-radius: 50%;
+        @apply border border-black-50 flex-shrink-0 cursor-pointer;
+
+        &[data-checked="true"] {
+        //    @apply flex items-center justify-center;
+            position: relative;
+            @apply border border-pri;
+
+           .dot {
+                $w: 10px;
+                width: $w;
+                height: $w;
+                border-radius: 50%;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+            
+                transform: translate(-50%, -50%);
+
+                @apply bg-gradient;
+            
+           }
+
+        }
+    }
+} 
