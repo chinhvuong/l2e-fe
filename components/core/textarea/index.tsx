@@ -6,12 +6,12 @@ type Props = {
     required?: boolean
 }
 
-function TextField({
+function TextArera({
     wraperClasses,
     label,
     required,
     ...rest
-}: Props & HTMLAttributes<HTMLInputElement>) {
+}: Props & HTMLAttributes<HTMLTextAreaElement>) {
     return (
         <div className={``}>
             <label className={` block font-normal text-sm  ${wraperClasses}`}>
@@ -21,17 +21,19 @@ function TextField({
                         {required && <span className="text-pri">*</span>}
                     </div>
                 )}
-                <input
-                    type="text"
+                <textarea
                     {...rest}
                     className={
-                        'outline-0 w-full text-sm leading-[1] bg-white/[0.08] rounded-lg px-6 py-4 shadow-form placeholder:text-black-50 ' +
+                        'outline-0 w-full text-sm leading-[1] bg-white/[0.08] rounded-lg px-6 py-4 shadow-form placeholder:text-black-50 h-[200px] ' +
                         rest.className
                     }
-                />
+                ></textarea>
+                {/* <textarea  {...rest} className={'outline-0 w-full text-sm leading-[1] bg-white/[0.08] rounded-lg px-6 py-4 shadow-40 placeholder:text-black-50 ' + rest.className}   >
+
+                </textarea> */}
             </label>
         </div>
     )
 }
 
-export default TextField
+export default TextArera
