@@ -10,7 +10,7 @@ import TextField from '@/components/core/textfield'
 import TextArea from '@/components/core/textarea'
 import Searchbox from '@/components/common/search-box'
 import UploadImg from '@/components/common/upload-image'
-
+import Checkbox from '@/components/core/checkbox'
 // import Breadcrumb from '@/components/core/breadcrumb'
 
 // const data = [
@@ -89,6 +89,7 @@ const HomePageContainer = () => {
                     // </div>
                 ))}
             </div>
+            <Checkbox onChange={console.log} type={'radio'} checked={true} />
         </div>
     )
 }

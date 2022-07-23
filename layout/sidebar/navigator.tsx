@@ -23,6 +23,25 @@ const routes = [
         icon: <SpIcon />,
         submenus: [
             {
+                href: '/products',
+                key: 'PRODUCT_LIST',
+            },
+            // {
+            //     href: '/',
+            //     key: 'ORDER_DETAIL',
+            // },
+            {
+                href: '/products/create',
+                key: 'ADD_NEW_PRODUCT',
+            },
+        ],
+    },
+    {
+        href: '/orders',
+        key: 'MANAGE_ORDERS',
+        icon: <OrderIcon />,
+        submenus: [
+            {
                 href: '/orders',
                 key: 'ORDER_LIST',
             },
@@ -33,17 +52,6 @@ const routes = [
             {
                 href: '/orders/cenceled',
                 key: 'CANCELED_ORDERS',
-            },
-        ],
-    },
-    {
-        href: '/orders',
-        key: 'MANAGE_ORDERS',
-        icon: <OrderIcon />,
-        submenus: [
-            {
-                href: '/products',
-                key: 'ORDER_LIST',
             },
         ],
     },
@@ -116,10 +124,7 @@ type NavitemProp = {
 const NavItem = ({ data }: { data: NavitemProp }) => {
     const { t } = useTransHook()
     const router = useRouter()
-    console.log(
-        '🚀 ~ file: navigator.tsx ~ line 121 ~ NavItem ~ router',
-        router,
-    )
+
     return (
         <Accordion
             href={data.href}
