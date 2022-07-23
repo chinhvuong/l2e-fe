@@ -5,12 +5,15 @@ th {
 }
 
 .table {
-    @apply shadow-40 overflow-hidden rounded-t-lg w-full border-2;
+    @apply overflow-hidden rounded-t-lg w-full;
     table-layout: auto;
     width: 100%;
+    & tbody tr {
+        @apply border-t-black-07;
+        border-width: 1px;
+    }
 }
 
 .thead-table {
-    border-radius: 10px;
     @apply bg-pri-17 overflow-hidden;
 }
