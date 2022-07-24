@@ -11,6 +11,7 @@ import TextArea from '@/components/core/textarea'
 import Searchbox from '@/components/common/search-box'
 import UploadImg from '@/components/common/upload-image'
 import Checkbox from '@/components/core/checkbox'
+import Card from '@/components/common/card'
 // import Breadcrumb from '@/components/core/breadcrumb'
 
 // const data = [
@@ -90,6 +91,18 @@ const HomePageContainer = () => {
                 ))}
             </div>
             <Checkbox onToggle={console.log} type={'radio'} checked={true} />
+
+            <div className="p-6">
+                <Card title="Alo No Pain No gain">
+                    <div className="py-4">
+                        Allo this is my card, It&#39;s ok?
+                    </div>
+                    <hr />
+                    <div className="py-4">
+                        Allo this is my card, It&#39;s ok?
+                    </div>
+                </Card>
+            </div>
         </div>
     )
 }
