@@ -1,8 +1,12 @@
 import React from 'react'
-import Products from '@/containers/products'
+import CanceledOrders from '@/containers/canceled-orders'
 
-const ProductsPage = () => {
-    return <Products />
+const CanceledOrdersPage = () => {
+    return (
+        <div>
+            <CanceledOrders />
+        </div>
+    )
 }
 
 export const getStaticProps = async ({ locale }: { locale: string }) => {
@@ -17,4 +21,4 @@ export const getStaticProps = async ({ locale }: { locale: string }) => {
     }
 }
 
-export default ProductsPage
+export default CanceledOrdersPage

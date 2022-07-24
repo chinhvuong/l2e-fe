@@ -1,0 +1,18 @@
+.buying {
+    @apply bg-green-015  text-green-1;
+}
+.outStock {
+    @apply bg-pri-15  text-pri-8-1;
+}
+.canceled {
+    @apply bg-pri-15  text-pri-8-1;
+}
+.ordered {
+    @apply bg-green-015  text-green-1;
+}
+.waitOrder {
+    @apply text-gray-1 bg-gray-F9;
+}
+.delivering {
+    @apply bg-yellow-7  text-pri-6-1;
+}

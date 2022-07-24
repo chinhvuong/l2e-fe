@@ -1,0 +1,5 @@
+.table-product__row {
+    & > td {
+        @apply text-center text-sm px-0;
+    }
+}

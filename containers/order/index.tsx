@@ -1,8 +1,8 @@
 import React from 'react'
 import Table from '@/components/core/table'
-import { IDetailOrder } from '@/contants/common'
+import { IDetailOrder } from '@/contants/interfaces'
 import './style.scss'
-import { dataOrderDetails } from '@/data/detail-order'
+import { dataOrderDetails } from '@/data/data-order'
 
 const columnComponent = [
     {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Column } from '@/contants/common'
+import { Column } from '@/contants/interfaces'
 import './styles.scss'
 
 type Props = {

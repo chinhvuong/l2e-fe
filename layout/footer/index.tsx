@@ -1,24 +1,25 @@
 import React from 'react'
 import './styles.scss'
-
+import { useTransHook } from '@/locales/hooks'
 const Footer = () => {
+    const { t } = useTransHook()
     return (
         <>
             <div className="footer-container">
                 <div className="footer-inner">
                     <div className="flex justify-between">
                         <div>
-                            <p>Bảo trợ bởi tập đoàn MB</p>
+                            <p>{t('COPORATE_SPONSOR')}</p>
                         </div>
                         <div className="footer-inner__right">
                             <div>
-                                <p>Chính sách hỗ trợ</p>
+                                <p>{t('SUPPORTING_POLICY')}</p>
                             </div>
                             <div>
-                                <p>Danh mục sản phẩm</p>
+                                <p>{t('CATEGORY')}</p>
                             </div>
                             <div>
-                                <p>Bài viết</p>
+                                <p>{t('POST')}</p>
                             </div>
                             <div>
                                 <img
@@ -36,10 +37,10 @@ const Footer = () => {
                 <div className="footer-inner">
                     <div className="flex justify-between">
                         <div>
-                            <p>Chính sách hỗ trợ</p>
-                            <p>Danh mục sản phẩm</p>
-                            <p>Bài viết</p>
-                            <p>Bảo trợ bởi tập đoàn MB</p>
+                            <p>{t('COPORATE_SPONSOR')}</p>
+                            <p>{t('SUPPORTING_POLICY')}</p>
+                            <p>{t('CATEGORY')}</p>
+                            <p>{t('POST')}</p>
                         </div>
                         <div className="footer-inner__right">
                             <img

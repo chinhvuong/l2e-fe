@@ -1,3 +1,5 @@
+import { EStatusOrder } from '@/contants/common'
+
 export const dataOrderDetails = [
     {
         name: 'Mặt nạ nghệ 123',
@@ -38,5 +40,40 @@ export const dataOrderDetails = [
         cashout: 'Làng SOS',
         price: '20.000đ',
         total: '40.000đ',
+    },
+]
+
+export const dataCanceledOrder = [
+    {
+        id: '#015',
+        name: 'Loan Hoàng',
+        status: EStatusOrder.canceled,
+        total: '20.000 đ',
+        cashout: 'Làng SOS',
+        date: '03.07.2022',
+    },
+    {
+        id: '#015',
+        name: 'Loan Hoàng',
+        status: EStatusOrder.canceled,
+        total: '20.000 đ',
+        cashout: 'Làng SOS',
+        date: '03.07.2022',
+    },
+    {
+        id: '#015',
+        name: 'Loan Hoàng',
+        status: EStatusOrder.outStock,
+        total: '20.000 đ',
+        cashout: 'Làng SOS',
+        date: '03.07.2022',
+    },
+    {
+        id: '#015',
+        name: 'Loan Hoàng',
+        status: EStatusOrder.delivering,
+        total: '20.000 đ',
+        cashout: 'Làng SOS',
+        date: '03.07.2022',
     },
 ]
