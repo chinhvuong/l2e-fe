@@ -3,9 +3,8 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter';
-    @apply text-black text-base;
 }
 
 div, button, input, text-area, select p , span, i {
-    @apply text-black text-base;
+    @apply text-black;
 }
