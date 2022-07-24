@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
+import './styles.scss'
 import Table from '@/components/core/table'
 import { dataProducts } from '@/data/data-product'
 import { IProduct } from '@/contants/interfaces'
 import { useTransHook } from '@/locales/hooks'
-import './styles.scss'
 import OrderStatus from '@/components/common/status-order'
 import Button from '@/components/core/button'
 import EditIcon from '@/public/svgs/edit-2.svg'
 import TrashIcon from '@/public/svgs/trash.svg'
-import Select from '@/components/core/select'
-import { EStatusOrder } from '@/contants/common'
+import Filter from '@/components/common/filter'
+
 const Products = () => {
     const { t } = useTransHook()
 
@@ -95,48 +95,19 @@ const Products = () => {
         )
     }
 
-    const [value, setValue] = useState(-1)
-
-    const handleClickItem = (index: number) => {
-        setValue(index)
-    }
-
-    const renderItemSelect = (data: string, index: number) => {
-        if (index === -1) {
-            return (
-                <div
-                    className="hover:bg-slate-400 px-4 py-3 rounded shadow-40-08 border-2"
-                    onClick={() => handleClickItem(index)}
-                >
-                    Tất cả
-                </div>
-            )
-        } else {
-            return (
-                <div
-                    key={index}
-                    className={`hover:bg-pri-6-1 hover:text-white px-4 py-3 rounded shadow-40-08 border-2 ${
-                        value === index ? 'bg-pri text-white' : ''
-                    }`}
-                    onClick={() => handleClickItem(index)}
-                >
-                    {data}
-                </div>
-            )
-        }
+    const handlePressSearch = (text: string) => {
+        console.log(
+            '🚀 ~ file: index.tsx ~ line 99 ~ handlePressSearch ~ text',
+            text,
+        )
     }
 
     return (
         <div>
-            <div className="max-w-[155px]">
-                <Select
-                    currentValue={value}
-                    title="Trạng thái"
-                    data={Object.values(EStatusOrder).map((item) => t(item))}
-                    renderItem={renderItemSelect}
-                />
+            <div className="px-6 py-6">
+                <Filter onPressSearch={handlePressSearch} />
             </div>
-            <div className={`max-w-[970px]`}>
+            <div>
                 <Table
                     columns={columnComponent}
                     data={dataProducts}

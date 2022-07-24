@@ -1,0 +1,18 @@
+@import '@/styles/_mixins.scss';
+.filter-container {
+    @apply flex justify-between;
+
+    .select-wraper {
+        @apply flex justify-center;
+        &__item {
+            @apply w-[155px];
+
+            @include respond(md) {
+                @apply w-[145px];
+            }
+        }
+    }
+    .search-wrapper__item {
+        @apply min-w-[419px];
+    }
+}

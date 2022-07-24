@@ -46,7 +46,7 @@ function Select({ currentValue, title, data, renderItem }: Props) {
                 />
             </div>
             {show && (
-                <div className="absolute bg-white top-[105%] w-full left-[0]">
+                <div className="selector-list">
                     {renderItem('no title', -1)}
                     {data.map((item, index) => {
                         return renderItem(item, index)

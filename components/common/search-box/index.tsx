@@ -1,16 +1,21 @@
 import Button from '@/components/core/button'
-import React, { HTMLAttributes } from 'react'
+import React, { HTMLAttributes, useState } from 'react'
 import SearchIcon from '@/public/svgs/search-icon.svg'
 type Props = {
     wraperClasses?: string
+    // eslint-disable-next-line no-unused-vars
+    onPressSearch: (text: string) => void
 }
 
 function Searchbox({
     wraperClasses,
+    onPressSearch,
     ...rest
 }: Props & HTMLAttributes<HTMLInputElement>) {
+    const [text, setText] = useState('')
+
     const onChange = (e: any) => {
-        console.log(e.target.value)
+        setText(e.target.value)
     }
 
     return (
@@ -26,9 +31,13 @@ function Searchbox({
                         'outline-0 grow pr-4 text-sm leading-[1]  placeholder:text-black-50 ' +
                         rest.className
                     }
+                    value={text}
                 />
 
-                <Button className="btn-pri py-2 px-4 !rounded-lg">
+                <Button
+                    className="btn-pri py-2 px-4 !rounded-lg"
+                    onClick={() => onPressSearch(text)}
+                >
                     <SearchIcon className="w-4 h-4" />
                 </Button>
             </div>

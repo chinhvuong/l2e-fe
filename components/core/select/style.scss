@@ -2,3 +2,12 @@
     transform-origin: center;
     transition: transform 0.25s ease;
 }
+.selector-list {
+    @apply absolute bg-white top-[105%] w-full left-[0] z-[100];
+    transition: opacity 0.55s ease;
+}
+.select-item-transition {
+    transition: all 0.5s ease;
+    padding: 10px;
+    @apply hover:bg-green-015  hover:text-gray-1 px-4 py-3 rounded shadow-40-08 border-2;
+}
