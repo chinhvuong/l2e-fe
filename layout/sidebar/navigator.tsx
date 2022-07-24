@@ -37,7 +37,6 @@ const routes = [
         ],
     },
     {
-        href: '/orders',
         key: 'MANAGE_ORDERS',
         icon: <OrderIcon />,
         submenus: [
@@ -46,7 +45,7 @@ const routes = [
                 key: 'ORDER_LIST',
             },
             {
-                href: '/order-detail',
+                href: '#',
                 key: 'ORDER_DETAIL',
             },
             {
@@ -56,7 +55,6 @@ const routes = [
         ],
     },
     {
-        href: '/customers',
         key: 'MANAGE_CUSTOMERS',
         icon: <Profile />,
         submenus: [
@@ -67,45 +65,41 @@ const routes = [
         ],
     },
     {
-        href: '/funds',
         key: 'MANAGE_FUNDS',
         icon: <Wallet />,
         submenus: [
             {
-                href: '/products',
-                key: 'ORDER_LIST',
+                href: '/funds',
+                key: 'FUND_LIST',
             },
         ],
     },
     {
-        href: '/shop-records',
         key: 'MANAGE_SHOP_RECORDS',
         icon: <img src={'/svgs/menu-board.png'} alt="" className="w-6 h-6" />,
         submenus: [
             {
-                href: '/products',
-                key: 'ORDER_LIST',
+                href: '/shop-records',
+                key: 'SHOP_RECORD',
             },
         ],
     },
     {
-        href: '/target',
         key: 'MANAGE_TARGET',
         icon: <Target />,
         submenus: [
             {
-                href: '/products',
+                href: '/target',
                 key: 'ORDER_LIST',
             },
         ],
     },
     {
-        href: '/revenue-report',
         key: 'REVENUE_REPORT',
         icon: <Chart />,
         submenus: [
             {
-                href: '/products',
+                href: '/revenue',
                 key: 'ORDER_LIST',
             },
         ],
