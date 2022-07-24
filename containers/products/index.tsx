@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '@/components/core/table'
 import { dataProducts } from '@/data/data-product'
 import { IProduct } from '@/contants/interfaces'
@@ -8,7 +8,8 @@ import OrderStatus from '@/components/common/status-order'
 import Button from '@/components/core/button'
 import EditIcon from '@/public/svgs/edit-2.svg'
 import TrashIcon from '@/public/svgs/trash.svg'
-import Checkbox from '@/components/core/checkbox'
+import Select from '@/components/core/select'
+import { EStatusOrder } from '@/contants/common'
 const Products = () => {
     const { t } = useTransHook()
 
@@ -94,14 +95,54 @@ const Products = () => {
         )
     }
 
+    const [value, setValue] = useState(-1)
+
+    const handleClickItem = (index: number) => {
+        setValue(index)
+    }
+
+    const renderItemSelect = (data: string, index: number) => {
+        if (index === -1) {
+            return (
+                <div
+                    className="hover:bg-slate-400 px-4 py-3 rounded shadow-40-08 border-2"
+                    onClick={() => handleClickItem(index)}
+                >
+                    Tất cả
+                </div>
+            )
+        } else {
+            return (
+                <div
+                    key={index}
+                    className={`hover:bg-pri-6-1 hover:text-white px-4 py-3 rounded shadow-40-08 border-2 ${
+                        value === index ? 'bg-pri text-white' : ''
+                    }`}
+                    onClick={() => handleClickItem(index)}
+                >
+                    {data}
+                </div>
+            )
+        }
+    }
+
     return (
-        <div className={`max-w-[970px]`}>
-            <Table
-                columns={columnComponent}
-                data={dataProducts}
-                renderRow={renderRow}
-            />
-            <Checkbox />
+        <div>
+            <div className="max-w-[155px]">
+                <Select
+                    currentValue={value}
+                    title="Trạng thái"
+                    data={Object.values(EStatusOrder).map((item) => t(item))}
+                    renderItem={renderItemSelect}
+                />
+            </div>
+            <div className={`max-w-[970px]`}>
+                <Table
+                    columns={columnComponent}
+                    data={dataProducts}
+                    renderRow={renderRow}
+                />
+            </div>
         </div>
     )
 }
