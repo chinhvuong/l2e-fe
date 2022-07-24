@@ -45,7 +45,7 @@ const routes = [
                 key: 'ORDER_LIST',
             },
             {
-                href: '#',
+                href: '/orders/detail',
                 key: 'ORDER_DETAIL',
             },
             {
