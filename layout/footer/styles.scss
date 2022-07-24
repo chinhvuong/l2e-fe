@@ -42,7 +42,7 @@
                 @apply my-auto;
             }
             &__right {
-                margin-bottom: 0;
+                margin-bottom: 0 !important;
             }
         }
     }
