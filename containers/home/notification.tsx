@@ -28,8 +28,8 @@ const NotiCard = ({ time, status, title, note }: NotiProps) => {
                     <span className="text-pri/50 text-xs leading-[18px]">
                         {t('SEEN')}
                     </span>
-                )}{' '}
-                <span className="relative -top-[3px]">.</span>{' '}
+                )}
+                <span className="relative -top-[3px]">.</span>
                 <span className="text-xs leading-[18px]">{time}</span>
             </div>
         </div>

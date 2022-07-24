@@ -11,7 +11,7 @@ type Props = {
 }
 
 function Select({ currentValue, title, data, renderItem }: Props) {
-    const [show, setShow] = useState(true)
+    const [show, setShow] = useState(false)
     const clickOutSideref = useRef(null)
     const [value, setValue] = useState('')
 

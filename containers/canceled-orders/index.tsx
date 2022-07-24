@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '@/components/core/table'
 import { dataCanceledOrder } from '@/data/data-order'
 import { ICanceledOrder } from '@/contants/interfaces'
 import { useTransHook } from '@/locales/hooks'
 import './styles.scss'
 import OrderStatus from '@/components/common/status-order'
+import Pagination from '@/components/core/pagination'
+import { EStatusOrder } from '@/contants/common'
+import Filter from '@/components/common/filter'
+
 const CanceledOrders = () => {
     const { t } = useTransHook()
 
@@ -61,13 +65,52 @@ const CanceledOrders = () => {
         )
     }
 
+    const [textSearch, setTextSearch] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+
+    const [status, setStatus] = useState(-1)
+    const [category, setCategory] = useState(-1)
+
+    const selectLeft = {
+        title: 'Danh mục',
+        value: status,
+        data: ['abc', 'def'],
+        setValue: setStatus,
+    }
+    const selectRight = {
+        title: 'Trạng thái',
+        value: category,
+        data: Object.values(EStatusOrder).map((item) => t(item)),
+        setValue: setCategory,
+    }
+
     return (
-        <div className={`max-w-[970px]`}>
-            <Table
-                columns={columnComponent}
-                data={dataCanceledOrder}
-                renderRow={renderRow}
-            />
+        <div>
+            <h1 className="font-medium text-2xl mb-4">
+                {t('CANCELED_ORDERS')}
+            </h1>
+            {textSearch}
+            <div className="px-6 py-6 mb-8 filter-form">
+                <Filter
+                    onPressSearch={setTextSearch}
+                    selectLeft={selectLeft}
+                    selectRight={selectRight}
+                />
+            </div>
+            <div className="shadow-30 rounded-2xl overflow-hidden pb-6  mb-24">
+                <Table
+                    columns={columnComponent}
+                    data={dataCanceledOrder}
+                    renderRow={renderRow}
+                />
+                <div className="p-8">
+                    <Pagination
+                        totalPage={10}
+                        currentPage={currentPage}
+                        onClick={setCurrentPage}
+                    />
+                </div>
+            </div>
         </div>
     )
 }
