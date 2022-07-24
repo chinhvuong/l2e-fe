@@ -10,8 +10,6 @@ export const getStaticProps = async ({ locale }: { locale: string }) => {
     const {
         serverSideTranslations,
     } = require('next-i18next/serverSideTranslations')
-    const res = await serverSideTranslations(locale, ['common'])
-    console.log({ ...res._nextI18Next.initialI18nStore })
 
     return {
         props: {

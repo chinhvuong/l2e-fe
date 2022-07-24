@@ -16,7 +16,7 @@ function TextArera({
         <div className={``}>
             <label className={` block font-normal text-sm  ${wraperClasses}`}>
                 {label && (
-                    <div className="mb-4">
+                    <div className="mb-4 md:mb-2">
                         {label}{' '}
                         {required && <span className="text-pri">*</span>}
                     </div>

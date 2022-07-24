@@ -1,0 +1,7 @@
+.heading-1 {
+    @apply text-black text-[38px] leading-[46px] font-bold; 
+}
+
+.md-heading-collapse {
+    @apply md:text-black md:text-xl md:leading-[24px] md:font-medium; 
+}

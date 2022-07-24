@@ -1,12 +1,15 @@
 import React, { ReactChild } from 'react'
-import Footer from './footer/second-footer'
+import Footer from './footer'
 import Header from './header'
-
+import Breadcrumb from './breadcumb'
 const Layout = ({ children }: { children: ReactChild }) => {
     return (
         <div>
             <Header />
-            <main>{children}</main>
+            <main className="limit">
+                <Breadcrumb />
+                <div>{children}</div>
+            </main>
             <Footer />
         </div>
     )
