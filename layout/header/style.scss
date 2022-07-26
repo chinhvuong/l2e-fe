@@ -1,0 +1,24 @@
+@import "styles/mixins.scss";
+
+.languages-box {
+    top: calc(100% + 8px);
+    left: 0;
+    display: none;
+    min-width: 102.5px;
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        border: 6px solid transparent;
+        border-bottom-color: white;
+    }
+    &.open {
+        display: block;
+    }
+
+    @include respond(phone) {
+        transform: translateX(-50%);
+    }
+
+}
