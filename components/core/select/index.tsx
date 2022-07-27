@@ -41,7 +41,7 @@ function Select({ currentValue, title, data, renderItem }: Props) {
                 <div>{value}</div>
                 <ArrowUp
                     className={`arow-animate ease-in rotate-${
-                        show ? '90' : '180'
+                        show ? '0' : '180'
                     }`}
                 />
             </div>

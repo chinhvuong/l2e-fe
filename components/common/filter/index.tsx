@@ -29,7 +29,7 @@ function Filter({ onPressSearch, selectLeft, selectRight }: Props) {
         if (index === -1) {
             return (
                 <div
-                    className="hover:bg-slate-400 px-4 py-3 rounded shadow-40-08 border-2"
+                    className="select-item-transition hover:bg-black px-4 py-3 rounded"
                     onClick={() => selectLeft.setValue(index)}
                 >
                     Tất cả
@@ -40,7 +40,7 @@ function Filter({ onPressSearch, selectLeft, selectRight }: Props) {
                 <div
                     key={index}
                     className={`select-item-transition ${
-                        selectLeft.value === index ? 'bg-gray-1 text-white' : ''
+                        selectLeft.value === index ? 'bg-pri-17 text-black' : ''
                     }`}
                     onClick={() => selectLeft.setValue(index)}
                 >
@@ -54,7 +54,7 @@ function Filter({ onPressSearch, selectLeft, selectRight }: Props) {
         if (index === -1) {
             return (
                 <div
-                    className="hover:bg-slate-400 px-4 py-3 rounded shadow-40-08 border-2"
+                    className="select-item-transition hover:bg-pri-52 px-4 py-3 rounded my-2"
                     onClick={() => selectRight.setValue(index)}
                 >
                     Tất cả
@@ -66,7 +66,7 @@ function Filter({ onPressSearch, selectLeft, selectRight }: Props) {
                     key={index}
                     className={`select-item-transition ${
                         selectRight.value === index
-                            ? 'bg-gray-1 text-white'
+                            ? 'bg-pri-17 text-black'
                             : ''
                     }`}
                     onClick={() => selectRight.setValue(index)}

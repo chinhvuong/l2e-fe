@@ -12,6 +12,7 @@ import Filter from '@/components/common/filter'
 import { EStatusOrder } from '@/contants/common'
 import Pagination from '@/components/core/pagination'
 
+import ArrowRight from '@/public/svgs/arrow-right.svg'
 const Products = () => {
     const { t } = useTransHook()
 
@@ -116,14 +117,33 @@ const Products = () => {
         setValue: setCategory,
     }
 
+    const handleGoBack = () => {
+        console.log('ok')
+        const sidebar = document.getElementById('SideBar')
+        const main = document.getElementById('Main')
+
+        if (sidebar && main) {
+            // main.classList.remove('app-transition')
+
+            main.classList.add('app-transition-out')
+            // main.classList.add('-right-full')
+        }
+    }
+
     return (
         <div>
             <div className="heading--wrap">
                 <div>
-                    <h2 className="heading-3 md-heading-collapse mb-3">
+                    <h2 className="heading-3 md-heading-collapse mb-3 sm:flex sm:mb-8">
+                        <div
+                            className="hidden rotate-180 sm:block my-auto pl-2"
+                            onClick={handleGoBack}
+                        >
+                            <ArrowRight />
+                        </div>
                         {t('PRODUCT_LIST')}
                     </h2>
-                    <div className="text-sm leading-6 mb-6">
+                    <div className="text-sm leading-6 mb-6 sm:hidden">
                         {t('ALL_ORDERS')} 30
                     </div>
                 </div>
