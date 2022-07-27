@@ -88,16 +88,16 @@ function Filter({ onPressSearch, selectLeft, selectRight }: Props) {
             <div className="select-wraper">
                 <div className="select-wraper__item">
                     <Select
-                        currentValue={selectLeft.value}
-                        title={selectLeft.title}
+                        placeholder={selectLeft.title}
+                        textShow={selectLeft.data[selectLeft.value]}
                         data={selectLeft.data}
                         renderItem={renderLeftSelect}
                     />
                 </div>
                 <div className="select-wraper__item">
                     <Select
-                        currentValue={selectRight.value}
-                        title={selectRight.title}
+                        placeholder={selectRight.title}
+                        textShow={selectRight.data[selectRight.value]}
                         data={selectRight.data}
                         renderItem={renderRightSelect}
                     />

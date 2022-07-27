@@ -1,19 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import ArrowUp from '@/public/svgs/arrow-up.svg'
 import useOutsideClick from '@/hooks/useOutSideClick'
 import './style.scss'
 type Props = {
-    title: string
-    currentValue: number
     data: any[]
     // eslint-disable-next-line no-unused-vars
     renderItem: (data: any, index: number) => void
+    textShow: any
+    placeholder: string
 }
 
-function Select({ currentValue, title, data, renderItem }: Props) {
+function Select({ data, renderItem, textShow, placeholder }: Props) {
     const [show, setShow] = useState(false)
     const clickOutSideref = useRef(null)
-    const [value, setValue] = useState('')
 
     const handlePressShow = () => {
         setShow(!show)
@@ -23,14 +22,6 @@ function Select({ currentValue, title, data, renderItem }: Props) {
         setShow(false)
     })
 
-    useEffect(() => {
-        if (currentValue < 0) {
-            setValue(title)
-        } else {
-            setValue(data[currentValue])
-        }
-    }, [currentValue])
-
     return (
         <div
             ref={clickOutSideref}
@@ -38,7 +29,7 @@ function Select({ currentValue, title, data, renderItem }: Props) {
             onClick={handlePressShow}
         >
             <div className="flex justify-between items-center">
-                <div>{value}</div>
+                <div>{textShow || placeholder}</div>
                 <ArrowUp
                     className={`arow-animate ease-in rotate-${
                         show ? '0' : '180'
