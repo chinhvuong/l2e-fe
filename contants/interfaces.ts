@@ -31,3 +31,13 @@ export interface IProduct {
     cashout: string
     image: string
 }
+
+export interface IOrder {
+    id: string
+    date: string
+    image: string
+    name: string
+    customer: string
+    total: string
+    status: typeof EStatusOrder
+}

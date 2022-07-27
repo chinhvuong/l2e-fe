@@ -15,7 +15,7 @@ function StatusOrder({ type, className }: Props) {
 
     return (
         <div
-            className={`text-sm shadow-sm py-1 rounded-md ${
+            className={`text-sm shadow-sm py-1 text-center rounded-md ${
                 Object.keys(EStatusOrder)[index]
             } ${className ? className : ''}`}
         >

@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
+import './styles.scss'
 import Table from '@/components/core/table'
 import { dataProducts } from '@/data/data-product'
 import { IProduct } from '@/contants/interfaces'
 import { useTransHook } from '@/locales/hooks'
-import './styles.scss'
 import OrderStatus from '@/components/common/status-order'
 import Button from '@/components/core/button'
 import EditIcon from '@/public/svgs/edit-2.svg'
 import TrashIcon from '@/public/svgs/trash.svg'
-import Select from '@/components/core/select'
+import Filter from '@/components/common/filter'
 import { EStatusOrder } from '@/contants/common'
+import Pagination from '@/components/core/pagination'
+
+import ArrowRight from '@/public/svgs/arrow-right.svg'
 const Products = () => {
     const { t } = useTransHook()
 
@@ -81,7 +84,7 @@ const Products = () => {
                         </div>
                     </Button>
                     <Button className="mx-1 rounded !bg-white px-2 py-1 ">
-                        <div className="flex-center gap-1">
+                        <div className="flex-center gap-1 text-pri">
                             <div className="text-pri">
                                 <TrashIcon />
                             </div>
@@ -95,53 +98,82 @@ const Products = () => {
         )
     }
 
-    const [value, setValue] = useState(-1)
+    const [textSearch, setTextSearch] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
 
-    const handleClickItem = (index: number) => {
-        setValue(index)
+    const [status, setStatus] = useState(-1)
+    const [category, setCategory] = useState(-1)
+
+    const selectLeft = {
+        title: 'Danh mục',
+        value: status,
+        data: ['abc', 'def'],
+        setValue: setStatus,
+    }
+    const selectRight = {
+        title: 'Trạng thái',
+        value: category,
+        data: Object.values(EStatusOrder).map((item) => t(item)),
+        setValue: setCategory,
     }
 
-    const renderItemSelect = (data: string, index: number) => {
-        if (index === -1) {
-            return (
-                <div
-                    className="hover:bg-slate-400 px-4 py-3 rounded shadow-40-08 border-2"
-                    onClick={() => handleClickItem(index)}
-                >
-                    Tất cả
-                </div>
-            )
-        } else {
-            return (
-                <div
-                    key={index}
-                    className={`hover:bg-pri-6-1 hover:text-white px-4 py-3 rounded shadow-40-08 border-2 ${
-                        value === index ? 'bg-pri text-white' : ''
-                    }`}
-                    onClick={() => handleClickItem(index)}
-                >
-                    {data}
-                </div>
-            )
+    const handleGoBack = () => {
+        console.log('ok')
+        const sidebar = document.getElementById('SideBar')
+        const main = document.getElementById('Main')
+
+        if (sidebar && main) {
+            // main.classList.remove('app-transition')
+
+            main.classList.add('app-transition-out')
+            // main.classList.add('-right-full')
         }
     }
 
     return (
         <div>
-            <div className="max-w-[155px]">
-                <Select
-                    currentValue={value}
-                    title="Trạng thái"
-                    data={Object.values(EStatusOrder).map((item) => t(item))}
-                    renderItem={renderItemSelect}
+            <div className="heading--wrap">
+                <div>
+                    <h2 className="heading-3 md-heading-collapse mb-3 sm:flex sm:mb-8">
+                        <div
+                            className="hidden rotate-180 sm:block my-auto pl-2"
+                            onClick={handleGoBack}
+                        >
+                            <ArrowRight />
+                        </div>
+                        {t('PRODUCT_LIST')}
+                    </h2>
+                    <div className="text-sm leading-6 mb-6 sm:hidden">
+                        {t('ALL_ORDERS')} 30
+                    </div>
+                </div>
+                <div className="flex-center">
+                    <Button className="button-adding">
+                        {t('ADD_NEW_PRODUCT')}
+                    </Button>
+                </div>
+            </div>
+            {textSearch}
+            <div className="filter-form">
+                <Filter
+                    onPressSearch={setTextSearch}
+                    selectLeft={selectLeft}
+                    selectRight={selectRight}
                 />
             </div>
-            <div className={`max-w-[970px]`}>
+            <div className="shadow-30 rounded-2xl overflow-hidden pb-6 mb-24">
                 <Table
                     columns={columnComponent}
                     data={dataProducts}
                     renderRow={renderRow}
                 />
+                <div className="p-8">
+                    <Pagination
+                        totalPage={10}
+                        currentPage={currentPage}
+                        onClick={setCurrentPage}
+                    />
+                </div>
             </div>
         </div>
     )

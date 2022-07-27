@@ -28,10 +28,9 @@
 
 .footer-mobile-container {
     @apply hidden;
-
     @include respond(sm) {
         display: block;
-        @apply border-t-2 py-5 flex justify-center;
+        @apply border-t-2 py-5 flex justify-center w-full;
         .footer-inner {
             @apply w-10/12;
             & p {
@@ -42,7 +41,7 @@
                 @apply my-auto;
             }
             &__right {
-                margin-bottom: 0;
+                margin-bottom: 0 !important;
             }
         }
     }

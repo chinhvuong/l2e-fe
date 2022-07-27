@@ -1,5 +1,22 @@
+@import '@/styles/_mixins.scss';
 .table-product__row {
     & > td {
         @apply text-center text-sm px-0;
+    }
+}
+.heading--wrap {
+    @apply flex justify-between;
+    .button-adding {
+        border-radius: 10px;
+        @apply py-4 px-7;
+    }
+    @include respond(sm) {
+        @apply block;
+        .button-adding {
+            @apply items-start;
+        }
+        .flex-center {
+            display: block;
+        }
     }
 }

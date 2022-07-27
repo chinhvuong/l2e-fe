@@ -10,3 +10,8 @@
 .details-order-name {
     @apply flex gap-4 align-middle;
 }
+.order-list {
+    & td {
+        @apply text-center;
+    }
+}

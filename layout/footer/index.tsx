@@ -11,7 +11,7 @@ const Footer = () => {
                         <div>
                             <p>{t('COPORATE_SPONSOR')}</p>
                         </div>
-                        <div className="footer-inner__right">
+                        <div className="footer-inner__right ">
                             <div>
                                 <p>{t('SUPPORTING_POLICY')}</p>
                             </div>
