@@ -68,3 +68,27 @@
     max-width: 1600px;
     @apply px-6 mx-auto;
 }
+// .main-transition:active {
+//     animation: slide 0.5s backwards;
+// }
+
+.app-transition {
+    animation: slide 0.5s forwards;
+    animation-delay: 0.4s;
+}
+
+.app-transition-out {
+    animation: slide 0.5s reverse;
+}
+
+@keyframes slide {
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    100% {
+        transform: translateX(-100%);
+    }
+}
