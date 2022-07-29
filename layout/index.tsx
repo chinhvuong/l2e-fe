@@ -4,23 +4,10 @@ import Header from './header'
 import Sidebar from './sidebar'
 import Breadcrumb from './breadcumb'
 const Layout = ({ children }: { children: ReactChild }) => {
-    // const [mainHeight, setMainHeight] = useState<any>()
-
-    // useEffect(() => {
-    //     const main = document.getElementById('Main')
-    //     if (main) {
-    //         setMainHeight(main.clientHeight)
-    //         console.log(
-    //             '🚀 ~ file: index.tsx ~ line 13 ~ useEffect ~ main.clientHeight',
-    //             main.clientHeight,
-    //         )
-    //     }
-    // }, [])
-
     return (
         <div>
             <Header />
-            <main className={`limit sm:relative`}>
+            <main className={`limit sm:relative`} id="main">
                 <Breadcrumb />
                 {/* {children} */}
                 <div className="flex sm:flex-col gap-[30px]">
@@ -28,14 +15,17 @@ const Layout = ({ children }: { children: ReactChild }) => {
                         <Sidebar />
                     </div>
                     <div
-                        className="w-full app-transition -translate-x-full left-0 main-transition h-full sm:absolute top-0 px-4 bg-white"
-                        id="Main"
+                        className="w-full app-transition sm:left-0 sm:top-0 main-transition h-full sm:absolute px-4 bg-white"
+                        id="content"
                     >
                         {children}
+                        <div className="hidden sm:block">
+                            <Footer />
+                        </div>
                     </div>
                 </div>
             </main>
-            <div>
+            <div className="md:hidden" id="footer">
                 <Footer />
             </div>
         </div>

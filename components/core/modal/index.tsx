@@ -19,7 +19,6 @@ type Props = {
 
 export const openModal = (id: string) => {
     const modal = document.getElementById(`modal-${id}`)
-    console.log('🚀 ~ file: index.tsx ~ line 16 ~ openModal ~ modal', modal)
     if (modal) {
         modal.classList.remove('!hidden')
         document.body.classList.add('overflow-hidden')

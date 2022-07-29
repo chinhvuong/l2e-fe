@@ -1,3 +1,4 @@
+@import '@/styles/_mixins.scss';
 .flex-center {
     @apply flex justify-center items-center;
 }
@@ -73,12 +74,19 @@
 // }
 
 .app-transition {
-    animation: slide 0.5s forwards;
-    animation-delay: 0.4s;
+    @include respond(sm) {
+        @apply -translate-x-full;
+        animation: slide 0.5s forwards;
+        animation-delay: 0.4s;
+    }
 }
 
 .app-transition-out {
-    animation: slide 0.5s reverse;
+    @include respond(sm) {
+        @apply translate-x-0;
+        animation: slide-out 0.5s forwards !important;
+        animation-delay: 0.4s;
+    }
 }
 
 @keyframes slide {
