@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, HTMLAttributes } from 'react'
 import ArrowUp from '@/public/svgs/arrow-up.svg'
 import useOutsideClick from '@/hooks/useOutSideClick'
 import './style.scss'
@@ -10,7 +10,13 @@ type Props = {
     placeholder: string
 }
 
-function Select({ data, renderItem, textShow, placeholder }: Props) {
+function Select({
+    data,
+    renderItem,
+    textShow,
+    placeholder,
+    ...rest
+}: Props & HTMLAttributes<HTMLDivElement>) {
     const [show, setShow] = useState(false)
     const clickOutSideref = useRef(null)
 
@@ -29,7 +35,7 @@ function Select({ data, renderItem, textShow, placeholder }: Props) {
             onClick={handlePressShow}
         >
             <div className="flex justify-between items-center">
-                <div>{textShow || placeholder}</div>
+                <div {...rest}>{textShow || placeholder}</div>
                 <ArrowUp
                     className={`arow-animate ease-in rotate-${
                         show ? '0' : '180'
@@ -38,7 +44,7 @@ function Select({ data, renderItem, textShow, placeholder }: Props) {
             </div>
             {show && (
                 <div className="selector-list">
-                    {renderItem('no title', -1)}
+                    {renderItem(placeholder, -1)}
                     {data.map((item, index) => {
                         return renderItem(item, index)
                     })}

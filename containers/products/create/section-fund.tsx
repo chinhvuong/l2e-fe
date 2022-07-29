@@ -1,6 +1,9 @@
 import Checkbox from '@/components/core/checkbox'
 import { useTransHook } from '@/locales/hooks'
+import { updateFund } from '@/state/product/productCreateSlice'
+import { selectProductFund } from '@/state/product/selectors'
 import React, { HTMLAttributes, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const data = [
     {
@@ -27,7 +30,8 @@ const data = [
 const SectionFund = ({ ...rest }: HTMLAttributes<HTMLDivElement>) => {
     const { t } = useTransHook()
     const [funds, setFunds] = useState<any[]>([])
-    const [fund, setFund] = useState(1)
+    const fund = useSelector(selectProductFund)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setFunds(data)
@@ -35,7 +39,9 @@ const SectionFund = ({ ...rest }: HTMLAttributes<HTMLDivElement>) => {
 
     const onSelectFund = (val: boolean, key: string | number) => {
         if (val) {
-            setFund(Number(key))
+            dispatch(updateFund(key.toString().trim()))
+        } else {
+            dispatch(updateFund('0'))
         }
     }
 
@@ -51,7 +57,7 @@ const SectionFund = ({ ...rest }: HTMLAttributes<HTMLDivElement>) => {
                             <Checkbox
                                 onToggle={onSelectFund}
                                 keyPass={item.id}
-                                checked={fund === item.id}
+                                checked={fund === item.id.toString()}
                             />
                             <img
                                 src={item.image}

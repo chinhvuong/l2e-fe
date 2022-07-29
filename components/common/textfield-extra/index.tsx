@@ -4,18 +4,21 @@ type Props = {
     wraperClasses?: string
     label?: string
     required?: boolean
-    name?: string
     value?: string
+    extra?: any
 }
 
-function TextArera({
+function TextFieldExtra({
     wraperClasses,
     label,
     required,
+    extra,
     ...rest
-}: Props & HTMLAttributes<HTMLTextAreaElement>) {
+}: Props & HTMLAttributes<HTMLInputElement>) {
     return (
-        <div className={``}>
+        <div
+            className={`pb-3 pt-[10px] bg-white/[0.08] rounded-lg px-6  shadow-form`}
+        >
             <label className={` block font-normal text-sm  ${wraperClasses}`}>
                 {label && (
                     <div className="mb-4 md:mb-2">
@@ -23,20 +26,19 @@ function TextArera({
                         {required && <span className="text-pri">*</span>}
                     </div>
                 )}
-                <textarea
+                {extra}
+                <input
+                    type="text"
                     {...rest}
+                    // onKeyUp={rest.onKeyUp}
                     className={
-                        'outline-0 w-full text-sm leading-[1] bg-white/[0.08] rounded-lg px-6 py-4 shadow-form placeholder:text-black-50 h-[200px] ' +
+                        'outline-0 w-full leading-[1] text-sm placeholder:text-black-50 ' +
                         rest.className
                     }
-                    // onChange={rest.onChange || console.log}
-                ></textarea>
-                {/* <textarea  {...rest} className={'outline-0 w-full text-sm leading-[1] bg-white/[0.08] rounded-lg px-6 py-4 shadow-40 placeholder:text-black-50 ' + rest.className}   >
-
-                </textarea> */}
+                />
             </label>
         </div>
     )
 }
 
-export default TextArera
+export default TextFieldExtra
