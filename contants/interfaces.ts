@@ -41,3 +41,31 @@ export interface IOrder {
     total: string
     status: typeof EStatusOrder
 }
+
+export interface ICustomer {
+    name: string
+    avatar: string
+    lastOrderDate: string
+    totalOrderAmount: string
+}
+
+export interface IAdress {
+    location: string
+    phone: string
+}
+export interface IOrderDetail {
+    orderCode: string
+    time: string
+    price: string
+    quantity: number
+    image: string
+    name: string
+}
+export interface ICustomerDetail {
+    name: string
+    avgOrderPrice: string
+    cumulativeRevenue: string
+    orders: IOrderDetail[]
+    lastOrderDate: string
+    address: IAdress[]
+}
