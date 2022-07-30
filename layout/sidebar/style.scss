@@ -2,7 +2,6 @@
     .submenu {
         @apply relative text-black-50 pl-5 cursor-pointer mb-4 last:mb-0 text-sm leading-[17px] font-normal;
 
-
         &.active {
             @apply text-pri;
 
@@ -13,9 +12,6 @@
         &::before {
             content: '';
             @apply absolute top-1/2 left-0 block w-2 h-2 -translate-y-1/2 bg-gray-07 rounded-full;
-            
-
         }
-
     }
 }

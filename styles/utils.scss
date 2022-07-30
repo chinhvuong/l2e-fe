@@ -1,3 +1,4 @@
+@import '@/styles/_mixins.scss';
 .flex-center {
     @apply flex justify-center items-center;
 }
@@ -67,4 +68,35 @@
 .limit {
     max-width: 1600px;
     @apply px-6 mx-auto;
+}
+// .main-transition:active {
+//     animation: slide 0.5s backwards;
+// }
+
+.app-transition {
+    @include respond(sm) {
+        @apply -translate-x-full;
+        animation: slide 0.5s forwards;
+        animation-delay: 0.4s;
+    }
+}
+
+.app-transition-out {
+    @include respond(sm) {
+        @apply translate-x-0;
+        animation: slide-out 0.5s forwards !important;
+        animation-delay: 0.4s;
+    }
+}
+
+@keyframes slide {
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    100% {
+        transform: translateX(-100%);
+    }
 }

@@ -4,6 +4,8 @@ type Props = {
     wraperClasses?: string
     label?: string
     required?: boolean
+    value?: string
+    name?: string
 }
 
 function TextField({

@@ -11,8 +11,9 @@ import TrashIcon from '@/public/svgs/trash.svg'
 import Filter from '@/components/common/filter'
 import { EStatusOrder } from '@/contants/common'
 import Pagination from '@/components/core/pagination'
-
 import ArrowRight from '@/public/svgs/arrow-right.svg'
+import { handleGoBack } from '@/utils/helpers'
+
 const Products = () => {
     const { t } = useTransHook()
 
@@ -115,19 +116,6 @@ const Products = () => {
         value: category,
         data: Object.values(EStatusOrder).map((item) => t(item)),
         setValue: setCategory,
-    }
-
-    const handleGoBack = () => {
-        console.log('ok')
-        const sidebar = document.getElementById('SideBar')
-        const main = document.getElementById('Main')
-
-        if (sidebar && main) {
-            // main.classList.remove('app-transition')
-
-            main.classList.add('app-transition-out')
-            // main.classList.add('-right-full')
-        }
     }
 
     return (
