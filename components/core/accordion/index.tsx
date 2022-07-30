@@ -2,7 +2,7 @@ import React, { useRef, useEffect, ReactElement, ReactNode } from 'react'
 import './style.scss'
 import ArrowUp from '@/public/svgs/arrow-up.svg'
 import Router from 'next/router'
-
+import { handleGoPage } from '@/utils/helpers'
 interface IAccordion {
     openDefault?: boolean
     title: string
@@ -30,6 +30,7 @@ const Accordion = (props: IAccordion) => {
     const toggleOpen = () => {
         if (href) {
             Router.push(href)
+            handleGoPage()
         }
         setMaxHeight()
         accordionRef.current?.classList.toggle(classOpen)
@@ -72,7 +73,7 @@ const Accordion = (props: IAccordion) => {
             >
                 <div className="flex items-center gap-4">
                     {props.icon && props.icon} <span>{title}</span>
-                </div>{' '}
+                </div>
                 {children && <ArrowUp className="accordion-arrow" />}
             </div>
             <div className={`accordion_body px-4 ${bodyClass} !py-0`}>

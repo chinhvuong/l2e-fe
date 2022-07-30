@@ -11,6 +11,7 @@ import Chart from '@/public/svgs/chart-2.svg'
 import Link from 'next/link'
 import './style.scss'
 import { useRouter } from 'next/router'
+import { handleGoPage } from '@/utils/helpers'
 
 const routes = [
     {
@@ -134,6 +135,7 @@ const NavItem = ({ data }: { data: NavitemProp }) => {
                                 className={`submenu ${
                                     router.pathname === item.href && 'active'
                                 }`}
+                                onClick={handleGoPage}
                             >
                                 {t(item.key)}
                             </div>
