@@ -32,7 +32,7 @@ const routes = [
             //     key: 'ORDER_DETAIL',
             // },
             {
-                href: '/products/create',
+                href: '/products/create-product',
                 key: 'ADD_NEW_PRODUCT',
             },
         ],
@@ -45,12 +45,12 @@ const routes = [
                 href: '/orders',
                 key: 'ORDER_LIST',
             },
+            // {
+            //     href: '/orders/detail',
+            //     key: 'ORDER_DETAIL',
+            // },
             {
-                href: '/orders/detail',
-                key: 'ORDER_DETAIL',
-            },
-            {
-                href: '/orders/cenceled',
+                href: '/orders/canceled-orders',
                 key: 'CANCELED_ORDERS',
             },
         ],
@@ -124,7 +124,12 @@ const NavItem = ({ data }: { data: NavitemProp }) => {
         <Accordion
             href={data.href}
             icon={data.icon}
-            titleClass="py-0 leading-6"
+            titleClass={`py-0 leading-6  ${
+                (!data.submenus || !data.submenus.length) &&
+                data.href &&
+                data.href === router.route &&
+                '!text-pri'
+            }`}
             title={t(data.key)}
         >
             {data.submenus && data.submenus.length && (
