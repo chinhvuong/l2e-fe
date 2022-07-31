@@ -1,0 +1,13 @@
+.info-card {
+    border-radius: 16px;
+    @apply bg-white shadow-30 p-4;
+    div {
+        font-weight: 400;
+    }
+}
+.input-note:focus-within {
+    @apply border-pri-005 border-2;
+}
+.input-note {
+    @apply border-transparent border-2;
+}
