@@ -1,27 +1,26 @@
-import React, { useRef, useEffect, ReactElement, ReactNode } from 'react'
+import React, { useRef, useEffect } from 'react'
 import './style.scss'
 import ArrowUp from '@/public/svgs/arrow-up.svg'
 import Router from 'next/router'
 import { handleGoPage } from '@/utils/helpers'
 interface IAccordion {
     openDefault?: boolean
-    title: string
+    leftEl: JSX.Element
+    rightEl: JSX.Element
     classes?: string
-    titleClass?: string
     bodyClass?: string
     children: any
     href?: string
-    icon?: string | ReactElement | ReactNode
 }
 
 const Accordion = (props: IAccordion) => {
     const {
-        title,
+        leftEl,
+        rightEl,
         href,
         children,
         classes,
         openDefault = false,
-        titleClass,
         bodyClass,
     } = props
     const accordionRef = useRef<HTMLDivElement>(null)
@@ -35,12 +34,6 @@ const Accordion = (props: IAccordion) => {
         setMaxHeight()
         accordionRef.current?.classList.toggle(classOpen)
     }
-    // const setOpen = (value: boolean) => {
-    //     value
-    //         ? accordionRef.current?.classList.add(classOpen)
-    //         : accordionRef.current?.classList.remove(classOpen)
-    // }
-
     const setMaxHeight = () => {
         const div = accordionRef.current?.querySelector(
             '.accordion_body',
@@ -68,15 +61,20 @@ const Accordion = (props: IAccordion) => {
             className={`accordion rounded-lg ${classes || ''}`}
         >
             <div
-                className={`accordion__title cursor-pointer flex gap-4 items-center justify-between px-4 py-2 rounded-lg ${titleClass} `}
+                className={`accordion__title cursor-pointer flex gap-4 justify-between py-2 rounded-lg`}
                 onClick={toggleOpen}
             >
-                <div className="flex items-center gap-4">
-                    {props.icon && props.icon} <span>{title}</span>
+                <div className="flex justify-between gap-4">
+                    <div>{leftEl}</div>
                 </div>
-                {children && <ArrowUp className="accordion-arrow" />}
+                {children && (
+                    <div className="flex">
+                        <div>{rightEl}</div>
+                        <ArrowUp className="accordion-arrow" />
+                    </div>
+                )}
             </div>
-            <div className={`accordion_body px-4 ${bodyClass} !py-0`}>
+            <div className={`accordion_body ${bodyClass} !py-0`}>
                 {children}
             </div>
         </div>

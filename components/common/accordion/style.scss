@@ -1,0 +1,50 @@
+@import '@/styles/_mixins.scss';
+.accordion {
+    overflow: hidden;
+
+    .accordion_body {
+        max-height: 0;
+        transition: max-height 0.3s ease;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .accordion__title {
+        position: relative;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        @apply text-black;
+
+        @include respond(sm) {
+            font-size: 14px;
+            &::after {
+                right: 22px;
+                top: calc(50% - 1px);
+            }
+        }
+    }
+
+    .accordion-arrow {
+        transform-origin: center;
+        transition: transform 0.25s ease;
+        transform: rotate(90deg);
+    }
+
+    &.accordion__open {
+        .title {
+            @apply text-second-17;
+        }
+        .accordion-arrow {
+            transform: rotate(0deg);
+        }
+
+        .accordion_body {
+            --max-height: 0;
+            max-height: var(--max-height);
+        }
+    }
+}

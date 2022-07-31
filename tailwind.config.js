@@ -20,6 +20,7 @@ module.exports = {
                 'pri-1': 'rgba(238, 70, 0, 1)',
                 'pri-8-1': 'rgba(221, 21, 8, 1)',
                 'pri-6-1': 'rgba(217, 119, 6, 1)',
+                'pri-005': 'rgba(238, 70, 0, 0.5)',
 
                 second: '#0F62F9', //blue
                 'second-17': 'rgba(15, 98, 249, 0.72)', // blue opacity 0.17
@@ -30,7 +31,7 @@ module.exports = {
                 'black-70': 'rgba(0, 0, 0, 0.70)',
                 'black-20': 'rgba(0, 0, 0, 0.20)',
                 'black-07': 'rgba(0, 0, 0, 0.07)',
-
+                'black-02': 'rgba(0, 0, 0, 0.2)',
                 'grey-1': 'rgba(55, 63, 79, 1)',
 
                 white: '#FFFFFF',

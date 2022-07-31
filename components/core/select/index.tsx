@@ -6,8 +6,8 @@ type Props = {
     data: any[]
     // eslint-disable-next-line no-unused-vars
     renderItem: (data: any, index: number) => void
-    textShow: any
-    placeholder: string
+    textShow?: any
+    placeholder?: string
 }
 
 function Select({

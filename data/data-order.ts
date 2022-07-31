@@ -1,5 +1,4 @@
 import { EStatusOrder } from '@/contants/common'
-
 export const dataOrderDetails = [
     {
         name: 'Mặt nạ nghệ 123',
