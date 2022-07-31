@@ -1,14 +1,14 @@
+import Cashout from '@/containers/cashout'
 import React from 'react'
-import CustomerDetail from '@/containers/customer/detail'
 
-const CustomerDetailPage = () => {
+const CashoutPage = () => {
     return (
         <div>
-            <CustomerDetail />
+            <Cashout />
         </div>
     )
 }
-export const getServerSideProps = async ({ locale }: { locale: string }) => {
+export const getStaticProps = async ({ locale }: { locale: string }) => {
     const {
         serverSideTranslations,
     } = require('next-i18next/serverSideTranslations')
@@ -19,4 +19,4 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => {
         },
     }
 }
-export default CustomerDetailPage
+export default CashoutPage

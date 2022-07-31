@@ -58,22 +58,12 @@ const routes = [
     {
         key: 'MANAGE_CUSTOMERS',
         icon: <Profile />,
-        submenus: [
-            {
-                href: '/products',
-                key: 'ORDER_LIST',
-            },
-        ],
+        href: '/customer',
     },
     {
         key: 'MANAGE_FUNDS',
         icon: <Wallet />,
-        submenus: [
-            {
-                href: '/funds',
-                key: 'FUND_LIST',
-            },
-        ],
+        href: '/cashout',
     },
     {
         key: 'MANAGE_SHOP_RECORDS',

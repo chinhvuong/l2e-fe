@@ -1,10 +1,10 @@
+import CashoutDetail from '@/containers/cashout/detail'
 import React from 'react'
-import CustomerDetail from '@/containers/customer/detail'
 
-const CustomerDetailPage = () => {
+const CashoutDetailPage = () => {
     return (
         <div>
-            <CustomerDetail />
+            <CashoutDetail />
         </div>
     )
 }
@@ -19,4 +19,4 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => {
         },
     }
 }
-export default CustomerDetailPage
+export default CashoutDetailPage
