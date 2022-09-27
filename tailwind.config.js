@@ -12,9 +12,12 @@ module.exports = {
             colors: {
                 gradient: 'linear-gradient(180deg, #EE4600 0%, #FF864A 100%)',
 
+                primary: '#F48C06', // orange
+                'primary-hover': '#FFAB40',
+                second: '#0F124D', // blue
+
                 pri: '#EE4600', //orange
                 'pri-52': 'rgba(238, 70, 0, 0.52)', // orange opacity 0.52
-                'pri-52': 'rgba(238, 70, 0, 0.50)', // orange opacity 0.50
                 'pri-17': 'rgba(238, 70, 0, 0.17)',
                 'pri-15': 'rgba(221, 21, 8, 0.15)',
                 'pri-1': 'rgba(238, 70, 0, 1)',
@@ -22,7 +25,6 @@ module.exports = {
                 'pri-6-1': 'rgba(217, 119, 6, 1)',
                 'pri-005': 'rgba(238, 70, 0, 0.5)',
 
-                second: '#0F62F9', //blue
                 'second-17': 'rgba(15, 98, 249, 0.72)', // blue opacity 0.17
 
                 black: '#000000',
@@ -52,8 +54,6 @@ module.exports = {
                 'green-1': 'rgba(0, 173, 59, 1)',
 
                 'yellow-7': '#FEF3C7',
-
-                primary: '#2962ff',
                 error: '#f23645',
             },
             backgroundImage: {
@@ -71,17 +71,11 @@ module.exports = {
                 shadow: 'drop-shadow(0px 2px 30px rgba(20, 19, 19, 0.05))',
             },
             screens: {
-                xl: { max: '1279px' },
-                // => @media (max-width: 1279px) { ... }
-
-                lg: { max: '1023px' },
-                // => @media (max-width: 1023px) { ... }
-
-                md: { max: '767px' },
-                // => @media (max-width: 767px) { ... }
-
+                '2xl': { min: '1280px' },
+                xl: { max: '1279px', min: '1024px' },
+                lg: { max: '1023px', min: '768px' },
+                md: { max: '767px', min: '640px' },
                 sm: { max: '639px' },
-                // => @media (max-width: 639px) { ... }
             },
         },
     },

@@ -1,4 +1,4 @@
-@import "styles/mixins.scss";
+@import 'styles/mixins.scss';
 
 .languages-box {
     top: calc(100% + 8px);
@@ -20,5 +20,8 @@
     @include respond(phone) {
         transform: translateX(-50%);
     }
+}
 
+.header--dark {
+    color: white;
 }

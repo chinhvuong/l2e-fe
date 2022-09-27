@@ -4,6 +4,8 @@ type Props = {
     children: ReactNode | ReactText
 }
 
+// w-fit
+
 function Button({
     children,
     ...rest
@@ -11,7 +13,7 @@ function Button({
     return (
         <button
             {...rest}
-            className={`px-4 py-2 rounded-sm shadow-sm btn-pri hover:bg-primary/95 ${rest.className}`}
+            className={`rounded-[80px] py-[12px] px-[30px] cursor-pointer shadow-sm btn-primary ${rest.className}`}
         >
             {children}
         </button>

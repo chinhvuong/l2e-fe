@@ -1,10 +1,7 @@
-.btn-pri {
-    @apply bg-pri hover:bg-pri/90 text-white font-medium text-sm border border-pri transition-colors;
-
+.btn-primary {
+    @apply bg-primary hover:bg-primary-hover transition-colors;
 }
 
-.btn-pri-outline {
-    border: 1px solid;
-    box-sizing: border-box;
-    @apply bg-white text-pri hover:bg-pri/90 hover:text-white font-medium text-sm border border-pri transition-colors;
+.btn-primary-outline {
+    @apply bg-white text-primary hover:bg-primary hover:text-white box-border border border-primary transition-colors;
 }

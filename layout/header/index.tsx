@@ -1,20 +1,24 @@
 import React from 'react'
+import Explore from './explore'
 import Logo from './logo'
-import Notification from './notification'
-import ToggleLocale from './toggle-locale'
-import User from './user'
+import Search from './search'
+import './style.scss'
+import Button from '@/components/core/button'
 
 const Header = () => {
     return (
-        <div className="bg-gradient py-6 md:py-4">
-            <div className="limit my-auto flex justify-between">
+        <div className="bg-second py-6 header--dark">
+            <div className="px-14 flex justify-between items-center">
                 <Logo />
-                <div className="flex gap-4 items-center">
-                    <Notification />
-                    <ToggleLocale />
-                    <span className="text-white">|</span>
-                    <User />
+                <Search />
+                <Explore />
+                <div className="cursor-pointer hover:text-primary-hover">
+                    For Business
                 </div>
+                <div className="cursor-pointer hover:text-primary-hover">
+                    For Universities
+                </div>
+                <Button className="btn-primary">Connect Wallet</Button>
             </div>
         </div>
     )
