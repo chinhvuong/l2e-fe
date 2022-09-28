@@ -8,7 +8,7 @@ export default function AboutUsContainer() {
         <div>
             <div className="bg-second h-[550px] flex justify-center items-center text-white space-x-10 px-14">
                 <div className="w-[540px] space-y-7">
-                    <div className="font-bold text-5xl xl:text-4xl lg:text-3xl md:text-2xl sm:text-3xl">
+                    <div className="leading-snug font-bold text-5xl xl:text-4xl lg:text-3xl md:text-2xl sm:text-3xl">
                         <div>
                             We share{' '}
                             <span className="text-primary">knowledge</span>

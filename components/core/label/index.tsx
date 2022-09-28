@@ -3,6 +3,7 @@ import * as React from 'react'
 
 export interface ILabelProps {
     type: Category | 'bestseller'
+    hidden?: boolean
 }
 
 export default function Label(props: ILabelProps) {
@@ -18,10 +19,16 @@ export default function Label(props: ILabelProps) {
         teaching_academics: 'Teaching & Academics',
         bestseller: 'Bestseller',
     }
-    //${props.type}
+
+    const getLabelBkgColor = () => {
+        return 'bg-' + props.type
+    }
+
     return (
         <div
-            className={`rounded-[80px] px-4 py-2 w-fit text-white font-bold bg-${props.type}`}
+            className={`text-[9px] rounded-[80px] px-2 py-1 w-fit text-white font-bold ${getLabelBkgColor()} ${
+                props.hidden ? 'hidden' : ''
+            }`}
         >
             {title[props.type]}
         </div>

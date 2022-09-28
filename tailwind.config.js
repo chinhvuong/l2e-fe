@@ -25,6 +25,8 @@ module.exports = {
                 engineer_construction: '#A861AD',
                 teaching_academics: '#F48C06',
 
+                star: '#F1C644',
+
                 pri: '#EE4600', //orange
                 'pri-52': 'rgba(238, 70, 0, 0.52)', // orange opacity 0.52
                 'pri-17': 'rgba(238, 70, 0, 0.17)',
@@ -68,7 +70,7 @@ module.exports = {
             backgroundImage: {
                 gradient: 'linear-gradient(180deg, #EE4600 0%, #FF864A 100%)',
                 bestseller:
-                    'linear-gradient(to right, #FF0000, rgba(255,107,0,0.5))',
+                    'linear-gradient(to right, #FF0000, rgba(254,207,87,1))',
             },
             boxShadow: {
                 20: '0px 2px 20px rgba(20, 19, 19, 0.05)',
@@ -94,4 +96,16 @@ module.exports = {
         },
     },
     plugins: [],
+    safelist: [
+        'bg-it',
+        'bg-health',
+        'bg-language',
+        'bg-business',
+        'bg-management',
+        'bg-personal_development',
+        'bg-sales_marketing',
+        'bg-engineer_construction',
+        'bg-teaching_academics',
+        'bg-bestseller',
+    ],
 }
