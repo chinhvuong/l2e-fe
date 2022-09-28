@@ -6,7 +6,7 @@ export interface IExploreProps {}
 
 export default function Explore() {
     return (
-        <div className="flex items-center cursor-pointer hover:text-primary-hover">
+        <div className="flex items-center cursor-pointer hover:text-primary-hover under_lg:hidden">
             <div className="mr-[10px]">Explore</div>
             <FontAwesomeIcon icon={faChevronDown} />
         </div>

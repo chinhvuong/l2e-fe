@@ -5,9 +5,9 @@ import './style.scss'
 
 export default function Search() {
     return (
-        <div className="w-[400px] xl:w-[240px] lg:w-[120px] py-[10px] bg-white rounded-[80px] my-[20px] pl-[20px] flex items-center text-black">
+        <div className="w-[400px] xl:w-[200px] under_lg:hidden py-[10px] bg-white rounded-[80px] my-[20px] pl-[20px] flex items-center text-black">
             <FontAwesomeIcon icon={faMagnifyingGlass} />
-            <input className="ml-[20px] w-[320px] xl:w-[160px] lg:w-[40px] outline-none"></input>
+            <input className="ml-[20px] w-[320px] xl:w-[120px] outline-none"></input>
         </div>
     )
 }

@@ -13,8 +13,17 @@ module.exports = {
                 gradient: 'linear-gradient(180deg, #EE4600 0%, #FF864A 100%)',
 
                 primary: '#F48C06', // orange
-                'primary-hover': '#FFAB40',
+                'primary-hover': '#FFAB40', // brighter orange
                 second: '#0F124D', // blue
+                it: '#2267B5',
+                health: '#5DBD6A',
+                language: '#2CD1E6',
+                business: '#7070E3',
+                management: '#DD5450',
+                personal_development: '#F5C353',
+                sales_marketing: '#E557A3',
+                engineer_construction: '#A861AD',
+                teaching_academics: '#F48C06',
 
                 pri: '#EE4600', //orange
                 'pri-52': 'rgba(238, 70, 0, 0.52)', // orange opacity 0.52
@@ -58,6 +67,8 @@ module.exports = {
             },
             backgroundImage: {
                 gradient: 'linear-gradient(180deg, #EE4600 0%, #FF864A 100%)',
+                bestseller:
+                    'linear-gradient(to right, #FF0000, rgba(255,107,0,0.5))',
             },
             boxShadow: {
                 20: '0px 2px 20px rgba(20, 19, 19, 0.05)',
@@ -71,6 +82,9 @@ module.exports = {
                 shadow: 'drop-shadow(0px 2px 30px rgba(20, 19, 19, 0.05))',
             },
             screens: {
+                under_lg: { max: '1023px' },
+                under_xl: { max: '1279px' },
+                under_md: { max: '767px' },
                 '2xl': { min: '1280px' },
                 xl: { max: '1279px', min: '1024px' },
                 lg: { max: '1023px', min: '768px' },
