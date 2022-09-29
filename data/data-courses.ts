@@ -1,4 +1,5 @@
-import { ICourseCardProps } from '@/components/common/course-card'
+import { ICourseCardProps } from '@/components/core/course-card'
+
 export const dataCourses: ICourseCardProps[] = [
     {
         thumbnail: '/svgs/thumbnails/thumbnail_1.svg',
@@ -49,5 +50,55 @@ export const dataCourses: ICourseCardProps[] = [
         price: '$5.76',
         isBestseller: true,
         category: 'business',
+    },
+    {
+        thumbnail: '/svgs/thumbnails/thumbnail_6.svg',
+        title: 'ACG 2021 Financial Accounting',
+        authors: 'Courtney Henry',
+        rating: 5,
+        students: '123,123',
+        price: '$5.32',
+        isBestseller: false,
+        category: 'language',
+    },
+    {
+        thumbnail: '/svgs/thumbnails/thumbnail_7.svg',
+        title: 'MAT 3503 Functions and Modeling',
+        authors: 'Ralph Edwards',
+        rating: 1.2,
+        students: '123,123',
+        price: '$5.76',
+        isBestseller: true,
+        category: 'sales_marketing',
+    },
+    {
+        thumbnail: '/svgs/thumbnails/thumbnail_8.svg',
+        title: 'MAC 1140 Precalculus Algebra',
+        authors: 'Theresa Webb',
+        rating: 4.7,
+        students: '123,123',
+        price: '$8.99',
+        isBestseller: false,
+        category: 'teaching_academics',
+    },
+    {
+        thumbnail: '/svgs/thumbnails/thumbnail_9.svg',
+        title: 'MAC 20311 Analytic Geometry and Calculus 1',
+        authors: 'Dianne Russell',
+        rating: 3.2,
+        students: '123,123',
+        price: '$4.23',
+        isBestseller: false,
+        category: 'engineer_construction',
+    },
+    {
+        thumbnail: '/svgs/thumbnails/thumbnail_10.svg',
+        title: 'MAC 20311 Analytic Geometry and Calculus 1',
+        authors: 'Dianne Russell',
+        rating: 3.2,
+        students: '123,123',
+        price: '$4.23',
+        isBestseller: true,
+        category: 'personal_development',
     },
 ]

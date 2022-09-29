@@ -14,6 +14,7 @@ export interface ICourseCardProps {
     price: string
     isBestseller: boolean
     category: Category
+    className?: string
 }
 
 export default function CourseCard(props: ICourseCardProps) {
@@ -27,7 +28,11 @@ export default function CourseCard(props: ICourseCardProps) {
                 if (ratingStar >= 1) {
                     ratingStar--
                     aStar.push(
-                        <FontAwesomeIcon icon={faStar} className="text-star" />,
+                        <FontAwesomeIcon
+                            icon={faStar}
+                            className="text-star"
+                            key={props.thumbnail + i}
+                        />,
                     )
                 } else if (0 < ratingStar && ratingStar < 1) {
                     ratingStar = 0
@@ -37,6 +42,7 @@ export default function CourseCard(props: ICourseCardProps) {
                         <FontAwesomeIcon
                             icon={faEmptyStar}
                             className="text-star"
+                            key={props.thumbnail + i}
                         />,
                     )
                 }
@@ -58,7 +64,7 @@ export default function CourseCard(props: ICourseCardProps) {
     }
 
     return (
-        <div className="space-y-3 w-[240px]">
+        <div className={`space-y-3 ${props.className}`}>
             <img src={props.thumbnail} alt="" />
             <div className="font-semibold text-lg">{props.title}</div>
             <div className="font-light text-xs">{props.authors}</div>
