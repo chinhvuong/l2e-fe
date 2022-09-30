@@ -1,14 +1,14 @@
 import React from 'react'
-import ArrowUp from '@/public/svgs/arrow-up.svg'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 
-type BreadscrumbItem = {
+type BreadcrumbItem = {
     text: string
     href: string
-    active?: boolean
 }
 type Props = {
-    data: BreadscrumbItem[]
+    data: BreadcrumbItem[]
 }
 
 function Breadcrumb({ data }: Props) {
@@ -16,12 +16,15 @@ function Breadcrumb({ data }: Props) {
         <div className="breadcrumb flex items-center gap-4">
             {data.map((item, index) => (
                 <div key={index} className="flex items-center gap-4">
-                    {index > 0 && <ArrowUp className="rotate-90 scale-75" />}
+                    {index > 0 && (
+                        <FontAwesomeIcon
+                            icon={faChevronRight}
+                            className="text-hyperlink-light"
+                        />
+                    )}
                     <Link href={item.href} passHref>
                         <span
-                            className={`leading-6 font-normal cursor-pointer ${
-                                item.active && '!font-medium'
-                            } `}
+                            className={`leading-6 cursor-pointer text-hyperlink-light font-semibold`}
                             key={index}
                         >
                             {item.text}

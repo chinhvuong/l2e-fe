@@ -1,4 +1,4 @@
-import CourseCard, { ICourseCardProps } from '@/components/core/course-card'
+import CourseCard from '@/components/core/course-card'
 import React, { useEffect, useState } from 'react'
 import {
     faChevronLeft,
@@ -8,9 +8,10 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { CourseInfo_Preview } from '@/contants/interfaces'
 export interface ICourseListProps {
     title?: string
-    data: ICourseCardProps[]
+    data: CourseInfo_Preview[]
     className?: string
 }
 
@@ -131,15 +132,8 @@ export default function CourseList(props: ICourseListProps) {
                     {props.data.map((course) => {
                         return (
                             <CourseCard
-                                key={course.thumbnail}
-                                thumbnail={course.thumbnail}
-                                title={course.title}
-                                authors={course.authors}
-                                rating={course.rating}
-                                students={course.students}
-                                price={course.price}
-                                isBestseller={course.isBestseller}
-                                category={course.category}
+                                key={course.id}
+                                info={course}
                                 className="mx-[8px]"
                             />
                         )

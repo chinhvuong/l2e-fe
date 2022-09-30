@@ -2,6 +2,7 @@ import * as React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
+import CourseDetail from '../course-detail'
 
 export default function AboutUsContainer() {
     return (
@@ -41,6 +42,7 @@ export default function AboutUsContainer() {
                 />
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
+            <CourseDetail />
         </div>
     )
 }

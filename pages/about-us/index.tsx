@@ -1,4 +1,4 @@
-import AboutUsContainer from '@/containers/aboutUs'
+import AboutUsContainer from '@/containers/about-us'
 import * as React from 'react'
 
 export default function AboutUs() {

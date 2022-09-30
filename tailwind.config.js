@@ -15,17 +15,9 @@ module.exports = {
                 primary: '#F48C06', // orange
                 'primary-hover': '#FFAB40', // brighter orange
                 second: '#0F124D', // blue
-                it: '#2267B5',
-                health: '#5DBD6A',
-                language: '#2CD1E6',
-                business: '#7070E3',
-                management: '#DD5450',
-                personal_development: '#F5C353',
-                sales_marketing: '#E557A3',
-                engineer_construction: '#A861AD',
-                teaching_academics: '#F48C06',
-
                 star: '#F1C644',
+                'hyperlink-light': '#D3BAFF',
+                hyperlink: '#5624D0',
 
                 pri: '#EE4600', //orange
                 'pri-52': 'rgba(238, 70, 0, 0.52)', // orange opacity 0.52

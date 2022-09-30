@@ -2,8 +2,8 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
-import { dataCourses } from '@/data/data-courses'
 import CourseList from '@/components/common/course-list'
+import { dataCourses_preview } from '@/data/data-course-preview'
 
 const HomePageContainer = () => {
     return (
@@ -48,9 +48,12 @@ const HomePageContainer = () => {
                     </div>
                 </div>
             </div>
-            <CourseList data={dataCourses} title="Students are viewing" />
             <CourseList
-                data={dataCourses}
+                data={dataCourses_preview}
+                title="Students are viewing"
+            />
+            <CourseList
+                data={dataCourses_preview}
                 title="Short and sweet courses for you"
                 className="mt-8"
             />
