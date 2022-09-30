@@ -1,7 +1,14 @@
 import React from 'react'
+interface ILogo {
+    darkTheme: boolean
+}
 
-const Logo = () => {
-    return <img src="/svgs/logo_white.svg" alt="" />
+const Logo = (props: ILogo) => {
+    return props.darkTheme ? (
+        <img src="/svgs/logos/logo_light.svg" alt="" />
+    ) : (
+        <img src="/svgs/logos/logo_dark.svg" alt="" />
+    )
 }
 
 export default Logo

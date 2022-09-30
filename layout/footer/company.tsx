@@ -7,12 +7,12 @@ export default function Company() {
                 Trusted by 5,000+ Companies Worldwide
             </div>
             <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-10">
-                <img src="/svgs/google-logo.svg" alt="google-logo" />
-                <img src="/svgs/netflix-logo.svg" alt="netflix-logo" />
-                <img src="/svgs/airbnb-logo.svg" alt="airbnb-logo" />
-                <img src="/svgs/amazon-logo.svg" alt="amazon-logo" />
-                <img src="/svgs/facebook-logo.svg" alt="facebook-logo" />
-                <img src="/svgs/grab-logo.svg" alt="grab-logo" />
+                <img src="/svgs/logos/google-logo.svg" alt="google-logo" />
+                <img src="/svgs/logos/netflix-logo.svg" alt="netflix-logo" />
+                <img src="/svgs/logos/airbnb-logo.svg" alt="airbnb-logo" />
+                <img src="/svgs/logos/amazon-logo.svg" alt="amazon-logo" />
+                <img src="/svgs/logos/facebook-logo.svg" alt="facebook-logo" />
+                <img src="/svgs/logos/grab-logo.svg" alt="grab-logo" />
             </div>
         </div>
     )

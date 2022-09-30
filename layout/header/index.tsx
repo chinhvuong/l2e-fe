@@ -7,16 +7,24 @@ import Button from '@/components/core/button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 
-const Header = () => {
+interface IHeader {
+    darkTheme: boolean
+}
+
+const Header = (props: IHeader) => {
     return (
-        <div className="bg-second py-6 header--dark">
-            <div className="px-14 flex flex-wrap justify-between items-center 2xl:justify-center 2xl:space-x-[22px]">
+        <div
+            className={`py-8 ${props.darkTheme ? 'text-white' : 'text-black'} ${
+                props.darkTheme ? 'bg-second' : 'bg-white'
+            }`}
+        >
+            <div className="px-14 flex flex-wrap justify-between items-center 2xl:justify-center 2xl:space-x-[35px]">
                 <FontAwesomeIcon
                     icon={faBars}
                     className="hidden text-white text-[25px] under_lg:block lg:mr-[100px] md:mr-[100px] sm:mr-[0px] cursor-pointer"
                 />
-                <Logo />
-                <Search />
+                <Logo darkTheme={props.darkTheme} />
+                <Search darkTheme={props.darkTheme} />
                 <Explore />
                 <div className="cursor-pointer hover:text-primary-hover under_lg:hidden">
                     For Business

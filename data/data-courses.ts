@@ -4,7 +4,7 @@ export const dataCourses: ICourseCardProps[] = [
     {
         thumbnail: '/svgs/thumbnails/thumbnail_1.svg',
         title: 'MAC 1140 Precalculus Algebra',
-        authors: 'Theresa Webb',
+        authors: 'Theresa Webb, Hữu An, Dianne Russell',
         rating: 4.7,
         students: '123,123',
         price: '$8.99',
@@ -13,8 +13,8 @@ export const dataCourses: ICourseCardProps[] = [
     },
     {
         thumbnail: '/svgs/thumbnails/thumbnail_2.svg',
-        title: 'MAC 20311 Analytic Geometry and Calculus 1',
-        authors: 'Dianne Russell',
+        title: 'MAC 20311 Analytic Geometry and Calculus 1 MAC 20311 Analytic Geometry and Calculus 1',
+        authors: 'Dianne Russell, Chính Vương, Dianne Russell',
         rating: 3.2,
         students: '123,123',
         price: '$4.23',
@@ -24,7 +24,7 @@ export const dataCourses: ICourseCardProps[] = [
     {
         thumbnail: '/svgs/thumbnails/thumbnail_3.svg',
         title: 'ACG 2021 Financial Accounting',
-        authors: 'Courtney Henry',
+        authors: 'Courtney Henry, Việt Hòa, Dianne Russell',
         rating: 5,
         students: '123,123',
         price: '$5.32',
