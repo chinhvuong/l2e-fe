@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Label from '@/components/core/label'
 import RatingStar from './ratingStar'
-import { CourseInfo_Preview } from '@/contants/interfaces'
+import { CourseInfo_Preview } from '@/constants/interfaces'
 
 export interface ICourseCardProps {
     info: CourseInfo_Preview

@@ -1,6 +1,6 @@
 import Accordion from '@/components/common/accordion'
 import StatusOrder from '@/components/common/status-order'
-import { ICustomerDetail } from '@/contants/interfaces'
+import { ICustomerDetail } from '@/constants/interfaces'
 import { useTransHook } from '@/locales/hooks'
 import React from 'react'
 

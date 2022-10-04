@@ -1,6 +1,6 @@
 import React from 'react'
 import './styles.scss'
-import { EStatusOrder } from '@/contants/common'
+import { EStatusOrder } from '@/constants/common'
 import { useTransHook } from '@/locales/hooks'
 
 type Props = {

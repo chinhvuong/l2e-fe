@@ -1,4 +1,4 @@
-import { CourseInfo_Preview } from '@/contants/interfaces'
+import { CourseInfo_Preview } from '@/constants/interfaces'
 
 export const dataCourses_preview: CourseInfo_Preview[] = [
     {

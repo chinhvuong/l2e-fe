@@ -100,7 +100,7 @@ export interface CourseInfo {
     thumbnail: string
     title: string
     description: string
-    authors: string
+    authors: string[]
     ratingScore: number
     ratings: string
     students: string
@@ -109,7 +109,7 @@ export interface CourseInfo {
     category: Category
     lastUpdated: Date
     language: string
-    captions: string
+    captions: string[]
 }
 
 export interface CourseInfo_Preview {

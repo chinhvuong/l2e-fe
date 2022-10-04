@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { JWT_KEY } from '@/contants/localStorage'
+import { JWT_KEY } from '@/constants/localStorage'
 
 async function sendRequest(
     payload: AxiosRequestConfig,

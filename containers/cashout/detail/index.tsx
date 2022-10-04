@@ -3,7 +3,7 @@ import { dataCashoutDetail } from '@/data/data-cashout'
 import Table from '@/components/core/table'
 import { useTransHook } from '@/locales/hooks'
 import Pagination from '@/components/core/pagination'
-import { ICashoutDetail } from '@/contants/interfaces'
+import { ICashoutDetail } from '@/constants/interfaces'
 import './styles.scss'
 import Info from './info'
 

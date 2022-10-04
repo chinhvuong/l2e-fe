@@ -18,6 +18,7 @@ module.exports = {
                 star: '#F1C644',
                 'hyperlink-light': '#D3BAFF',
                 hyperlink: '#5624D0',
+                divider: '#B6B6B6',
 
                 pri: '#EE4600', //orange
                 'pri-52': 'rgba(238, 70, 0, 0.52)', // orange opacity 0.52

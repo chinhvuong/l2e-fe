@@ -4,8 +4,6 @@ type Props = {
     children: ReactNode | ReactText
 }
 
-// w-fit
-
 function Button({
     children,
     ...rest

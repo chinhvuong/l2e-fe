@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import Table from '@/components/core/table'
 import { dataCanceledOrder } from '@/data/data-order'
-import { ICanceledOrder } from '@/contants/interfaces'
+import { ICanceledOrder } from '@/constants/interfaces'
 import { useTransHook } from '@/locales/hooks'
 import './styles.scss'
 import OrderStatus from '@/components/common/status-order'
 import Pagination from '@/components/core/pagination'
-import { EStatusOrder } from '@/contants/common'
+import { EStatusOrder } from '@/constants/common'
 import Filter from '@/components/common/filter'
 
 const CanceledOrders = () => {

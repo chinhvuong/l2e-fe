@@ -1,7 +1,7 @@
 import React from 'react'
 import './style.scss'
 import TableHeadItem from './table-head-item'
-import { Column } from '@/contants/interfaces'
+import { Column } from '@/constants/interfaces'
 
 type Props = {
     columns: Column[]

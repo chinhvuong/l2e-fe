@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import Table from '@/components/core/table'
-import { IOrder } from '@/contants/interfaces'
+import { IOrder } from '@/constants/interfaces'
 import './style.scss'
 import { dataOrderList } from '@/data/data-order'
 import Filter from '@/components/common/filter'
 import { useTransHook } from '@/locales/hooks'
-import { EStatusOrder } from '@/contants/common'
+import { EStatusOrder } from '@/constants/common'
 import Pagination from '@/components/core/pagination'
 import OrderStatus from '@/components/common/status-order'
 const ProductName = ({ name, image }: { name: string; image: string }) => {
