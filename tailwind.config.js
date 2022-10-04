@@ -19,6 +19,9 @@ module.exports = {
                 'hyperlink-light': '#D3BAFF',
                 hyperlink: '#5624D0',
                 divider: '#B6B6B6',
+                'border-box': '#D1D7DC',
+                description: '#6A6F73',
+                'course-section': '#F7F9FA',
 
                 pri: '#EE4600', //orange
                 'pri-52': 'rgba(238, 70, 0, 0.52)', // orange opacity 0.52

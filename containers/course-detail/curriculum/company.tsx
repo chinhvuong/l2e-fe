@@ -4,11 +4,11 @@ export interface ICompanyProps {}
 
 export default function Company() {
     return (
-        <div className="border border-divider w-full py-6 px-9">
+        <div className="border border-border-box w-full py-6 px-9">
             <span className="font-semibold">
                 Top companies offer this course to their employees
             </span>
-            <div className="text-[14px] mt-1 mb-5 text-divider">
+            <div className="text-[14px] mt-1 mb-5 text-description">
                 This course was selected for our collection of top-rated courses
                 trusted by businesses worldwide.{' '}
                 <span className="text-hyperlink underline decoration-hyperlink cursor-pointer">

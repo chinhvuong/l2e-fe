@@ -20,7 +20,7 @@ export interface ISidebarProps {}
 
 export default function Sidebar() {
     return (
-        <div className="bg-white z-10 w-[350px] h-[900px] absolute right-[110px] drop-shadow-xl">
+        <div className="bg-white z-10 w-[350px] h-[860px] absolute right-[110px] drop-shadow-xl">
             <div className="relative w-full video-preview">
                 <img
                     src="/svgs/thumbnails/thumbnail_1.svg"
