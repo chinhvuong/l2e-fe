@@ -2,6 +2,7 @@ import * as React from 'react'
 import Label from '@/components/core/label'
 import RatingStar from './ratingStar'
 import { CourseInfo_Preview } from '@/constants/interfaces'
+import Router from 'next/router'
 
 export interface ICourseCardProps {
     info: CourseInfo_Preview
@@ -9,8 +10,14 @@ export interface ICourseCardProps {
 }
 
 export default function CourseCard(props: ICourseCardProps) {
+    const viewCourseDetail = () => {
+        Router.push('/course/1')
+    }
     return (
-        <div className={`space-y-3 cursor-pointer ${props.className}`}>
+        <div
+            className={`space-y-3 cursor-pointer ${props.className}`}
+            onClick={() => viewCourseDetail()}
+        >
             <img src={props.info.thumbnail} alt="" />
             <div className="font-semibold text-lg line-clamp-3 h-[80px]">
                 {props.info.title}

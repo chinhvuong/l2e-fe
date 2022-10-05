@@ -7,28 +7,36 @@ import {
     faChevronUp,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Button from '@/components/core/button'
 
 export interface ICourseContentProps {}
 
 export default function CourseContent() {
-    const [expandSections, setExpandSections] = useState([
+    const [expandHeadingSections, setExpandHeadingSections] = useState([
         false,
         false,
         false,
         false,
     ])
+    const [expandSubSections, setExpandSubSections] = useState([false])
     const [allSections, setAllSections] = useState(false)
 
-    const updateExpandSections = (index: number) => {
-        const sections = [...expandSections]
+    const updateExpandHeadingSections = (index: number) => {
+        const sections = [...expandHeadingSections]
         sections[index] = !sections[index]
-        setExpandSections(sections)
+        setExpandHeadingSections(sections)
+    }
+
+    const updateExpandSubSections = (index: number) => {
+        const sections = [...expandSubSections]
+        sections[index] = !sections[index]
+        setExpandSubSections(sections)
     }
 
     const expandAllSections = () => {
-        const sections = Array(expandSections.length).fill(!allSections)
+        const sections = Array(expandHeadingSections.length).fill(!allSections)
         setAllSections(!allSections)
-        setExpandSections(sections)
+        setExpandHeadingSections(sections)
     }
 
     return (
@@ -40,18 +48,22 @@ export default function CourseContent() {
                     className="text-hyperlink font-bold cursor-pointer"
                     onClick={() => expandAllSections()}
                 >
-                    {`${allSections ? 'Expand' : 'Collapse'} all sections`}
+                    {`${!allSections ? 'Expand' : 'Collapse'} all sections`}
                 </div>
             </div>
             <div
                 className={`flex items-start justify-between bg-course-section ${
-                    expandSections[0] ? 'border-t border-x' : 'border'
+                    !expandHeadingSections[0] ? 'border-t border-x' : 'border'
                 } border-border-box pr-6 py-4 cursor-pointer`}
-                onClick={() => updateExpandSections(0)}
+                onClick={() => updateExpandHeadingSections(0)}
             >
                 <div className="flex items-start w-[70%]">
                     <FontAwesomeIcon
-                        icon={expandSections[0] ? faChevronDown : faChevronUp}
+                        icon={
+                            !expandHeadingSections[0]
+                                ? faChevronDown
+                                : faChevronUp
+                        }
                         className="pt-1 px-6"
                     />
                     <div className="font-bold text-[18px]">
@@ -61,7 +73,9 @@ export default function CourseContent() {
                 </div>
                 <div>17 lectures • 1hr 30min</div>
             </div>
-            <div className={`border-x ${expandSections[0] && 'hidden'}`}>
+            <div
+                className={`border-x ${!expandHeadingSections[0] && 'hidden'}`}
+            >
                 <div className="pt-3 pr-6">
                     <div className="flex justify-between">
                         <div className="flex items-start">
@@ -85,11 +99,29 @@ export default function CourseContent() {
                             />
                             <div>Skills Assessment</div>
                             <FontAwesomeIcon
-                                icon={faChevronDown}
-                                className="bg-border-box p-1 rounded-full ml-4"
+                                icon={
+                                    !expandSubSections[0]
+                                        ? faChevronDown
+                                        : faChevronUp
+                                }
+                                className="bg-border-box p-1 rounded-full ml-4 cursor-pointer"
+                                onClick={() => updateExpandSubSections(0)}
                             />
                         </div>
                         <div className="text-description">10 questions</div>
+                    </div>
+                    <div
+                        className={`pr-6 pl-[63px] text-description pt-3 space-y-3 w-[75%] ${
+                            !expandSubSections[0] && 'hidden'
+                        }`}
+                    >
+                        <div className="font-bold">
+                            Already learnt some Python? Want to skip ahead?
+                        </div>
+                        <div>
+                            Take this skill assessment and see which level of
+                            the course you should start at.
+                        </div>
                     </div>
                 </div>
                 <div className="pb-3 ml-[0.15rem] mt-3 pr-6">
@@ -99,7 +131,7 @@ export default function CourseContent() {
                                 icon={faFile}
                                 className="pt-1 px-6"
                             />
-                            <div className="ml-[0.15rem]">
+                            <div>
                                 FAQ: Can I Use PyCharm/VSCode/ Another Local
                                 Code Editor?
                             </div>
@@ -110,13 +142,17 @@ export default function CourseContent() {
             </div>
             <div
                 className={`flex items-start justify-between bg-course-section ${
-                    expandSections[1] ? 'border-t border-x' : 'border'
+                    !expandHeadingSections[1] ? 'border-t border-x' : 'border'
                 } border-border-box pr-6 py-4 cursor-pointer`}
-                onClick={() => updateExpandSections(1)}
+                onClick={() => updateExpandHeadingSections(1)}
             >
                 <div className="flex items-start w-[70%]">
                     <FontAwesomeIcon
-                        icon={expandSections[1] ? faChevronDown : faChevronUp}
+                        icon={
+                            !expandHeadingSections[1]
+                                ? faChevronDown
+                                : faChevronUp
+                        }
                         className="pt-1 px-6"
                     />
                     <div className="font-bold text-[18px]">
@@ -128,13 +164,17 @@ export default function CourseContent() {
             </div>
             <div
                 className={`flex items-start justify-between bg-course-section ${
-                    expandSections[1] ? 'border-t border-x' : 'border'
+                    !expandHeadingSections[2] ? 'border-t border-x' : 'border'
                 } border-border-box pr-6 py-4 cursor-pointer`}
-                onClick={() => updateExpandSections(2)}
+                onClick={() => updateExpandHeadingSections(2)}
             >
                 <div className="flex items-start w-[70%]">
                     <FontAwesomeIcon
-                        icon={expandSections[2] ? faChevronDown : faChevronUp}
+                        icon={
+                            !expandHeadingSections[2]
+                                ? faChevronDown
+                                : faChevronUp
+                        }
                         className="pt-1 px-6"
                     />
                     <div className="font-bold text-[18px]">
@@ -145,11 +185,15 @@ export default function CourseContent() {
             </div>
             <div
                 className={`flex items-start justify-between bg-course-section border border-border-box pr-6 py-4 cursor-pointer`}
-                onClick={() => updateExpandSections(3)}
+                onClick={() => updateExpandHeadingSections(3)}
             >
                 <div className="flex items-start w-[70%]">
                     <FontAwesomeIcon
-                        icon={expandSections[3] ? faChevronDown : faChevronUp}
+                        icon={
+                            !expandHeadingSections[3]
+                                ? faChevronDown
+                                : faChevronUp
+                        }
                         className="pt-1 px-6"
                     />
                     <div className="font-bold text-[18px]">
@@ -158,6 +202,9 @@ export default function CourseContent() {
                 </div>
                 <div>9 lectures • 1hr 21min</div>
             </div>
+            <Button className="btn-primary-outline w-full mt-5">
+                <div className="font-medium text-[16px]">5 more sections</div>
+            </Button>
         </div>
     )
 }

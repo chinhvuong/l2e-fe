@@ -6,12 +6,16 @@ import './style.scss'
 import Button from '@/components/core/button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import Router from 'next/router'
 
 interface IHeader {
     darkTheme: boolean
 }
 
 const Header = (props: IHeader) => {
+    const goToHomePage = () => {
+        Router.push('/')
+    }
     return (
         <div
             className={`py-8 ${props.darkTheme ? 'text-white' : 'text-black'} ${
@@ -23,7 +27,10 @@ const Header = (props: IHeader) => {
                     icon={faBars}
                     className="hidden text-white text-[25px] under_lg:block lg:mr-[100px] md:mr-[100px] sm:mr-[0px] cursor-pointer"
                 />
-                <Logo darkTheme={props.darkTheme} />
+                <Logo
+                    darkTheme={props.darkTheme}
+                    onClick={() => goToHomePage()}
+                />
                 <Search darkTheme={props.darkTheme} />
                 <Explore />
                 <div className="cursor-pointer hover:text-primary-hover under_lg:hidden">

@@ -43,7 +43,7 @@ export default function WhatYouWillLearn() {
         <div
             id="what-you-will-learn"
             className={`border border-border-box w-full space-y-3 py-6 px-9 overflow-hidden relative ${
-                !showFullContent && 'h-[400px]'
+                elHeight > 400 && !showFullContent && 'h-[400px]'
             }`}
         >
             <span className="font-semibold text-[26px]">What you’ll learn</span>
@@ -67,10 +67,9 @@ export default function WhatYouWillLearn() {
                 })}
             </div>
             <div
-                className={`flex flex-col justify-end z-10 top-1 left-0 w-full h-full cursor-pointer ${
-                    elHeight < 400 && 'hidden'
+                className={`flex flex-col justify-end z-10 top-1 left-0 w-full h-full ${
+                    elHeight <= 400 && 'hidden'
                 } ${!showFullContent && 'absolute'} `}
-                onClick={() => setShowFullContent(!showFullContent)}
             >
                 <div
                     className={`h-full ${
@@ -78,7 +77,12 @@ export default function WhatYouWillLearn() {
                         'bg-gradient-to-b from-transparent to-white'
                     }`}
                 ></div>
-                <div className={`${!showFullContent && 'pl-9 pb-9 bg-white'}`}>
+                <div
+                    className={`cursor-pointer ${
+                        !showFullContent && 'pl-9 pb-9 bg-white'
+                    }`}
+                    onClick={() => setShowFullContent(!showFullContent)}
+                >
                     <span className="text-hyperlink font-bold mr-2">
                         Show {!showFullContent ? 'more' : 'less'}
                     </span>

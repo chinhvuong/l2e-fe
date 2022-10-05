@@ -26,7 +26,7 @@ export default function Label(props: ILabelProps) {
 
     return (
         <div
-            className={`text-[9px] rounded-[80px] px-2 py-1 w-fit text-white font-bold ${getLabelBkgColor()} ${
+            className={`text-[9px] rounded-[80px] px-2 py-1 w-fit text-white font-semibold ${getLabelBkgColor()} ${
                 props.hidden && 'hidden'
             }`}
         >

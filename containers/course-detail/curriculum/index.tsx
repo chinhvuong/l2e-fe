@@ -1,6 +1,8 @@
 import * as React from 'react'
 import Company from './company'
 import CourseContent from './course-content'
+import Description from './description'
+import Requirement from './requirement'
 import WhatYouWillLearn from './what-you-will-learn'
 
 export interface ICurriculumProps {}
@@ -11,6 +13,8 @@ export default function Curriculum() {
             <WhatYouWillLearn />
             <Company />
             <CourseContent />
+            <Requirement />
+            <Description />
         </div>
     )
 }
