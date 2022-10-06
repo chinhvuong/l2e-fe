@@ -24,7 +24,7 @@ export default function Description() {
             }`}
         >
             <div className="font-semibold text-[26px]">Description</div>
-            <div>
+            <div className="text-justify">
                 {`Welcome to the 100 Days of Code - The Complete Python Pro
                 Bootcamp, `}{' '}
                 <span className="font-bold">the only course you need</span>

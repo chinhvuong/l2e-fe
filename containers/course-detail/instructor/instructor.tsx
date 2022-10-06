@@ -64,7 +64,7 @@ export default function Instructor(props: IInstructorProps) {
                     elHeight > 400 && !showFullContent && 'h-[400px]'
                 }`}
             >
-                <div>
+                <div className="text-justify">
                     {`I'm Angela, I'm a developer with a passion for teaching. I'm the `}
                     <span className="font-bold">lead instructor</span>
                     {` at the London App Brewery, London's leading `}
