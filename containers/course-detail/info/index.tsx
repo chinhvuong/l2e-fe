@@ -1,5 +1,5 @@
 import Breadcrumb from '@/components/core/breadcrumb'
-import RatingStar from '@/components/core/course-card/ratingStar'
+import RatingStar from '@/components/core/course-card/rating-star'
 import Label from '@/components/core/label'
 import * as React from 'react'
 import {
@@ -54,11 +54,8 @@ export default function CourseInfo({ info }: { info: ICourseInfo }) {
                 <div className="text-[20px]">{info.description}</div>
                 <div className="flex items-center space-x-4">
                     {info.isBestseller && <Label type="bestseller" />}
-                    <RatingStar
-                        id={info.id}
-                        ratingScore={info.ratingScore}
-                        ratings={info.ratings}
-                    />
+                    <Label type="engineer_construction" />
+                    <RatingStar id={info.id} ratingScore={info.ratingScore} />
                     <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
                         {`(${info.ratings} ratings)`}
                     </div>

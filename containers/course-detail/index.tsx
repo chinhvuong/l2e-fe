@@ -3,6 +3,7 @@ import * as React from 'react'
 import Curriculum from './curriculum'
 import CourseInfo from './info'
 import InstructorList from './instructor'
+import Review from './review'
 
 export default function CourseDetailContainer() {
     return (
@@ -10,6 +11,7 @@ export default function CourseDetailContainer() {
             <CourseInfo info={dataCourses_detail.info} />
             <Curriculum />
             <InstructorList />
+            <Review />
         </div>
     )
 }

@@ -23,6 +23,16 @@ module.exports = {
                 description: '#6A6F73',
                 'course-section': '#F7F9FA',
 
+                it: '#2267B5',
+                health: '#5DBD6A',
+                language: '#2CD1E6',
+                business: '#7070E3',
+                management: '#DD5450',
+                personal_development: '#F5C353',
+                sales_marketing: '#E557A3',
+                engineer_construction: '#A861AD',
+                teaching_academics: '#F48C06',
+
                 pri: '#EE4600', //orange
                 'pri-52': 'rgba(238, 70, 0, 0.52)', // orange opacity 0.52
                 'pri-17': 'rgba(238, 70, 0, 0.17)',
@@ -93,15 +103,9 @@ module.exports = {
     },
     plugins: [require('@tailwindcss/line-clamp')],
     safelist: [
-        'bg-it',
-        'bg-health',
-        'bg-language',
-        'bg-business',
-        'bg-management',
-        'bg-personal_development',
-        'bg-sales_marketing',
-        'bg-engineer_construction',
-        'bg-teaching_academics',
-        'bg-bestseller',
+        {
+            pattern:
+                /(bg|text|border)-(it|health|language|business|management|personal_development|sales_marketing|engineer_construction|teaching_academics|bestseller)/,
+        },
     ],
 }

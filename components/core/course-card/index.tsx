@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Label from '@/components/core/label'
-import RatingStar from './ratingStar'
+import RatingStar from './rating-star'
 import { CourseInfo_Preview } from '@/constants/interfaces'
 import Router from 'next/router'
 

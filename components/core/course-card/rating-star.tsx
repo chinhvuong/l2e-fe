@@ -6,7 +6,8 @@ import { faStar as faEmptyStar } from '@fortawesome/free-regular-svg-icons'
 export interface IRatingStarProps {
     id: number
     ratingScore: number
-    ratings: string
+    ratings?: string
+    hideScore?: boolean
 }
 
 export default function RatingStar(props: IRatingStarProps) {
@@ -40,7 +41,7 @@ export default function RatingStar(props: IRatingStarProps) {
                 }
             }
             return (
-                <div className="flex items-center mb-1">
+                <div className="flex items-center mb-1 space-x-1">
                     {aStar.map((star) => star)}
                     {halfStar && (
                         <FontAwesomeIcon
@@ -56,11 +57,15 @@ export default function RatingStar(props: IRatingStarProps) {
     }
     return (
         <div className="flex items-center space-x-2">
-            <div className="font-bold text-xs text-star">
-                {Number(props.ratingScore).toFixed(1)}
-            </div>
+            {!props?.hideScore && (
+                <div className="font-bold text-xs text-star">
+                    {Number(props.ratingScore).toFixed(1)}
+                </div>
+            )}
             {ratingStar()}
-            <div className="font-light text-xs">{`(${props.ratings})`}</div>
+            {props?.ratings && (
+                <div className="font-light text-xs">{`(${props.ratings})`}</div>
+            )}
         </div>
     )
 }
