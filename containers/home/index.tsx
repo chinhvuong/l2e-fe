@@ -21,7 +21,7 @@ const HomePageContainer = () => {
                         in more an interactive way and provide you
                         qualifications.
                     </div>
-                    <div className="flex items-center space-x-[30px] under_lg:flex-col under_lg:space-x-[0px] under_lg:space-y-[20px] lg:text-sm md:text-xs">
+                    <div className="flex items-center space-x-[30px] under_xl:flex-col under_xl:space-x-[0px] under_xl:space-y-[20px] lg:text-sm md:text-xs">
                         <Button className="btn-primary">Join us now</Button>
                         <div className="flex items-center space-x-[20px] cursor-pointer">
                             <FontAwesomeIcon

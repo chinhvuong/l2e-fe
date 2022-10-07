@@ -42,7 +42,7 @@ export default function AlsoBought() {
         },
     ]
     return (
-        <div className="w-[820px] ml-[110px] mt-5">
+        <div>
             <div className="font-semibold text-[26px]">
                 Students also bought
             </div>

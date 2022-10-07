@@ -45,53 +45,58 @@ export default function CourseInfo({ info }: { info: ICourseInfo }) {
     }
 
     return (
-        <div className="bg-black px-[110px] py-10 flex justify-between relative">
-            <div className="w-[800px] text-white space-y-5">
-                <Breadcrumb data={data} />
-                <div className="font-bold text-[35px] leading-[45px]">
-                    {info.title}
-                </div>
-                <div className="text-[20px]">{info.description}</div>
-                <div className="flex items-center space-x-4">
-                    {info.isBestseller && <Label type="bestseller" />}
-                    <Label type="engineer_construction" />
-                    <RatingStar id={info.id} ratingScore={info.ratingScore} />
-                    <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                        {`(${info.ratings} ratings)`}
+        <div className="bg-black flex justify-center">
+            <div className="2xl:w-[1250px] px-[30px] py-10 flex justify-between relative">
+                <div className="w-[800px] text-white space-y-5">
+                    <Breadcrumb data={data} />
+                    <div className="font-bold text-[35px] leading-[45px]">
+                        {info.title}
+                    </div>
+                    <div className="text-[20px]">{info.description}</div>
+                    <div className="flex items-center space-x-4">
+                        {info.isBestseller && <Label type="bestseller" />}
+                        <Label type="engineer_construction" />
+                        <RatingStar
+                            id={info.id}
+                            ratingScore={info.ratingScore}
+                        />
+                        <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
+                            {`(${info.ratings} ratings)`}
+                        </div>
+                        <div className="text-[14px] font-light">
+                            {`${info.students} students`}
+                        </div>
                     </div>
                     <div className="text-[14px] font-light">
-                        {`${info.students} students`}
-                    </div>
-                </div>
-                <div className="text-[14px] font-light">
-                    Created by{' '}
-                    {info.authors.map((author, index) => {
-                        return (
-                            <span key={index}>
-                                <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
-                                    {author}
+                        Created by{' '}
+                        {info.authors.map((author, index) => {
+                            return (
+                                <span key={index}>
+                                    <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
+                                        {author}
+                                    </span>
+                                    {index !== info.authors.length - 1 && ', '}
                                 </span>
-                                {index !== info.authors.length - 1 && ', '}
-                            </span>
-                        )
-                    })}
+                            )
+                        })}
+                    </div>
+                    <div className="flex text-[14px] font-light space-x-6">
+                        <div className="flex items-center space-x-2">
+                            <FontAwesomeIcon icon={faExclamationCircle} />
+                            <div>{`Last updated ${info.lastUpdated.getMonth()}/${info.lastUpdated.getFullYear()}`}</div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <FontAwesomeIcon icon={faGlobe} />
+                            <div>{info.language}</div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <FontAwesomeIcon icon={faClosedCaptioning} />
+                            {getCaptions()}
+                        </div>
+                    </div>
                 </div>
-                <div className="flex text-[14px] font-light space-x-6">
-                    <div className="flex items-center space-x-2">
-                        <FontAwesomeIcon icon={faExclamationCircle} />
-                        <div>{`Last updated ${info.lastUpdated.getMonth()}/${info.lastUpdated.getFullYear()}`}</div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <FontAwesomeIcon icon={faGlobe} />
-                        <div>{info.language}</div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <FontAwesomeIcon icon={faClosedCaptioning} />
-                        {getCaptions()}
-                    </div>
-                </div>
+                <Sidebar />
             </div>
-            <Sidebar />
         </div>
     )
 }

@@ -42,7 +42,7 @@ export default function ReviewDetail() {
         }
     })
     return (
-        <div className="w-[820px] ml-[110px] mt-5">
+        <div className="w-[820px] ml-[10px] mt-5">
             <div className="font-semibold text-[26px]">Reviews</div>
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4 mr-4">

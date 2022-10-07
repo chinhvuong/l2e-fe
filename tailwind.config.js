@@ -90,9 +90,9 @@ module.exports = {
                 shadow: 'drop-shadow(0px 2px 30px rgba(20, 19, 19, 0.05))',
             },
             screens: {
-                under_lg: { max: '1023px' },
-                under_xl: { max: '1279px' },
-                under_md: { max: '767px' },
+                under_xl: { max: '1023px' },
+                under_2xl: { max: '1279px' },
+                under_lg: { max: '767px' },
                 '2xl': { min: '1280px' },
                 xl: { max: '1279px', min: '1024px' },
                 lg: { max: '1023px', min: '768px' },

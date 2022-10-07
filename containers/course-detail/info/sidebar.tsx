@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useState, useEffect } from 'react'
 import './style.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -19,8 +19,32 @@ import Divider from '@/components/core/divider'
 export interface ISidebarProps {}
 
 export default function Sidebar() {
+    const [scrollY, setScrollY] = useState(0)
+    const [rightMargin, setRightMargin] = useState('0px')
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollY(window.scrollY)
+        }
+
+        handleScroll()
+
+        setRightMargin(`${(window.innerWidth - 1190) / 2}px`)
+
+        window.addEventListener('scroll', handleScroll)
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
+    }, [])
+
     return (
-        <div className="bg-white z-10 w-[350px] h-[860px] absolute right-[110px] drop-shadow-xl">
+        <div
+            className={`under_2xl:hidden bg-white z-20 right-[30px] w-[320px] h-[860px] drop-shadow-xl ${
+                scrollY <= 500 ? 'absolute' : `fixed top-[20px]`
+            }`}
+            style={scrollY > 500 ? { right: rightMargin } : {}}
+        >
             <div className="relative w-full video-preview">
                 <img
                     src="/svgs/thumbnails/thumbnail_1.svg"

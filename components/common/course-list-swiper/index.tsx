@@ -9,13 +9,13 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CourseInfo_Preview } from '@/constants/interfaces'
-export interface ICourseListSwiperProps {
+export interface ICourseListProps {
     title?: string
     data: CourseInfo_Preview[]
     className?: string
 }
 
-export default function CourseListSwiper(props: ICourseListSwiperProps) {
+export default function CourseList(props: ICourseListProps) {
     // hide nextArrow using window.innerWidth
     const [disableLeftSwiper, setDisableLeftSwiper] = useState(true)
     const [disableRightSwiper, setDisableRightSwiper] = useState(false)
@@ -99,7 +99,6 @@ export default function CourseListSwiper(props: ICourseListSwiperProps) {
             } else {
                 setDisableRightSwiper(false)
             }
-            console.log('beforeChange', current, next)
         },
     }
     useEffect(() => {

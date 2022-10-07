@@ -25,7 +25,7 @@ const Header = (props: IHeader) => {
             <div className="px-14 flex flex-wrap justify-between items-center 2xl:justify-center 2xl:space-x-[35px]">
                 <FontAwesomeIcon
                     icon={faBars}
-                    className="hidden text-white text-[25px] under_lg:block lg:mr-[100px] md:mr-[100px] sm:mr-[0px] cursor-pointer"
+                    className="hidden text-white text-[25px] under_xl:block lg:mr-[100px] md:mr-[100px] sm:mr-[0px] cursor-pointer"
                 />
                 <Logo
                     darkTheme={props.darkTheme}
@@ -33,10 +33,10 @@ const Header = (props: IHeader) => {
                 />
                 <Search darkTheme={props.darkTheme} />
                 <Explore />
-                <div className="cursor-pointer hover:text-primary-hover under_lg:hidden">
+                <div className="cursor-pointer hover:text-primary-hover under_xl:hidden">
                     For Business
                 </div>
-                <div className="cursor-pointer hover:text-primary-hover under_lg:hidden">
+                <div className="cursor-pointer hover:text-primary-hover under_xl:hidden">
                     For Universities
                 </div>
                 <FontAwesomeIcon
