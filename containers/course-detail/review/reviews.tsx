@@ -4,7 +4,7 @@ import {
     faMagnifyingGlass,
     faChevronDown,
 } from '@fortawesome/free-solid-svg-icons'
-import ReviewItem from './components/review-item'
+import ReviewItemsList from './components/review-items-list'
 
 export interface IReviewDetailProps {}
 
@@ -20,6 +20,8 @@ export default function ReviewDetail() {
         'Two stars',
         'One star',
     ]
+
+    const data = [1, 2, 3]
 
     const onSelectRating = (item: string) => {
         setSelectedRating(item)
@@ -39,7 +41,6 @@ export default function ReviewDetail() {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     })
-
     return (
         <div className="w-[820px] ml-[110px] mt-5">
             <div className="font-semibold text-[26px]">Reviews</div>
@@ -94,7 +95,7 @@ export default function ReviewDetail() {
                     </div>
                 </div>
             </div>
-            <ReviewItem data={1} />
+            <ReviewItemsList data={data} />
         </div>
     )
 }

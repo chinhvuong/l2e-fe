@@ -9,13 +9,13 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CourseInfo_Preview } from '@/constants/interfaces'
-export interface ICourseListProps {
+export interface ICourseListSwiperProps {
     title?: string
     data: CourseInfo_Preview[]
     className?: string
 }
 
-export default function CourseList(props: ICourseListProps) {
+export default function CourseListSwiper(props: ICourseListSwiperProps) {
     // hide nextArrow using window.innerWidth
     const [disableLeftSwiper, setDisableLeftSwiper] = useState(true)
     const [disableRightSwiper, setDisableRightSwiper] = useState(false)
