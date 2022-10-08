@@ -1,6 +1,0 @@
-@import '@/styles/_mixins.scss';
-.table-customer__row {
-    & > td {
-        @apply text-center text-sm px-0;
-    }
-}

@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
     i18n: {
         defaultLocale: 'vi',
-        locales: ['en', 'vi', 'ja', 'zh-hans'],
+        locales: ['en', 'vi'],
         defaultNS: 'common',
         localePath: path.resolve('./locales/resources'),
         reloadOnPrerender:
