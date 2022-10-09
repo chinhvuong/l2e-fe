@@ -9,7 +9,7 @@ export interface CourseInfo {
     thumbnail: string
     title: string
     description: string
-    authors: string[]
+    author: string
     ratingScore: number
     ratings: string
     students: string
@@ -25,7 +25,7 @@ export interface CourseInfo_Preview {
     id: number
     thumbnail: string
     title: string
-    authors: string
+    author: string
     ratingScore: number
     ratings: string
     price: string

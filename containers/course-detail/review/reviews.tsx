@@ -75,7 +75,7 @@ export default function ReviewDetail() {
                             />
                         </div>
                         <div
-                            className={`w-[150px] py-[5px] rounded-[20px] border-[1px] border-black absolute z-10 mt-1 bg-white drop-shadow-lg ${
+                            className={`w-[150px] py-[5px] rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg ${
                                 !openRatingSelect && 'hidden'
                             }`}
                             ref={ref}

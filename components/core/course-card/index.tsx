@@ -23,7 +23,7 @@ export default function CourseCard(props: ICourseCardProps) {
                 {props.info.title}
             </div>
             <div className="font-light text-xs truncate">
-                {props.info.authors}
+                {props.info.author}
             </div>
             <RatingStar
                 id={props.info.id}

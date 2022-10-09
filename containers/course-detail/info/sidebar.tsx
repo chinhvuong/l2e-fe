@@ -40,12 +40,18 @@ export default function Sidebar() {
 
     return (
         <div
-            className={`under_2xl:hidden bg-white z-20 right-[30px] w-[320px] h-[860px] drop-shadow-xl ${
-                scrollY <= 500 ? 'absolute' : `fixed top-[20px]`
+            className={`under_2xl:hidden bg-white z-20 right-[30px] w-[320px] drop-shadow-xl ${
+                scrollY <= 500
+                    ? 'absolute h-[860px]'
+                    : `fixed top-[20px] h-[690px]`
             }`}
             style={scrollY > 500 ? { right: rightMargin } : {}}
         >
-            <div className="relative w-full video-preview">
+            <div
+                className={`relative w-full video-preview ${
+                    scrollY > 500 && 'hidden'
+                }`}
+            >
                 <img
                     src="/svgs/thumbnails/thumbnail_1.svg"
                     alt=""

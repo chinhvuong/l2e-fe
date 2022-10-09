@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Button from '@/components/core/button'
+import './style.scss'
 
 export interface ICourseContentProps {}
 
@@ -59,12 +60,10 @@ export default function CourseContent() {
             >
                 <div className="flex items-start w-[70%]">
                     <FontAwesomeIcon
-                        icon={
-                            !expandHeadingSections[0]
-                                ? faChevronDown
-                                : faChevronUp
-                        }
-                        className="pt-1 px-6"
+                        icon={faChevronUp}
+                        className={`mt-1 px-6 arrow-animation ease-in ${
+                            expandHeadingSections[0] ? 'rotate-0' : 'rotate-180'
+                        }`}
                     />
                     <div className="font-bold text-[18px]">
                         Day 1 - Beginner - Working with Variables in Python to

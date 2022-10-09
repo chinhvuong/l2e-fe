@@ -7,7 +7,7 @@ export const dataCourses_detail: CourseDetail = {
         title: 'MAC 1140 Precalculus Algebra',
         description:
             'Become a Full-Stack Web Developer with just ONE course. HTML, CSS, Javascript, Node, React, MongoDB, Web3 and DApps',
-        authors: ['Theresa Webb', 'Hữu An', 'Dianne Russell'],
+        author: 'Theresa Webb',
         ratingScore: 4.7,
         ratings: '123,123',
         students: '345,345',

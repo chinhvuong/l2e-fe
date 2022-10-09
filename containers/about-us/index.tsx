@@ -1,10 +1,32 @@
-import * as React from 'react'
+import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
-import CourseDetail from '../course-detail'
+import Select from '@/components/core/select'
 
 export default function AboutUsContainer() {
+    const [selectItem, setSelectItem] = useState(-1)
+    const [selectTitle, setSelectTitle] = useState('')
+
+    const renderItem = (data: string, index: number) => {
+        return (
+            <div
+                key={index}
+                className={`select-item-transition ${
+                    selectItem === index ? 'bg-pri-17 text-black' : ''
+                }`}
+                onClick={() => {
+                    setSelectItem(index)
+                    setSelectTitle(data)
+                }}
+            >
+                {data}
+            </div>
+        )
+    }
+
+    const data = ['abc', 'Tổng quỹ']
+
     return (
         <div>
             <div className="bg-second h-[550px] flex justify-center items-center text-white space-x-10 px-14">
@@ -42,7 +64,12 @@ export default function AboutUsContainer() {
                 />
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
-            <CourseDetail />
+            <Select
+                renderItem={renderItem}
+                data={data}
+                placeholder={'Tong quy'}
+                textShow={selectTitle}
+            />
         </div>
     )
 }

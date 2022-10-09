@@ -1,23 +1,15 @@
 import RatingStar from '@/components/core/course-card/rating-star'
 import { useState, useEffect } from 'react'
-import {
-    faChevronDown,
-    faChevronUp,
-    faThumbsUp,
-    faThumbsDown,
-} from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export interface IReviewItemProps {
     data: number
 }
 
-type LikeReviewState = 'like' | 'dislike' | 'none'
-
 export default function ReviewItem(props: IReviewItemProps) {
     const [elHeight, setElHeight] = useState(0)
     const [showFullContent, setShowFullContent] = useState(false)
-    const [isLiked, setIsLiked] = useState<LikeReviewState>('none')
 
     useEffect(() => {
         setElHeight(
@@ -25,10 +17,6 @@ export default function ReviewItem(props: IReviewItemProps) {
                 0,
         )
     }, [])
-
-    const onChangeLikeReview = (newState: LikeReviewState) => {
-        isLiked === newState ? setIsLiked('none') : setIsLiked(newState)
-    }
 
     return (
         <div>
@@ -99,26 +87,6 @@ export default function ReviewItem(props: IReviewItemProps) {
                             className="text-hyperlink"
                         />
                     </div>
-                </div>
-            </div>
-            <div className="ml-[80px] mt-4 space-y-3">
-                <div>Was this review helpful?</div>
-                <div className="flex items-center space-x-5">
-                    <FontAwesomeIcon
-                        icon={faThumbsUp}
-                        className={`text-[25px] cursor-pointer hover:text-green-500 ${
-                            isLiked === 'like' && 'text-green-500'
-                        }`}
-                        onClick={() => onChangeLikeReview('like')}
-                    />
-                    <FontAwesomeIcon
-                        icon={faThumbsDown}
-                        className={`text-[25px] cursor-pointer hover:text-red-500 ${
-                            isLiked === 'dislike' && 'text-red-500'
-                        }`}
-                        onClick={() => onChangeLikeReview('dislike')}
-                    />
-                    <div className="underline cursor-pointer">Report</div>
                 </div>
             </div>
         </div>
