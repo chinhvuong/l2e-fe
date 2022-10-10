@@ -5,10 +5,13 @@ import {
     faChevronDown,
 } from '@fortawesome/free-solid-svg-icons'
 import ReviewItemsList from './components/review-items-list'
+import { getReviews } from '@/state/course/selectors'
+import { useSelector } from 'react-redux'
 
 export interface IReviewDetailProps {}
 
 export default function ReviewDetail() {
+    const data = useSelector(getReviews)
     const [selectedRating, setSelectedRating] = useState('All ratings')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
@@ -20,8 +23,6 @@ export default function ReviewDetail() {
         'Two stars',
         'One star',
     ]
-
-    const data = [1, 2, 3]
 
     const onSelectRating = (item: string) => {
         setSelectedRating(item)

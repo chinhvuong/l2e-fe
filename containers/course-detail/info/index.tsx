@@ -4,11 +4,14 @@ import Label from '@/components/core/label'
 import * as React from 'react'
 import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CourseInfo as ICourseInfo } from '@/constants/interfaces'
 import Sidebar from './sidebar'
+import { useSelector } from 'react-redux'
+import { getCourseOverviewInfo } from '@/state/course/selectors'
 
-export default function CourseInfo({ info }: { info: ICourseInfo }) {
-    const data = [
+export default function CourseInfo() {
+    const data = useSelector(getCourseOverviewInfo)
+
+    const breadcrumb = [
         {
             text: 'Home',
             href: '/',
@@ -23,39 +26,36 @@ export default function CourseInfo({ info }: { info: ICourseInfo }) {
         <div className="bg-black flex justify-center">
             <div className="2xl:w-[1250px] px-[30px] py-10 flex justify-between relative">
                 <div className="w-[800px] text-white space-y-5">
-                    <Breadcrumb data={data} />
+                    <Breadcrumb data={breadcrumb} />
                     <div className="font-bold text-[35px] leading-[45px]">
-                        {info.title}
+                        {data.name}
                     </div>
-                    <div className="text-[20px]">{info.description}</div>
+                    <div className="text-[20px]">{data.overview}</div>
                     <div className="flex items-center space-x-4">
-                        {info.isBestseller && <Label type="bestseller" />}
-                        <Label type="engineer_construction" />
-                        <RatingStar
-                            id={info.id}
-                            ratingScore={info.ratingScore}
-                        />
+                        {data.isBestseller && <Label name="Bestseller" />}
+                        <Label name="IT" />
+                        <RatingStar id={data._id} ratingScore={data.rating} />
                         <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                            {`(${info.ratings} ratings)`}
+                            {`(${data.reviews.toLocaleString()} ratings)`}
                         </div>
                         <div className="text-[14px] font-light">
-                            {`${info.students} students`}
+                            {`${data.students.toLocaleString()} students`}
                         </div>
                     </div>
                     <div className="text-[14px] font-light">
                         Created by{' '}
                         <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
-                            {info.author}
+                            {data.owner}
                         </span>
                     </div>
                     <div className="flex text-[14px] font-light space-x-6">
                         <div className="flex items-center space-x-2">
                             <FontAwesomeIcon icon={faExclamationCircle} />
-                            <div>{`Last updated ${info.lastUpdated.getMonth()}/${info.lastUpdated.getFullYear()}`}</div>
+                            <div>{`Last updated ${data.updatedAt.getMonth()}/${data.updatedAt.getFullYear()}`}</div>
                         </div>
                         <div className="flex items-center space-x-2">
                             <FontAwesomeIcon icon={faGlobe} />
-                            <div>{info.language}</div>
+                            <div>{data.language}</div>
                         </div>
                     </div>
                 </div>

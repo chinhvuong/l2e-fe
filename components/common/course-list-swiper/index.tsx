@@ -132,7 +132,7 @@ export default function CourseList(props: ICourseListProps) {
                         return (
                             <CourseCard
                                 key={course.id}
-                                info={course}
+                                data={course}
                                 className="mx-[8px]"
                             />
                         )

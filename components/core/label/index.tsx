@@ -1,27 +1,27 @@
-import { Category } from '@/interfaces'
+import { CourseLabel } from '@/constants/types'
 import * as React from 'react'
 
 export interface ILabelProps {
-    type: Category | 'bestseller'
+    name: CourseLabel
     hidden?: boolean
 }
 
 export default function Label(props: ILabelProps) {
-    const title = {
-        it: 'IT',
-        health: 'Health',
-        language: 'Language',
-        business: 'Business',
-        management: 'Management',
-        personal_development: 'Personal & Development',
-        sales_marketing: 'Sales & Marketing',
-        engineer_construction: 'Engineering & Construction',
-        teaching_academics: 'Teaching & Academics',
-        bestseller: 'Bestseller',
+    const bkg_code = {
+        IT: 'it',
+        Health: 'health',
+        Language: 'language',
+        Business: 'business',
+        Management: 'management',
+        'Personal & Development': 'personal_development',
+        'Sales & Marketing': 'sales_marketing',
+        'Engineering & Construction': 'engineer_construction',
+        'Teaching & Academics': 'teaching_academics',
+        Bestseller: 'bestseller',
     }
 
     const getLabelBkgColor = () => {
-        return 'bg-' + props.type
+        return 'bg-' + bkg_code[props.name]
     }
 
     return (
@@ -30,7 +30,7 @@ export default function Label(props: ILabelProps) {
                 props.hidden && 'hidden'
             }`}
         >
-            {title[props.type]}
+            {props.name}
         </div>
     )
 }

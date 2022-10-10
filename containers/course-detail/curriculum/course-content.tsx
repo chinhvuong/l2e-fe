@@ -42,7 +42,7 @@ export default function CourseContent() {
 
     return (
         <div>
-            <div className="font-semibold text-[26px]">Course content</div>
+            <div className="font-semibold text-[26px]">Course content !!!</div>
             <div className="flex justify-between my-4">
                 <div>101 sections • 676 lectures • 64h 2m total length</div>
                 <div

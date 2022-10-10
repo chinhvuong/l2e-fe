@@ -1,10 +1,11 @@
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
+import { Rating } from '@/constants/interfaces'
 import { useState } from 'react'
 import ReviewItem from './review-item'
 
 export interface IReviewItemsListProps {
-    data: number[]
+    data: Rating[]
 }
 
 export default function ReviewItemsList(props: IReviewItemsListProps) {

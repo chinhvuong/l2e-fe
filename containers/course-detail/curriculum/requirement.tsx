@@ -5,10 +5,13 @@ import {
     faCircle,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useSelector } from 'react-redux'
+import { getRequirements } from '@/state/course/selectors'
 
 export interface IRequirementProps {}
 
 export default function Requirement() {
+    const data = useSelector(getRequirements)
     const [elHeight, setElHeight] = useState(0)
     const [showFullContent, setShowFullContent] = useState(false)
 
@@ -24,111 +27,17 @@ export default function Requirement() {
             }`}
         >
             <div className="font-semibold text-[26px]">Requirement</div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>{`No programming experience needed - I'll teach you everything you
-                need to know.`}</div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>{`A Mac or PC computer with access to the internet.`}</div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>
-                    {`No paid software required - I'll teach you how to use PyCharm,
-                Jupyter Notebooks and Google Colab.`}
-                </div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>
-                    {`I'll walk you through, step-by-step how to get all the software
-                installed and set up.`}
-                </div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>{`No programming experience needed - I'll teach you everything you
-                need to know. `}</div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>{`A Mac or PC computer with access to the internet.`}</div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>
-                    {`No paid software required - I'll teach you how to use PyCharm,
-                Jupyter Notebooks and Google Colab.`}
-                </div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>
-                    {`I'll walk you through, step-by-step how to get all the software
-                installed and set up.`}
-                </div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>{`No programming experience needed - I'll teach you everything you
-                need to know.`}</div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>{`A Mac or PC computer with access to the internet.`}</div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>
-                    {`No paid software required - I'll teach you how to use PyCharm,
-                Jupyter Notebooks and Google Colab.`}
-                </div>
-            </div>
-            <div className="flex items-start">
-                <FontAwesomeIcon
-                    icon={faCircle}
-                    className="text-[10px] pr-5 pt-2"
-                />
-                <div>
-                    {`I'll walk you through, step-by-step how to get all the software
-                installed and set up.`}
-                </div>
-            </div>
+            {data.map((item, index) => {
+                return (
+                    <div className="flex items-start" key={index}>
+                        <FontAwesomeIcon
+                            icon={faCircle}
+                            className="text-[10px] pr-5 pt-2"
+                        />
+                        <div>{item}</div>
+                    </div>
+                )
+            })}
             <div
                 className={`flex flex-col justify-end z-10 top-1 left-0 w-full h-full ${
                     elHeight <= 400 && 'hidden'

@@ -15,10 +15,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
+import { useSelector } from 'react-redux'
+import { getSidebarInfo } from '@/state/course/selectors'
 
 export interface ISidebarProps {}
 
 export default function Sidebar() {
+    const data = useSelector(getSidebarInfo)
     const [scrollY, setScrollY] = useState(0)
     const [rightMargin, setRightMargin] = useState('0px')
 
@@ -121,14 +124,14 @@ export default function Sidebar() {
                                 />
                             </div>
                             <div className="flex flex-col space-y-2">
-                                <span>60 hours on-demand video</span>
-                                <span>230 articles</span>
-                                <span>128 downloadable resources</span>
-                                <span>1 coding exercise</span>
-                                <span>Full lifetime access</span>
-                                <span>Access on mobile and TV</span>
-                                <span>Assignments</span>
-                                <span>Certificate of completion</span>
+                                <span>{data.duration}</span>
+                                <span>{data.articles}</span>
+                                <span>{data.resource}</span>
+                                <span>{data.exercise}</span>
+                                <span>{data.lifetimeAccess}</span>
+                                <span>{data.device}</span>
+                                <span>{data.assignments}</span>
+                                <span>{data.certificate}</span>
                             </div>
                         </div>
                     </div>

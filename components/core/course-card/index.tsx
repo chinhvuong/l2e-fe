@@ -5,7 +5,7 @@ import { CourseInfo_Preview } from '@/constants/interfaces'
 import Router from 'next/router'
 
 export interface ICourseCardProps {
-    info: CourseInfo_Preview
+    data: CourseInfo_Preview
     className: string
 }
 
@@ -18,22 +18,22 @@ export default function CourseCard(props: ICourseCardProps) {
             className={`space-y-3 cursor-pointer ${props.className}`}
             onClick={() => viewCourseDetail()}
         >
-            <img src={props.info.thumbnail} alt="" />
+            <img src={props.data.thumbnail} alt="" />
             <div className="font-semibold text-lg line-clamp-3 h-[80px]">
-                {props.info.title}
+                {props.data.title}
             </div>
             <div className="font-light text-xs truncate">
-                {props.info.author}
+                {props.data.author}
             </div>
             <RatingStar
-                id={props.info.id}
-                ratingScore={props.info.ratingScore}
-                ratings={props.info.ratings}
+                id={props.data.id}
+                ratingScore={props.data.ratingScore}
+                ratings={props.data.ratings}
             />
-            <div className="font-bold">{props.info.price}</div>
+            <div className="font-bold">{props.data.price}</div>
             <div className="flex gap-x-2">
-                <Label type="bestseller" hidden={!props.info.isBestseller} />
-                <Label type={props.info.category} />
+                <Label type="bestseller" hidden={!props.data.isBestseller} />
+                <Label type={props.data.category} />
             </div>
         </div>
     )

@@ -1,15 +1,27 @@
 import Button from '@/components/core/button'
 import RatingStar from '@/components/core/course-card/rating-star'
 import Label from '@/components/core/label'
-import { CourseInfo } from '@/constants/interfaces'
 import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
+import { courseCatagories } from '@/data/category'
+import { useSelector } from 'react-redux'
+import { getCourseLabelInfo } from '@/state/course/selectors'
 
 export interface ICourseLabelProps {}
 
-export default function CourseLabel({ info }: { info: CourseInfo }) {
+export default function CourseLabel() {
     const [scrollY, setScrollY] = useState(0)
+    const data = useSelector(getCourseLabelInfo)
+
+    const getCourseCategory = () => {
+        for (let i = 0; i < courseCatagories.length; i++) {
+            if (courseCatagories[i]._id === data.category) {
+                return courseCatagories[i].name
+            }
+        }
+        return 'IT'
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -34,26 +46,23 @@ export default function CourseLabel({ info }: { info: CourseInfo }) {
             <div className="flex items-center justify-between">
                 <div className="space-y-1">
                     <div className="font-bold text-white text-[18px]">
-                        MAC 1140 Precalculus Algebra
+                        {data.name}
                     </div>
                     <div className="flex items-center space-x-4">
-                        {info.isBestseller && <Label type="bestseller" />}
-                        <Label type="engineer_construction" />
-                        <RatingStar
-                            id={info.id}
-                            ratingScore={info.ratingScore}
-                        />
+                        {data.isBestseller && <Label name="Bestseller" />}
+                        <Label name={getCourseCategory()} />
+                        <RatingStar id={data._id} ratingScore={data.rating} />
                         <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                            {`(${info.ratings} ratings)`}
+                            {`(${data.reviews.toLocaleString()} ratings)`}
                         </div>
                         <div className="text-[14px] font-light">
-                            {`${info.students} students`}
+                            {`${data.students} students`}
                         </div>
                     </div>
                 </div>
                 <div className="2xl:hidden flex items-center space-x-3">
                     <div className="font-semibold text-[24px] text-white">
-                        $14.81
+                        {data.price}
                     </div>
                     <Button className="btn-primary w-full">
                         <div className="text-white font-medium text-[20px]">

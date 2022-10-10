@@ -52,7 +52,7 @@ export default function SameAuthorCourses() {
                     return (
                         <CourseCard
                             key={course.id}
-                            info={course}
+                            data={course}
                             className="w-[250px]"
                         />
                     )

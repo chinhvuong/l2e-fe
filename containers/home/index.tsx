@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
-import { dataCourses_preview } from '@/data/data-course-preview'
+import { dataCourses_preview } from '@/data/course-preview'
 import CourseListSwiper from '@/components/common/course-list-swiper'
 
 const HomePageContainer = () => {

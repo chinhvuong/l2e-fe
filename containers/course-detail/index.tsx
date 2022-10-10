@@ -1,9 +1,8 @@
-import { dataCourses_detail } from '@/data/data-course-detail'
 import { useEffect, useRef } from 'react'
 import Curriculum from './curriculum'
 import CourseInfo from './info'
 import CourseLabel from './info/course-label'
-import InstructorList from './instructor'
+import Instructor from './instructor'
 import Recommend from './recommend'
 import Review from './review'
 
@@ -25,10 +24,10 @@ export default function CourseDetailContainer() {
 
     return (
         <div>
-            <CourseLabel info={dataCourses_detail.info} />
-            <CourseInfo info={dataCourses_detail.info} />
+            <CourseLabel />
+            <CourseInfo />
             <Curriculum />
-            <InstructorList />
+            <Instructor />
             <Review />
             <Recommend />
         </div>

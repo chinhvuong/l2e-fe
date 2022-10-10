@@ -51,7 +51,7 @@ export default function AlsoBought() {
                     return (
                         <CourseCard
                             key={course.id}
-                            info={course}
+                            data={course}
                             className="w-[250px]"
                         />
                     )
