@@ -23,7 +23,7 @@ export default function RatingStar(props: IRatingStarProps) {
                     aStar.push(
                         <FontAwesomeIcon
                             icon={faStar}
-                            className="text-star"
+                            className="text-star sm:text-xs"
                             key={props.id + i}
                         />,
                     )
@@ -34,7 +34,7 @@ export default function RatingStar(props: IRatingStarProps) {
                     emptyStar.push(
                         <FontAwesomeIcon
                             icon={faEmptyStar}
-                            className="text-star"
+                            className="text-star sm:text-xs"
                             key={props.id + i}
                         />,
                     )
@@ -46,7 +46,7 @@ export default function RatingStar(props: IRatingStarProps) {
                     {halfStar && (
                         <FontAwesomeIcon
                             icon={faStarHalfStroke}
-                            className="text-star"
+                            className="text-star sm:text-xs"
                         />
                     )}
                     {emptyStar.map((star) => star)}

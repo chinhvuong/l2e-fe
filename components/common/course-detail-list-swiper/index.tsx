@@ -15,15 +15,15 @@ export interface ICourseListProps {
     className?: string
 }
 
-export default function CourseListSwiper(props: ICourseListProps) {
+export default function CourseDetailListSwiper(props: ICourseListProps) {
     const [disableLeftSwiper, setDisableLeftSwiper] = useState(true)
     const [disableRightSwiper, setDisableRightSwiper] = useState(false)
-    const [slidesToShow, setSlidesToShow] = useState(5)
+    const [slidesToShow, setSlidesToShow] = useState(3)
     const PrevArrow = (props: any) => {
         const { onClick } = props
         return (
             <div
-                className={`w-fit absolute top-[35px] lg:top-[32px] md:top-[41px] sm:top-[54px] left-[-15px] z-10 cursor-pointer ${
+                className={`w-fit absolute top-[45px] lg:top-[32px] md:top-[41px] sm:top-[54px] left-[-15px] z-10 cursor-pointer ${
                     disableLeftSwiper ? 'hidden' : 'block'
                 }`}
                 onClick={onClick}
@@ -39,7 +39,7 @@ export default function CourseListSwiper(props: ICourseListProps) {
         const { onClick } = props
         return (
             <div
-                className={`w-fit absolute top-[35px] lg:top-[32px] md:top-[41px] sm:top-[54px] right-[-15px] z-10 cursor-pointer ${
+                className={`w-fit absolute top-[45px] lg:top-[32px] md:top-[41px] sm:top-[54px] right-[-15px] z-10 cursor-pointer ${
                     disableRightSwiper ? 'hidden' : 'block'
                 }`}
                 onClick={onClick}
@@ -56,7 +56,7 @@ export default function CourseListSwiper(props: ICourseListProps) {
         nextArrow: <NextArrow />,
         infinite: false,
         speed: 200,
-        slidesToShow: 5,
+        slidesToShow: 3,
         slidesToScroll: 1,
         initialSlide: 0,
         responsive: [
@@ -76,12 +76,6 @@ export default function CourseListSwiper(props: ICourseListProps) {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 1280,
-                settings: {
-                    slidesToShow: 4,
                 },
             },
         ],
@@ -105,18 +99,14 @@ export default function CourseListSwiper(props: ICourseListProps) {
             setSlidesToShow(1)
         } else if (window.innerWidth < 768) {
             setSlidesToShow(2)
-        } else if (window.innerWidth < 1024) {
-            setSlidesToShow(3)
-        } else if (window.innerWidth < 1280) {
-            setSlidesToShow(4)
         } else {
-            setSlidesToShow(5)
+            setSlidesToShow(3)
         }
     }, [])
     return (
         <div className={props.className}>
             <div className="flex justify-center">
-                <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
+                <div className="2xl:w-[805px] xl:w-[805px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
                     <div className="font-semibold text-[30px]">
                         {props.title}
                     </div>
@@ -125,7 +115,7 @@ export default function CourseListSwiper(props: ICourseListProps) {
             <div className="flex items-center flex-col">
                 <Slider
                     {...settings}
-                    className="2xl:max-w-[1150px] xl:max-w-[900px] lg:max-w-[650px] md:max-w-[500px] sm:max-w-[300px]"
+                    className="2xl:max-w-[820px] xl:max-w-[820px] lg:max-w-[650px] md:max-w-[500px] sm:max-w-[300px]"
                 >
                     {props.data.map((course) => {
                         return (

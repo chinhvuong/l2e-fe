@@ -6,7 +6,7 @@ import '@/styles/base.scss'
 import '@/styles/utils.scss'
 import '@/styles/typography.scss'
 import { Provider } from 'react-redux'
-import { store } from '@/state'
+import { store } from '@/store'
 import { AppProps } from 'next/app'
 import Layout from '@/layout'
 type NextPageWithLayout = NextPage & {

@@ -6,17 +6,17 @@ export interface IStudentFeedbackProps {}
 
 export default function StudentFeedback() {
     return (
-        <div className="w-[820px] ml-[10px] space-y-5 mt-5">
+        <div>
             <div className="font-semibold text-[26px]">
                 ??? Student feedback
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-3">
                 <div className="flex flex-col items-center">
-                    <div className="text-primary text-[70px] font-bold leading-[95px]">
+                    <div className="text-primary text-[70px] sm:text-[50px] font-bold leading-[95px]">
                         4.7
                     </div>
                     <RatingStar id={4.7} ratingScore={4.7} hideScore />
-                    <div className="text-primary font-bold mt-1">
+                    <div className="text-primary font-bold mt-1 sm:text-[12px]">
                         Course rating
                     </div>
                 </div>

@@ -1,5 +1,5 @@
+import CourseDetailListSwiper from '@/components/common/course-detail-list-swiper'
 import Button from '@/components/core/button'
-import CourseCard from '@/components/core/course-card'
 import { CourseInfo_Preview } from '@/constants/interfaces'
 import * as React from 'react'
 
@@ -16,7 +16,7 @@ export default function AlsoBought() {
             ratings: '123,123',
             price: '$8.99',
             isBestseller: true,
-            category: 'management',
+            category: 'Management',
         },
         {
             id: 2,
@@ -27,7 +27,7 @@ export default function AlsoBought() {
             ratings: '123,123',
             price: '$4.23',
             isBestseller: false,
-            category: 'it',
+            category: 'IT',
         },
         {
             id: 3,
@@ -38,7 +38,7 @@ export default function AlsoBought() {
             ratings: '123,123',
             price: '$5.32',
             isBestseller: false,
-            category: 'language',
+            category: 'Language',
         },
     ]
     return (
@@ -46,17 +46,11 @@ export default function AlsoBought() {
             <div className="font-semibold text-[26px]">
                 Students also bought
             </div>
-            <div className="flex items-center w-fit space-x-5 mt-5 mb-10">
-                {dataCourses_preview.map((course) => {
-                    return (
-                        <CourseCard
-                            key={course.id}
-                            data={course}
-                            className="w-[250px]"
-                        />
-                    )
-                })}
-            </div>
+            <CourseDetailListSwiper
+                data={dataCourses_preview}
+                title="Students are viewing"
+                className="w-fit"
+            />
             <Button className="btn-primary-outline w-full">
                 <div className="font-medium text-[16px]">Report abuse</div>
             </Button>

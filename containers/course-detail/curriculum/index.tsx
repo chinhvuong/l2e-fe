@@ -8,15 +8,11 @@ export interface ICurriculumProps {}
 
 export default function Curriculum({}) {
     return (
-        <div className="flex justify-center">
-            <div className="2xl:w-[1250px]">
-                <div className="w-[820px] mx-[30px] space-y-5 mt-5">
-                    <WhatYouWillLearn />
-                    <CourseContent />
-                    <Requirement />
-                    <Description />
-                </div>
-            </div>
+        <div className="space-y-7">
+            <WhatYouWillLearn />
+            <CourseContent />
+            <Requirement />
+            <Description />
         </div>
     )
 }

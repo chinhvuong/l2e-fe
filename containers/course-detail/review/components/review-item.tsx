@@ -1,23 +1,14 @@
 import RatingStar from '@/components/core/course-card/rating-star'
-import { useState, useEffect } from 'react'
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
 import { Rating } from '@/constants/interfaces'
+import ShowMore from '@/components/core/show-more'
 
 export interface IReviewItemProps {
     data: Rating
 }
 
 export default function ReviewItem(props: IReviewItemProps) {
-    const [elHeight, setElHeight] = useState(0)
-    const [showFullContent, setShowFullContent] = useState(false)
-
-    useEffect(() => {
-        setElHeight(
-            document.getElementById(`instructor-${props.data._id}`)
-                ?.scrollHeight ?? 0,
-        )
-    }, [])
+    const [elHeight, setElHeight] = useState('')
 
     const getTimeAgo = () => {
         const yearAgo =
@@ -66,40 +57,15 @@ export default function ReviewItem(props: IReviewItemProps) {
                 </div>
             </div>
             <div
-                id={`instructor-${props.data._id}`}
-                className={`space-y-3 overflow-hidden relative ml-[80px] ${
-                    elHeight > 200 && !showFullContent && 'h-[200px]'
-                }`}
+                id={`review-${props.data._id}`}
+                className={`space-y-3 overflow-hidden relative ml-[80px] ${elHeight}`}
             >
                 <div className="text-justify">{props.data.comment}</div>
-                <div
-                    className={`flex flex-col justify-end z-10 top-1 left-0 w-full h-full ${
-                        elHeight <= 200 && 'hidden'
-                    } ${!showFullContent && 'absolute'} `}
-                >
-                    <div
-                        className={`h-full ${
-                            !showFullContent &&
-                            'bg-gradient-to-b from-transparent to-white'
-                        }`}
-                    ></div>
-                    <div
-                        className={`cursor-pointer ${
-                            !showFullContent && 'pb-5 bg-white'
-                        }`}
-                        onClick={() => setShowFullContent(!showFullContent)}
-                    >
-                        <span className="text-hyperlink font-bold mr-2">
-                            Show {!showFullContent ? 'more' : 'less'}
-                        </span>
-                        <FontAwesomeIcon
-                            icon={
-                                !showFullContent ? faChevronDown : faChevronUp
-                            }
-                            className="text-hyperlink"
-                        />
-                    </div>
-                </div>
+                <ShowMore
+                    el={`review-${props.data._id}`}
+                    elHeightPreview={200}
+                    changeElHeight={setElHeight}
+                />
             </div>
         </div>
     )

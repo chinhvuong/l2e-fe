@@ -1,32 +1,21 @@
-import { useState, useEffect } from 'react'
-import {
-    faCheck,
-    faChevronDown,
-    faChevronUp,
-} from '@fortawesome/free-solid-svg-icons'
+import { useState } from 'react'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useSelector } from 'react-redux'
-import { getWhatYouWillLearn } from '@/state/course/selectors'
+import { getWhatYouWillLearn } from '@/store/course/selectors'
+import ShowMore from '@/components/core/show-more'
 
 export interface IWhatYouWillLearnProps {}
 
 export default function WhatYouWillLearn() {
     const data = useSelector(getWhatYouWillLearn)
-    const [elHeight, setElHeight] = useState(0)
+    const [elHeight, setElHeight] = useState('')
     const [showFullContent, setShowFullContent] = useState(false)
-
-    useEffect(() => {
-        setElHeight(
-            document.getElementById('what-you-will-learn')?.scrollHeight ?? 0,
-        )
-    }, [])
 
     return (
         <div
             id="what-you-will-learn"
-            className={`border border-border-box w-full space-y-3 py-6 px-9 overflow-hidden relative ${
-                elHeight > 400 && !showFullContent && 'h-[400px]'
-            }`}
+            className={`w-full space-y-3 overflow-hidden relative ${elHeight}`}
         >
             <span className="font-semibold text-[26px]">What you’ll learn</span>
             <div className="flex flex-wrap justify-between">
@@ -38,7 +27,7 @@ export default function WhatYouWillLearn() {
                         >
                             <FontAwesomeIcon icon={faCheck} className="mt-1" />
                             <div
-                                className={`w-[330px] text-justify ${
+                                className={`w-[360px] lg:w-[270px] md:w-[200px] md:text-left text-justify ${
                                     !showFullContent && 'line-clamp-3'
                                 }`}
                             >
@@ -48,32 +37,12 @@ export default function WhatYouWillLearn() {
                     )
                 })}
             </div>
-            <div
-                className={`flex flex-col justify-end z-10 top-1 left-0 w-full h-full ${
-                    elHeight <= 400 && 'hidden'
-                } ${!showFullContent && 'absolute'} `}
-            >
-                <div
-                    className={`h-full ${
-                        !showFullContent &&
-                        'bg-gradient-to-b from-transparent to-white'
-                    }`}
-                ></div>
-                <div
-                    className={`cursor-pointer ${
-                        !showFullContent && 'pl-9 pb-9 bg-white'
-                    }`}
-                    onClick={() => setShowFullContent(!showFullContent)}
-                >
-                    <span className="text-hyperlink font-bold mr-2">
-                        Show {!showFullContent ? 'more' : 'less'}
-                    </span>
-                    <FontAwesomeIcon
-                        icon={!showFullContent ? faChevronDown : faChevronUp}
-                        className="text-hyperlink"
-                    />
-                </div>
-            </div>
+            <ShowMore
+                el="what-you-will-learn"
+                elHeightPreview={400}
+                changeElHeight={setElHeight}
+                setShowFullContent={setShowFullContent}
+            />
         </div>
     )
 }

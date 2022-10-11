@@ -32,8 +32,8 @@ export default function CourseCard(props: ICourseCardProps) {
             />
             <div className="font-bold">{props.data.price}</div>
             <div className="flex gap-x-2">
-                <Label type="bestseller" hidden={!props.data.isBestseller} />
-                <Label type={props.data.category} />
+                <Label name="Bestseller" hidden={!props.data.isBestseller} />
+                <Label name={props.data.category} />
             </div>
         </div>
     )

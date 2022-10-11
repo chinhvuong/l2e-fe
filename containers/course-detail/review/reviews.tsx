@@ -1,57 +1,40 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faMagnifyingGlass,
     faChevronDown,
+    faStar,
 } from '@fortawesome/free-solid-svg-icons'
 import ReviewItemsList from './components/review-items-list'
-import { getReviews } from '@/state/course/selectors'
+import { getReviews } from '@/store/course/selectors'
 import { useSelector } from 'react-redux'
+import useOutsideClick from '@/hooks/useOutSideClick'
 
 export interface IReviewDetailProps {}
 
 export default function ReviewDetail() {
     const data = useSelector(getReviews)
-    const [selectedRating, setSelectedRating] = useState('All ratings')
+    const [selectedRating, setSelectedRating] = useState('All')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
-    const ref = useRef<HTMLDivElement>(null)
-    const ratingsValue = [
-        'All ratings',
-        'Five stars',
-        'Four stars',
-        'Three stars',
-        'Two stars',
-        'One star',
-    ]
+    const clickOutSideRef = useRef(null)
+    const ratingsValue = ['All', '5', '4', '3', '2', '1']
 
     const onSelectRating = (item: string) => {
         setSelectedRating(item)
         setOpenRatingSelect(false)
     }
 
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent): void {
-            if (ref.current && !ref.current.contains(event.target as Node)) {
-                setOpenRatingSelect(false)
-            }
-        }
-        // Bind the event listener
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
+    useOutsideClick(clickOutSideRef, () => {
+        setOpenRatingSelect(false)
     })
     return (
-        <div className="w-[820px] ml-[10px] mt-5">
+        <div>
             <div className="font-semibold text-[26px]">Reviews</div>
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4 mr-4">
-                    <div
-                        className={`w-[560px] py-[10px] rounded-[80px] pl-[20px] border-[1px] border-black`}
-                    >
+                    <div className="w-[560px] lg:w-[400px] md:w-[280px] sm:w-[180px] py-[10px] rounded-[80px] pl-[20px] border-[1px] border-black">
                         <input
-                            className="w-[350px] outline-none"
+                            className="w-[350px] lg:w-[290px] md:w-[170px] sm:w-[70px]  outline-none"
                             placeholder="Search..."
                         ></input>
                     </div>
@@ -61,25 +44,32 @@ export default function ReviewDetail() {
                     />
                 </div>
                 <div className="mb-8">
-                    <div className="font-bold pb-2 pl-3">Filter ratings</div>
-                    <div>
-                        <div
-                            className="flex items-center justify-between w-[150px] py-[10px] rounded-[80px] border-[1px] border-black px-[20px] cursor-pointer hover:bg-border-box"
-                            onClick={() =>
-                                setOpenRatingSelect(!openRatingSelect)
-                            }
-                        >
-                            <div>{selectedRating}</div>
+                    <div className="font-bold pb-2 pl-3 sm:text-xs sm:mt-2">
+                        Filter ratings
+                    </div>
+                    <div
+                        onClick={() => setOpenRatingSelect(!openRatingSelect)}
+                        ref={clickOutSideRef}
+                    >
+                        <div className="flex items-center justify-between w-[150px] sm:w-[100px] py-[10px] rounded-[80px] border-[1px] border-black px-[20px] cursor-pointer hover:bg-border-box">
+                            <div className="flex items-center space-x-2">
+                                <div>{selectedRating}</div>
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={`text-star sm:text-xs pb-1 ${
+                                        selectedRating === 'All' && 'hidden'
+                                    }`}
+                                />
+                            </div>
                             <FontAwesomeIcon
                                 icon={faChevronDown}
                                 className="text-[12px]"
                             />
                         </div>
                         <div
-                            className={`w-[150px] py-[5px] rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg ${
+                            className={`w-[150px] sm:w-[100px] py-[5px] rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg ${
                                 !openRatingSelect && 'hidden'
                             }`}
-                            ref={ref}
                         >
                             {ratingsValue.map((item) => {
                                 return (
@@ -88,7 +78,15 @@ export default function ReviewDetail() {
                                         key={item}
                                         onClick={() => onSelectRating(item)}
                                     >
-                                        {item}
+                                        <div className="flex items-center space-x-2">
+                                            <span>{item}</span>
+                                            <FontAwesomeIcon
+                                                icon={faStar}
+                                                className={`text-star sm:text-xs pb-1 ${
+                                                    item === 'All' && 'hidden'
+                                                }`}
+                                            />
+                                        </div>
                                     </div>
                                 )
                             })}

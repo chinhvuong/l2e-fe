@@ -6,7 +6,7 @@ import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Sidebar from './sidebar'
 import { useSelector } from 'react-redux'
-import { getCourseOverviewInfo } from '@/state/course/selectors'
+import { getCourseOverviewInfo } from '@/store/course/selectors'
 
 export default function CourseInfo() {
     const data = useSelector(getCourseOverviewInfo)
@@ -24,7 +24,7 @@ export default function CourseInfo() {
 
     return (
         <div className="bg-black flex justify-center">
-            <div className="2xl:w-[1250px] px-[30px] py-10 flex justify-between relative">
+            <div className="2xl:w-[1250px] lg:w-[700px] md:w-[560px] sm:w-[450px] px-[30px] py-10 flex justify-between relative">
                 <div className="w-[800px] text-white space-y-5">
                     <Breadcrumb data={breadcrumb} />
                     <div className="font-bold text-[35px] leading-[45px]">

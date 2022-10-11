@@ -22,10 +22,12 @@ const Header = (props: IHeader) => {
                 props.darkTheme ? 'bg-second' : 'bg-white'
             }`}
         >
-            <div className="px-14 flex flex-wrap justify-between items-center 2xl:justify-center 2xl:space-x-[35px]">
+            <div className="px-14 flex flex-wrap justify-around items-center 2xl:justify-center 2xl:space-x-[25px] xl:space-x-[15px] under_xl:justify-between">
                 <FontAwesomeIcon
                     icon={faBars}
-                    className="hidden text-white text-[25px] under_xl:block lg:mr-[100px] md:mr-[100px] sm:mr-[0px] cursor-pointer"
+                    className={`hidden text-[25px] under_xl:block lg:mr-[100px] md:mr-[100px] sm:mr-[0px] cursor-pointer ${
+                        props.darkTheme ? 'text-white' : 'text-black'
+                    }`}
                 />
                 <Logo
                     darkTheme={props.darkTheme}
@@ -41,7 +43,9 @@ const Header = (props: IHeader) => {
                 </div>
                 <FontAwesomeIcon
                     icon={faBars}
-                    className="hidden text-second text-[25px] sm:block sm:mr-[0px]"
+                    className={`hidden text-[25px] sm:block sm:mr-[0px] ${
+                        !props.darkTheme ? 'text-white' : 'text-black'
+                    }`}
                 />
                 <Button className="btn-primary sm:hidden">
                     Connect Wallet

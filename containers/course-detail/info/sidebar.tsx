@@ -16,7 +16,7 @@ import {
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
 import { useSelector } from 'react-redux'
-import { getSidebarInfo } from '@/state/course/selectors'
+import { getSidebarInfo } from '@/store/course/selectors'
 
 export interface ISidebarProps {}
 
