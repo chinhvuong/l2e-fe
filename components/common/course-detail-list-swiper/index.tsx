@@ -23,7 +23,7 @@ export default function CourseDetailListSwiper(props: ICourseListProps) {
         const { onClick } = props
         return (
             <div
-                className={`w-fit absolute top-[45px] lg:top-[32px] md:top-[41px] sm:top-[54px] left-[-15px] z-10 cursor-pointer ${
+                className={`w-fit absolute top-[45px] lg:top-[32px] md:top-[41px] sm:top-[54px] left-[-30px] z-10 cursor-pointer ${
                     disableLeftSwiper ? 'hidden' : 'block'
                 }`}
                 onClick={onClick}
@@ -39,7 +39,7 @@ export default function CourseDetailListSwiper(props: ICourseListProps) {
         const { onClick } = props
         return (
             <div
-                className={`w-fit absolute top-[45px] lg:top-[32px] md:top-[41px] sm:top-[54px] right-[-15px] z-10 cursor-pointer ${
+                className={`w-fit absolute top-[45px] lg:top-[32px] md:top-[41px] sm:top-[54px] right-[-12px] z-10 cursor-pointer ${
                     disableRightSwiper ? 'hidden' : 'block'
                 }`}
                 onClick={onClick}
@@ -105,7 +105,9 @@ export default function CourseDetailListSwiper(props: ICourseListProps) {
     }, [])
     return (
         <div className={props.className}>
-            <div className="flex justify-center">
+            <div
+                className={`flex justify-center ${props.title ? 'hidden' : ''}`}
+            >
                 <div className="2xl:w-[805px] xl:w-[805px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
                     <div className="font-semibold text-[30px]">
                         {props.title}
@@ -122,7 +124,7 @@ export default function CourseDetailListSwiper(props: ICourseListProps) {
                             <CourseCard
                                 key={course.id}
                                 data={course}
-                                className="mx-[8px]"
+                                className="mr-[16px]"
                             />
                         )
                     })}

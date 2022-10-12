@@ -9,16 +9,15 @@ export interface IWhatYouWillLearnProps {}
 
 export default function WhatYouWillLearn() {
     const data = useSelector(getWhatYouWillLearn)
-    const [elHeight, setElHeight] = useState('')
     const [showFullContent, setShowFullContent] = useState(false)
 
     return (
         <div
             id="what-you-will-learn"
-            className={`w-full space-y-3 overflow-hidden relative ${elHeight}`}
+            className="w-full space-y-3 overflow-hidden relative"
         >
             <span className="font-semibold text-[26px]">What you’ll learn</span>
-            <div className="flex flex-wrap justify-between">
+            <div className="flex flex-wrap justify-between under_lg:flex-col">
                 {data.map((item, index) => {
                     return (
                         <div
@@ -27,7 +26,7 @@ export default function WhatYouWillLearn() {
                         >
                             <FontAwesomeIcon icon={faCheck} className="mt-1" />
                             <div
-                                className={`w-[360px] lg:w-[270px] md:w-[200px] md:text-left text-justify ${
+                                className={`w-[360px] lg:w-[270px] under_lg:w-full md:text-left text-justify ${
                                     !showFullContent && 'line-clamp-3'
                                 }`}
                             >
@@ -40,7 +39,6 @@ export default function WhatYouWillLearn() {
             <ShowMore
                 el="what-you-will-learn"
                 elHeightPreview={400}
-                changeElHeight={setElHeight}
                 setShowFullContent={setShowFullContent}
             />
         </div>

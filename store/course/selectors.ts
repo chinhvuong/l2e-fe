@@ -27,11 +27,16 @@ export const getCourseOverviewInfo = (state: RootState) => {
         category: state.course.courseDetail.category,
         language: state.course.courseDetail.language,
         updatedAt: state.course.courseDetail.updatedAt,
+        thumbnail: state.course.courseDetail.thumbnail,
     }
 }
 
 export const getSidebarInfo = (state: RootState) => {
-    return state.course.courseDetail.include
+    return {
+        price: state.course.courseDetail.price,
+        thumbnail: state.course.courseDetail.thumbnail,
+        include: state.course.courseDetail.include,
+    }
 }
 
 export const getWhatYouWillLearn = (state: RootState) => {
@@ -48,4 +53,8 @@ export const getDescription = (state: RootState) => {
 
 export const getReviews = (state: RootState) => {
     return state.course.reviews
+}
+
+export const getCourseIncludeList = (state: RootState) => {
+    return state.course.courseDetail.include
 }

@@ -6,7 +6,7 @@ import Router from 'next/router'
 
 export interface ICourseCardProps {
     data: CourseInfo_Preview
-    className: string
+    className?: string
 }
 
 export default function CourseCard(props: ICourseCardProps) {

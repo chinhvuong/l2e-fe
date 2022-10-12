@@ -1,5 +1,5 @@
 import RatingStar from '@/components/core/course-card/rating-star'
-import { useState } from 'react'
+import * as React from 'react'
 import { Rating } from '@/constants/interfaces'
 import ShowMore from '@/components/core/show-more'
 
@@ -8,8 +8,6 @@ export interface IReviewItemProps {
 }
 
 export default function ReviewItem(props: IReviewItemProps) {
-    const [elHeight, setElHeight] = useState('')
-
     const getTimeAgo = () => {
         const yearAgo =
             new Date().getFullYear() - props.data.updatedAt.getFullYear()
@@ -58,13 +56,12 @@ export default function ReviewItem(props: IReviewItemProps) {
             </div>
             <div
                 id={`review-${props.data._id}`}
-                className={`space-y-3 overflow-hidden relative ml-[80px] ${elHeight}`}
+                className="space-y-3 overflow-hidden relative ml-[80px]"
             >
                 <div className="text-justify">{props.data.comment}</div>
                 <ShowMore
                     el={`review-${props.data._id}`}
                     elHeightPreview={200}
-                    changeElHeight={setElHeight}
                 />
             </div>
         </div>

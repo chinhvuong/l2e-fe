@@ -10,7 +10,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$8.99',
         isBestseller: true,
-        category: 'management',
+        category: 'Management',
     },
     {
         id: 2,
@@ -21,7 +21,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$4.23',
         isBestseller: false,
-        category: 'it',
+        category: 'IT',
     },
     {
         id: 3,
@@ -32,7 +32,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$5.32',
         isBestseller: false,
-        category: 'language',
+        category: 'Language',
     },
     {
         id: 4,
@@ -43,7 +43,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$4.34',
         isBestseller: true,
-        category: 'engineer_construction',
+        category: 'Engineering & Construction',
     },
     {
         id: 5,
@@ -54,7 +54,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$5.76',
         isBestseller: true,
-        category: 'business',
+        category: 'Business',
     },
     {
         id: 6,
@@ -65,7 +65,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$5.32',
         isBestseller: false,
-        category: 'language',
+        category: 'Language',
     },
     {
         id: 7,
@@ -76,7 +76,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$5.76',
         isBestseller: true,
-        category: 'sales_marketing',
+        category: 'Sales & Marketing',
     },
     {
         id: 8,
@@ -87,7 +87,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$8.99',
         isBestseller: false,
-        category: 'teaching_academics',
+        category: 'Teaching & Academics',
     },
     {
         id: 9,
@@ -98,7 +98,7 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$4.23',
         isBestseller: false,
-        category: 'engineer_construction',
+        category: 'Engineering & Construction',
     },
     {
         id: 10,
@@ -109,6 +109,6 @@ export const dataCourses_preview: CourseInfo_Preview[] = [
         ratings: '123,123',
         price: '$4.23',
         isBestseller: true,
-        category: 'personal_development',
+        category: 'Personal & Development',
     },
 ]

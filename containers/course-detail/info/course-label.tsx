@@ -41,10 +41,10 @@ export default function CourseLabel() {
         <div
             className={`h-[80px] w-full bg-black z-20 py-3 px-[30px] 2xl:top-0 under_2xl:bottom-0 under_2xl:fixed ${
                 scrollY <= 500 ? 'hidden' : 'sticky'
-            }`}
+            } under_lg:hidden`}
         >
             <div className="flex items-center justify-between">
-                <div className="space-y-1 w-[650px] lg:w-[450px] md:hidden sm:hidden">
+                <div className="space-y-1 w-[650px] lg:w-[450px]">
                     <div className="font-bold text-white text-[18px] line-clamp-1">
                         {data.name}
                     </div>
@@ -68,7 +68,7 @@ export default function CourseLabel() {
                     <div className="font-semibold text-[24px] text-white">
                         {data.price}
                     </div>
-                    <Button className="btn-primary w-full">
+                    <Button className="btn-primary under_lg:w-full">
                         <div className="text-white font-medium text-[20px]">
                             Enroll
                         </div>

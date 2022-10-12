@@ -54,7 +54,7 @@ export const dataCourses_detail: CourseDetail = {
     include: {
         duration: '65 hours on-demand video',
         resource: '49 downloadable resources',
-        assignments: 'Certificate of completion',
+        assignments: 'Assignments',
         certificate: 'Certificate of completion',
         lifetimeAccess: 'Full lifetime access',
         device: 'Access on mobile and TV',

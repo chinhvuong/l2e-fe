@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import * as React from 'react'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useSelector } from 'react-redux'
@@ -9,13 +9,9 @@ export interface IRequirementProps {}
 
 export default function Requirement() {
     const data = useSelector(getRequirements)
-    const [elHeight, setElHeight] = useState('')
 
     return (
-        <div
-            id="requirement"
-            className={`space-y-3 overflow-hidden relative ${elHeight}`}
-        >
+        <div id="requirement" className="space-y-3 overflow-hidden relative">
             <div className="font-semibold text-[26px]">Requirement</div>
             {data.map((item, index) => {
                 return (
@@ -28,11 +24,7 @@ export default function Requirement() {
                     </div>
                 )
             })}
-            <ShowMore
-                el="requirement"
-                elHeightPreview={400}
-                changeElHeight={setElHeight}
-            />
+            <ShowMore el="requirement" elHeightPreview={400} />
         </div>
     )
 }

@@ -12,11 +12,12 @@ export default function SameAuthorCourses() {
                 More course by{' '}
                 <span className="text-hyperlink">Dr. Angela Vu </span>
             </div>
-            <CourseDetailListSwiper
-                data={dataCourses_preview}
-                title="Students are viewing"
-                className="w-fit"
-            />
+            <div className="flex justify-center">
+                <CourseDetailListSwiper
+                    data={dataCourses_preview}
+                    className="w-fit mb-5"
+                />
+            </div>
             <Button className="btn-primary-outline w-full">
                 <div className="font-medium text-[16px]">Report abuse</div>
             </Button>

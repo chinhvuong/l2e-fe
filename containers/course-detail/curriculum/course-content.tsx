@@ -43,7 +43,9 @@ export default function CourseContent() {
     return (
         <div>
             <div className="font-semibold text-[26px]">Course content !!!</div>
-            <div className="flex justify-between my-4">
+            <div
+                className={`flex justify-between my-4 under_lg:block under_lg:space-y-1`}
+            >
                 <div>101 sections • 676 lectures • 64h 2m total length</div>
                 <div
                     className="text-hyperlink font-bold cursor-pointer"
@@ -58,7 +60,7 @@ export default function CourseContent() {
                 } border-border-box pr-6 py-4 cursor-pointer`}
                 onClick={() => updateExpandHeadingSections(0)}
             >
-                <div className="flex items-start w-[70%]">
+                <div className="flex items-start w-[70%] under_lg:w-full">
                     <FontAwesomeIcon
                         icon={faChevronUp}
                         className={`mt-1 px-6 arrow-animation ease-in ${
@@ -70,7 +72,7 @@ export default function CourseContent() {
                         Manage Data
                     </div>
                 </div>
-                <div>17 lectures • 1hr 30min</div>
+                <div className="under_lg:hidden">17 lectures • 1hr 30min</div>
             </div>
             <div
                 className={`border-x ${!expandHeadingSections[0] && 'hidden'}`}
@@ -145,7 +147,7 @@ export default function CourseContent() {
                 } border-border-box pr-6 py-4 cursor-pointer`}
                 onClick={() => updateExpandHeadingSections(1)}
             >
-                <div className="flex items-start w-[70%]">
+                <div className="flex items-start w-[70%] under_lg:w-full">
                     <FontAwesomeIcon
                         icon={
                             !expandHeadingSections[1]
@@ -159,7 +161,7 @@ export default function CourseContent() {
                         Manipulate Strings
                     </div>
                 </div>
-                <div>10 lectures • 1hr 12min</div>
+                <div className="under_lg:hidden">10 lectures • 1hr 12min</div>
             </div>
             <div
                 className={`flex items-start justify-between bg-course-section ${
@@ -167,7 +169,7 @@ export default function CourseContent() {
                 } border-border-box pr-6 py-4 cursor-pointer`}
                 onClick={() => updateExpandHeadingSections(2)}
             >
-                <div className="flex items-start w-[70%]">
+                <div className="flex items-start w-[70%] under_lg:w-full">
                     <FontAwesomeIcon
                         icon={
                             !expandHeadingSections[2]
@@ -180,13 +182,13 @@ export default function CourseContent() {
                         Day 3 - Beginner - Control Flow and Logical Operators
                     </div>
                 </div>
-                <div>12 lectures • 1hr 36min</div>
+                <div className="under_lg:hidden">12 lectures • 1hr 36min</div>
             </div>
             <div
                 className={`flex items-start justify-between bg-course-section border border-border-box pr-6 py-4 cursor-pointer`}
                 onClick={() => updateExpandHeadingSections(3)}
             >
-                <div className="flex items-start w-[70%]">
+                <div className="flex items-start w-[70%] under_lg:w-full">
                     <FontAwesomeIcon
                         icon={
                             !expandHeadingSections[3]
@@ -195,11 +197,11 @@ export default function CourseContent() {
                         }
                         className="pt-1 px-6"
                     />
-                    <div className="font-bold text-[18px]">
+                    <div className="font-bold text-[18px] under_lg:w-full">
                         Day 4 - Beginner - Randomisation and Python Lists
                     </div>
                 </div>
-                <div>9 lectures • 1hr 21min</div>
+                <div className="under_lg:hidden">9 lectures • 1hr 21min</div>
             </div>
             <Button className="btn-primary-outline w-full mt-5">
                 <div className="font-medium text-[16px]">5 more sections</div>

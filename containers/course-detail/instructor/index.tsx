@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import * as React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faStar,
@@ -12,7 +12,6 @@ import ShowMore from '@/components/core/show-more'
 
 export default function Instructor() {
     const data = useSelector(getInstructorInfo)
-    const [elHeight, setElHeight] = useState('')
 
     return (
         <div>
@@ -48,16 +47,9 @@ export default function Instructor() {
                     <div>{`${data.courses.length} Courses`}</div>
                 </div>
             </div>
-            <div
-                id="instructor"
-                className={`space-y-3 overflow-hidden relative ${elHeight}`}
-            >
+            <div id="instructor" className="space-y-3 overflow-hidden relative">
                 <div className="text-justify">{data.bio}</div>
-                <ShowMore
-                    el="instructor"
-                    elHeightPreview={400}
-                    changeElHeight={setElHeight}
-                />
+                <ShowMore el="instructor" elHeightPreview={400} />
             </div>
         </div>
     )

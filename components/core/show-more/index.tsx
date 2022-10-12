@@ -5,44 +5,52 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 export interface IShowMoreProps {
     el: string
     elHeightPreview: number
-    changeElHeight: Function
     setShowFullContent?: Function
 }
 
 export default function ShowMore(props: IShowMoreProps) {
-    const [elHeight, setElHeight] = useState(0)
+    const [show, setShow] = useState(false)
     const [showFullContent, setShowFullContent] = useState(false)
 
     useEffect(() => {
         const height = document.getElementById(props.el)?.scrollHeight ?? 0
-        if (height > props.elHeightPreview) {
-            changeElHeight(height)
-        }
-        height > props.elHeightPreview
-            ? changeElHeight(props.elHeightPreview)
-            : changeElHeight(height)
-        setElHeight(height)
-    }, [])
+        setShow(height > props.elHeightPreview)
+        changeElHeight(height)
+    }, [showFullContent])
 
     const changeElHeight = (height: number) => {
-        if (height > props.elHeightPreview && showFullContent) {
-            props.changeElHeight('h-[' + props.elHeightPreview + 'px]')
+        if (height > props.elHeightPreview) {
+            if (showFullContent) {
+                document
+                    .getElementById(props.el)
+                    ?.setAttribute('style', `height: ${height}px`)
+            } else {
+                document
+                    .getElementById(props.el)
+                    ?.setAttribute(
+                        'style',
+                        `height: ${props.elHeightPreview}px`,
+                    )
+            }
         } else {
-            props.changeElHeight('h-[' + height + 'px]')
+            document
+                .getElementById(props.el)
+                ?.setAttribute('style', `height: ${height}px`)
         }
     }
 
     const handleShowMore = () => {
-        changeElHeight(elHeight)
         setShowFullContent(!showFullContent)
-        props.setShowFullContent && setShowFullContent(!showFullContent)
+        props.setShowFullContent && props.setShowFullContent(!showFullContent)
     }
 
     return (
         <div
-            className={`flex flex-col justify-end z-10 top-1 left-0 w-full h-full ${
-                elHeight <= props.elHeightPreview && 'hidden'
-            } ${!showFullContent && 'absolute'} `}
+            className={`${
+                !showFullContent
+                    ? 'flex flex-col justify-end absolute z-10 top-1 left-0 w-full h-full'
+                    : ''
+            } ${!show ? 'hidden' : ''}`}
         >
             <div
                 className={`h-full ${
@@ -52,7 +60,7 @@ export default function ShowMore(props: IShowMoreProps) {
             ></div>
             <div
                 className={`cursor-pointer ${
-                    !showFullContent && 'pb-5 bg-white'
+                    !showFullContent ? 'pb-5 bg-white' : ''
                 }`}
                 onClick={() => handleShowMore()}
             >
