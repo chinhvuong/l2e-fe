@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
-import { dataCourses_preview } from '@/data/course-preview'
+import { dataCourses_preview_swiper } from '@/data/course-preview'
 import CourseListSwiper from '@/components/common/course-list-swiper'
 
 const HomePageContainer = () => {
@@ -49,11 +49,11 @@ const HomePageContainer = () => {
                 </div>
             </div>
             <CourseListSwiper
-                data={dataCourses_preview}
+                data={dataCourses_preview_swiper}
                 title="Students are viewing"
             />
             <CourseListSwiper
-                data={dataCourses_preview}
+                data={dataCourses_preview_swiper}
                 title="Short and sweet courses for you"
                 className="mt-8"
             />

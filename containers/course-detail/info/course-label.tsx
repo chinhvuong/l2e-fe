@@ -1,5 +1,5 @@
 import Button from '@/components/core/button'
-import RatingStar from '@/components/core/course-card/rating-star'
+import RatingStar from '@/components/core/rating-star'
 import Label from '@/components/core/label'
 import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

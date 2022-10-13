@@ -30,11 +30,11 @@ export default function ReviewDetail() {
     return (
         <div>
             <div className="font-semibold text-[26px]">Reviews</div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between under_lg:justify-center">
                 <div className="flex items-center space-x-4 mr-4">
-                    <div className="w-[560px] lg:w-[400px] md:w-[280px] sm:w-[180px] py-[10px] rounded-[80px] pl-[20px] border-[1px] border-black">
+                    <div className="w-[500px] lg:w-[320px] md:w-[280px] sm:w-full py-[10px] rounded-[80px] px-[20px] border-[1px] border-black">
                         <input
-                            className="w-[350px] lg:w-[290px] md:w-[170px] sm:w-[70px]  outline-none"
+                            className="w-full mr-[20px] outline-none"
                             placeholder="Search..."
                         ></input>
                     </div>

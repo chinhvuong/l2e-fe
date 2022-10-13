@@ -6,7 +6,7 @@ export interface IReviewProps {}
 
 export default function Review() {
     return (
-        <div className="space-y-7">
+        <div className="space-y-7" id="reviews-section">
             <StudentFeedback />
             <ReviewDetail />
         </div>

@@ -9,7 +9,7 @@ export interface IWhatYouWillLearnProps {}
 
 export default function WhatYouWillLearn() {
     const data = useSelector(getWhatYouWillLearn)
-    const [showFullContent, setShowFullContent] = useState(false)
+    const [showFullContent, setShowFullContent] = useState(true)
 
     return (
         <div

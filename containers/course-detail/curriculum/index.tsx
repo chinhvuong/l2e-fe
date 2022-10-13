@@ -13,7 +13,7 @@ export default function Curriculum({}) {
     const data = useSelector(getCourseIncludeList)
 
     return (
-        <div className="space-y-7">
+        <div className="space-y-7" id="curriculum-section">
             <WhatYouWillLearn />
             <IncludeList data={data} className="2xl:hidden" />
             <CourseContent />

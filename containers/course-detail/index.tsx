@@ -1,3 +1,4 @@
+import NavBar from './components/nav-bar'
 import Curriculum from './curriculum'
 import CourseInfo from './info'
 import CourseLabel from './info/course-label'
@@ -9,6 +10,7 @@ export default function CourseDetailContainer() {
     return (
         <div>
             <CourseLabel />
+            <NavBar />
             <CourseInfo />
             <div className="flex justify-center">
                 <div className="2xl:w-[1250px]">

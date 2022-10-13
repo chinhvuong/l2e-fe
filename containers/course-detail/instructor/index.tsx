@@ -14,7 +14,7 @@ export default function Instructor() {
     const data = useSelector(getInstructorInfo)
 
     return (
-        <div>
+        <div id="instructor-section">
             <div className="font-semibold text-[26px]">Instructor</div>
             <div className="font-semibold text-[22px] mt-3 text-hyperlink underline cursor-pointer">
                 {data.name}
@@ -26,25 +26,32 @@ export default function Instructor() {
                     alt=""
                     className="rounded-[50%] w-[120px]"
                 />
-                <div className="flex flex-col items-center space-y-2 ml-7 mr-4">
-                    <div>
+                <div className="flex flex-col space-y-2 ml-7 mr-4">
+                    <div className="flex items-center space-x-2">
                         <FontAwesomeIcon icon={faStar} />
+                        <div>{`${data.rating} Instructor Rating`}</div>
                     </div>
-                    <div>
-                        <FontAwesomeIcon icon={faUserGroup} />
+                    <div className="flex items-center space-x-2">
+                        <FontAwesomeIcon
+                            icon={faUserGroup}
+                            className="text-sm"
+                        />
+                        <div>??? 526,234 Reviews</div>
                     </div>
-                    <div>
-                        <FontAwesomeIcon icon={faAward} />
+                    <div className="flex items-center space-x-2">
+                        <FontAwesomeIcon
+                            icon={faAward}
+                            className="text-xl mr-0.5"
+                        />
+                        <div>??? 1,634,289 Students</div>
                     </div>
-                    <div>
-                        <FontAwesomeIcon icon={faCirclePlay} />
+                    <div className="flex items-center space-x-2">
+                        <FontAwesomeIcon
+                            icon={faCirclePlay}
+                            className="text-lg"
+                        />
+                        <div>{`${data.courses.length} Courses`}</div>
                     </div>
-                </div>
-                <div className="space-y-2">
-                    <div>{`${data.rating} Instructor Rating`}</div>
-                    <div>??? 526,234 Reviews</div>
-                    <div>??? 1,634,289 Students</div>
-                    <div>{`${data.courses.length} Courses`}</div>
                 </div>
             </div>
             <div id="instructor" className="space-y-3 overflow-hidden relative">

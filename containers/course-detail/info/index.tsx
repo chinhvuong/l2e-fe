@@ -1,10 +1,10 @@
 import Breadcrumb from '@/components/core/breadcrumb'
-import RatingStar from '@/components/core/course-card/rating-star'
+import RatingStar from '@/components/core/rating-star'
 import Label from '@/components/core/label'
 import * as React from 'react'
 import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Sidebar from './sidebar'
+import Sidebar from '../components/sidebar'
 import { useSelector } from 'react-redux'
 import { getCourseOverviewInfo } from '@/store/course/selectors'
 import VideoPreview from '@/components/core/video-preview'
@@ -25,7 +25,7 @@ export default function CourseInfo() {
     ]
 
     return (
-        <div className="bg-black flex justify-center">
+        <div className="bg-black flex justify-center" id="overview-section">
             <div className="2xl:w-[1250px] lg:w-[700px] px-8 under_lg:px-0 py-10 flex justify-between relative">
                 <div className="w-[800px] under_lg:w-full text-white space-y-5">
                     <div className="under_lg:px-8">
@@ -41,18 +41,25 @@ export default function CourseInfo() {
                             {data.name}
                         </div>
                         <div className="text-[20px]">{data.overview}</div>
-                        <div className="flex items-center space-x-4">
-                            {data.isBestseller && <Label name="Bestseller" />}
-                            <Label name="IT" />
-                            <RatingStar
-                                id={data._id}
-                                ratingScore={data.rating}
-                            />
-                            <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                                {`(${data.reviews.toLocaleString()} ratings)`}
+                        <div className="flex items-center flex-wrap">
+                            <div className="flex items-center space-x-4 mr-4 my-2">
+                                {data.isBestseller && (
+                                    <Label name="Bestseller" />
+                                )}
+                                <Label name="IT" />
+                                <RatingStar
+                                    id={data._id}
+                                    ratingScore={data.rating}
+                                    className="mt-0.5"
+                                />
                             </div>
-                            <div className="text-[14px] font-light">
-                                {`${data.students.toLocaleString()} students`}
+                            <div className="flex items-center space-x-4 my-2">
+                                <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
+                                    {`(${data.reviews.toLocaleString()} ratings)`}
+                                </div>
+                                <div className="text-[14px] font-light">
+                                    {`${data.students.toLocaleString()} students`}
+                                </div>
                             </div>
                         </div>
                         <div className="text-[14px] font-light">

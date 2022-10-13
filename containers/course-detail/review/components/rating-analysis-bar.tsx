@@ -1,4 +1,4 @@
-import RatingStar from '@/components/core/course-card/rating-star'
+import RatingStar from '@/components/core/rating-star'
 import * as React from 'react'
 
 export interface IRatingAnalysisBarProps {
@@ -9,7 +9,7 @@ export interface IRatingAnalysisBarProps {
 export default function RatingAnalysisBar(props: IRatingAnalysisBarProps) {
     return (
         <div className="flex items-center space-x-5">
-            <div className="relative bg-border-box w-[480px] lg:w-[320px] md:w-[180px] sm:w-[130px] h-[10px] rounded-[80px]">
+            <div className="relative bg-border-box w-[420px] lg:w-[270px] md:w-[200px] sm:w-[25vw] h-[10px] rounded-[80px]">
                 <div
                     className={`h-[10px] rounded-[80px] bg-description absolute z-10}`}
                     style={{ width: `${props.percent}%` }}

@@ -4,8 +4,8 @@ import Divider from '@/components/core/divider'
 import { useSelector } from 'react-redux'
 import { getSidebarInfo } from '@/store/course/selectors'
 import VideoPreview from '@/components/core/video-preview'
-import IncludeList from '../components/include-list'
-import PriceEnrollShare from '../components/price-enroll-share'
+import IncludeList from './include-list'
+import PriceEnrollShare from './price-enroll-share'
 
 export interface ISidebarProps {}
 
@@ -21,7 +21,7 @@ export default function Sidebar() {
 
         handleScroll()
 
-        setRightMargin(`${(window.innerWidth - 1190) / 2}px`)
+        setRightMargin(`${(window.innerWidth - 1250) / 2}px`)
 
         window.addEventListener('scroll', handleScroll)
 

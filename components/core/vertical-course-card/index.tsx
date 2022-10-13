@@ -1,15 +1,15 @@
 import * as React from 'react'
 import Label from '@/components/core/label'
-import RatingStar from './rating-star'
+import RatingStar from '../rating-star'
 import { CourseInfo_Preview } from '@/constants/interfaces'
 import Router from 'next/router'
 
-export interface ICourseCardProps {
+export interface IVerticalCourseCardProps {
     data: CourseInfo_Preview
     className?: string
 }
 
-export default function CourseCard(props: ICourseCardProps) {
+export default function VerticalCourseCard(props: IVerticalCourseCardProps) {
     const viewCourseDetail = () => {
         Router.push('/course/1')
     }

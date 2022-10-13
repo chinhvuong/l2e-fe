@@ -1,4 +1,4 @@
-import CourseCard from '@/components/core/course-card'
+import VerticalCourseCard from '@/components/core/vertical-course-card'
 import React, { useEffect, useState } from 'react'
 import {
     faChevronLeft,
@@ -131,7 +131,7 @@ export default function CourseListSwiper(props: ICourseListProps) {
                 >
                     {props.data.map((course) => {
                         return (
-                            <CourseCard
+                            <VerticalCourseCard
                                 key={course.id}
                                 data={course}
                                 className="mx-[8px]"

@@ -8,6 +8,7 @@ export interface IRatingStarProps {
     ratingScore: number
     ratings?: string
     hideScore?: boolean
+    className?: string
 }
 
 export default function RatingStar(props: IRatingStarProps) {
@@ -56,7 +57,7 @@ export default function RatingStar(props: IRatingStarProps) {
         return <div>Error</div>
     }
     return (
-        <div className="flex items-center space-x-2">
+        <div className={`flex items-center space-x-2 ${props.className}`}>
             {!props?.hideScore && (
                 <div className="font-bold text-xs text-star">
                     {Number(props.ratingScore).toFixed(1)}

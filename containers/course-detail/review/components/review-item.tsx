@@ -1,4 +1,4 @@
-import RatingStar from '@/components/core/course-card/rating-star'
+import RatingStar from '@/components/core/rating-star'
 import * as React from 'react'
 import { Rating } from '@/constants/interfaces'
 import ShowMore from '@/components/core/show-more'
@@ -38,11 +38,11 @@ export default function ReviewItem(props: IReviewItemProps) {
 
     return (
         <div>
-            <div className="flex items-center my-4 space-x-5">
+            <div className="flex items-center my-4 space-x-5 sm:space-x-0">
                 <img
                     src="/images/avatar.jpg"
                     alt=""
-                    className="rounded-[50%] w-[60px]"
+                    className="rounded-[50%] w-[60px] sm:hidden"
                 />
                 <div className="space-y-2">
                     <div className="font-bold mt-1">{props.data.user}</div>
@@ -56,7 +56,7 @@ export default function ReviewItem(props: IReviewItemProps) {
             </div>
             <div
                 id={`review-${props.data._id}`}
-                className="space-y-3 overflow-hidden relative ml-[80px]"
+                className="space-y-3 overflow-hidden relative ml-[80px] sm:ml-0"
             >
                 <div className="text-justify">{props.data.comment}</div>
                 <ShowMore

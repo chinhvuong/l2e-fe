@@ -31,7 +31,7 @@ function Select({
     return (
         <div
             ref={clickOutSideRef}
-            className=" bg-white text-black cursor-pointer select-none px-4 py-3 shadow-40-08 rounded-lg relative w-full"
+            className=" bg-white text-black cursor-pointer select-none px-6 py-3 shadow-40-08 rounded-lg relative w-full"
             onClick={handlePressShow}
         >
             <div className="flex justify-between items-center">
