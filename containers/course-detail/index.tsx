@@ -14,7 +14,7 @@ export default function CourseDetailContainer() {
             <CourseInfo />
             <div className="flex justify-center">
                 <div className="2xl:w-[1250px]">
-                    <div className="2xl:w-[820px] xl:w-[800px] lg:w-[640px] mx-8 space-y-7 mt-10">
+                    <div className="2xl:w-[820px] xl:w-[800px] lg:w-[640px] mx-8 sm:mx-4 space-y-7 mt-10">
                         <Curriculum />
                         <Instructor />
                         <Review />

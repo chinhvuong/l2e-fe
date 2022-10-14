@@ -5,11 +5,12 @@ import Search from './search'
 import './style.scss'
 import Button from '@/components/core/button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faBell, faWallet } from '@fortawesome/free-solid-svg-icons'
 import Router from 'next/router'
 
 interface IHeader {
     darkTheme: boolean
+    isLoggedIn: boolean
 }
 
 const Header = (props: IHeader) => {
@@ -19,6 +20,10 @@ const Header = (props: IHeader) => {
 
     const goToAboutUsPage = () => {
         Router.push('/about-us')
+    }
+
+    const goToCreateCoursePage = () => {
+        Router.push('/create-course')
     }
 
     return (
@@ -51,13 +56,36 @@ const Header = (props: IHeader) => {
                 </div>
                 <FontAwesomeIcon
                     icon={faBars}
-                    className={`hidden text-[25px] sm:block sm:mr-[0px] ${
+                    className={`hidden text-[25px] under_lg:block under_lg:mr-[0px] md:ml-[100px] ${
                         !props.darkTheme ? 'text-white' : 'text-black'
                     }`}
                 />
-                <Button className="btn-primary sm:hidden">
-                    Connect Wallet
-                </Button>
+                {!props.isLoggedIn ? (
+                    <Button className="btn-primary sm:hidden">
+                        Connect Wallet
+                    </Button>
+                ) : (
+                    <div className="flex items-center justify-between sm:hidden lg:w-[150px] under_lg:hidden">
+                        <FontAwesomeIcon
+                            icon={faBell}
+                            className={`text-[25px] cursor-pointer ${
+                                !props.darkTheme ? 'text-black' : 'text-white'
+                            }`}
+                        />
+                        <img
+                            src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
+                            alt=""
+                            className="rounded-full h-[35px] w-[35px] 2xl:mx-[35px] xl:mx-[15px] cursor-pointer"
+                            onClick={() => goToCreateCoursePage()}
+                        />
+                        <FontAwesomeIcon
+                            icon={faWallet}
+                            className={`text-[25px] cursor-pointer ${
+                                !props.darkTheme ? 'text-black' : 'text-white'
+                            }`}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )
