@@ -7,11 +7,11 @@ type BreadcrumbItem = {
     text: string
     href: string
 }
-type Props = {
+type IBreadcrumb = {
     data: BreadcrumbItem[]
 }
 
-function Breadcrumb({ data }: Props) {
+function Breadcrumb({ data }: IBreadcrumb) {
     return (
         <div className="breadcrumb flex items-center gap-4">
             {data.map((item, index) => (

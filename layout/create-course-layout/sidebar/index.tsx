@@ -6,10 +6,9 @@ export interface ISidebarProps {}
 
 export default function Sidebar() {
     const menu = [
-        'Course landing page',
+        'Landing page',
         'Intended learners',
         'Curriculum',
-        'Price',
         'Course messages',
     ]
 
@@ -17,7 +16,6 @@ export default function Sidebar() {
         '/landing-page',
         '/intended-learners',
         '/curriculum',
-        '/price',
         '/messages',
     ]
 
@@ -31,7 +29,7 @@ export default function Sidebar() {
                 {menu.map((item, index) => {
                     return (
                         <div
-                            className="cursor-pointer hover:bg-star py-3 px-5 font-medium text-lg"
+                            className="cursor-pointer hover:bg-primary hover:text-white py-3 px-5 font-medium text-lg"
                             key={index}
                             onClick={() => goToMenuTarget(menuTarget[index])}
                         >

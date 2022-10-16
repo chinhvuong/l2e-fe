@@ -23,7 +23,7 @@ const Header = (props: IHeader) => {
     }
 
     const goToCreateCoursePage = () => {
-        Router.push('/create-course')
+        Router.push('/create-course/landing-page')
     }
 
     return (

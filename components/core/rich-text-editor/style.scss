@@ -1,0 +1,28 @@
+.toolbar {
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0px;
+}
+
+.rdw-option-wrapper {
+    border: none;
+}
+
+.rdw-option-wrapper:hover {
+    box-shadow: none;
+}
+
+.rdw-list-wrapper,
+.rdw-inline-wrapper {
+    margin: 10px 0;
+}
+
+.rdw-editor-toolbar {
+    padding: 5px 0px 5px 10px;
+    margin-bottom: 0px;
+    background-color: transparent;
+}
+
+.public-DraftStyleDefault-block {
+    margin: 10px 0;
+}

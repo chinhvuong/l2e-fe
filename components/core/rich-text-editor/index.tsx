@@ -1,52 +1,57 @@
+import { EditorState } from 'draft-js'
 import { useState } from 'react'
-import { Editor, EditorState, RichUtils } from 'draft-js'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import dynamic from 'next/dynamic'
+const Editor = dynamic(
+    () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
+    { ssr: false },
+)
+import './style.scss'
 
-export interface IRichTextEditorProps {}
+export interface IRichTextEditorProps {
+    label: string
+}
 
-export default function RichTextEditor() {
-    const [editorState, setEditorState] = useState(EditorState.createEmpty())
+// const getContent = convertToRaw(editorState.getCurrentContent())
+// setContent(EditorState.push(content, convertFromRaw(getContent)))
+// createWithContent!!!
+// setPlaceholder(
+//     newState.getCurrentContent().getPlainText().length !== 0
+//         ? ''
+//         : 'Insert your course description.',
+//)
 
-    const onChange = (editorState: any) => {
-        setEditorState(editorState)
-    }
+// bug ở phần placeholder, click order/unorder list đầu tiên
 
-    const handleKeyCommand = (command: any) => {
-        const newState = RichUtils.handleKeyCommand(editorState, command)
-        if (newState) {
-            onChange(newState)
-            return 'handled'
-        }
-        return 'not-handled'
-    }
-
-    const onUnderlineClick = () => {
-        onChange(RichUtils.toggleInlineStyle(editorState, 'UNDERLINE'))
-    }
-
-    const onBoldClick = () => {
-        onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'))
-    }
-
-    const onItalicClick = () => {
-        onChange(RichUtils.toggleInlineStyle(editorState, 'ITALIC'))
-    }
+export default function RichTextEditor(props: IRichTextEditorProps) {
+    const [editorState, setEditorState] = useState<EditorState>(
+        EditorState.createEmpty(),
+    )
 
     return (
-        <div className="editorContainer">
-            <button onClick={onUnderlineClick}>U</button>
-            <button onClick={onBoldClick}>
-                <b>B</b>
-            </button>
-            <button onClick={onItalicClick}>
-                <em>I</em>
-            </button>
-            <div className="editors">
-                <Editor
-                    editorState={editorState}
-                    handleKeyCommand={handleKeyCommand}
-                    onChange={onChange}
-                />
+        <div>
+            <div className="font-bold pb-2 pl-3 sm:text-xs sm:mt-2">
+                {props.label}
             </div>
+            <Editor
+                editorState={editorState}
+                wrapperClassName="border border-black rounded-[20px]"
+                editorClassName="ml-[20px]"
+                toolbarClassName="toolbar"
+                onEditorStateChange={(newState) => {
+                    setEditorState(newState)
+                }}
+                toolbar={{
+                    options: ['inline', 'list'],
+                    inline: {
+                        options: ['bold', 'italic'],
+                    },
+                    list: {
+                        options: ['unordered', 'ordered'],
+                    },
+                }}
+                placeholder="Insert your course description."
+            />
         </div>
     )
 }

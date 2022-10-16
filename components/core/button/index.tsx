@@ -1,13 +1,13 @@
 import React, { HTMLAttributes, ReactNode, ReactText } from 'react'
 import './style.scss'
-type Props = {
+type IButton = {
     children: ReactNode | ReactText
 }
 
 function Button({
     children,
     ...rest
-}: Props & HTMLAttributes<HTMLButtonElement>) {
+}: IButton & HTMLAttributes<HTMLButtonElement>) {
     return (
         <button
             {...rest}
