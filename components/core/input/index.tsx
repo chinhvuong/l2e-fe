@@ -1,12 +1,14 @@
 import { useState } from 'react'
 
 export interface IInputProps {
-    label: string
+    label?: string
     charLimit?: {
         minLength: number
         maxLength: number
     }
     placeholder?: string
+    index: number
+    setInput: Function
 }
 
 export default function Input(props: IInputProps) {
@@ -14,6 +16,7 @@ export default function Input(props: IInputProps) {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
+        props.setInput(props.index, e.target.value)
     }
 
     const getInputCharLeft = () => {
@@ -24,7 +27,9 @@ export default function Input(props: IInputProps) {
 
     return (
         <div className="space-y-3">
-            <div className="font-bold ml-[10px]">{props.label}</div>
+            {props.label && (
+                <div className="font-bold ml-[10px]">{props.label}</div>
+            )}
             <div className="flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] border-black space-x-5">
                 <input
                     type="text"
@@ -35,6 +40,7 @@ export default function Input(props: IInputProps) {
                     placeholder={props.placeholder}
                     className="w-full outline-none"
                     onChange={handleInputChange}
+                    autoComplete="off"
                 />
                 <div className={`${!props.charLimit?.maxLength && 'hidden'}`}>
                     {getInputCharLeft()}

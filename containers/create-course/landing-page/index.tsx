@@ -1,3 +1,4 @@
+import Hyperlink from '@/containers/create-course/components/hyperlink'
 import Input from '@/components/core/input'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Select from '@/components/core/select'
@@ -21,11 +22,16 @@ export default function LandingPageContainer() {
         'Engineering & Construction',
         'Teaching & Academics',
     ]
+    const currency = ['USD', 'VND']
+    const price = {
+        USD: ['$19.99', '$24.99', '$29.99'],
+        VND: ['499.999đ', '599.999đ', '729.999đ'],
+    }
 
     return (
         <div>
             <Title title={'Landing page'} />
-            <div className="py-10 px-14 space-y-4">
+            <div className="py-10 px-14 space-y-5">
                 <Input
                     charLimit={{ minLength: 10, maxLength: 60 }}
                     label="Title"
@@ -53,17 +59,42 @@ export default function LandingPageContainer() {
                         placeholder="Select category"
                     />
                 </div>
+                <div className="flex space-x-5 w-[50%]">
+                    <Select
+                        label="Currency"
+                        selectList={currency}
+                        placeholder="Select currency"
+                    />
+                    <Select
+                        label="Price tier"
+                        selectList={price['USD']}
+                        placeholder="Select price tier"
+                    />
+                </div>
                 <RichTextEditor label="Description" />
-                <UploadPreview
-                    label="Thumbnail"
-                    type="image"
-                    description="Upload your course thumbnail here. Important guidelines: .jpg, .jpeg,. gif, or .png. no text on the image."
-                />
-                <UploadPreview
-                    label="Promotional video"
-                    type="video"
-                    description="Students who watch a well-made promo video are 5X more likely to enroll in your course. We've seen that statistic go up to 10X for exceptionally awesome videos."
-                />
+                <UploadPreview label="Thumbnail" type="image">
+                    <div>
+                        <span>
+                            {`Upload your course image here. It must meet our `}
+                        </span>
+                        <Hyperlink>course image quality standards</Hyperlink>
+                        <span>{` to
+                        be accepted. Important guidelines: 750x422 pixels; .jpg,
+                        .jpeg,. gif, or .png. no text on the image.`}</span>
+                    </div>
+                </UploadPreview>
+                <UploadPreview label="Promotional video" type="video">
+                    <div>
+                        <span>{`Students who watch a well-made promo video are `}</span>
+                        <span className="font-bold">
+                            5X more likely to enroll
+                        </span>
+                        <span>{`
+                        in your course. We've seen that statistic go up to 10X
+                        for exceptionally awesome videos. `}</span>
+                        <Hyperlink>Learn how to make yours awesome!</Hyperlink>
+                    </div>
+                </UploadPreview>
             </div>
         </div>
     )

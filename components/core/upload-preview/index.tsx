@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { ReactNode, ReactText, useEffect, useState } from 'react'
+import Button from '../button'
 
 export interface IUploadPreviewProps {
     label: string
     type: 'image' | 'video'
-    description: string
+    children: ReactNode | ReactText
 }
 
 export default function UploadPreview(props: IUploadPreviewProps) {
@@ -51,23 +52,24 @@ export default function UploadPreview(props: IUploadPreviewProps) {
                     <img
                         src={uploadedFileURL}
                         alt="Course image"
-                        className={`w-full cursor-pointer ${
-                            !showPlaceholder && 'hidden'
-                        }`}
-                        onClick={handleUploadFile}
+                        className={`w-full ${!showPlaceholder && 'hidden'}`}
                     />
                     {!showPlaceholder && (
-                        <div
-                            className="flex items-center cursor-pointer w-full h-[230px] px-5 bg-slate-300"
-                            onClick={handleUploadFile}
-                        >
+                        <div className="flex items-center w-full h-[230px] px-5 bg-slate-300">
                             Save the changes in order to complete the upload of
                             your file. Once you save it, we will process it to
                             ensure it works smoothly on Skilline.
                         </div>
                     )}
                 </div>
-                <div className="basis-1/2 ml-5">{props.description}</div>
+                <div className="basis-1/2 ml-5 space-y-3">
+                    {props.children}
+                    <Button>
+                        <div className="text-white" onClick={handleUploadFile}>
+                            Upload
+                        </div>
+                    </Button>
+                </div>
             </div>
         </div>
     )

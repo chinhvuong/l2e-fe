@@ -42,14 +42,14 @@ export default function Select(props: ISelectProps) {
                     />
                 </div>
                 <div
-                    className={`py-[5px] rounded-[20px] border-[1px] border-black z-20 mt-1 bg-white drop-shadow-lg ${
+                    className={`py-[5px] rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg ${
                         !openRatingSelect && 'hidden'
                     }`}
                 >
                     {props.selectList.map((item) => {
                         return (
                             <div
-                                className="hover:bg-primary hover:text-white box-border pl-[20px] py-1.5 rounded-[12px] cursor-pointer"
+                                className="hover:bg-primary hover:text-white box-border px-[20px] py-1.5 rounded-[12px] cursor-pointer"
                                 key={item}
                                 onClick={() => onSelectRating(item)}
                             >
