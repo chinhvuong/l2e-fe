@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useSelector } from 'react-redux'
 import { getWhatYouWillLearn } from '@/store/course/selectors'
 import ShowMore from '@/components/core/show-more'
+import { useAppSelector } from '@/hooks'
 
 export interface IWhatYouWillLearnProps {}
 
 export default function WhatYouWillLearn() {
-    const data = useSelector(getWhatYouWillLearn)
+    const data = useAppSelector(getWhatYouWillLearn)
     const [showFullContent, setShowFullContent] = useState(true)
 
     return (

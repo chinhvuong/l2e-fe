@@ -7,13 +7,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import ReviewItemsList from './components/review-items-list'
 import { getReviews } from '@/store/course/selectors'
-import { useSelector } from 'react-redux'
 import useOutsideClick from '@/hooks/useOutSideClick'
+import { useAppSelector } from '@/hooks'
 
 export interface IReviewDetailProps {}
 
 export default function ReviewDetail() {
-    const data = useSelector(getReviews)
+    const data = useAppSelector(getReviews)
     const [selectedRating, setSelectedRating] = useState('All')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
     const clickOutSideRef = useRef(null)

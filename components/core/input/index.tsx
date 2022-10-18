@@ -8,7 +8,6 @@ export interface IInputProps {
     }
     placeholder?: string
     index: number
-    setInput: Function
 }
 
 export default function Input(props: IInputProps) {
@@ -16,7 +15,6 @@ export default function Input(props: IInputProps) {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
-        props.setInput(props.index, e.target.value)
     }
 
     const getInputCharLeft = () => {

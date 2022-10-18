@@ -58,3 +58,7 @@ export const getReviews = (state: RootState) => {
 export const getCourseIncludeList = (state: RootState) => {
     return state.course.courseDetail.include
 }
+
+export const getWhatYouWillLearnForm = (state: RootState) => {
+    return state.course.whatYouWillLearn
+}

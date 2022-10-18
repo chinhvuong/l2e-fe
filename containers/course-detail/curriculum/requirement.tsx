@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useSelector } from 'react-redux'
 import { getRequirements } from '@/store/course/selectors'
 import ShowMore from '@/components/core/show-more'
+import { useAppSelector } from '@/hooks'
 
 export interface IRequirementProps {}
 
 export default function Requirement() {
-    const data = useSelector(getRequirements)
+    const data = useAppSelector(getRequirements)
 
     return (
         <div id="requirement" className="space-y-3 overflow-hidden relative">

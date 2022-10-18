@@ -5,14 +5,14 @@ import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
 import { courseCatagories } from '@/data/category'
-import { useSelector } from 'react-redux'
 import { getCourseLabelInfo } from '@/store/course/selectors'
+import { useAppSelector } from '@/hooks'
 
 export interface ICourseLabelProps {}
 
 export default function CourseLabel() {
     const [scrollY, setScrollY] = useState(0)
-    const data = useSelector(getCourseLabelInfo)
+    const data = useAppSelector(getCourseLabelInfo)
 
     const getCourseCategory = () => {
         for (let i = 0; i < courseCatagories.length; i++) {

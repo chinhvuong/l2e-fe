@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
-import { useSelector } from 'react-redux'
 import { getSidebarInfo } from '@/store/course/selectors'
 import VideoPreview from '@/components/core/video-preview'
 import IncludeList from './include-list'
 import PriceEnrollShare from './price-enroll-share'
+import { useAppSelector } from '@/hooks'
 
 export interface ISidebarProps {}
 
 export default function Sidebar() {
-    const data = useSelector(getSidebarInfo)
+    const data = useAppSelector(getSidebarInfo)
     const [scrollY, setScrollY] = useState(0)
     const [rightMargin, setRightMargin] = useState('0px')
 

@@ -5,13 +5,13 @@ import * as React from 'react'
 import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Sidebar from '../components/sidebar'
-import { useSelector } from 'react-redux'
 import { getCourseOverviewInfo } from '@/store/course/selectors'
 import VideoPreview from '@/components/core/video-preview'
 import PriceEnrollShare from '../components/price-enroll-share'
+import { useAppSelector } from '@/hooks'
 
 export default function CourseInfo() {
-    const data = useSelector(getCourseOverviewInfo)
+    const data = useAppSelector(getCourseOverviewInfo)
 
     const breadcrumb = [
         {

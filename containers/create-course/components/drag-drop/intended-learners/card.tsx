@@ -12,8 +12,6 @@ export interface CardProps {
     index: number
     placeholder: string
     moveCard: Function
-    updateCard: Function
-    deleteCard: Function
 }
 
 interface DragItem {
@@ -22,14 +20,7 @@ interface DragItem {
     type: string
 }
 
-export const Card: FC<CardProps> = ({
-    id,
-    index,
-    placeholder,
-    moveCard,
-    updateCard,
-    deleteCard,
-}) => {
+export const Card: FC<CardProps> = ({ id, index, placeholder, moveCard }) => {
     const ref = useRef<HTMLDivElement>(null)
     const [{ handlerId }, drop] = useDrop<
         DragItem,
@@ -113,14 +104,13 @@ export const Card: FC<CardProps> = ({
                     charLimit={{ minLength: 10, maxLength: 160 }}
                     placeholder={placeholder}
                     index={index}
-                    setInput={updateCard}
                 />
             </div>
             <div>
                 <FontAwesomeIcon
                     icon={faTrash}
                     className="text-xl bg-red-500 text-white rounded-full py-[12px] px-[13px]"
-                    onClick={() => deleteCard(index)}
+                    // onClick={() => deleteCard(index)}
                 />
             </div>
             <div ref={ref} data-handler-id={handlerId}>

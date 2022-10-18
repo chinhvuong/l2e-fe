@@ -1,6 +1,13 @@
-import update from 'immutability-helper'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import {
+    addWhatYouWillLearn,
+    // deleteWhatYouWillLearn,
+    // updateWhatYouWillLearn,
+} from '@/store/course'
+import { getWhatYouWillLearnForm } from '@/store/course/selectors'
+// import update from 'immutability-helper'
 import type { FC } from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import AddMoreButton from './add-button'
 import { Card } from './card'
 
@@ -16,101 +23,36 @@ export interface ContainerState {
 
 export const Container: FC = () => {
     {
-        const [cards, setCards] = useState([
-            {
-                id: 1,
-                placeholder:
-                    'Example: Define the roles and responsibilities of a project manager.',
-                content: '',
-            },
-            {
-                id: 2,
-                placeholder: 'Example: Estimate project timelines and budgets.',
-                content: '',
-            },
-            {
-                id: 3,
-                placeholder: 'Example: Identify and manage project risks.',
-                content: '',
-            },
-            {
-                id: 4,
-                placeholder:
-                    'Example: Complete a case study to manage a project.',
-                content: '',
-            },
-        ])
-
-        const moveCard = useCallback(
-            (dragIndex: number, hoverIndex: number) => {
-                setCards((prevCards: Item[]) =>
-                    update(prevCards, {
-                        $splice: [
-                            [dragIndex, 1],
-                            [hoverIndex, 0, prevCards[dragIndex] as Item],
-                        ],
-                    }),
-                )
-            },
-            [],
-        )
-
-        const deleteCard = useCallback((index: number) => {
-            console.log(cards)
-            if (cards.length > 4) {
-                setCards((prevCards: Item[]) =>
-                    update(prevCards, {
-                        $splice: [[index, 1]],
-                    }),
-                )
-            }
-        }, [])
-
-        // const deleteCard = (index: number) => {
-        //     console.log(cards)
-        //     if (cards.length > 4) {
-        //         setCards((prevCards: Item[]) =>
-        //             update(prevCards, {
-        //                 $splice: [[index, 1]],
-        //             }),
-        //         )
-        //         const newCardsList = cards
-        //         newCardsList.splice(index, 1)
-        //         console.log('newCardsList', newCardsList)
-        //         setCards(newCardsList)
-        //     }
-        // }
+        const cards = useAppSelector(getWhatYouWillLearnForm)
+        const dispatch = useAppDispatch()
 
         const addCard = () => {
-            const addNewCard = cards.every((item) => item.content !== '')
-            if (addNewCard) {
-                setCards((prevCards: Item[]) =>
-                    update(prevCards, {
-                        [cards.length + 1]: {
-                            $set: {
-                                id: cards.length + 1,
-                                placeholder:
-                                    'Insert a learning objective or outcome',
-                                content: '',
-                            },
-                        },
-                    }),
-                )
-            }
+            dispatch(addWhatYouWillLearn())
         }
 
-        const updateCard = (index: number, content: string) => {
-            console.log('content', index, content)
-            setCards((prevCards: Item[]) =>
-                update(prevCards, {
-                    [index]: {
-                        content: {
-                            $set: content,
-                        },
-                    },
-                }),
-            )
-        }
+        // const updateCard = (id: number, content: string) => {
+        //     dispatch(updateWhatYouWillLearn({ id: id, content: content }))
+        // }
+
+        // const deleteCard = (id: number) => {
+        //     dispatch(deleteWhatYouWillLearn(id))
+        // }
+
+        // const moveCard = useCallback(
+        //     (dragIndex: number, hoverIndex: number) => {
+        //         setCards((prevCards: Item[]) =>
+        //             update(prevCards, {
+        //                 $splice: [
+        //                     [dragIndex, 1],
+        //                     [hoverIndex, 0, prevCards[dragIndex] as Item],
+        //                 ],
+        //             }),
+        //         )
+        //     },
+        //     [],
+        // )
+
+        const moveCard = () => {}
 
         const renderCard = useCallback(
             (card: { id: number; placeholder: string }, index: number) => {
@@ -121,8 +63,6 @@ export const Container: FC = () => {
                         id={card.id}
                         placeholder={card.placeholder}
                         moveCard={moveCard}
-                        updateCard={updateCard}
-                        deleteCard={deleteCard}
                     />
                 )
             },

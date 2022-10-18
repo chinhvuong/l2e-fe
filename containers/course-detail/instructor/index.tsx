@@ -6,12 +6,12 @@ import {
     faAward,
     faCirclePlay,
 } from '@fortawesome/free-solid-svg-icons'
-import { useSelector } from 'react-redux'
 import { getInstructorInfo } from '@/store/user/selectors'
 import ShowMore from '@/components/core/show-more'
+import { useAppSelector } from '@/hooks'
 
 export default function Instructor() {
-    const data = useSelector(getInstructorInfo)
+    const data = useAppSelector(getInstructorInfo)
 
     return (
         <div id="instructor-section">
