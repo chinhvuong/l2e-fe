@@ -66,6 +66,21 @@ export const Container: FC = () => {
             }
         }, [])
 
+        // const deleteCard = (index: number) => {
+        //     console.log(cards)
+        //     if (cards.length > 4) {
+        //         setCards((prevCards: Item[]) =>
+        //             update(prevCards, {
+        //                 $splice: [[index, 1]],
+        //             }),
+        //         )
+        //         const newCardsList = cards
+        //         newCardsList.splice(index, 1)
+        //         console.log('newCardsList', newCardsList)
+        //         setCards(newCardsList)
+        //     }
+        // }
+
         const addCard = () => {
             const addNewCard = cards.every((item) => item.content !== '')
             if (addNewCard) {

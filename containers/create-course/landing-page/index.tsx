@@ -21,11 +21,6 @@ export default function LandingPageContainer() {
         'Engineering & Construction',
         'Teaching & Academics',
     ]
-    const currency = ['USD', 'VND']
-    const price = {
-        USD: ['$19.99', '$24.99', '$29.99'],
-        VND: ['499.999đ', '599.999đ', '729.999đ'],
-    }
 
     return (
         <div>
@@ -58,17 +53,11 @@ export default function LandingPageContainer() {
                         placeholder="Select category"
                     />
                 </div>
-                <div className="flex space-x-5 w-[50%]">
-                    <Select
-                        label="Currency"
-                        selectList={currency}
-                        placeholder="Select currency"
-                    />
-                    <Select
-                        label="Price tier"
-                        selectList={price['USD']}
-                        placeholder="Select price tier"
-                    />
+                <div className="w-1/3 pr-4">
+                    <Input
+                        label="Price (USDT)"
+                        placeholder="Insert your course price."
+                    ></Input>
                 </div>
                 <RichTextEditor label="Description" />
                 <UploadPreview label="Thumbnail" type="image">

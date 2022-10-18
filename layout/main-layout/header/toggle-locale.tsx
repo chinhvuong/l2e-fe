@@ -55,7 +55,7 @@ const ToggleLocale = () => {
                     >
                         <div
                             className={`first:mb-2 cursor-pointer text-[10px] leading-[15px] text-black/70 ${
-                                router.locale === item.key && '!text-pri'
+                                router.locale === item.key && '!text-primary'
                             } `}
                         >
                             {item.name}
