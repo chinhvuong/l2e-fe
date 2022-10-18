@@ -22,10 +22,6 @@ const Header = (props: IHeader) => {
         Router.push('/about-us')
     }
 
-    const goToCreateCoursePage = () => {
-        Router.push('/create-course/landing-page')
-    }
-
     return (
         <div
             className={`py-8 ${props.darkTheme ? 'text-white' : 'text-black'} ${
@@ -61,7 +57,7 @@ const Header = (props: IHeader) => {
                     }`}
                 />
                 {!props.isLoggedIn ? (
-                    <Button className="btn-primary sm:hidden">
+                    <Button className="btn-primary under_lg:hidden">
                         Connect Wallet
                     </Button>
                 ) : (
@@ -76,7 +72,6 @@ const Header = (props: IHeader) => {
                             src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
                             alt=""
                             className="rounded-full h-[35px] w-[35px] 2xl:mx-[35px] xl:mx-[15px] cursor-pointer"
-                            onClick={() => goToCreateCoursePage()}
                         />
                         <FontAwesomeIcon
                             icon={faWallet}

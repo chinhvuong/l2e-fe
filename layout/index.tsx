@@ -11,7 +11,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
             : false
     return (
         <div>
-            <Header darkTheme={darkTheme} isLoggedIn={true} />
+            <Header darkTheme={darkTheme} isLoggedIn={false} />
             <main id="main">
                 <div
                     className="w-full app-transition main-transition h-full bg-white"

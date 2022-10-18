@@ -3,7 +3,6 @@ import Input from '@/components/core/input'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Select from '@/components/core/select'
 import UploadPreview from '@/components/core/upload-preview'
-import * as React from 'react'
 import Title from '../components/title'
 
 export interface ILandingPageContainerProps {}

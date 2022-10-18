@@ -1,5 +1,5 @@
+import Footer from '@/layout/components/footer'
 import React, { ReactChild } from 'react'
-import Footer from '../components/footer'
 import Header from './header'
 import Sidebar from './sidebar'
 

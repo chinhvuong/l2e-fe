@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRef, useState } from 'react'
 
 export interface ISelectProps {
-    label: string
+    label?: string
     selectList: string[]
     placeholder: string
 }
@@ -24,10 +24,12 @@ export default function Select(props: ISelectProps) {
     })
 
     return (
-        <div className="w-full">
-            <div className="font-bold pb-2 pl-3 sm:text-xs sm:mt-2">
-                {props.label}
-            </div>
+        <div className="w-full relative">
+            {props.label && (
+                <div className="font-bold pb-2 pl-3 sm:text-xs sm:mt-2">
+                    {props.label}
+                </div>
+            )}
             <div
                 onClick={() => setOpenRatingSelect(!openRatingSelect)}
                 ref={clickOutSideRef}
@@ -42,7 +44,7 @@ export default function Select(props: ISelectProps) {
                     />
                 </div>
                 <div
-                    className={`py-[5px] rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg ${
+                    className={`py-[5px] rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg w-full ${
                         !openRatingSelect && 'hidden'
                     }`}
                 >

@@ -1,5 +1,4 @@
 import React from 'react'
-import './styles.scss'
 import Company from './company'
 const Footer = () => {
     return (

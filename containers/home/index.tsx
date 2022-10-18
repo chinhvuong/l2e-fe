@@ -4,8 +4,13 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
 import { dataCourses_preview_swiper } from '@/data/course-preview'
 import CourseListSwiper from '@/components/common/course-list-swiper'
+import Router from 'next/router'
 
 const HomePageContainer = () => {
+    const goToCreateCoursePage = () => {
+        Router.push('/create-course')
+    }
+
     return (
         <div>
             <div className="bg-second h-[550px] flex justify-center items-center text-white space-x-10 px-14">
@@ -41,6 +46,12 @@ const HomePageContainer = () => {
                 />
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
+            <div className="flex justify-center text-white mt-10">
+                <Button onClick={() => goToCreateCoursePage()}>
+                    Create course
+                </Button>
+            </div>
+
             <div className="flex justify-center mt-12 mb-4">
                 <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
                     <div className="font-extrabold text-[41px]">
