@@ -7,6 +7,10 @@ export const store = configureStore({
         course: courseSlice.reducer,
         user: userSlice.reducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 })
 
 export type RootState = ReturnType<typeof store.getState>

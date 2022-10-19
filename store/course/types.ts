@@ -1,18 +1,20 @@
 import { CourseDetail, Rating } from '@/constants/interfaces'
 
-export type TWhatYouWillLearn = {
-    id: number
-    placeholder: string
+export type TInputUpdate = {
+    id: string
     content: string
 }
 
-export type TWhatYouWillLearnUpdate = {
-    id: number
+export type TInput = {
+    id: string
+    placeholder: string
     content: string
 }
 
 export type CourseDetailState = {
     courseDetail: CourseDetail
-    whatYouWillLearn: TWhatYouWillLearn[]
+    whatYouWillLearn: TInput[]
+    requirements: TInput[]
+    intendedLearners: TInput[]
     reviews: Rating[]
 }

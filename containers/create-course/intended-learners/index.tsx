@@ -1,4 +1,23 @@
 import Hyperlink from '@/containers/create-course/components/hyperlink'
+import {
+    addIntendedLearners,
+    addRequirements,
+    addWhatYouWillLearn,
+    deleteIntendedLearners,
+    deleteRequirements,
+    deleteWhatYouWillLearn,
+    updateIntendedLearners,
+    updateOrderIntendedLearners,
+    updateOrderRequirements,
+    updateOrderWhatYouWillLearn,
+    updateRequirements,
+    updateWhatYouWillLearn,
+} from '@/store/course'
+import {
+    getIntendedLearnersForm,
+    getRequirementsForm,
+    getWhatYouWillLearnForm,
+} from '@/store/course/selectors'
 import * as React from 'react'
 import DragAndDrop from '../components/drag-drop/intended-learners'
 import Subtitle from '../components/subtitle'
@@ -26,7 +45,44 @@ export default function IntendedLearnersContainer() {
                         <span>{` that learners can expect to achieve after completing your course.`}</span>
                     </div>
                 </div>
-                <DragAndDrop />
+                <DragAndDrop
+                    addItem={addWhatYouWillLearn}
+                    updateItem={updateWhatYouWillLearn}
+                    updateOrderItems={updateOrderWhatYouWillLearn}
+                    deleteItem={deleteWhatYouWillLearn}
+                    getItems={getWhatYouWillLearnForm}
+                    defaultInputBlock={4}
+                />
+                <div className="space-y-2">
+                    <Subtitle title="What are the requirements or prerequisites for taking your course?"></Subtitle>
+                    <div>
+                        {`List the required skills, experience, tools or equipment learners should have prior to taking your course. If there are no requirements, use this space as an opportunity to lower the barrier for beginners.`}
+                    </div>
+                </div>
+                <DragAndDrop
+                    addItem={addRequirements}
+                    updateItem={updateRequirements}
+                    updateOrderItems={updateOrderRequirements}
+                    deleteItem={deleteRequirements}
+                    getItems={getRequirementsForm}
+                    defaultInputBlock={1}
+                />
+                <div className="space-y-2">
+                    <Subtitle title="Who is this course for?"></Subtitle>
+                    <div>
+                        <span>{`Write a clear description of the `}</span>
+                        <Hyperlink>intended learners</Hyperlink>
+                        <span>{` for your course who will find your course content valuable. This will help you attract the right learners to your course.`}</span>
+                    </div>
+                </div>
+                <DragAndDrop
+                    addItem={addIntendedLearners}
+                    updateItem={updateIntendedLearners}
+                    updateOrderItems={updateOrderIntendedLearners}
+                    deleteItem={deleteIntendedLearners}
+                    getItems={getIntendedLearnersForm}
+                    defaultInputBlock={1}
+                />
             </div>
         </div>
     )

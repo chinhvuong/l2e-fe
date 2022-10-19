@@ -27,11 +27,13 @@ export default function LandingPageContainer() {
             <Title title={'Landing page'} />
             <div className="py-10 px-14 space-y-5">
                 <Input
+                    id="landing-page-title"
                     charLimit={{ minLength: 10, maxLength: 60 }}
                     label="Title"
                     placeholder="Insert your course title."
                 />
                 <Input
+                    id="landing-page-subtitle"
                     charLimit={{ minLength: 0, maxLength: 120 }}
                     label="Subtitle"
                     placeholder="Insert your course subtitle."
@@ -55,6 +57,7 @@ export default function LandingPageContainer() {
                 </div>
                 <div className="w-1/3 pr-4">
                     <Input
+                        id="landing-page-price"
                         label="Price (USDT)"
                         placeholder="Insert your course price."
                     ></Input>

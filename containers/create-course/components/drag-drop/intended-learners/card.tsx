@@ -6,12 +6,19 @@ import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from './types'
 import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import { TInput, TInputUpdate } from '@/store/course/types'
 
 export interface CardProps {
-    id: any
+    id: string
     index: number
     placeholder: string
     moveCard: Function
+    updateCard: ActionCreatorWithPayload<TInputUpdate, string>
+    deleteCard: ActionCreatorWithPayload<number, string>
+    getCards: () => TInput[]
+    defaultInputBlock: number
 }
 
 interface DragItem {
@@ -20,8 +27,20 @@ interface DragItem {
     type: string
 }
 
-export const Card: FC<CardProps> = ({ id, index, placeholder, moveCard }) => {
+export const Card: FC<CardProps> = ({
+    id,
+    index,
+    placeholder,
+    moveCard,
+    updateCard,
+    deleteCard,
+    getCards,
+    defaultInputBlock,
+}) => {
     const ref = useRef<HTMLDivElement>(null)
+    const dispatch = useAppDispatch()
+    const whatYouWillLearn = useAppSelector(getCards)
+
     const [{ handlerId }, drop] = useDrop<
         DragItem,
         void,
@@ -97,28 +116,43 @@ export const Card: FC<CardProps> = ({ id, index, placeholder, moveCard }) => {
     const opacity = isDragging ? 0 : 1
     drag(drop(ref))
 
+    const handleDeleteCard = (id: number) => {
+        if (whatYouWillLearn.length > defaultInputBlock) {
+            dispatch(deleteCard(id))
+        }
+    }
+
     return (
         <div className="flex items-center space-x-2" style={{ opacity }}>
             <div className="basis-3/4">
                 <Input
                     charLimit={{ minLength: 10, maxLength: 160 }}
                     placeholder={placeholder}
-                    index={index}
+                    id={id}
+                    updateToStore={updateCard}
                 />
             </div>
-            <div>
-                <FontAwesomeIcon
-                    icon={faTrash}
-                    className="text-xl bg-red-500 text-white rounded-full py-[12px] px-[13px]"
-                    // onClick={() => deleteCard(index)}
-                />
-            </div>
-            <div ref={ref} data-handler-id={handlerId}>
-                <FontAwesomeIcon
-                    icon={faBars}
-                    className="text-xl bg-black text-white rounded-full py-[12px] px-[13px]"
-                />
-            </div>
+            {whatYouWillLearn[index].content !== '' && (
+                <>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faTrash}
+                            className={`text-xl bg-red-500 text-white rounded-full py-[12px] px-[13px] ${
+                                whatYouWillLearn.length > defaultInputBlock
+                                    ? 'cursor-pointer'
+                                    : 'cursor-not-allowed'
+                            }`}
+                            onClick={() => handleDeleteCard(index)}
+                        />
+                    </div>
+                    <div ref={ref} data-handler-id={handlerId}>
+                        <FontAwesomeIcon
+                            icon={faBars}
+                            className="text-xl bg-black text-white rounded-full py-[12px] px-[13px] cursor-move"
+                        />
+                    </div>
+                </>
+            )}
         </div>
     )
 }

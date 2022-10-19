@@ -1,17 +1,26 @@
-import { useState } from 'react'
+import { useAppDispatch } from '@/hooks'
+import { TInputUpdate } from '@/store/course/types'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import { useEffect, useState } from 'react'
 
 export interface IInputProps {
+    id: string
     label?: string
     charLimit?: {
         minLength: number
         maxLength: number
     }
     placeholder?: string
-    index: number
+    updateToStore?: ActionCreatorWithPayload<TInputUpdate, string>
 }
 
 export default function Input(props: IInputProps) {
+    const dispatch = useAppDispatch()
     const [input, setInput] = useState('')
+
+    useEffect(() => {
+        updateCard(input)
+    }, [input])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
@@ -21,6 +30,16 @@ export default function Input(props: IInputProps) {
         return props.charLimit?.maxLength
             ? props.charLimit?.maxLength - input.length
             : 0
+    }
+
+    const updateCard = (content: string) => {
+        props.updateToStore &&
+            dispatch(
+                props.updateToStore({
+                    id: props.id,
+                    content: content,
+                }),
+            )
     }
 
     return (

@@ -62,3 +62,21 @@ export const getCourseIncludeList = (state: RootState) => {
 export const getWhatYouWillLearnForm = (state: RootState) => {
     return state.course.whatYouWillLearn
 }
+
+export const getRequirementsForm = (state: RootState) => {
+    return state.course.requirements
+}
+
+export const getIntendedLearnersForm = (state: RootState) => {
+    return state.course.intendedLearners
+}
+
+export const getInputContentWhatYouWillLearn =
+    (id: string) => (state: RootState) => {
+        for (let i = 0; i < state.course.whatYouWillLearn.length; i++) {
+            if (state.course.whatYouWillLearn[i].id === id) {
+                return state.course.whatYouWillLearn[i].content
+            }
+        }
+        return ''
+    }

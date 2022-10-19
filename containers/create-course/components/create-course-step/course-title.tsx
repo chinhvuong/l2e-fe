@@ -10,6 +10,7 @@ export default function CourseTitle() {
             <div className="mb-12">{`It's ok if you can't think of a good title now. You can change it later.`}</div>
             <div className="w-[700px]">
                 <Input
+                    id="course-title"
                     charLimit={{ minLength: 0, maxLength: 60 }}
                     placeholder="E.g. Learn Photoshop ES6 from Scratch"
                 />
