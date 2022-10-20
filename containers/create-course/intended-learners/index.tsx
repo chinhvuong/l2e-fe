@@ -12,14 +12,15 @@ import {
     updateOrderWhatYouWillLearn,
     updateRequirements,
     updateWhatYouWillLearn,
-} from '@/store/course'
+} from '@/store/course/intended-learners'
 import {
     getIntendedLearnersForm,
     getRequirementsForm,
     getWhatYouWillLearnForm,
-} from '@/store/course/selectors'
+} from '@/store/course/intended-learners/selectors'
+
 import * as React from 'react'
-import DragAndDrop from '../components/drag-drop/intended-learners'
+import DragAndDropInput from './components/drag-drop-input'
 import Subtitle from '../components/subtitle'
 import Title from '../components/title'
 
@@ -45,7 +46,7 @@ export default function IntendedLearnersContainer() {
                         <span>{` that learners can expect to achieve after completing your course.`}</span>
                     </div>
                 </div>
-                <DragAndDrop
+                <DragAndDropInput
                     addItem={addWhatYouWillLearn}
                     updateItem={updateWhatYouWillLearn}
                     updateOrderItems={updateOrderWhatYouWillLearn}
@@ -59,7 +60,7 @@ export default function IntendedLearnersContainer() {
                         {`List the required skills, experience, tools or equipment learners should have prior to taking your course. If there are no requirements, use this space as an opportunity to lower the barrier for beginners.`}
                     </div>
                 </div>
-                <DragAndDrop
+                <DragAndDropInput
                     addItem={addRequirements}
                     updateItem={updateRequirements}
                     updateOrderItems={updateOrderRequirements}
@@ -75,7 +76,7 @@ export default function IntendedLearnersContainer() {
                         <span>{` for your course who will find your course content valuable. This will help you attract the right learners to your course.`}</span>
                     </div>
                 </div>
-                <DragAndDrop
+                <DragAndDropInput
                     addItem={addIntendedLearners}
                     updateItem={updateIntendedLearners}
                     updateOrderItems={updateOrderIntendedLearners}

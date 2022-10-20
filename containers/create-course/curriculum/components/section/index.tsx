@@ -1,4 +1,6 @@
-import { TInput, TInputUpdate } from '@/store/course/types'
+import { RootState } from '@/store'
+import { CurriculumSection } from '@/store/course/curriculum/types'
+import { TInputUpdate } from '@/store/course/types'
 import {
     ActionCreatorWithoutPayload,
     ActionCreatorWithPayload,
@@ -8,23 +10,23 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Container } from './container'
 
-export interface IDragAndDropProps {
+export interface ISectionProps {
     addItem: ActionCreatorWithoutPayload<string>
     updateItem: ActionCreatorWithPayload<TInputUpdate, string>
     updateOrderItems: ActionCreatorWithPayload<string[], string>
     deleteItem: ActionCreatorWithPayload<number, string>
-    getItems: () => TInput[]
-    defaultInputBlock: number
+    getItems: (state: RootState) => CurriculumSection[]
+    getItemName: (id: string) => (state: RootState) => string
 }
 
-export default function DragAndDrop({
+export default function Section({
     addItem,
     updateItem,
     updateOrderItems,
     deleteItem,
     getItems,
-    defaultInputBlock,
-}: IDragAndDropProps) {
+    getItemName,
+}: ISectionProps) {
     return (
         <DndProvider backend={HTML5Backend}>
             <Container
@@ -33,7 +35,7 @@ export default function DragAndDrop({
                 updateOrderItems={updateOrderItems}
                 deleteItem={deleteItem}
                 getItems={getItems}
-                defaultInputBlock={defaultInputBlock}
+                getItemName={getItemName}
             />
         </DndProvider>
     )

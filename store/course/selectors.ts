@@ -1,82 +1,60 @@
-import { RootState } from '..'
+import { RootState } from '@/store'
 
 export const getCourseLabelInfo = (state: RootState) => {
     return {
-        _id: state.course.courseDetail._id,
-        name: state.course.courseDetail.name,
-        isBestseller: state.course.courseDetail.isBestseller,
-        rating: state.course.courseDetail.rating,
-        reviews: state.course.courseDetail.review,
-        students: state.course.courseDetail.students,
-        price: state.course.courseDetail.price,
-        category: state.course.courseDetail.category,
+        _id: state.courseDetail.courseDetail._id,
+        name: state.courseDetail.courseDetail.name,
+        isBestseller: state.courseDetail.courseDetail.isBestseller,
+        rating: state.courseDetail.courseDetail.rating,
+        reviews: state.courseDetail.courseDetail.review,
+        students: state.courseDetail.courseDetail.students,
+        price: state.courseDetail.courseDetail.price,
+        category: state.courseDetail.courseDetail.category,
     }
 }
 
 export const getCourseOverviewInfo = (state: RootState) => {
     return {
-        _id: state.course.courseDetail._id,
-        owner: state.course.courseDetail.owner,
-        name: state.course.courseDetail.name,
-        overview: state.course.courseDetail.overview,
-        isBestseller: state.course.courseDetail.isBestseller,
-        rating: state.course.courseDetail.rating,
-        reviews: state.course.courseDetail.review,
-        students: state.course.courseDetail.students,
-        price: state.course.courseDetail.price,
-        category: state.course.courseDetail.category,
-        language: state.course.courseDetail.language,
-        updatedAt: state.course.courseDetail.updatedAt,
-        thumbnail: state.course.courseDetail.thumbnail,
+        _id: state.courseDetail.courseDetail._id,
+        owner: state.courseDetail.courseDetail.owner,
+        name: state.courseDetail.courseDetail.name,
+        overview: state.courseDetail.courseDetail.overview,
+        isBestseller: state.courseDetail.courseDetail.isBestseller,
+        rating: state.courseDetail.courseDetail.rating,
+        reviews: state.courseDetail.courseDetail.review,
+        students: state.courseDetail.courseDetail.students,
+        price: state.courseDetail.courseDetail.price,
+        category: state.courseDetail.courseDetail.category,
+        language: state.courseDetail.courseDetail.language,
+        updatedAt: state.courseDetail.courseDetail.updatedAt,
+        thumbnail: state.courseDetail.courseDetail.thumbnail,
     }
 }
 
 export const getSidebarInfo = (state: RootState) => {
     return {
-        price: state.course.courseDetail.price,
-        thumbnail: state.course.courseDetail.thumbnail,
-        include: state.course.courseDetail.include,
+        price: state.courseDetail.courseDetail.price,
+        thumbnail: state.courseDetail.courseDetail.thumbnail,
+        include: state.courseDetail.courseDetail.include,
     }
 }
 
 export const getWhatYouWillLearn = (state: RootState) => {
-    return state.course.courseDetail.goals
+    return state.courseDetail.courseDetail.goals
 }
 
 export const getRequirements = (state: RootState) => {
-    return state.course.courseDetail.requirements
+    return state.courseDetail.courseDetail.requirements
 }
 
 export const getDescription = (state: RootState) => {
-    return state.course.courseDetail.description
+    return state.courseDetail.courseDetail.description
 }
 
 export const getReviews = (state: RootState) => {
-    return state.course.reviews
+    return state.courseDetail.reviews
 }
 
 export const getCourseIncludeList = (state: RootState) => {
-    return state.course.courseDetail.include
+    return state.courseDetail.courseDetail.include
 }
-
-export const getWhatYouWillLearnForm = (state: RootState) => {
-    return state.course.whatYouWillLearn
-}
-
-export const getRequirementsForm = (state: RootState) => {
-    return state.course.requirements
-}
-
-export const getIntendedLearnersForm = (state: RootState) => {
-    return state.course.intendedLearners
-}
-
-export const getInputContentWhatYouWillLearn =
-    (id: string) => (state: RootState) => {
-        for (let i = 0; i < state.course.whatYouWillLearn.length; i++) {
-            if (state.course.whatYouWillLearn[i].id === id) {
-                return state.course.whatYouWillLearn[i].content
-            }
-        }
-        return ''
-    }

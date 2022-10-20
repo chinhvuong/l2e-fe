@@ -1,10 +1,14 @@
+import { courseCurriculumSlice } from './course/curriculum/index'
 import { userSlice } from './user/index'
 import { configureStore } from '@reduxjs/toolkit'
-import { courseSlice } from './course'
+import { courseIntendedLearnersSlice } from './course/intended-learners'
+import { courseDetailSlice } from './course'
 
 export const store = configureStore({
     reducer: {
-        course: courseSlice.reducer,
+        courseDetail: courseDetailSlice.reducer,
+        intendedLearners: courseIntendedLearnersSlice.reducer,
+        curriculum: courseCurriculumSlice.reducer,
         user: userSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>

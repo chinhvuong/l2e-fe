@@ -8,7 +8,8 @@ import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { TInput, TInputUpdate } from '@/store/course/types'
+import { TInput } from '@/store/course/intended-learners/types'
+import { TInputUpdate } from '@/store/course/types'
 
 export interface CardProps {
     id: string
@@ -123,7 +124,7 @@ export const Card: FC<CardProps> = ({
     }
 
     return (
-        <div className="flex items-center space-x-2" style={{ opacity }}>
+        <div className="flex items-center space-x-3" style={{ opacity }}>
             <div className="basis-3/4">
                 <Input
                     charLimit={{ minLength: 10, maxLength: 160 }}
@@ -132,12 +133,12 @@ export const Card: FC<CardProps> = ({
                     updateToStore={updateCard}
                 />
             </div>
-            {whatYouWillLearn[index].content !== '' && (
-                <>
+            {whatYouWillLearn[index].content !== '' ? (
+                <div className="flex space-x-3 items-center">
                     <div>
                         <FontAwesomeIcon
                             icon={faTrash}
-                            className={`text-xl bg-red-500 text-white rounded-full py-[12px] px-[13px] ${
+                            className={`text-lg bg-red-500 text-white rounded-full py-[10px] px-[11px] ${
                                 whatYouWillLearn.length > defaultInputBlock
                                     ? 'cursor-pointer'
                                     : 'cursor-not-allowed'
@@ -148,10 +149,25 @@ export const Card: FC<CardProps> = ({
                     <div ref={ref} data-handler-id={handlerId}>
                         <FontAwesomeIcon
                             icon={faBars}
-                            className="text-xl bg-black text-white rounded-full py-[12px] px-[13px] cursor-move"
+                            className="text-lg bg-black text-white rounded-full py-[10px] px-[11px] cursor-move"
                         />
                     </div>
-                </>
+                </div>
+            ) : (
+                <div className="flex space-x-3 items-center">
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faTrash}
+                            className="text-xl text-transparent rounded-full py-[10px] px-[11px]"
+                        />
+                    </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faBars}
+                            className="text-xl text-transparent rounded-full py-[10px] px-[11px]"
+                        />
+                    </div>
+                </div>
             )}
         </div>
     )

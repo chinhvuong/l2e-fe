@@ -1,14 +1,10 @@
+import AddMoreButton from '@/components/core/button/add-button'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { TInput } from '@/store/course/types'
+import { CurriculumSection } from '@/store/course/curriculum/types'
 import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
-import { IDragAndDropProps } from '.'
-import AddMoreButton from './add-button'
+import { ISectionProps } from '.'
 import { Card } from './card'
-
-export interface ContainerState {
-    cards: TInput[]
-}
 
 export const Container = ({
     addItem,
@@ -16,11 +12,11 @@ export const Container = ({
     updateOrderItems,
     deleteItem,
     getItems,
-    defaultInputBlock,
-}: IDragAndDropProps) => {
+    getItemName,
+}: ISectionProps) => {
     const cardsFromStore = useAppSelector(getItems)
     const [cards, setCards] = useState(cardsFromStore)
-    const [cardsOrder, setCardsOrder] = useState(cards.map((item) => item.id))
+    const [cardsOrder, setCardsOrder] = useState(cards.map((item) => item._id))
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -36,13 +32,13 @@ export const Container = ({
     }, [cardsOrder])
 
     const addCard = () => {
-        if (cardsFromStore.every((item) => item.content !== '')) {
+        if (cardsFromStore.every((item) => item.name !== '')) {
             dispatch(addItem())
         }
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-        setCards((prevCards: TInput[]) => {
+        setCards((prevCards: CurriculumSection[]) => {
             const newCards = [...prevCards]
 
             // dragCard is card we are dragging
@@ -57,31 +53,27 @@ export const Container = ({
         })
     }, [])
 
-    const renderCard = useCallback(
-        (card: { id: string; placeholder: string }, index: number) => {
-            return (
-                <Card
-                    key={card.id}
-                    index={index}
-                    id={card.id}
-                    placeholder={card.placeholder}
-                    moveCard={moveCard}
-                    updateCard={updateItem}
-                    deleteCard={deleteItem}
-                    getCards={getItems}
-                    defaultInputBlock={defaultInputBlock}
-                />
-            )
-        },
-        [],
-    )
+    const renderCard = useCallback((card, index: number) => {
+        return (
+            <Card
+                key={card._id}
+                index={index}
+                id={card._id}
+                moveCard={moveCard}
+                updateCard={updateItem}
+                deleteCard={deleteItem}
+                getCards={getItems}
+                getCardName={getItemName}
+            />
+        )
+    }, [])
 
     const isChangeCardsOrder = () => {
         const newOrder = [...cardsOrder]
         let isChange = false
         for (let i = 0; i < cards.length; i++) {
-            if (cards[i].id !== cardsFromStore[i].id) {
-                newOrder[i] = cards[i].id
+            if (cards[i]._id !== cardsFromStore[i]._id) {
+                newOrder[i] = cards[i]._id
                 isChange = true
             }
         }
@@ -95,8 +87,8 @@ export const Container = ({
         <>
             <div className="space-y-4">
                 {cards.map((card, i) => renderCard(card, i))}
+                <AddMoreButton onClick={() => addCard()} label="Add section" />
             </div>
-            <AddMoreButton onClick={() => addCard()} />
         </>
     )
 }

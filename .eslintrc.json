@@ -14,7 +14,7 @@
         "react-hooks/exhaustive-deps": "off",
         "no-useless-escape": "off",
         "no-extra-boolean-cast": "off",
-        "no-unused-vars": "warn",
+        "no-unused-vars": "off",
         "eqeqeq": ["warn", "always"],
         "@typescript-eslint/no-explicit-any": [
             "off",
