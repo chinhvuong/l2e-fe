@@ -3,7 +3,7 @@ import { NextPage } from 'next'
 import { appWithTranslation } from 'next-i18next'
 import '@/styles/global-style.css'
 import '@/styles/base.scss'
-import { Provider } from 'react-redux'
+import StateProvider from 'state'
 import { store } from '@/store'
 import { AppProps } from 'next/app'
 import Layout from '@/layout'
@@ -20,9 +20,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     // Use the layout defined at the page level, if available
     const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
     return (
-        <Provider store={store}>
-            {getLayout(<Component {...pageProps} />)}
-        </Provider>
+        <StateProvider>{getLayout(<Component {...pageProps} />)}</StateProvider>
     )
 }
 
