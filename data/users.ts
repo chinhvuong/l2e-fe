@@ -1,4 +1,4 @@
-import { User } from '@/constants/interfaces'
+import { User } from '@/store/user/types'
 
 export const dataUser: User = {
     _id: 1,

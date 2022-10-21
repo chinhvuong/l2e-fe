@@ -52,19 +52,6 @@ export interface Category {
     updatedAt: Date
 }
 
-export interface User {
-    _id: number
-    walletAddress: string
-    createdAt: Date
-    updatedAt: Date
-    name: string
-    title: string
-    bio: string
-    rating: number
-    courses: number[]
-    avatar: string
-}
-
 export interface Rating {
     _id: number
     user: number
