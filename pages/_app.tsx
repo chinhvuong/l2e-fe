@@ -7,6 +7,8 @@ import { Provider } from 'react-redux'
 import { store } from '@/store'
 import { AppProps } from 'next/app'
 import Layout from '@/layout'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
 type NextPageWithLayout = NextPage & {
     // eslint-disable-next-line no-unused-vars
     getLayout?: (page: ReactElement) => ReactNode
@@ -18,11 +20,16 @@ type AppPropsWithLayout = AppProps & {
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
     // Use the layout defined at the page level, if available
+    const queryClient = new QueryClient({
+        defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
+    })
     const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
     return (
-        <Provider store={store}>
-            {getLayout(<Component {...pageProps} />)}
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+                {getLayout(<Component {...pageProps} />)}
+            </Provider>
+        </QueryClientProvider>
     )
 }
 

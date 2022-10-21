@@ -5,11 +5,18 @@ import Button from '@/components/core/button'
 import { dataCourses_preview_swiper } from '@/data/course-preview'
 import CourseListSwiper from '@/components/common/course-list-swiper'
 import Router from 'next/router'
+import { useAuth } from '@/api/hooks/useAuth'
 
 const HomePageContainer = () => {
     const goToCreateCoursePage = () => {
         Router.push('/create-course')
     }
+
+    const { useLogin } = useAuth()
+    const { mutate: login } = useLogin({
+        onError: () => {},
+        onSuccess: () => {},
+    })
 
     return (
         <div>
@@ -49,6 +56,18 @@ const HomePageContainer = () => {
             <div className="flex justify-center text-white mt-10">
                 <Button onClick={() => goToCreateCoursePage()}>
                     Create course
+                </Button>
+                <Button
+                    onClick={() =>
+                        login({
+                            walletAddress:
+                                '0x6AB0Cc7184F27b7ABbA97de7d23B26665a4f7d5C',
+                            signature:
+                                '0x3282ea2682c68be7183248f61298b9993962ca41aadec42e0bb1944057ed66750a53aad0b8bf4923671d89a9d40b70e31244e448b35f1dd0c4d88106772275011b',
+                        })
+                    }
+                >
+                    Login
                 </Button>
             </div>
 
