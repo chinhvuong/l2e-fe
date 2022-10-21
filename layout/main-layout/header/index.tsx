@@ -7,7 +7,7 @@ import Button from '@/components/core/button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faBell, faWallet } from '@fortawesome/free-solid-svg-icons'
 import Router from 'next/router'
-import ConnectWallet from './connect-wallet'
+
 interface IHeader {
     darkTheme: boolean
     isLoggedIn: boolean
@@ -57,7 +57,9 @@ const Header = (props: IHeader) => {
                     }`}
                 />
                 {!props.isLoggedIn ? (
-                    <ConnectWallet className="btn-primary under_lg:hidden" />
+                    <Button className="btn-primary under_lg:hidden">
+                        Connect Wallet
+                    </Button>
                 ) : (
                     <div className="flex items-center justify-between sm:hidden lg:w-[150px] under_lg:hidden">
                         <FontAwesomeIcon
