@@ -1,11 +1,6 @@
 import { apiPath } from '@/api/api-path'
 import { callAPI } from '../axios-client'
-import { AuthSubmit } from '../dto/auth.dto'
-
-export interface AuthResponse {
-    refreshToken: string
-    accessToken: string
-}
+import { AuthResponse, AuthSubmit } from '../dto/auth.dto'
 
 export const apiAuth = {
     login: (payload: AuthSubmit): Promise<AuthResponse> =>

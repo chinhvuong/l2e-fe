@@ -1,3 +1,4 @@
+import { useCourse } from '@/api/hooks/useCourse'
 import { ReactNode, ReactText, useEffect, useState } from 'react'
 import Button from '../button'
 
@@ -13,6 +14,14 @@ export default function UploadPreview(props: IUploadPreviewProps) {
         '/images/placeholder.jpeg',
     )
     const [showPlaceholder, setShowPlaceholder] = useState(true)
+
+    const { useUploadSingleFile } = useCourse()
+    const { mutate: uploadFile } = useUploadSingleFile({
+        onError: () => {},
+        onSuccess: (response) => {
+            console.log('uploadFile', response)
+        },
+    })
 
     useEffect(() => {
         if (!uploadedFile) {
@@ -37,6 +46,11 @@ export default function UploadPreview(props: IUploadPreviewProps) {
             if (target.files && target.files[0]) {
                 console.log(target.files[0])
                 setUploadedFile(target.files[0])
+                const formData = new FormData()
+                formData.append('file', target.files[0])
+
+                uploadFile(formData)
+
                 if (props.type === 'video') {
                     setShowPlaceholder(false)
                 }
@@ -64,10 +78,8 @@ export default function UploadPreview(props: IUploadPreviewProps) {
                 </div>
                 <div className="basis-1/2 ml-5 space-y-3">
                     {props.children}
-                    <Button>
-                        <div className="text-white" onClick={handleUploadFile}>
-                            Upload
-                        </div>
+                    <Button onClick={handleUploadFile}>
+                        <div className="text-white">Upload</div>
                     </Button>
                 </div>
             </div>

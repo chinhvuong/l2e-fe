@@ -1,13 +1,9 @@
-import { User } from '@/constants/interfaces'
+import { RootState } from '..'
 
-export const getInstructorInfo = ({ user }: { user: User }) => {
-    return {
-        _id: user._id,
-        name: user.name,
-        title: user.title,
-        bio: user.bio,
-        rating: user.rating,
-        courses: user.courses,
-        avatar: user.avatar,
-    }
+export const getInstructorInfo = (state: RootState) => {
+    return state.user.user
+}
+
+export const getWalletAddress = (state: RootState) => {
+    return state.user.walletAddress
 }

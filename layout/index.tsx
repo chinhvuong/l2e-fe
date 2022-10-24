@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks'
+import { getWalletAddress } from '@/store/user/selectors'
 import { useRouter } from 'next/router'
 import React, { ReactChild } from 'react'
 import Footer from './components/footer'
@@ -9,9 +11,12 @@ const Layout = ({ children }: { children: ReactChild }) => {
         router.pathname === '/about-us' || router.pathname === '/'
             ? true
             : false
+
+    const isLoggedIn = !!useAppSelector(getWalletAddress)
+
     return (
         <div>
-            <Header darkTheme={darkTheme} isLoggedIn={false} />
+            <Header darkTheme={darkTheme} isLoggedIn={isLoggedIn} />
             <main id="main">
                 <div
                     className="w-full app-transition main-transition h-full bg-white"

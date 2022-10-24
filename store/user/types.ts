@@ -15,4 +15,5 @@ export interface UserState {
     accessToken: string
     refreshToken: string
     user: User
+    walletAddress: string | null
 }

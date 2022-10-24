@@ -3,7 +3,7 @@ import { NextPage } from 'next'
 import { appWithTranslation } from 'next-i18next'
 import '@/styles/global-style.css'
 import '@/styles/base.scss'
-import StateProvider from 'state'
+import { eth } from '@/hooks/useEth' // Eth state provider
 import { Provider } from 'react-redux'
 import { store } from '@/store'
 import { AppProps } from 'next/app'
@@ -27,11 +27,11 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
     return (
         <QueryClientProvider client={queryClient}>
-            <StateProvider>
+            <eth.Provider>
                 <Provider store={store}>
                     {getLayout(<Component {...pageProps} />)}
                 </Provider>
-            </StateProvider>
+            </eth.Provider>
         </QueryClientProvider>
     )
 }

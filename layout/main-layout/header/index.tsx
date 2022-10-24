@@ -1,11 +1,17 @@
-import React from 'react'
+import { useState } from 'react'
 import Explore from './explore'
 import Logo from './logo'
 import Search from './search'
 import './style.scss'
-import Button from '@/components/core/button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faBell, faWallet } from '@fortawesome/free-solid-svg-icons'
+import {
+    faBars,
+    faBell,
+    faWallet,
+    faUser,
+    faGear,
+    faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons'
 import Router from 'next/router'
 import ConnectWallet from './connect-wallet'
 
@@ -15,6 +21,9 @@ interface IHeader {
 }
 
 const Header = (props: IHeader) => {
+    const [hoverUser, setHoverUser] = useState(false)
+    const [hoverUserActions, setHoverUserActions] = useState(false)
+
     const goToHomePage = () => {
         Router.push('/')
     }
@@ -67,11 +76,58 @@ const Header = (props: IHeader) => {
                                 !props.darkTheme ? 'text-black' : 'text-white'
                             }`}
                         />
-                        <img
-                            src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
-                            alt=""
-                            className="rounded-full h-[35px] w-[35px] 2xl:mx-[35px] xl:mx-[15px] cursor-pointer"
-                        />
+                        <div className="relative">
+                            <img
+                                src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
+                                alt=""
+                                className="rounded-full h-[35px] w-[35px] mx-[35px] cursor-pointer"
+                                onMouseEnter={() => setHoverUser(true)}
+                                onMouseLeave={() => setHoverUser(false)}
+                            />
+                            <div
+                                onMouseEnter={() => setHoverUserActions(true)}
+                                onMouseLeave={() => setHoverUserActions(false)}
+                                className={`w-[150px] absolute right-[20px] z-30 w-full ${
+                                    !(hoverUser || hoverUserActions) && 'hidden'
+                                }`}
+                            >
+                                <div className="h-[15px]"></div>
+                                <div
+                                    className={`rounded-[20px] bg-white drop-shadow-lg w-full `}
+                                >
+                                    <div
+                                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-t-[20px] cursor-pointer"
+                                        // onClick={() => onSelectRating(item)}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faUser}
+                                            className="w-[16px]"
+                                        />
+                                        <div>Profile</div>
+                                    </div>
+                                    <div
+                                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
+                                        // onClick={() => onSelectRating(item)}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faGear}
+                                            className="w-[16px]"
+                                        />
+                                        <div>Settings</div>
+                                    </div>
+                                    <div
+                                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-b-[20px] cursor-pointer"
+                                        // onClick={() => onSelectRating(item)}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faRightFromBracket}
+                                            className="ml-[1px]"
+                                        />
+                                        <div>Log Out</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <FontAwesomeIcon
                             icon={faWallet}
                             className={`text-[25px] cursor-pointer ${
