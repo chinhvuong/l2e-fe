@@ -12,15 +12,6 @@ export interface IRichTextEditorProps {
     label: string
 }
 
-// const getContent = convertToRaw(editorState.getCurrentContent())
-// setContent(EditorState.push(content, convertFromRaw(getContent)))
-// createWithContent!!!
-// setPlaceholder(
-//     newState.getCurrentContent().getPlainText().length !== 0
-//         ? ''
-//         : 'Insert your course description.',
-//)
-
 // bug ở phần placeholder, click order/unorder list đầu tiên
 
 export default function RichTextEditor(props: IRichTextEditorProps) {

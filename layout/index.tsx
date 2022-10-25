@@ -1,7 +1,6 @@
-import { useAppSelector } from '@/hooks'
-import { getWalletAddress } from '@/store/user/selectors'
+import { WALLET_ADDRESS } from '@/constants/localStorage'
 import { useRouter } from 'next/router'
-import React, { ReactChild } from 'react'
+import { ReactChild, useEffect, useState } from 'react'
 import Footer from './components/footer'
 import Header from './main-layout/header'
 const Layout = ({ children }: { children: ReactChild }) => {
@@ -12,7 +11,11 @@ const Layout = ({ children }: { children: ReactChild }) => {
             ? true
             : false
 
-    const isLoggedIn = !!useAppSelector(getWalletAddress)
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+    useEffect(() => {
+        setIsLoggedIn(!!localStorage.getItem(WALLET_ADDRESS))
+    }, [])
 
     return (
         <div>

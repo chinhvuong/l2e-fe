@@ -18,7 +18,7 @@ export default function Requirement() {
                     <div className="flex items-start" key={index}>
                         <FontAwesomeIcon
                             icon={faCircle}
-                            className="text-[10px] pr-5 pt-2"
+                            className="text-[8px] pr-5 pt-2"
                         />
                         <div>{item}</div>
                     </div>

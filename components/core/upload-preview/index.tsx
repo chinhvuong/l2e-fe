@@ -18,9 +18,7 @@ export default function UploadPreview(props: IUploadPreviewProps) {
     const { useUploadSingleFile } = useCourse()
     const { mutate: uploadFile } = useUploadSingleFile({
         onError: () => {},
-        onSuccess: (response) => {
-            console.log('uploadFile', response)
-        },
+        onSuccess: () => {},
     })
 
     useEffect(() => {
@@ -44,7 +42,6 @@ export default function UploadPreview(props: IUploadPreviewProps) {
         inputFile.onchange = (e) => {
             const target = e.target as HTMLInputElement
             if (target.files && target.files[0]) {
-                console.log(target.files[0])
                 setUploadedFile(target.files[0])
                 const formData = new FormData()
                 formData.append('file', target.files[0])
