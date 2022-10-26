@@ -8,7 +8,7 @@ export interface ISelectProps {
     label?: string
     selectList: string[]
     placeholder: string
-    selected?: string
+    selected: string
     setSelected?: Function
     isLoading?: boolean
 }

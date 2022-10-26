@@ -43,16 +43,19 @@ export default function LandingPageContainer() {
                         label="Language"
                         selectList={language}
                         placeholder="Select language"
+                        selected=""
                     />
                     <Select
                         label="Level"
                         selectList={level}
                         placeholder="Select level"
+                        selected=""
                     />
                     <Select
                         label="Category"
                         selectList={category}
                         placeholder="Select category"
+                        selected=""
                     />
                 </div>
                 <div className="w-1/3 pr-4">
