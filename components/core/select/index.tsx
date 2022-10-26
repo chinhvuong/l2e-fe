@@ -2,26 +2,102 @@ import useOutsideClick from '@/hooks/useOutSideClick'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRef, useState } from 'react'
+import Loading from '../animate/loading'
 
 export interface ISelectProps {
     label?: string
     selectList: string[]
     placeholder: string
+    selected?: string
+    setSelected?: Function
+    isLoading?: boolean
 }
 
 export default function Select(props: ISelectProps) {
-    const [selectedRating, setSelectedRating] = useState(props.placeholder)
-    const [openRatingSelect, setOpenRatingSelect] = useState(false)
+    const [selected, setSelected] = useState(
+        props.selected === '' ? props.placeholder : props.selected,
+    )
+    const [openSelect, setOpenSelect] = useState(false)
     const clickOutSideRef = useRef(null)
 
-    const onSelectRating = (item: string) => {
-        setSelectedRating(item)
-        setOpenRatingSelect(false)
+    const onSelect = (item: string) => {
+        setSelected(item)
+        props.setSelected && props.setSelected(item)
+        setOpenSelect(false)
     }
 
     useOutsideClick(clickOutSideRef, () => {
-        setOpenRatingSelect(false)
+        setOpenSelect(false)
     })
+
+    const getSelectContent = () => {
+        if (props.selectList.length === 1) {
+            return (
+                <div
+                    className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer rounded-[20px]"
+                    onClick={() => onSelect(props.selectList[0])}
+                >
+                    {props.selectList[0]}
+                </div>
+            )
+        }
+        if (props.selectList.length === 2) {
+            return (
+                <>
+                    <div
+                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-t-[20px] cursor-pointer"
+                        onClick={() => onSelect(props.selectList[0])}
+                    >
+                        {props.selectList[0]}
+                    </div>
+                    <div
+                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-b-[20px] cursor-pointer"
+                        onClick={() => onSelect(props.selectList[1])}
+                    >
+                        {props.selectList[1]}
+                    </div>
+                </>
+            )
+        }
+        if (props.selectList.length > 2) {
+            return (
+                <>
+                    <div
+                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-t-[20px] cursor-pointer"
+                        onClick={() => onSelect(props.selectList[0])}
+                    >
+                        {props.selectList[0]}
+                    </div>
+                    {props.selectList.map((item, index) => {
+                        if (
+                            index !== 0 &&
+                            index !== props.selectList.length - 1
+                        ) {
+                            return (
+                                <div
+                                    className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
+                                    key={index}
+                                    onClick={() => onSelect(item)}
+                                >
+                                    {item}
+                                </div>
+                            )
+                        }
+                    })}
+                    <div
+                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-b-[20px] cursor-pointer"
+                        onClick={() =>
+                            onSelect(
+                                props.selectList[props.selectList.length - 1],
+                            )
+                        }
+                    >
+                        {props.selectList[props.selectList.length - 1]}
+                    </div>
+                </>
+            )
+        }
+    }
 
     return (
         <div className="w-full relative">
@@ -31,12 +107,12 @@ export default function Select(props: ISelectProps) {
                 </div>
             )}
             <div
-                onClick={() => setOpenRatingSelect(!openRatingSelect)}
+                onClick={() => setOpenSelect(!openSelect)}
                 ref={clickOutSideRef}
             >
                 <div className="flex items-center justify-between py-[10px] rounded-[80px] border-[1px] border-black px-[20px] cursor-pointer hover:bg-border-box">
                     <div className="flex items-center space-x-2">
-                        {selectedRating}
+                        {selected}
                     </div>
                     <FontAwesomeIcon
                         icon={faChevronDown}
@@ -44,21 +120,17 @@ export default function Select(props: ISelectProps) {
                     />
                 </div>
                 <div
-                    className={`py-[5px] rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg w-full ${
-                        !openRatingSelect && 'hidden'
+                    className={`rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg w-full ${
+                        !openSelect && 'hidden'
                     }`}
                 >
-                    {props.selectList.map((item) => {
-                        return (
-                            <div
-                                className="hover:bg-primary hover:text-white box-border px-[20px] py-1.5 rounded-[12px] cursor-pointer"
-                                key={item}
-                                onClick={() => onSelectRating(item)}
-                            >
-                                {item}
-                            </div>
-                        )
-                    })}
+                    {props?.isLoading ? (
+                        <div className="flex justify-center items-center h-20">
+                            <Loading />
+                        </div>
+                    ) : (
+                        getSelectContent()
+                    )}
                 </div>
             </div>
         </div>

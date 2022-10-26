@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { TInput } from '@/store/course/intended-learners/types'
 import { TInputUpdate } from '@/store/course/types'
+import { RootState } from '@/store'
 
 export interface CardProps {
     id: string
@@ -18,7 +19,7 @@ export interface CardProps {
     moveCard: Function
     updateCard: ActionCreatorWithPayload<TInputUpdate, string>
     deleteCard: ActionCreatorWithPayload<number, string>
-    getCards: () => TInput[]
+    getCards: (state: RootState) => TInput[]
     defaultInputBlock: number
 }
 

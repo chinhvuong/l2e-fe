@@ -13,3 +13,17 @@ export const getInputContentCurriculumSection =
         }
         return ''
     }
+
+export const getCurriculumLecturesForm = (state: RootState) => {
+    return state.curriculum.lectures
+}
+
+export const getInputContentCurriculumLecture =
+    (id: string) => (state: RootState) => {
+        for (let i = 0; i < state.curriculum.lectures.length; i++) {
+            if (state.curriculum.lectures[i]._id === id) {
+                return state.curriculum.lectures[i].name
+            }
+        }
+        return ''
+    }

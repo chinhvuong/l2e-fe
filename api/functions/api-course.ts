@@ -1,6 +1,7 @@
 import { apiPath } from '@/api/api-path'
 import { STORAGE_URL } from '@/constants/urls'
 import { callAPI } from '../axios-client'
+import { CreateCourseRequest, GetCategoryResponse } from '../dto/course.dto'
 
 export const apiCourse = {
     uploadSingleFile: (payload: FormData): Promise<string> =>
@@ -16,4 +17,8 @@ export const apiCourse = {
             },
             STORAGE_URL,
         ),
+    createCourse: (payload: CreateCourseRequest): Promise<string> =>
+        callAPI('post', apiPath.CREATE_COURSE, payload),
+    getCategory: (): Promise<GetCategoryResponse> =>
+        callAPI('get', apiPath.GET_CATEGORY, {}),
 }

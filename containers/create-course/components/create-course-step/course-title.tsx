@@ -1,9 +1,15 @@
 import Input from '@/components/core/input'
 import * as React from 'react'
 
-export interface ICourseTitleProps {}
+export interface ICourseTitleProps {
+    defaultValue: string
+    setTitle: Function
+}
 
-export default function CourseTitle() {
+export default function CourseTitle({
+    defaultValue,
+    setTitle,
+}: ICourseTitleProps) {
     return (
         <div className="flex flex-col items-center">
             <div className="text-3xl mt-16 mb-6 font-bold">{`How about a course title?`}</div>
@@ -13,6 +19,8 @@ export default function CourseTitle() {
                     id="course-title"
                     charLimit={{ minLength: 0, maxLength: 60 }}
                     placeholder="E.g. Learn Photoshop ES6 from Scratch"
+                    updateInput={setTitle}
+                    defaultValue={defaultValue}
                 />
             </div>
         </div>

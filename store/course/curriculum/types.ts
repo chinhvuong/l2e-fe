@@ -1,5 +1,6 @@
 export type CourseCurriculumState = {
     sections: CurriculumSection[]
+    lectures: CurriculumLecture[]
 }
 
 export type CurriculumSection = {

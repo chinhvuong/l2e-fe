@@ -1,4 +1,4 @@
-import { WALLET_ADDRESS } from '@/constants/localStorage'
+import { ACCESS_TOKEN, WALLET_ADDRESS } from '@/constants/localStorage'
 import { useRouter } from 'next/router'
 import { ReactChild, useEffect, useState } from 'react'
 import Footer from './components/footer'
@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     useEffect(() => {
-        setIsLoggedIn(!!localStorage.getItem(WALLET_ADDRESS))
+        setIsLoggedIn(!!localStorage.getItem(ACCESS_TOKEN))
     }, [])
 
     return (

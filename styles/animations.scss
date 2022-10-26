@@ -1,24 +1,27 @@
-[data-animate=fade-in] {
+[data-animate='fade-in'] {
     position: relative;
     opacity: 0;
-    transition-property: top,left,bottom,right,opacity;
-    transition-duration: .3s;
+    transition-property: top, left, bottom, right, opacity;
+    transition-duration: 0.3s;
     transition-timing-function: ease-out;
 }
 
-[data-animate=fade-in][data-animated=true][data-animate-way=top-bottom] {
+[data-animate='fade-in'][data-animated='true'][data-animate-way='top-bottom'] {
     bottom: 0;
     opacity: 1;
 }
 
-[data-animate=fade-in][data-animate-way=top-bottom] {
+[data-animate='fade-in'][data-animate-way='top-bottom'] {
     bottom: 18px;
 }
 
 @for $i from 1 through 15 {
-
-    [data-animate-delay="#{$i}"] {
+    [data-animate-delay='#{$i}'] {
         transition-delay: #{$i/10}s;
     }
 }
 
+.arrow-animation {
+    transform-origin: center;
+    transition: transform 0.25s ease;
+}

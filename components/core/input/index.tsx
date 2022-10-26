@@ -1,5 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import { getInputContentCurriculumSection } from '@/store/course/curriculum/selectors'
+import { useAppDispatch } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { useEffect, useState } from 'react'
 
@@ -11,7 +10,9 @@ export interface IInputProps {
         maxLength: number
     }
     placeholder?: string
+    defaultValue?: string | null
     updateToStore?: ActionCreatorWithPayload<any, string>
+    updateInput?: Function
 }
 
 export default function Input({
@@ -19,12 +20,12 @@ export default function Input({
     label,
     charLimit,
     placeholder,
+    defaultValue,
+    updateInput,
     updateToStore,
 }: IInputProps) {
     const dispatch = useAppDispatch()
-    const [input, setInput] = useState(
-        useAppSelector(getInputContentCurriculumSection(id)),
-    )
+    const [input, setInput] = useState(defaultValue ?? '')
 
     useEffect(() => {
         updateCard(input)
@@ -32,6 +33,7 @@ export default function Input({
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
+        updateInput && updateInput(e.target.value)
     }
 
     const getInputCharLeft = () => {

@@ -1,7 +1,8 @@
+import { useCourse } from '@/api/hooks/useCourse'
 import Button from '@/components/core/button'
 import Logo from '@/layout/main-layout/header/logo'
 import Router from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CourseCategory from './components/create-course-step/course-category'
 import CourseTitle from './components/create-course-step/course-title'
 import CourseType from './components/create-course-step/course-type'
@@ -14,6 +15,30 @@ export default function CourseBasicCreateContainer() {
     const [stepBarWidth, setStepBarWidth] = useState({
         width: (currentStep / step) * 100 + '%',
     })
+
+    const [courseName, setCourseName] = useState('')
+    const [courseCategory, setCourseCategory] = useState('')
+    const [courseCategoryList, setCourseCategoryList] = useState<string[]>([])
+
+    const { useCreateCourse } = useCourse()
+    const { mutate: createCourse } = useCreateCourse({
+        onError: () => {},
+        onSuccess: () => {},
+    })
+
+    const { useGetCategory } = useCourse()
+    const { data, isFetching } = useGetCategory()
+
+    useEffect(() => {
+        if (data?.data) {
+            const category = data.data.map((item) => item.name)
+            setCourseCategoryList(category)
+        }
+    }, [isFetching])
+
+    const convertToCategoryID = (categoryName: string) => {
+        return data?.data.find((item) => item.name === categoryName)?._id ?? ''
+    }
 
     const backStep = () => {
         if (currentStep !== 1) {
@@ -29,7 +54,24 @@ export default function CourseBasicCreateContainer() {
         }
     }
 
+    const validateCurrentStep = () => {
+        if (currentStep === 1) {
+            return true
+        }
+        if (currentStep === 2 && courseName !== '') {
+            return true
+        }
+        if (currentStep === 3 && courseCategory !== '') {
+            return true
+        }
+        return false
+    }
+
     const nextStep = () => {
+        if (!validateCurrentStep()) {
+            return
+        }
+
         if (currentStep !== step) {
             const next = currentStep + 1
             if (next <= step) {
@@ -39,6 +81,10 @@ export default function CourseBasicCreateContainer() {
                 })
             }
         } else {
+            createCourse({
+                name: courseName,
+                category: convertToCategoryID(courseCategory),
+            })
             Router.push('/create-course/landing-page')
         }
     }
@@ -47,9 +93,21 @@ export default function CourseBasicCreateContainer() {
         if (currentStep === 1) {
             return <CourseType />
         } else if (currentStep === 2) {
-            return <CourseTitle />
+            return (
+                <CourseTitle
+                    setTitle={setCourseName}
+                    defaultValue={courseName}
+                />
+            )
         } else if (currentStep === 3) {
-            return <CourseCategory />
+            return (
+                <CourseCategory
+                    setCategory={setCourseCategory}
+                    selected={courseCategory}
+                    categoryItemList={courseCategoryList}
+                    isLoading={isFetching}
+                />
+            )
         }
     }
 

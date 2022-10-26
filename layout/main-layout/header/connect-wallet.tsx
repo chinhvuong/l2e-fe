@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { eth } from '@/hooks/useEth' // Global state
 import { useState } from 'react' // State management
 import './style.scss'
@@ -17,8 +17,7 @@ export default function ConnectWallet() {
         onSuccess: () => {},
     })
 
-    const connectWallet = async () => {
-        await unlock()
+    useEffect(() => {
         if (address && address !== localStorage.getItem(WALLET_ADDRESS)) {
             localStorage.setItem(WALLET_ADDRESS, address)
             login({
@@ -27,13 +26,13 @@ export default function ConnectWallet() {
                     '0x3282ea2682c68be7183248f61298b9993962ca41aadec42e0bb1944057ed66750a53aad0b8bf4923671d89a9d40b70e31244e448b35f1dd0c4d88106772275011b',
             })
         }
-    }
+    }, [address])
 
     return (
         <div className="bg-primary rounded-[80px] py-[12px] px-[30px] cursor-pointer">
             {/* Auth + details */}
             {/* Unlock button */}
-            <button onClick={() => connectWallet()}>Connect Wallet</button>
+            <button onClick={() => unlock()}>Connect Wallet</button>
         </div>
     )
 }

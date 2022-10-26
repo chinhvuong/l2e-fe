@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Button from '@/components/core/button'
-import './style.scss'
+import '@/styles/animations.scss'
 
 export interface ICourseContentProps {}
 
