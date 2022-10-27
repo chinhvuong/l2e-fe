@@ -7,7 +7,9 @@ import {
 export interface ICourseTypeProps {}
 
 export default function CourseType() {
-    const [courseType, setCourseType] = useState('course')
+    const [courseType, setCourseType] = useState<'course' | 'practice-test'>(
+        'course',
+    )
 
     return (
         <div className="flex flex-col items-center">

@@ -1,10 +1,10 @@
 import Input from '@/components/core/input'
 import type { Identifier, XYCoord } from 'dnd-core'
-import type { FC } from 'react'
+import { FC, useState } from 'react'
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from '../type'
-import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
@@ -52,6 +52,7 @@ export const Card: FC<CardProps> = ({
     const dispatch = useAppDispatch()
     const curriculum = useAppSelector(getCards)
     const sectionName = useAppSelector(getCardName(id))
+    const [expandSection, setExpandSection] = useState(true)
 
     const [{ handlerId }, drop] = useDrop<
         DragItem,
@@ -153,44 +154,53 @@ export const Card: FC<CardProps> = ({
                         />
                     </div>
                 </div>
-                {sectionName !== '' ? (
-                    <div className="flex space-x-3 items-center">
-                        <div>
-                            <FontAwesomeIcon
-                                icon={faTrash}
-                                className={`text-xl bg-red-500 text-white rounded-full py-[10px] px-[11px] ${
-                                    curriculum.length > 1
-                                        ? 'cursor-pointer'
-                                        : 'cursor-not-allowed'
-                                }`}
-                                onClick={() => handleDeleteCard(index)}
-                            />
+                <div className="flex space-x-3 items-center">
+                    {sectionName !== '' ? (
+                        <>
+                            <div>
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className={`text-xl bg-red-500 text-white rounded-full py-[10px] px-[11px] ${
+                                        curriculum.length > 1
+                                            ? 'cursor-pointer'
+                                            : 'cursor-not-allowed'
+                                    }`}
+                                    onClick={() => handleDeleteCard(index)}
+                                />
+                            </div>
+                            <div ref={ref} data-handler-id={handlerId}>
+                                <FontAwesomeIcon
+                                    icon={faBars}
+                                    className="text-xl bg-black text-white rounded-full py-[10px] px-[11px] cursor-move"
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <div className="flex space-x-3 items-center">
+                            <div className="flex items-center">
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className="text-xl text-transparent rounded-full py-[10px] px-[11px]"
+                                />
+                            </div>
+                            <div className="flex items-center">
+                                <FontAwesomeIcon
+                                    icon={faBars}
+                                    className="text-xl text-transparent rounded-full py-[10px] px-[11px]"
+                                />
+                            </div>
                         </div>
-                        <div ref={ref} data-handler-id={handlerId}>
-                            <FontAwesomeIcon
-                                icon={faBars}
-                                className="text-xl bg-black text-white rounded-full py-[10px] px-[11px] cursor-move"
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex space-x-3 items-center">
-                        <div>
-                            <FontAwesomeIcon
-                                icon={faTrash}
-                                className="text-xl text-transparent rounded-full py-[10px] px-[11px]"
-                            />
-                        </div>
-                        <div>
-                            <FontAwesomeIcon
-                                icon={faBars}
-                                className="text-xl text-transparent rounded-full py-[10px] px-[11px]"
-                            />
-                        </div>
-                    </div>
-                )}
+                    )}
+                    <FontAwesomeIcon
+                        icon={faChevronUp}
+                        className={`mt-1 px-3 arrow-animation ease-in cursor-pointer ${
+                            expandSection ? 'rotate-0' : 'rotate-180'
+                        }`}
+                        onClick={() => setExpandSection(!expandSection)}
+                    />
+                </div>
             </div>
-            <div className="mt-5 ml-10">
+            <div className={`mt-5 ml-10 ${!expandSection && 'hidden'}`}>
                 <Lecture
                     addItem={addCurriculumLecture}
                     updateItem={updateCurriculumLectureName}

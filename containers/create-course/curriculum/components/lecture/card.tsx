@@ -12,6 +12,8 @@ import { CurriculumLecture } from '@/store/course/curriculum/types'
 import { RootState } from '@/store'
 import { TInputUpdate } from '@/store/course/types'
 import '@/styles/animations.scss'
+import MainContent from './main-content'
+import Resource from './resource'
 
 export interface CardProps {
     id: string
@@ -42,7 +44,7 @@ export const Card: FC<CardProps> = ({
     const dispatch = useAppDispatch()
     const curriculum = useAppSelector(getCards)
     const lectureName = useAppSelector(getCardName(id))
-    const [expandLecture, setExpandLecture] = useState(false)
+    const [expandLecture, setExpandLecture] = useState(true)
 
     const [{ handlerId }, drop] = useDrop<
         DragItem,
@@ -147,7 +149,7 @@ export const Card: FC<CardProps> = ({
                 <div className="flex space-x-3 items-center">
                     {lectureName !== '' ? (
                         <>
-                            <div>
+                            <div className="flex items-center">
                                 <FontAwesomeIcon
                                     icon={faTrash}
                                     className={`text-xl bg-red-500 text-white rounded-full py-[10px] px-[11px] ${
@@ -158,7 +160,11 @@ export const Card: FC<CardProps> = ({
                                     onClick={() => handleDeleteCard(index)}
                                 />
                             </div>
-                            <div ref={ref} data-handler-id={handlerId}>
+                            <div
+                                ref={ref}
+                                data-handler-id={handlerId}
+                                className="flex items-center"
+                            >
                                 <FontAwesomeIcon
                                     icon={faBars}
                                     className="text-xl bg-black text-white rounded-full py-[10px] px-[11px] cursor-move"
@@ -190,11 +196,27 @@ export const Card: FC<CardProps> = ({
                     />
                 </div>
             </div>
-            <div
-                className={`h-[500px] border-x border-b border-black ${
-                    !expandLecture && 'hidden'
-                }`}
-            ></div>
+            <div className={`${!expandLecture && 'hidden'}`}>
+                <div className="border-x border-b border-black">
+                    <MainContent />
+                </div>
+                <div className="border-x border-b border-black">
+                    <div className="flex items-center space-x-5 mx-10 py-5">
+                        <div className="font-bold min-w-max">Description</div>
+                        <div className="w-full bg-white rounded-[80px]">
+                            <Input
+                                charLimit={{ minLength: 10, maxLength: 80 }}
+                                placeholder="Insert lecture description"
+                                id={id}
+                                updateToStore={updateCard}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="border-x border-b border-black">
+                    <Resource />
+                </div>
+            </div>
         </div>
     )
 }

@@ -26,3 +26,17 @@
 .public-DraftStyleDefault-block {
     margin: 10px 0;
 }
+
+.rdw-block-wrapper,
+.rdw-link-wrapper,
+.rdw-image-wrapper {
+    margin-bottom: 0px;
+}
+
+.rdw-link-modal-target-option {
+    display: none;
+}
+
+.rdw-link-modal {
+    height: auto;
+}
