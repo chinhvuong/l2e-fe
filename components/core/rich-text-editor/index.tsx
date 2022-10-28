@@ -1,5 +1,5 @@
 import { EditorState } from 'draft-js'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import dynamic from 'next/dynamic'
 const Editor = dynamic(
@@ -7,10 +7,9 @@ const Editor = dynamic(
     { ssr: false },
 )
 import './style.scss'
-import { resolve } from 'dns'
 
 export interface IRichTextEditorProps {
-    label: string
+    label?: string
 }
 
 // bug ở phần placeholder, click order/unorder list đầu tiên
@@ -20,30 +19,13 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
         EditorState.createEmpty(),
     )
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
-
-    // const handleUploadFile = () => {
-    //     const inputFile = document.createElement('input')
-    //     inputFile.type = 'file'
-    //     inputFile.accept = 'image/*'
-
-    //     inputFile.click()
-
-    //     inputFile.onchange = (e) => {
-    //         const target = e.target as HTMLInputElement
-    //         if (target.files && target.files[0]) {
-    //             setUploadedFiles([...uploadedFiles, target.files[0]])
-    //             // const formData = new FormData()
-    //             // formData.append('file', target.files[0])
-
-    //             // uploadFile(formData)
-    //         }
-    //     }
-    // }
+    const [uploadedFilesURLs, setUploadedFilesURLs] = useState<string[]>([])
 
     const handleUploadFile = (file: File) => {
         return new Promise(async (resolve: any) => {
             setUploadedFiles([...uploadedFiles, file])
             const objectUrl = URL.createObjectURL(file)
+            setUploadedFilesURLs([...uploadedFilesURLs, objectUrl])
             resolve({
                 data: {
                     link: objectUrl,
@@ -52,11 +34,22 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
         })
     }
 
+    const freeMemory = () => {
+        uploadedFilesURLs.map((item) => URL.revokeObjectURL(item))
+    }
+
+    useEffect(() => {
+        // free memory when ever this component is unmounted
+        return () => freeMemory()
+    }, [])
+
     return (
         <div>
-            <div className="font-bold pb-2 pl-3 sm:text-xs sm:mt-2">
-                {props.label}
-            </div>
+            {props.label && (
+                <div className="font-bold pb-2 pl-3 sm:text-xs sm:mt-2">
+                    {props.label}
+                </div>
+            )}
             <Editor
                 editorState={editorState}
                 wrapperClassName="border border-black rounded-[20px]"

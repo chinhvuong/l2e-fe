@@ -1,7 +1,15 @@
+.btn-common {
+    @apply rounded-[80px] py-[12px] px-[30px] cursor-pointer shadow-sm;
+}
+
 .btn-primary {
-    @apply bg-primary hover:bg-primary-hover transition-colors;
+    @apply bg-primary text-white hover:bg-primary-hover transition-colors;
 }
 
 .btn-primary-outline {
-    @apply bg-white text-primary hover:bg-primary hover:text-white box-border border border-primary transition-colors;
+    @apply bg-white text-primary hover:bg-primary-outline-hover hover:text-primary hover:border-primary box-border border border-primary transition-colors;
+}
+
+.btn-text {
+    @apply text-black hover:text-primary;
 }

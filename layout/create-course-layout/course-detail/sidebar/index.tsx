@@ -1,6 +1,6 @@
 import Button from '@/components/core/button'
-import Router from 'next/router'
-import * as React from 'react'
+import Router, { useRouter } from 'next/router'
+import { useState } from 'react'
 
 export interface ISidebarProps {}
 
@@ -19,19 +19,30 @@ export default function Sidebar() {
         '/messages',
     ]
 
-    const goToMenuTarget = (target: string) => {
-        Router.push('/create-course' + target)
-    }
+    const router = useRouter()
 
+    const [currentTab, setCurrentTab] = useState(() => {
+        const list = router.route.split('/')
+        return '/' + list[list.length - 1]
+    })
+
+    const goToMenuTarget = (index: number) => {
+        setCurrentTab(menuTarget[index])
+        Router.push('/create-course' + menuTarget[index])
+    }
     return (
-        <div className="space-y-5 flex flex-col justify-start w-[300px] pt-7">
+        <div className="space-y-10 flex flex-col justify-start w-[300px] pt-7">
             <div className="space-y-2 flex flex-col">
                 {menu.map((item, index) => {
                     return (
                         <div
-                            className="cursor-pointer hover:bg-primary hover:text-white py-3 px-5 font-medium text-lg"
+                            className={`cursor-pointer rounded-r-full py-3 px-5 font-medium text-lg ${
+                                currentTab === menuTarget[index]
+                                    ? 'bg-primary text-white hover:bg-primary'
+                                    : 'hover:bg-divider'
+                            }`}
                             key={index}
-                            onClick={() => goToMenuTarget(menuTarget[index])}
+                            onClick={() => goToMenuTarget(index)}
                         >
                             {item}
                         </div>
@@ -39,9 +50,7 @@ export default function Sidebar() {
                 })}
             </div>
             <Button>
-                <div className="text-white font-semibold">
-                    Submit for Review
-                </div>
+                <div className="font-semibold">Submit for Review</div>
             </Button>
         </div>
     )

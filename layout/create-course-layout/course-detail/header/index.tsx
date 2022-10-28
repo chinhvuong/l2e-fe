@@ -24,7 +24,7 @@ export default function Header() {
                 <div className="text-white">Back</div>
             </div>
             <Button>
-                <div className="text-white font-semibold">Save</div>
+                <div className="font-semibold">Save</div>
             </Button>
         </div>
     )

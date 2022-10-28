@@ -2,16 +2,20 @@ import React, { HTMLAttributes, ReactNode, ReactText } from 'react'
 import './style.scss'
 type IButton = {
     children: ReactNode | ReactText
+    textButton?: boolean
 }
 
 function Button({
     children,
+    textButton,
     ...rest
 }: IButton & HTMLAttributes<HTMLButtonElement>) {
     return (
         <button
             {...rest}
-            className={`rounded-[80px] py-[12px] px-[30px] cursor-pointer shadow-sm btn-primary ${rest.className}`}
+            className={`${textButton ? 'btn-text' : 'btn-primary btn-common'} ${
+                rest.className
+            }`}
         >
             {children}
         </button>

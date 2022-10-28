@@ -129,7 +129,7 @@ export default function CourseBasicCreateContainer() {
                     </div>
                 </div>
                 <div className="w-[200px] flex justify-end">
-                    <Button className="text-white" onClick={() => nextStep()}>
+                    <Button onClick={() => nextStep()}>
                         {currentStep === step ? (
                             <div>Create course</div>
                         ) : (

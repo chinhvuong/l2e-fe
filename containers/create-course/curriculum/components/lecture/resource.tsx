@@ -176,9 +176,7 @@ export default function Resource(props: IResourceProps) {
             {selected === 'file' ? (
                 <div className="space-y-4">
                     <Button onClick={() => handleUploadFile()}>
-                        <div className="text-white font-semibold">
-                            Upload file
-                        </div>
+                        <div className="font-semibold">Upload file</div>
                     </Button>
                     <div className="text-description text-xs text-justify">
                         <span className="font-bold">Note</span>: A resource is
@@ -205,9 +203,7 @@ export default function Resource(props: IResourceProps) {
                     />
                     <div className="flex justify-end">
                         <Button onClick={() => addExternalResourceItem()}>
-                            <div className="text-white font-semibold">
-                                Add link
-                            </div>
+                            <div className="font-semibold">Add link</div>
                         </Button>
                     </div>
                 </div>

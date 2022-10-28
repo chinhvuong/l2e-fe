@@ -14,9 +14,7 @@ export default function PriceEnrollShare(props: IPriceEnrollShareProps) {
             <div className="font-semibold text-[36px]">{props.price}</div>
             <div className="flex items-center justify-center space-x-4 mt-3 mb-5">
                 <Button className="btn-primary w-full">
-                    <div className="text-white font-medium text-[20px]">
-                        Enroll
-                    </div>
+                    <div className="font-medium text-[20px]">Enroll</div>
                 </Button>
                 <FontAwesomeIcon
                     icon={faShareNodes}

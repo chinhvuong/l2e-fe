@@ -14,6 +14,7 @@ module.exports = {
 
                 primary: '#F48C06', // orange
                 'primary-hover': '#FFAB40', // brighter orange
+                'primary-outline-hover': '#FCF1E1',
                 second: '#0F124D', // blue
                 star: '#F1C644',
                 'hyperlink-light': '#D3BAFF',

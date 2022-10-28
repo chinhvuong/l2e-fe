@@ -69,9 +69,7 @@ export default function CourseLabel() {
                         {data.price}
                     </div>
                     <Button className="btn-primary under_lg:w-full">
-                        <div className="text-white font-medium text-[20px]">
-                            Enroll
-                        </div>
+                        <div className="font-medium text-[20px]">Enroll</div>
                     </Button>
                     <FontAwesomeIcon
                         icon={faShareNodes}

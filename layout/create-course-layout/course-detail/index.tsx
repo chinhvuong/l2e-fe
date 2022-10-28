@@ -1,3 +1,4 @@
+import Button from '@/components/core/button'
 import Footer from '@/layout/components/footer'
 import React, { ReactChild } from 'react'
 import Header from './header'

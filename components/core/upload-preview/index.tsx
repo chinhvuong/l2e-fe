@@ -76,7 +76,7 @@ export default function UploadPreview(props: IUploadPreviewProps) {
                 <div className="basis-1/2 ml-5 space-y-3">
                     {props.children}
                     <Button onClick={() => handleUploadFile()}>
-                        <div className="text-white">Upload</div>
+                        <div>Upload</div>
                     </Button>
                 </div>
             </div>
