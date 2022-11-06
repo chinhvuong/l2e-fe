@@ -13,6 +13,7 @@ export interface IInputProps {
     defaultValue?: string | null
     updateToStore?: ActionCreatorWithPayload<any, string>
     updateInput?: Function
+    type?: string
 }
 
 export default function Input({
@@ -23,6 +24,7 @@ export default function Input({
     defaultValue,
     updateInput,
     updateToStore,
+    type,
 }: IInputProps) {
     const dispatch = useAppDispatch()
     const [input, setInput] = useState(defaultValue ?? '')
@@ -51,11 +53,11 @@ export default function Input({
     }
 
     return (
-        <div className="space-y-3">
-            {label && <div className="font-bold ml-[10px]">{label}</div>}
+        <div>
+            {label && <div className="font-bold ml-[10px] pb-2">{label}</div>}
             <div className="flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] border-black space-x-5">
                 <input
-                    type="text"
+                    type={type ?? 'text'}
                     name="name"
                     value={input}
                     minLength={charLimit?.minLength}

@@ -4,7 +4,7 @@ import { faStar, faStarHalfStroke } from '@fortawesome/free-solid-svg-icons'
 import { faStar as faEmptyStar } from '@fortawesome/free-regular-svg-icons'
 
 export interface IRatingStarProps {
-    id: number
+    id: string
     ratingScore: number
     ratings?: string
     hideScore?: boolean

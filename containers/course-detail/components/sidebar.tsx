@@ -40,7 +40,7 @@ export default function Sidebar() {
             style={scrollY > 500 ? { right: rightMargin } : {}}
         >
             <VideoPreview
-                thumbnail={data.thumbnail}
+                thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
                 className={`${scrollY > 500 ? 'hidden' : ''}`}
                 textSize="small"
             />

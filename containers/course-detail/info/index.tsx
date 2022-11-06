@@ -24,6 +24,12 @@ export default function CourseInfo() {
         },
     ]
 
+    const getLastUpdated = () => {
+        return `Last updated ${new Date(data.updatedAt).getMonth()}/${new Date(
+            data.updatedAt,
+        ).getFullYear()}`
+    }
+
     return (
         <div className="bg-black flex justify-center" id="overview-section">
             <div className="2xl:w-[1250px] lg:w-[700px] px-8 under_lg:px-0 py-10 flex justify-between relative">
@@ -32,7 +38,7 @@ export default function CourseInfo() {
                         <Breadcrumb data={breadcrumb} />
                     </div>
                     <VideoPreview
-                        thumbnail={data.thumbnail}
+                        thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
                         className="2xl:hidden"
                         textSize="big"
                     />
@@ -43,35 +49,43 @@ export default function CourseInfo() {
                         <div className="text-[20px]">{data.overview}</div>
                         <div className="flex items-center flex-wrap">
                             <div className="flex items-center space-x-4 mr-4 my-2">
-                                {data.isBestseller && (
+                                {/* {data.isBestseller && (
                                     <Label name="Bestseller" />
-                                )}
+                                )} */}
                                 <Label name="IT" />
-                                <RatingStar
-                                    id={data._id}
-                                    ratingScore={data.rating}
-                                    className="mt-0.5"
-                                />
+                                {data.rating && (
+                                    <RatingStar
+                                        id={data._id}
+                                        ratingScore={data.rating}
+                                        className="mt-0.5"
+                                    />
+                                )}
                             </div>
-                            <div className="flex items-center space-x-4 my-2">
-                                <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                                    {`(${data.reviews.toLocaleString()} ratings)`}
+                            {(data.reviews || data.students) && (
+                                <div className="flex items-center space-x-4 my-2">
+                                    {data.reviews && (
+                                        <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
+                                            {`(${data.reviews.toLocaleString()} ratings)`}
+                                        </div>
+                                    )}
+                                    {data.students && (
+                                        <div className="text-[14px] font-light">
+                                            {`${data.students.toLocaleString()} students`}
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="text-[14px] font-light">
-                                    {`${data.students.toLocaleString()} students`}
-                                </div>
-                            </div>
+                            )}
                         </div>
                         <div className="text-[14px] font-light">
                             Created by{' '}
-                            <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
+                            {/* <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
                                 {data.owner}
-                            </span>
+                            </span> */}
                         </div>
                         <div className="flex text-[14px] font-light space-x-6">
                             <div className="flex items-center space-x-2">
                                 <FontAwesomeIcon icon={faExclamationCircle} />
-                                <div>{`Last updated ${data.updatedAt.getMonth()}/${data.updatedAt.getFullYear()}`}</div>
+                                <div>{getLastUpdated()}</div>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <FontAwesomeIcon icon={faGlobe} />

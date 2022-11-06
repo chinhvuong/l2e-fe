@@ -11,3 +11,7 @@ export const getRequirementsForm = (state: RootState) => {
 export const getIntendedLearnersForm = (state: RootState) => {
     return state.intendedLearners.intendedLearners
 }
+
+export const getAllIntendedLearners = (state: RootState) => {
+    return state.intendedLearners
+}

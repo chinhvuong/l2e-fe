@@ -1,5 +1,7 @@
 import { useCourse } from '@/api/hooks/useCourse'
 import Button from '@/components/core/button'
+import { Category } from '@/constants/interfaces'
+import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
 import Logo from '@/layout/main-layout/header/logo'
 import Router from 'next/router'
 import { useEffect, useState } from 'react'
@@ -23,21 +25,36 @@ export default function CourseBasicCreateContainer() {
     const { useCreateCourse } = useCourse()
     const { mutate: createCourse } = useCreateCourse({
         onError: () => {},
-        onSuccess: () => {},
+        onSuccess: (response) => {
+            if (response?.data) {
+                const category = response.data.map(
+                    (item: Category) => item.name,
+                )
+                setCourseCategoryList(category)
+                localStorage.setItem(CATEGORY, JSON.stringify(response))
+                localStorage.setItem(
+                    CATEGORY_NAME_LIST,
+                    JSON.stringify(category),
+                )
+            }
+        },
     })
 
     const { useGetCategory } = useCourse()
     const { data, isFetching } = useGetCategory()
 
-    useEffect(() => {
-        if (data?.data) {
-            const category = data.data.map((item) => item.name)
-            setCourseCategoryList(category)
-        }
-    }, [isFetching])
+    // useEffect(() => {
+    //     if (data?.data) {
+    //         const category = data.data.map((item: Category) => item.name)
+    //         setCourseCategoryList(category)
+    //     }
+    // }, [isFetching])
 
     const convertToCategoryID = (categoryName: string) => {
-        return data?.data.find((item) => item.name === categoryName)?._id ?? ''
+        return (
+            data?.data.find((item: Category) => item.name === categoryName)
+                ?._id ?? ''
+        )
     }
 
     const backStep = () => {

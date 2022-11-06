@@ -4,23 +4,58 @@ import RichTextEditor from '@/components/core/rich-text-editor'
 import Select from '@/components/core/select'
 import UploadPreview from '@/components/core/upload-preview'
 import Title from '../components/title'
+import { useMemo, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { getCourseName } from '@/store/course/selectors'
+import {
+    updateCourseLanguage,
+    updateCourseName,
+    updateCourseOverview,
+    updateCoursePrice,
+} from '@/store/course'
+import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
 
 export interface ILandingPageContainerProps {}
 
 export default function LandingPageContainer() {
-    const language = ['English', 'Vietnamese']
-    const level = ['Beginner', 'Intermediate', 'Expert', 'All levels']
-    const category = [
-        'IT',
-        'Health',
-        'Language',
-        'Business',
-        'Management',
-        'Personal & Development',
-        'Sales & Marketing',
-        'Engineering & Construction',
-        'Teaching & Academics',
-    ]
+    const languageList = ['English', 'Vietnamese']
+    // const category = [
+    //     'IT',
+    //     'Health',
+    //     'Language',
+    //     'Business',
+    //     'Management',
+    //     'Personal & Development',
+    //     'Sales & Marketing',
+    //     'Engineering & Construction',
+    //     'Teaching & Academics',
+    // ]
+    const [title, setTitle] = useState(useAppSelector(getCourseName))
+    const [subtitle, setSubtitle] = useState('')
+    const [language, setLanguage] = useState('')
+    const category = JSON.parse(
+        localStorage.getItem(CATEGORY_NAME_LIST) ?? '[]',
+    )
+    const [price, setPrice] = useState<number | null>(null)
+
+    const dispatch = useAppDispatch()
+
+    const handleTitleChange = (value: string) => {
+        setTitle(value)
+        dispatch(updateCourseName(value))
+    }
+    const handleSubtitleChange = (value: string) => {
+        setSubtitle(value)
+        dispatch(updateCourseOverview(value))
+    }
+    const handleLanguageChange = (value: string) => {
+        setLanguage(value)
+        dispatch(updateCourseLanguage(value))
+    }
+    const handlePriceChange = (value: number) => {
+        setPrice(value)
+        dispatch(updateCoursePrice(value))
+    }
 
     return (
         <div>
@@ -31,25 +66,23 @@ export default function LandingPageContainer() {
                     charLimit={{ minLength: 10, maxLength: 60 }}
                     label="Title"
                     placeholder="Insert your course title."
+                    defaultValue={title}
+                    updateInput={handleTitleChange}
                 />
                 <Input
                     id="landing-page-subtitle"
                     charLimit={{ minLength: 0, maxLength: 120 }}
                     label="Subtitle"
                     placeholder="Insert your course subtitle."
+                    updateInput={handleSubtitleChange}
                 />
                 <div className="flex justify-between space-x-5">
                     <Select
                         label="Language"
-                        selectList={language}
+                        selectList={languageList}
                         placeholder="Select language"
                         selected=""
-                    />
-                    <Select
-                        label="Level"
-                        selectList={level}
-                        placeholder="Select level"
-                        selected=""
+                        setSelected={handleLanguageChange}
                     />
                     <Select
                         label="Category"
@@ -57,13 +90,15 @@ export default function LandingPageContainer() {
                         placeholder="Select category"
                         selected=""
                     />
-                </div>
-                <div className="w-1/3 pr-4">
-                    <Input
-                        id="landing-page-price"
-                        label="Price (USDT)"
-                        placeholder="Insert your course price."
-                    ></Input>
+                    <div className="w-full">
+                        <Input
+                            id="landing-page-price"
+                            label="Price (USDT)"
+                            placeholder="Insert your course price."
+                            updateInput={handlePriceChange}
+                            type="number"
+                        ></Input>
+                    </div>
                 </div>
                 <RichTextEditor label="Description" />
                 <UploadPreview label="Thumbnail" type="image">

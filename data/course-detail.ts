@@ -61,5 +61,4 @@ export const dataCourses_detail: CourseDetail = {
         articles: '85 articles',
         exercise: '8 coding exercises',
     },
-    isBestseller: true,
 }

@@ -29,7 +29,6 @@ export interface CourseDetail {
         articles: string
         exercise: string
     }
-    isBestseller: boolean
 }
 export interface CourseInfo_Preview {
     id: number
@@ -44,12 +43,15 @@ export interface CourseInfo_Preview {
 }
 
 export interface Category {
-    _id: number
-    name: CourseNameLabel
+    _id: string
+    name: string
+    slug: string
     banner: string
     thumbnail: string
-    createdAt: Date
-    updatedAt: Date
+    color: string
+    __v: number
+    createdAt: string
+    updatedAt: string
 }
 
 export interface Rating {
