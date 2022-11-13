@@ -116,7 +116,12 @@ function useEth() {
         }
     }, [onboard])
 
-    return { address, provider, unlock }
+    const signData = (data: any) => {
+        const signer = provider?.getSigner()
+        return signer?.signMessage(data)
+    }
+
+    return { address, provider, unlock, signData }
 }
 // Create unstated-next container
 export const eth = createContainer(useEth)

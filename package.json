@@ -7,8 +7,7 @@
         "lint": "next lint",
         "prepare": "husky install && husky add .husky/pre-commit \"npx lint-staged\" && node scripts/translate.js",
         "format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|scss|md)\"",
-        "translate": "node scripts/translate.js",
-        "postinstall": "husky install"
+        "translate": "node scripts/translate.js"
     },
     "lint-staged": {
         "*.+(js|jsx|ts|tsx)": "eslint --max-warnings 0",
