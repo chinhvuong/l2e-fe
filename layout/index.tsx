@@ -1,6 +1,5 @@
-import { ACCESS_TOKEN, WALLET_ADDRESS } from '@/constants/localStorage'
 import { useRouter } from 'next/router'
-import { ReactChild, useEffect, useState } from 'react'
+import { ReactChild } from 'react'
 import Footer from './components/footer'
 import Header from './main-layout/header'
 const Layout = ({ children }: { children: ReactChild }) => {
@@ -11,15 +10,9 @@ const Layout = ({ children }: { children: ReactChild }) => {
             ? true
             : false
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-    useEffect(() => {
-        setIsLoggedIn(!!localStorage.getItem(ACCESS_TOKEN))
-    }, [])
-
     return (
         <div>
-            <Header darkTheme={darkTheme} isLoggedIn={isLoggedIn} />
+            <Header darkTheme={darkTheme} />
             <main id="main">
                 <div
                     className="w-full app-transition main-transition h-full bg-white"

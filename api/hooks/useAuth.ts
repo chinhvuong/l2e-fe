@@ -1,13 +1,10 @@
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/localStorage'
 import { AuthResponse, AuthSubmit } from 'api/dto/auth.dto'
-import { useAppDispatch } from 'hooks'
 import { useMutation } from '@tanstack/react-query'
 import { MutationProps } from '../types'
 import { apiAuth } from '../functions/api-auth'
 
 export const useAuth = () => {
-    const dispatch = useAppDispatch()
-
     const saveToken = (data: AuthResponse) => {
         localStorage.setItem(ACCESS_TOKEN, data.accessToken)
         localStorage.setItem(REFRESH_TOKEN, data.refreshToken)

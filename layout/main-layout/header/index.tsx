@@ -14,15 +14,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Router from 'next/router'
 import ConnectWallet from './connect-wallet'
+import { getLoginState } from '@/store/user/selectors'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { updateLoginState } from '@/store/user'
 
 interface IHeader {
     darkTheme: boolean
-    isLoggedIn: boolean
 }
 
 const Header = (props: IHeader) => {
     const [hoverUser, setHoverUser] = useState(false)
     const [hoverUserActions, setHoverUserActions] = useState(false)
+
+    const isLogin = useAppSelector(getLoginState)
+    const dispatch = useAppDispatch()
 
     const goToHomePage = () => {
         Router.push('/')
@@ -30,6 +35,11 @@ const Header = (props: IHeader) => {
 
     const goToAboutUsPage = () => {
         Router.push('/about-us')
+    }
+
+    const logOut = () => {
+        dispatch(updateLoginState(false))
+        localStorage.clear()
     }
 
     return (
@@ -66,7 +76,7 @@ const Header = (props: IHeader) => {
                         !props.darkTheme ? 'text-white' : 'text-black'
                     }`}
                 />
-                {!props.isLoggedIn ? (
+                {!isLogin ? (
                     <ConnectWallet />
                 ) : (
                     <div className="flex items-center justify-between sm:hidden lg:w-[150px] under_lg:hidden">
@@ -117,7 +127,7 @@ const Header = (props: IHeader) => {
                                     </div>
                                     <div
                                         className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-b-[20px] cursor-pointer"
-                                        // onClick={() => onSelectRating(item)}
+                                        onClick={() => logOut()}
                                     >
                                         <FontAwesomeIcon
                                             icon={faRightFromBracket}

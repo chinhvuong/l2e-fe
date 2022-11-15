@@ -13,4 +13,5 @@ export interface User {
 
 export interface UserState {
     user: User
+    isLogin: boolean
 }
