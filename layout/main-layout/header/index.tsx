@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Explore from './explore'
 import Logo from './logo'
 import Search from './search'
@@ -17,6 +17,7 @@ import ConnectWallet from './connect-wallet'
 import { getLoginState } from '@/store/user/selectors'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { updateLoginState } from '@/store/user'
+import { ACCESS_TOKEN } from '@/constants/localStorage'
 
 interface IHeader {
     darkTheme: boolean
@@ -25,8 +26,9 @@ interface IHeader {
 const Header = (props: IHeader) => {
     const [hoverUser, setHoverUser] = useState(false)
     const [hoverUserActions, setHoverUserActions] = useState(false)
+    const [isLogin, setIsLogin] = useState(false)
 
-    const isLogin = useAppSelector(getLoginState)
+    const loginState = useAppSelector(getLoginState)
     const dispatch = useAppDispatch()
 
     const goToHomePage = () => {
@@ -38,9 +40,17 @@ const Header = (props: IHeader) => {
     }
 
     const logOut = () => {
-        dispatch(updateLoginState(false))
         localStorage.clear()
+        setIsLogin(false)
     }
+
+    useEffect(() => {
+        if (localStorage.getItem(ACCESS_TOKEN)) {
+            setIsLogin(true)
+        } else {
+            setIsLogin(false)
+        }
+    }, [loginState])
 
     return (
         <div
