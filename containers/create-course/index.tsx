@@ -2,9 +2,16 @@ import { useCourse } from '@/api/hooks/useCourse'
 import Button from '@/components/core/button'
 import { Category } from '@/constants/interfaces'
 import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
+import { useAppDispatch } from '@/hooks'
 import Logo from '@/layout/main-layout/header/logo'
+import { updateCourseDetail } from '@/store/course'
+import {
+    updateAllRequirements,
+    updateAllWhatYouWillLearn,
+} from '@/store/course/intended-learners'
+import { convertToCategoryID } from '@/utils'
 import Router from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import CourseCategory from './components/create-course-step/course-category'
 import CourseTitle from './components/create-course-step/course-title'
 import CourseType from './components/create-course-step/course-type'
@@ -22,8 +29,23 @@ export default function CourseBasicCreateContainer() {
     const [courseCategory, setCourseCategory] = useState('')
     const [courseCategoryList, setCourseCategoryList] = useState<string[]>([])
 
+    const dispatch = useAppDispatch()
+
     const { useCreateCourse } = useCourse()
     const { mutate: createCourse } = useCreateCourse({
+        onError: () => {},
+        onSuccess: (response) => {
+            dispatch(updateCourseDetail(response))
+            response?.goals &&
+                dispatch(updateAllWhatYouWillLearn(response.goals))
+            response?.requirements &&
+                dispatch(updateAllRequirements(response.requirements))
+            Router.push(`/create-course/${response._id}/landing-page`)
+        },
+    })
+
+    const { useGetCategory } = useCourse()
+    const { data, isFetching } = useGetCategory({
         onError: () => {},
         onSuccess: (response) => {
             if (response?.data) {
@@ -31,7 +53,7 @@ export default function CourseBasicCreateContainer() {
                     (item: Category) => item.name,
                 )
                 setCourseCategoryList(category)
-                localStorage.setItem(CATEGORY, JSON.stringify(response))
+                localStorage.setItem(CATEGORY, JSON.stringify(response.data))
                 localStorage.setItem(
                     CATEGORY_NAME_LIST,
                     JSON.stringify(category),
@@ -39,23 +61,6 @@ export default function CourseBasicCreateContainer() {
             }
         },
     })
-
-    const { useGetCategory } = useCourse()
-    const { data, isFetching } = useGetCategory()
-
-    // useEffect(() => {
-    //     if (data?.data) {
-    //         const category = data.data.map((item: Category) => item.name)
-    //         setCourseCategoryList(category)
-    //     }
-    // }, [isFetching])
-
-    const convertToCategoryID = (categoryName: string) => {
-        return (
-            data?.data.find((item: Category) => item.name === categoryName)
-                ?._id ?? ''
-        )
-    }
 
     const backStep = () => {
         if (currentStep !== 1) {
@@ -100,9 +105,8 @@ export default function CourseBasicCreateContainer() {
         } else {
             createCourse({
                 name: courseName,
-                category: convertToCategoryID(courseCategory),
+                category: convertToCategoryID(data?.data, courseCategory),
             })
-            Router.push('/create-course/landing-page')
         }
     }
 

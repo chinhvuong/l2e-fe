@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 
 export interface IMainContentProps {}
 
-export default function MainContent(props: IMainContentProps) {
+export default function MainContent() {
     const [contentType, setContentType] = useState<
         'video' | 'slide' | 'article' | null
     >(null)
@@ -24,7 +24,7 @@ export default function MainContent(props: IMainContentProps) {
         if (uploadedFileURL) {
             const audio = new Audio()
             audio.src = uploadedFileURL
-            audio.onloadedmetadata = (_) => {
+            audio.onloadedmetadata = () => {
                 getVideoDuration(audio.duration)
             }
         }
@@ -60,7 +60,6 @@ export default function MainContent(props: IMainContentProps) {
             const target = e.target as HTMLInputElement
             if (target.files && target.files[0]) {
                 setUploadedFile(target.files[0])
-                console.log(target.files[0])
                 const objectUrl = URL.createObjectURL(target.files[0])
                 setUploadedFileURL(objectUrl)
 

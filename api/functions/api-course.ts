@@ -5,6 +5,7 @@ import {
     CreateCourseRequest,
     CreateCourseResponse,
     GetCategoryResponse,
+    GetCourseDetailResponse,
     UpdateCourseRequest,
     UpdateCourseResponse,
 } from '../dto/course.dto'
@@ -31,6 +32,12 @@ export const apiCourse = {
         payload: UpdateCourseRequest,
     ): Promise<UpdateCourseResponse> =>
         callAPI('put', apiPath.UPDATE_COURSE + payload._id, payload),
+    getCourseDetail: (courseId: string): Promise<GetCourseDetailResponse> =>
+        callAPI(
+            'get',
+            apiPath.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
+            {},
+        ),
     getCategory: (): Promise<GetCategoryResponse> =>
         callAPI('get', apiPath.GET_CATEGORY, {}),
 }

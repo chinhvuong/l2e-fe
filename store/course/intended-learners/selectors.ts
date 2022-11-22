@@ -15,3 +15,15 @@ export const getIntendedLearnersForm = (state: RootState) => {
 export const getAllIntendedLearners = (state: RootState) => {
     return state.intendedLearners
 }
+
+export const getWhatYouWillLearnState = (state: RootState) => {
+    return state.intendedLearners.isUpdateWhatYouWillLearn
+}
+
+export const getRequirementsState = (state: RootState) => {
+    return state.intendedLearners.isUpdateRequirements
+}
+
+export const getIntendedLearnersState = (state: RootState) => {
+    return state.intendedLearners.isUpdateIntendedLearners
+}

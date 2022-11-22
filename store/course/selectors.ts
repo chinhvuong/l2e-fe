@@ -5,7 +5,7 @@ export const getCourseLabelInfo = (state: RootState) => {
         _id: state.courseDetail.courseDetail._id,
         name: state.courseDetail.courseDetail.name,
         rating: state.courseDetail.courseDetail.rating,
-        reviews: state.courseDetail.courseDetail.review,
+        reviews: state.courseDetail.courseDetail.reviews,
         students: state.courseDetail.courseDetail.students,
         price: state.courseDetail.courseDetail.price,
         category: state.courseDetail.courseDetail.category,
@@ -18,7 +18,7 @@ export const getCourseOverviewInfo = (state: RootState) => {
         name: state.courseDetail.courseDetail.name,
         overview: state.courseDetail.courseDetail.overview,
         rating: state.courseDetail.courseDetail.rating,
-        reviews: state.courseDetail.courseDetail.review,
+        reviews: state.courseDetail.courseDetail.reviews,
         students: state.courseDetail.courseDetail.students,
         price: state.courseDetail.courseDetail.price,
         category: state.courseDetail.courseDetail.category,
@@ -40,8 +40,20 @@ export const getCourseName = (state: RootState) => {
     return state.courseDetail.courseDetail.name
 }
 
+export const getCourseCategoryId = (state: RootState) => {
+    return state.courseDetail.courseDetail.category
+}
+
 export const getDescription = (state: RootState) => {
     return state.courseDetail.courseDetail.description
+}
+
+export const getGoals = (state: RootState) => {
+    return state.courseDetail.courseDetail.goals
+}
+
+export const getRequirements = (state: RootState) => {
+    return state.courseDetail.courseDetail.requirements
 }
 
 export const getReviews = (state: RootState) => {
@@ -50,4 +62,12 @@ export const getReviews = (state: RootState) => {
 
 export const getCourseIncludeList = (state: RootState) => {
     return state.courseDetail.courseDetail.include
+}
+
+export const getCourseDetail = (state: RootState) => {
+    return state.courseDetail.courseDetail
+}
+
+export const getCourseDetailState = (state: RootState) => {
+    return state.courseDetail.isNewData
 }

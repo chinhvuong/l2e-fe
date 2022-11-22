@@ -1,9 +1,15 @@
 import { useAppDispatch } from '@/hooks'
+import {
+    updateIntendedLearnersState,
+    updateRequirementsState,
+    updateWhatYouWillLearnState,
+} from '@/store/course/intended-learners'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { useEffect, useState } from 'react'
 
 export interface IInputProps {
     id: string
+    name?: string
     label?: string
     charLimit?: {
         minLength: number
@@ -18,6 +24,7 @@ export interface IInputProps {
 
 export default function Input({
     id,
+    name,
     label,
     charLimit,
     placeholder,
@@ -50,6 +57,15 @@ export default function Input({
                     content: content,
                 }),
             )
+        if (name) {
+            if (name === 'What you will learn') {
+                dispatch(updateWhatYouWillLearnState(true))
+            } else if (name === 'Requirements') {
+                dispatch(updateRequirementsState(true))
+            } else if (name === 'Intended learners') {
+                dispatch(updateIntendedLearnersState(true))
+            }
+        }
     }
 
     return (

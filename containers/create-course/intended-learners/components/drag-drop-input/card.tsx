@@ -14,6 +14,8 @@ import { RootState } from '@/store'
 
 export interface CardProps {
     id: string
+    name: string
+    defaultValue: string
     index: number
     placeholder: string
     moveCard: Function
@@ -31,6 +33,8 @@ interface DragItem {
 
 export const Card: FC<CardProps> = ({
     id,
+    name,
+    defaultValue,
     index,
     placeholder,
     moveCard,
@@ -131,7 +135,9 @@ export const Card: FC<CardProps> = ({
                     charLimit={{ minLength: 10, maxLength: 160 }}
                     placeholder={placeholder}
                     id={id}
+                    name={name}
                     updateToStore={updateCard}
+                    defaultValue={defaultValue}
                 />
             </div>
             {whatYouWillLearn[index].content !== '' ? (

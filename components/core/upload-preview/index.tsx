@@ -6,19 +6,21 @@ export interface IUploadPreviewProps {
     label: string
     type: 'image' | 'video'
     children: ReactNode | ReactText
+    defaultPreview: string
+    setFileLink?: Function
 }
 
 export default function UploadPreview(props: IUploadPreviewProps) {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
-    const [uploadedFileURL, setUploadedFileURL] = useState(
-        '/images/placeholder.jpeg',
-    )
+    const [uploadedFileURL, setUploadedFileURL] = useState(props.defaultPreview)
     const [showPlaceholder, setShowPlaceholder] = useState(true)
 
     const { useUploadSingleFile } = useCourse()
     const { mutate: uploadFile } = useUploadSingleFile({
         onError: () => {},
-        onSuccess: () => {},
+        onSuccess: (response) => {
+            props.setFileLink && props.setFileLink(response)
+        },
     })
 
     useEffect(() => {

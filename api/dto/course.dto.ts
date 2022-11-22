@@ -95,3 +95,35 @@ export interface GetCategoryResponse {
     total: number
     data: Category[]
 }
+
+export interface GetCourseDetailResponse {
+    include: {
+        duration: string
+        resource: string
+        assignments: string
+        certificate: string
+        lifetimeAccess: string
+        device: string
+        articles: string
+        exercise: string
+    }
+    _id: string
+    owner: string
+    author: string
+    name: string
+    overview: string
+    description: string
+    price: number
+    rating: number
+    reviews: number
+    students: number
+    language: string
+    approved: false
+    requirements: string
+    goals: string
+    thumbnail: string | null
+    category: string
+    createdAt: string
+    updatedAt: string
+    __v: number
+}

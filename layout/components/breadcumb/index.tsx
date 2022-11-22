@@ -53,7 +53,6 @@ const calculate = (path: string, t: any) => {
         },
     }
     const chunks = path.split('/')
-    // console.log("🚀 ~ file: index.tsx ~ line 10 ~ calculate ~ chunks", chunks)
     const data = [
         {
             text: t('HOME'),
@@ -77,7 +76,6 @@ const calculate = (path: string, t: any) => {
     }
 
     data[data.length - 1].active = true
-    console.log('🚀 ~ file: index.tsx ~ line 51 ~ calculate ~ data', data)
 
     return data
 }
@@ -85,10 +83,6 @@ const calculate = (path: string, t: any) => {
 const BreadCrumbWraper = () => {
     const { t } = useTransHook()
     const router = useRouter()
-    console.log(
-        '🚀 ~ file: index.tsx ~ line 9 ~ BreadCrumbWraper ~ router',
-        router,
-    )
     const data = useMemo(() => calculate(router.route, t), [router.route])
     // useEffect(() => {
     //     calculate(router.route, t)

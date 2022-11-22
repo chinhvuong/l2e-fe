@@ -1,6 +1,6 @@
 import Button from '@/components/core/button'
 import Router, { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export interface ISidebarProps {}
 
@@ -13,22 +13,32 @@ export default function Sidebar() {
     ]
 
     const menuTarget = [
-        '/landing-page',
-        '/intended-learners',
-        '/curriculum',
-        '/messages',
+        'landing-page',
+        'intended-learners',
+        'curriculum',
+        'messages',
     ]
-
     const router = useRouter()
-
+    const [courseId, setCourseId] = useState('')
     const [currentTab, setCurrentTab] = useState(() => {
         const list = router.route.split('/')
         return '/' + list[list.length - 1]
     })
 
+    useEffect(() => {
+        setCourseId(getCourseId())
+    }, [router.query.slug])
+
+    const getCourseId = () => {
+        if (typeof router.query.slug === 'object') {
+            return router.query.slug[0]
+        }
+        return router.query.slug
+    }
+
     const goToMenuTarget = (index: number) => {
         setCurrentTab(menuTarget[index])
-        Router.push('/create-course' + menuTarget[index])
+        Router.push(`/create-course/${courseId}/${menuTarget[index]}`)
     }
     return (
         <div className="space-y-10 flex flex-col justify-start w-[300px] pt-7">

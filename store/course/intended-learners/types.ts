@@ -8,4 +8,7 @@ export type CourseIntendedLearnersState = {
     whatYouWillLearn: TInput[]
     requirements: TInput[]
     intendedLearners: TInput[]
+    isUpdateWhatYouWillLearn: boolean
+    isUpdateRequirements: boolean
+    isUpdateIntendedLearners: boolean
 }

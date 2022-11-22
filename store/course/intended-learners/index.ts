@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CourseIntendedLearnersState } from './types'
+import { CourseIntendedLearnersState, TInput } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { TInputUpdate } from '../types'
 
@@ -43,6 +43,9 @@ const initialState: CourseIntendedLearnersState = {
             content: '',
         },
     ],
+    isUpdateWhatYouWillLearn: false,
+    isUpdateRequirements: false,
+    isUpdateIntendedLearners: false,
 }
 
 export const courseIntendedLearnersSlice = createSlice({
@@ -62,6 +65,25 @@ export const courseIntendedLearnersSlice = createSlice({
                     state.whatYouWillLearn[i].content = action.payload.content
                 }
             }
+        },
+        updateAllWhatYouWillLearn(state, action: PayloadAction<string[]>) {
+            // const newList: TInput[] = []
+            // action.payload.forEach((item) => {
+            //     newList.push({
+            //         id: uuidv4(),
+            //         placeholder: '',
+            //         content: item,
+            //     })
+            // })
+            // state.whatYouWillLearn = [...newList]
+
+            state.whatYouWillLearn = action.payload.map((item) => {
+                return {
+                    id: uuidv4(),
+                    placeholder: '',
+                    content: item,
+                }
+            })
         },
         updateOrderWhatYouWillLearn(state, action: PayloadAction<string[]>) {
             const prevState = [...state.whatYouWillLearn]
@@ -91,6 +113,15 @@ export const courseIntendedLearnersSlice = createSlice({
                 }
             }
         },
+        updateAllRequirements(state, action: PayloadAction<string[]>) {
+            state.requirements = action.payload.map((item) => {
+                return {
+                    id: uuidv4(),
+                    placeholder: '',
+                    content: item,
+                }
+            })
+        },
         updateOrderRequirements(state, action: PayloadAction<string[]>) {
             const prevState = [...state.requirements]
             for (let i = 0; i < state.requirements.length; i++) {
@@ -119,6 +150,17 @@ export const courseIntendedLearnersSlice = createSlice({
                 }
             }
         },
+        updateAllIntendedLearners(state, action: PayloadAction<string[]>) {
+            const newList: TInput[] = []
+            action.payload.forEach((item) => {
+                newList.push({
+                    id: uuidv4(),
+                    placeholder: '',
+                    content: item,
+                })
+            })
+            state.intendedLearners = [...newList]
+        },
         updateOrderIntendedLearners(state, action: PayloadAction<string[]>) {
             const prevState = [...state.intendedLearners]
             for (let i = 0; i < state.intendedLearners.length; i++) {
@@ -133,22 +175,37 @@ export const courseIntendedLearnersSlice = createSlice({
         deleteIntendedLearners(state, action: PayloadAction<number>) {
             state.intendedLearners.splice(action.payload, 1)
         },
+        updateWhatYouWillLearnState(state, action: PayloadAction<boolean>) {
+            state.isUpdateWhatYouWillLearn = action.payload
+        },
+        updateRequirementsState(state, action: PayloadAction<boolean>) {
+            state.isUpdateRequirements = action.payload
+        },
+        updateIntendedLearnersState(state, action: PayloadAction<boolean>) {
+            state.isUpdateIntendedLearners = action.payload
+        },
     },
 })
 
 export const {
     addWhatYouWillLearn,
     updateWhatYouWillLearn,
+    updateAllWhatYouWillLearn,
     updateOrderWhatYouWillLearn,
     deleteWhatYouWillLearn,
     addRequirements,
     updateRequirements,
+    updateAllRequirements,
     updateOrderRequirements,
     deleteRequirements,
     addIntendedLearners,
     updateIntendedLearners,
+    updateAllIntendedLearners,
     updateOrderIntendedLearners,
     deleteIntendedLearners,
+    updateWhatYouWillLearnState,
+    updateRequirementsState,
+    updateIntendedLearnersState,
 } = courseIntendedLearnersSlice.actions
 
 export default courseIntendedLearnersSlice.reducer

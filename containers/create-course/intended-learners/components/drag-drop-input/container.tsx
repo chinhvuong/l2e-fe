@@ -1,4 +1,9 @@
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import {
+    updateRequirementsState,
+    updateWhatYouWillLearnState,
+} from '@/store/course/intended-learners'
+import { getAllIntendedLearners } from '@/store/course/intended-learners/selectors'
 import { TInput } from '@/store/course/intended-learners/types'
 import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
@@ -7,17 +12,22 @@ import AddMoreButton from '../../../../../components/core/button/add-button'
 import { Card } from './card'
 
 export const Container = ({
+    name,
     addItem,
     updateItem,
+    updateItemToPayload,
     updateOrderItems,
     deleteItem,
     getItems,
+    getUpdateState,
     defaultInputBlock,
 }: IDragAndDropInputProps) => {
     const cardsFromStore = useAppSelector(getItems)
     const [cards, setCards] = useState(cardsFromStore)
     const [cardsOrder, setCardsOrder] = useState(cards.map((item) => item.id))
     const dispatch = useAppDispatch()
+    const isUpdate = useAppSelector(getUpdateState)
+    const intendedLearners = useAppSelector(getAllIntendedLearners)
 
     useEffect(() => {
         setCards(cardsFromStore)
@@ -30,6 +40,30 @@ export const Container = ({
     useEffect(() => {
         dispatch(updateOrderItems(cardsOrder))
     }, [cardsOrder])
+
+    useEffect(() => {
+        if (isUpdate) {
+            if (name === 'What you will learn') {
+                dispatch(
+                    updateItemToPayload(
+                        intendedLearners.whatYouWillLearn.map(
+                            (item) => item.content,
+                        ),
+                    ),
+                )
+                dispatch(updateWhatYouWillLearnState(false))
+            } else if (name === 'Requirements') {
+                dispatch(
+                    updateItemToPayload(
+                        intendedLearners.requirements.map(
+                            (item) => item.content,
+                        ),
+                    ),
+                )
+                dispatch(updateRequirementsState(false))
+            }
+        }
+    }, [isUpdate])
 
     const addCard = () => {
         if (cardsFromStore.every((item) => item.content !== '')) {
@@ -53,24 +87,23 @@ export const Container = ({
         })
     }, [])
 
-    const renderCard = useCallback(
-        (card: { id: string; placeholder: string }, index: number) => {
-            return (
-                <Card
-                    key={card.id}
-                    index={index}
-                    id={card.id}
-                    placeholder={card.placeholder}
-                    moveCard={moveCard}
-                    updateCard={updateItem}
-                    deleteCard={deleteItem}
-                    getCards={getItems}
-                    defaultInputBlock={defaultInputBlock}
-                />
-            )
-        },
-        [],
-    )
+    const renderCard = useCallback((card: TInput, index: number) => {
+        return (
+            <Card
+                key={card.id}
+                index={index}
+                id={card.id}
+                name={name}
+                defaultValue={card.content}
+                placeholder={card.placeholder}
+                moveCard={moveCard}
+                updateCard={updateItem}
+                deleteCard={deleteItem}
+                getCards={getItems}
+                defaultInputBlock={defaultInputBlock}
+            />
+        )
+    }, [])
 
     const isChangeCardsOrder = () => {
         const newOrder = [...cardsOrder]

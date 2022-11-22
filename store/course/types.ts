@@ -2,12 +2,14 @@ import { Rating } from '@/constants/interfaces'
 
 export interface CourseDetail {
     _id: string
+    owner: string
+    author: string
     name: string
     overview: string
     description: string
     price: number
     rating: number | null
-    review: number | null
+    reviews: number | null
     students: number | null
     language: string
     requirements: string[]
@@ -30,6 +32,7 @@ export interface CourseDetail {
 export type CourseDetailState = {
     courseDetail: CourseDetail
     reviews: Rating[]
+    isNewData: boolean
 }
 
 export type TInputUpdate = {
@@ -45,4 +48,10 @@ export interface CourseLandingPage {
     language?: string
     thumbnail?: string
     category?: string
+}
+
+export interface ICourseBasicInfo {
+    _id: string
+    name: string
+    category: string
 }

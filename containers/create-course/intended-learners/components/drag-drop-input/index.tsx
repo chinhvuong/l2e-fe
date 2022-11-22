@@ -11,30 +11,39 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Container } from './container'
 
 export interface IDragAndDropInputProps {
+    name: string
     addItem: ActionCreatorWithoutPayload<string>
     updateItem: ActionCreatorWithPayload<TInputUpdate, string>
+    updateItemToPayload: ActionCreatorWithPayload<string[], string>
     updateOrderItems: ActionCreatorWithPayload<string[], string>
     deleteItem: ActionCreatorWithPayload<number, string>
     getItems: (state: RootState) => TInput[]
+    getUpdateState: (state: RootState) => boolean
     defaultInputBlock: number
 }
 
 export default function DragAndDropInput({
+    name,
     addItem,
     updateItem,
+    updateItemToPayload,
     updateOrderItems,
     deleteItem,
     getItems,
+    getUpdateState,
     defaultInputBlock,
 }: IDragAndDropInputProps) {
     return (
         <DndProvider backend={HTML5Backend}>
             <Container
+                name={name}
                 addItem={addItem}
                 updateItem={updateItem}
+                updateItemToPayload={updateItemToPayload}
                 updateOrderItems={updateOrderItems}
                 deleteItem={deleteItem}
                 getItems={getItems}
+                getUpdateState={getUpdateState}
                 defaultInputBlock={defaultInputBlock}
             />
         </DndProvider>

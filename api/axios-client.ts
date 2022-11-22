@@ -91,7 +91,6 @@ export const callAPI = async (
 
                         if (path !== apiPath.REFRESH) {
                             if (!isAlreadyFetchingAccessToken) {
-                                console.log(11111, store)
                                 isAlreadyFetchingAccessToken = true
                                 refreshToken = new Promise(
                                     async (resolve: any) => {
