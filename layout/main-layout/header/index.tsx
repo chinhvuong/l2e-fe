@@ -1,36 +1,17 @@
-import { useEffect, useState } from 'react'
 import Explore from './explore'
 import Logo from './logo'
 import Search from './search'
 import './style.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faBars,
-    faBell,
-    faWallet,
-    faUser,
-    faGear,
-    faRightFromBracket,
-} from '@fortawesome/free-solid-svg-icons'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 import Router from 'next/router'
-import ConnectWallet from './connect-wallet'
-import { getLoginState } from '@/store/user/selectors'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import { updateLoginState } from '@/store/user'
-import { ACCESS_TOKEN } from '@/constants/localStorage'
+import Wallet from './wallet'
 
 interface IHeader {
     darkTheme: boolean
 }
 
 const Header = (props: IHeader) => {
-    const [hoverUser, setHoverUser] = useState(false)
-    const [hoverUserActions, setHoverUserActions] = useState(false)
-    const [isLogin, setIsLogin] = useState(false)
-
-    const loginState = useAppSelector(getLoginState)
-    const dispatch = useAppDispatch()
-
     const goToHomePage = () => {
         Router.push('/')
     }
@@ -38,19 +19,6 @@ const Header = (props: IHeader) => {
     const goToAboutUsPage = () => {
         Router.push('/about-us')
     }
-
-    const logOut = () => {
-        localStorage.clear()
-        setIsLogin(false)
-    }
-
-    useEffect(() => {
-        if (localStorage.getItem(ACCESS_TOKEN)) {
-            setIsLogin(true)
-        } else {
-            setIsLogin(false)
-        }
-    }, [loginState])
 
     return (
         <div
@@ -86,76 +54,7 @@ const Header = (props: IHeader) => {
                         !props.darkTheme ? 'text-white' : 'text-black'
                     }`}
                 />
-                {!isLogin ? (
-                    <ConnectWallet />
-                ) : (
-                    <div className="flex items-center justify-between sm:hidden lg:w-[150px] under_lg:hidden">
-                        <FontAwesomeIcon
-                            icon={faBell}
-                            className={`text-[25px] cursor-pointer ${
-                                !props.darkTheme ? 'text-black' : 'text-white'
-                            }`}
-                        />
-                        <div className="relative">
-                            <img
-                                src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
-                                alt=""
-                                className="rounded-full h-[35px] w-[35px] mx-[35px] cursor-pointer"
-                                onMouseEnter={() => setHoverUser(true)}
-                                onMouseLeave={() => setHoverUser(false)}
-                            />
-                            <div
-                                onMouseEnter={() => setHoverUserActions(true)}
-                                onMouseLeave={() => setHoverUserActions(false)}
-                                className={`w-[150px] absolute right-[20px] z-30 w-full ${
-                                    !(hoverUser || hoverUserActions) && 'hidden'
-                                }`}
-                            >
-                                <div className="h-[15px]"></div>
-                                <div
-                                    className={`rounded-[20px] bg-white drop-shadow-lg w-full `}
-                                >
-                                    <div
-                                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-t-[20px] cursor-pointer"
-                                        // onClick={() => onSelectRating(item)}
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faUser}
-                                            className="w-[16px]"
-                                        />
-                                        <div>Profile</div>
-                                    </div>
-                                    <div
-                                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
-                                        // onClick={() => onSelectRating(item)}
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faGear}
-                                            className="w-[16px]"
-                                        />
-                                        <div>Settings</div>
-                                    </div>
-                                    <div
-                                        className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-b-[20px] cursor-pointer"
-                                        onClick={() => logOut()}
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faRightFromBracket}
-                                            className="ml-[1px]"
-                                        />
-                                        <div>Log Out</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <FontAwesomeIcon
-                            icon={faWallet}
-                            className={`text-[25px] cursor-pointer ${
-                                !props.darkTheme ? 'text-black' : 'text-white'
-                            }`}
-                        />
-                    </div>
-                )}
+                <Wallet darkTheme={props.darkTheme} />
             </div>
         </div>
     )

@@ -9,6 +9,7 @@ import { store } from '@/store'
 import { AppProps } from 'next/app'
 import Layout from '@/layout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import WagmiProvider from '@/wallet/provider'
 
 type NextPageWithLayout = NextPage & {
     // eslint-disable-next-line no-unused-vars
@@ -27,11 +28,11 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
     return (
         <QueryClientProvider client={queryClient}>
-            <eth.Provider>
+            <WagmiProvider>
                 <Provider store={store}>
                     {getLayout(<Component {...pageProps} />)}
                 </Provider>
-            </eth.Provider>
+            </WagmiProvider>
         </QueryClientProvider>
     )
 }
