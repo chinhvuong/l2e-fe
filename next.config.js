@@ -9,7 +9,7 @@ module.exports = {
     webpack(config) {
         config.resolve.fallback = { fs: false }
         // if not work, try `config.module.rules[2]...`
-        config.module.rules[3].oneOf.forEach((one) => {
+        config.module.rules[2].oneOf?.forEach((one) => {
             if (!`${one.issuer?.and}`.includes('_app')) return
             one.issuer.and = [path.resolve(__dirname)]
         })

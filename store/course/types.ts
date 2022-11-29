@@ -12,6 +12,7 @@ export interface CourseDetail {
     reviews: number | null
     students: number | null
     language: string
+    approved: boolean
     requirements: string[]
     goals: string[]
     thumbnail: string | null
@@ -26,7 +27,10 @@ export interface CourseDetail {
         exercise: string
     }
     category: string
+    __v: number
+    createdAt: string
     updatedAt: string
+    courseId: number
 }
 
 export type CourseDetailState = {

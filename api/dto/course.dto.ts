@@ -127,3 +127,27 @@ export interface GetCourseDetailResponse {
     updatedAt: string
     __v: number
 }
+
+export type CoursePreview = {
+    _id: string
+    name: string
+    price: number
+    rating: number
+    students: number
+    courseId: number
+    author: {
+        _id: string
+        __v: number
+        avatar: string | null
+        bio: string | null
+        createdAt: string
+        name: string | null
+        nonce: number
+        rating: number
+        title: string | null
+        updatedAt: string
+        walletAddress: string
+    }
+    category: Category
+    ratingCount: number
+}

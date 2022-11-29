@@ -115,9 +115,7 @@ export default function CourseListSwiper(props: ICourseListProps) {
     }, [])
     return (
         <div className={props.className}>
-            <div
-                className={`flex justify-center ${props.title ? 'hidden' : ''}`}
-            >
+            <div className={`flex justify-center ${!props.title && 'hidden'}`}>
                 <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
                     <div className="font-semibold text-[30px]">
                         {props.title}

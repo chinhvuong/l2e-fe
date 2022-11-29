@@ -2,7 +2,7 @@ import { CourseLabel } from '@/constants/types'
 import * as React from 'react'
 
 export interface ILabelProps {
-    name: CourseLabel
+    name: string
     color?: string
     hidden?: boolean
 }
