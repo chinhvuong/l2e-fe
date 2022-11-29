@@ -49,19 +49,26 @@ export default function CourseLabel() {
                         {data.name}
                     </div>
                     <div className="flex items-center 2xl:space-x-4 xl:space-x-4 under_xl">
-                        <div className="under_xl:hidden">
+                        {/* <div className="under_xl:hidden">
                             {data.isBestseller && <Label name="Bestseller" />}
-                        </div>
+                        </div> */}
                         <div className="under_xl:hidden">
                             <Label name={getCourseCategory()} />
                         </div>
-                        <RatingStar id={data._id} ratingScore={data.rating} />
-                        <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer under_xl:mx-3">
-                            {`(${data.reviews.toLocaleString()} ratings)`}
-                        </div>
-                        <div className="text-[14px] font-light text-white">
-                            {`${data.students.toLocaleString()} students`}
-                        </div>
+                        <RatingStar
+                            id={data._id}
+                            ratingScore={data.rating === null ? 0 : data.rating}
+                        />
+                        {data.reviews && (
+                            <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer under_xl:mx-3">
+                                {`(${data.reviews.toLocaleString()} ratings)`}
+                            </div>
+                        )}
+                        {data.students && (
+                            <div className="text-[14px] font-light text-white">
+                                {`${data.students.toLocaleString()} students`}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="2xl:hidden flex items-center space-x-3 md:w-full sm:w-full">

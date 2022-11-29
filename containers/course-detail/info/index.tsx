@@ -38,7 +38,8 @@ export default function CourseInfo() {
                         <Breadcrumb data={breadcrumb} />
                     </div>
                     <VideoPreview
-                        thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
+                        // thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
+                        thumbnail="https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg"
                         className="2xl:hidden"
                         textSize="big"
                     />

@@ -8,6 +8,7 @@ import {
     UpdateCourseResponse,
     GetCategoryResponse,
     GetCourseDetailResponse,
+    CoursePreview,
 } from '../dto/course.dto'
 
 export const useCourse = () => {
@@ -53,6 +54,19 @@ export const useCourse = () => {
         )
     }
 
+    const useGetAllCourses = ({ onError, onSuccess }: MutationProps) => {
+        return useQuery(['all-courses'], () => apiCourse.getAllCourses, {
+            refetchOnWindowFocus: false,
+            enabled: false,
+            onError: (error) => onError(error),
+            onSuccess: async (response: CoursePreview[]) => {
+                if (response) {
+                    onSuccess(response)
+                }
+            },
+        })
+    }
+
     const useGetCourseDetail = (
         courseId: string,
         { onError, onSuccess }: MutationProps,
@@ -89,6 +103,7 @@ export const useCourse = () => {
         useUploadSingleFile,
         useCreateCourse,
         useUpdateCourse,
+        useGetAllCourses,
         useGetCourseDetail,
         useGetCategory,
     }

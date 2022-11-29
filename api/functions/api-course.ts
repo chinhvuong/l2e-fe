@@ -2,6 +2,7 @@ import { apiPath } from '@/api/api-path'
 import { STORAGE_URL } from '@/constants/urls'
 import { callAPI } from '../axios-client'
 import {
+    CoursePreview,
     CreateCourseRequest,
     CreateCourseResponse,
     GetCategoryResponse,
@@ -38,6 +39,8 @@ export const apiCourse = {
             apiPath.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
             {},
         ),
+    getAllCourses: (): Promise<CoursePreview[]> =>
+        callAPI('get', apiPath.GET_ALL_COURSES, {}),
     getCategory: (): Promise<GetCategoryResponse> =>
         callAPI('get', apiPath.GET_CATEGORY, {}),
 }
