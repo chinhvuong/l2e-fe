@@ -5,6 +5,8 @@ import {
     CoursePreview,
     CreateCourseRequest,
     CreateCourseResponse,
+    GetAllCoursesResponse,
+    GetAllMyCoursesResponse,
     GetCategoryResponse,
     GetCourseDetailResponse,
     UpdateCourseRequest,
@@ -39,8 +41,10 @@ export const apiCourse = {
             apiPath.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
             {},
         ),
-    getAllCourses: (): Promise<CoursePreview[]> =>
+    getAllCourses: (): Promise<GetAllCoursesResponse> =>
         callAPI('get', apiPath.GET_ALL_COURSES, {}),
+    getAllMyCourse: (): Promise<GetAllMyCoursesResponse> =>
+        callAPI('get', apiPath.GET_ALL_MY_COURSES, {}),
     getCategory: (): Promise<GetCategoryResponse> =>
         callAPI('get', apiPath.GET_CATEGORY, {}),
 }

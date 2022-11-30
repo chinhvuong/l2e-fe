@@ -1,7 +1,7 @@
 import { CourseNameLabel } from './types'
 
 export interface CourseDetail {
-    _id: number
+    _id: string
     owner: string
     name: string
     overview: string

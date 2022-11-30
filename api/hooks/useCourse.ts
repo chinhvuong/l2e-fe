@@ -9,6 +9,8 @@ import {
     GetCategoryResponse,
     GetCourseDetailResponse,
     CoursePreview,
+    GetAllCoursesResponse,
+    GetAllMyCoursesResponse,
 } from '../dto/course.dto'
 
 export const useCourse = () => {
@@ -55,11 +57,23 @@ export const useCourse = () => {
     }
 
     const useGetAllCourses = ({ onError, onSuccess }: MutationProps) => {
-        return useQuery(['all-courses'], () => apiCourse.getAllCourses, {
+        return useQuery(['all-courses'], apiCourse.getAllCourses, {
             refetchOnWindowFocus: false,
             enabled: false,
             onError: (error) => onError(error),
-            onSuccess: async (response: CoursePreview[]) => {
+            onSuccess: async (response: GetAllCoursesResponse) => {
+                if (response) {
+                    onSuccess(response)
+                }
+            },
+        })
+    }
+
+    const useGetAllMyCourses = ({ onError, onSuccess }: MutationProps) => {
+        return useQuery(['all-my-courses'], apiCourse.getAllMyCourse, {
+            refetchOnWindowFocus: false,
+            onError: (error) => onError(error),
+            onSuccess: async (response: GetAllMyCoursesResponse) => {
                 if (response) {
                     onSuccess(response)
                 }
@@ -104,6 +118,7 @@ export const useCourse = () => {
         useCreateCourse,
         useUpdateCourse,
         useGetAllCourses,
+        useGetAllMyCourses,
         useGetCourseDetail,
         useGetCategory,
     }

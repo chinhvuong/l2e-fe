@@ -30,7 +30,7 @@ export interface CourseDetail {
     __v: number
     createdAt: string
     updatedAt: string
-    courseId: number
+    courseId?: number
 }
 
 export type CourseDetailState = {
