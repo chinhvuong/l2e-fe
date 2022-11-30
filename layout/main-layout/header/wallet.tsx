@@ -31,10 +31,10 @@ export default function Wallet(props: any) {
 
         if (address && !loginState) {
             signMessage()
-            dispatch(updateLoginState(true))
+            // dispatch(updateLoginState(true))
         } else {
             if (!address && loginState) {
-                dispatch(updateLoginState(false))
+                // dispatch(updateLoginState(false))
             }
         }
     }, [loginState, address])

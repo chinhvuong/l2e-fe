@@ -1,3 +1,5 @@
+import { CourseDetail } from '@/store/course/types'
+
 export interface CreateCourseRequest {
     name: string
     category: string
@@ -150,4 +152,14 @@ export type CoursePreview = {
     }
     category: Category
     ratingCount: number
+}
+
+export interface GetAllCoursesResponse {
+    total: number
+    data: CoursePreview[]
+}
+
+export interface GetAllMyCoursesResponse {
+    total: number
+    data: CourseDetail[]
 }

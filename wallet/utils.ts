@@ -99,7 +99,6 @@ export const metaMaskConnector = new MetaMaskConnector({
 })
 
 // export const bscConnector = new BinanceWalletConnector({ chains })
-
 export const client = createClient({
     autoConnect: true,
     provider,

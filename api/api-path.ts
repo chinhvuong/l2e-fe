@@ -4,6 +4,7 @@ export enum apiPath {
     UPLOAD_SINGLE_FILE = '/upload-single-file',
     UPLOAD_MULTI_FILES = '/upload-multi-files',
     GET_ALL_COURSES = '/course',
+    GET_ALL_MY_COURSES = '/course/manage/own-courses',
     CREATE_COURSE = '/course',
     UPDATE_COURSE = '/course/',
     GET_COURSE_DETAIL = '/course/manage/own-courses/',

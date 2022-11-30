@@ -11,7 +11,7 @@ export interface IVerticalCourseCardProps {
 
 export default function VerticalCourseCard(props: IVerticalCourseCardProps) {
     const viewCourseDetail = () => {
-        Router.push('/course/635761a7464c91f76922339f')
+        Router.push(`/course/${props.data._id}`)
     }
     return (
         <div
