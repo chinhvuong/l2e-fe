@@ -136,7 +136,8 @@ export type CoursePreview = {
     price: number
     rating: number
     students: number
-    courseId: number
+    courseId?: number
+    approved: boolean
     author: {
         _id: string
         __v: number

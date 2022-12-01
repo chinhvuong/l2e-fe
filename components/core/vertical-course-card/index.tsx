@@ -26,7 +26,7 @@ export default function VerticalCourseCard(props: IVerticalCourseCardProps) {
                 {props.data.name}
             </div>
             <div className="font-light text-xs truncate">
-                {props.data.author.name ?? 'Anonymous'}
+                {props.data?.author?.name ?? 'Anonymous'}
             </div>
             <RatingStar
                 id={props.data._id}
