@@ -1,10 +1,10 @@
 import React from 'react'
-import { CourseInfo_Preview } from '@/constants/interfaces'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
+import { CoursePreview } from '@/api/dto/course.dto'
 
 export interface IVerticalCourseListProps {
     title?: string
-    data: CourseInfo_Preview[]
+    data: CoursePreview[]
     className?: string
 }
 
@@ -23,7 +23,7 @@ export default function VerticalCourseList(props: IVerticalCourseListProps) {
             <div className="space-y-5">
                 {props.data.map((course) => {
                     return (
-                        <HorizontalCourseCard key={course.id} data={course} />
+                        <HorizontalCourseCard key={course._id} data={course} />
                     )
                 })}
             </div>
