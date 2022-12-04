@@ -6,6 +6,7 @@ import {
     faUser,
     faGear,
     faRightFromBracket,
+    faWallet,
 } from '@fortawesome/free-solid-svg-icons'
 import { WalletAccount } from '@/wallet/ui'
 import { useAppDispatch, useAppSelector } from '@/hooks'
@@ -43,15 +44,11 @@ const Account = (props: any) => {
                     !props.darkTheme ? 'text-black' : 'text-white'
                 }`}
             />
-            <div className="ml-8 relative">
-                {/* <img
-                                src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
-                                alt=""
-                                className="rounded-full h-[35px] w-[35px] mx-[35px] cursor-pointer"
-                                onMouseEnter={() => setHoverUser(true)}
-                                onMouseLeave={() => setHoverUser(false)}
-                            /> */}
-                <WalletAccount
+            <div className="relative">
+                <img
+                    src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
+                    alt=""
+                    className="rounded-full h-[35px] w-[35px] mx-[35px] cursor-pointer"
                     onMouseEnter={() => setHoverUser(true)}
                     onMouseLeave={() => setHoverUser(false)}
                 />
@@ -99,11 +96,12 @@ const Account = (props: any) => {
                     </div>
                 </div>
             </div>
-            {/* <FontAwesomeIcon
-                            icon={faWallet}
-                            className={`text-[25px] cursor-pointer ${!props.darkTheme ? 'text-black' : 'text-white'
-                                }`}
-                        /> */}
+            <FontAwesomeIcon
+                icon={faWallet}
+                className={`text-[25px] cursor-pointer ${
+                    !props.darkTheme ? 'text-black' : 'text-white'
+                }`}
+            />
         </div>
     )
 }

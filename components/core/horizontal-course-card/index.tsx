@@ -49,7 +49,10 @@ export default function HorizontalCourseCard(
                             name="Bestseller"
                             hidden={!props.data.isBestseller}
                         /> */}
-                        <Label name={props.data.category.name} />
+                        <Label
+                            name={props.data.category.name}
+                            color={props.data.category.color}
+                        />
                     </div>
                 </div>
             </div>

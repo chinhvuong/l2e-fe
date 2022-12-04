@@ -1,7 +1,7 @@
 import Breadcrumb from '@/components/core/breadcrumb'
 import RatingStar from '@/components/core/rating-star'
 import Label from '@/components/core/label'
-import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Sidebar from '../components/sidebar'
@@ -9,9 +9,13 @@ import { getCourseOverviewInfo } from '@/store/course/selectors'
 import VideoPreview from '@/components/core/video-preview'
 import PriceEnrollShare from '../components/price-enroll-share'
 import { useAppSelector } from '@/hooks'
+import { CATEGORY } from '@/constants/localStorage'
+import { Category } from '@/constants/interfaces'
+import Hyperlink from '@/containers/create-course/components/hyperlink'
 
 export default function CourseInfo() {
     const data = useAppSelector(getCourseOverviewInfo)
+    const [category, setCategory] = useState<Category | null>(null)
 
     const breadcrumb = [
         {
@@ -29,6 +33,15 @@ export default function CourseInfo() {
             data.updatedAt,
         ).getFullYear()}`
     }
+
+    useEffect(() => {
+        const categoryList: Category[] = JSON.parse(
+            localStorage.getItem(CATEGORY) ?? '[]',
+        )
+        setCategory(
+            categoryList.find((item) => item._id === data.category) ?? null,
+        )
+    }, [])
 
     return (
         <div className="bg-black flex justify-center" id="overview-section">
@@ -53,25 +66,33 @@ export default function CourseInfo() {
                                 {/* {data.isBestseller && (
                                     <Label name="Bestseller" />
                                 )} */}
-                                <Label name="IT" />
-                                {data.rating && (
+                                {category && (
+                                    <Label
+                                        name={category.name}
+                                        color={category.color}
+                                    />
+                                )}
+                                {data.rating !== null && (
                                     <RatingStar
                                         id={data._id}
                                         ratingScore={data.rating}
+                                        ratings={'0'}
+                                        hideRating
                                         className="mt-0.5"
                                     />
                                 )}
                             </div>
-                            {(data.reviews || data.students) && (
+                            {(data.reviews !== null ||
+                                data.students !== null) && (
                                 <div className="flex items-center space-x-4 my-2">
-                                    {data.reviews && (
+                                    {data.reviews !== null && (
                                         <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                                            {`(${data.reviews.toLocaleString()} ratings)`}
+                                            {`(${data.reviews} ratings)`}
                                         </div>
                                     )}
-                                    {data.students && (
+                                    {data.students !== null && (
                                         <div className="text-[14px] font-light">
-                                            {`${data.students.toLocaleString()} students`}
+                                            {`${data.students} students`}
                                         </div>
                                     )}
                                 </div>
@@ -79,6 +100,9 @@ export default function CourseInfo() {
                         </div>
                         <div className="text-[14px] font-light">
                             Created by{' '}
+                            <Hyperlink>
+                                {data.author.name ?? 'Anonymous'}
+                            </Hyperlink>
                             {/* <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
                                 {data.owner}
                             </span> */}

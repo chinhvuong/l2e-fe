@@ -40,7 +40,8 @@ export default function Sidebar() {
             style={scrollY > 500 ? { right: rightMargin } : {}}
         >
             <VideoPreview
-                thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
+                // thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
+                thumbnail="https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg"
                 className={`${scrollY > 500 ? 'hidden' : ''}`}
                 textSize="small"
             />
