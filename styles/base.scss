@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter';
+}
+
+html {
+    @apply text-black;
+}
+div, button, input, text-area, select p , span, i {
+    @apply text-inherit;
+}
