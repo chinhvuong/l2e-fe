@@ -3,12 +3,15 @@ import Title from '../components/title'
 import { useState, useEffect } from 'react'
 import Loading from '@/components/core/animate/loading'
 import { useAppSelector } from '@/hooks'
-import { getCourseDetail, getCourseDetailState } from '@/store/course/selectors'
+import {
+    getMyCourseDetail,
+    getCourseDetailState,
+} from '@/store/course/selectors'
 
 export interface IMessagesContainerProps {}
 
 export default function MessagesContainer() {
-    const courseDetail = useAppSelector(getCourseDetail)
+    const courseDetail = useAppSelector(getMyCourseDetail)
     const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
 

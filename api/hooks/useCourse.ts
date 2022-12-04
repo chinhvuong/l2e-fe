@@ -81,6 +81,26 @@ export const useCourse = () => {
         })
     }
 
+    const useGetMyCourseDetail = (
+        courseId: string,
+        { onError, onSuccess }: MutationProps,
+    ) => {
+        return useQuery(
+            ['course-detail'],
+            () => apiCourse.getMyCourseDetail(courseId),
+            {
+                refetchOnWindowFocus: false,
+                enabled: false,
+                onError: (error) => onError(error),
+                onSuccess: async (response: GetCourseDetailResponse) => {
+                    if (response) {
+                        onSuccess(response)
+                    }
+                },
+            },
+        )
+    }
+
     const useGetCourseDetail = (
         courseId: string,
         { onError, onSuccess }: MutationProps,
@@ -119,6 +139,7 @@ export const useCourse = () => {
         useUpdateCourse,
         useGetAllCourses,
         useGetAllMyCourses,
+        useGetMyCourseDetail,
         useGetCourseDetail,
         useGetCategory,
     }

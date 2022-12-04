@@ -4,7 +4,7 @@ import Router, { useRouter } from 'next/router'
 import Button from '@/components/core/button'
 import { useCourse } from '@/api/hooks/useCourse'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { getCourseDetail } from '@/store/course/selectors'
+import { getMyCourseDetail } from '@/store/course/selectors'
 import { updateCourseDetail, updateGetCourseDetailState } from '@/store/course'
 import { useEffect } from 'react'
 import {
@@ -16,7 +16,7 @@ export interface IHeaderProps {}
 
 export default function Header() {
     const dispatch = useAppDispatch()
-    const courseDetail = useAppSelector(getCourseDetail)
+    const courseDetail = useAppSelector(getMyCourseDetail)
     const router = useRouter()
 
     const getCourseId = () => {
@@ -26,7 +26,7 @@ export default function Header() {
         return router.query.slug
     }
 
-    const { useGetCourseDetail, useUpdateCourse } = useCourse()
+    const { useGetMyCourseDetail, useUpdateCourse } = useCourse()
     const { mutate: updateCourse } = useUpdateCourse({
         onError: () => {},
         onSuccess: (response) => {
@@ -37,7 +37,7 @@ export default function Header() {
                 dispatch(updateAllRequirements(response.requirements))
         },
     })
-    const { refetch } = useGetCourseDetail(getCourseId(), {
+    const { refetch } = useGetMyCourseDetail(getCourseId(), {
         onError: () => {},
         onSuccess: (response) => {
             dispatch(updateCourseDetail(response))

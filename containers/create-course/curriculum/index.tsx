@@ -13,12 +13,15 @@ import Title from '../components/title'
 import Section from './components/section'
 import Loading from '@/components/core/animate/loading'
 import { useAppSelector } from '@/hooks'
-import { getCourseDetail, getCourseDetailState } from '@/store/course/selectors'
+import {
+    getMyCourseDetail,
+    getCourseDetailState,
+} from '@/store/course/selectors'
 
 export interface ICurriculumContainerProps {}
 
 export default function CurriculumContainer() {
-    const courseDetail = useAppSelector(getCourseDetail)
+    const courseDetail = useAppSelector(getMyCourseDetail)
     const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
 

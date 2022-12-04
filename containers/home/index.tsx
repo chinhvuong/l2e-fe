@@ -76,30 +76,36 @@ const HomePageContainer = () => {
                 />
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
-            <div className="flex justify-center text-white mt-10">
-                <Button onClick={() => goToCreateCoursePage()}>
-                    Create course
-                </Button>
-            </div>
-            <div className="flex justify-center text-white mt-10">
-                <Button onClick={() => goToMyCoursesPage()}>My courses</Button>
-            </div>
-            {data?.data === undefined || data.data.length === 0 ? (
-                <div className="flex justify-center items-center h-20">
-                    {!isLogin ? <div></div> : <Loading />}
-                </div>
-            ) : (
-                <div className="flex justify-center mt-6">
-                    {data.data.map((item, index) => (
-                        <div className="w-[400px]" key={index}>
-                            <VerticalCourseCard
-                                key={item._id}
-                                data={item}
-                                className="mx-[8px]"
-                            />
+            {isLogin && (
+                <>
+                    <div className="flex justify-center text-white mt-10">
+                        <Button onClick={() => goToCreateCoursePage()}>
+                            Create course
+                        </Button>
+                    </div>
+                    <div className="flex justify-center text-white mt-10">
+                        <Button onClick={() => goToMyCoursesPage()}>
+                            My courses
+                        </Button>
+                    </div>
+                    {data?.data === undefined || data.data.length === 0 ? (
+                        <div className="flex justify-center items-center h-20">
+                            {!isLogin ? <div></div> : <Loading />}
                         </div>
-                    ))}
-                </div>
+                    ) : (
+                        <div className="flex justify-center mt-6">
+                            {data.data.map((item, index) => (
+                                <div className="w-[400px]" key={index}>
+                                    <VerticalCourseCard
+                                        key={item._id}
+                                        data={item}
+                                        className="mx-[8px]"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </>
             )}
 
             {/* <div className="flex justify-center mt-12 mb-4">

@@ -22,7 +22,7 @@ export default function Sidebar() {
     const [courseId, setCourseId] = useState('')
     const [currentTab, setCurrentTab] = useState(() => {
         const list = router.route.split('/')
-        return '/' + list[list.length - 1]
+        return list[list.length - 1]
     })
 
     useEffect(() => {

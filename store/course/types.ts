@@ -3,7 +3,19 @@ import { Rating } from '@/constants/interfaces'
 export interface CourseDetail {
     _id: string
     owner: string
-    author: string
+    author: {
+        _id: string
+        __v: number
+        avatar: string | null
+        bio: string | null
+        createdAt: string
+        name: string | null
+        nonce: number
+        rating: number
+        title: string | null
+        updatedAt: string
+        walletAddress: string
+    }
     name: string
     overview: string
     description: string

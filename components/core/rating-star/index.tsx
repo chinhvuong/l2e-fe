@@ -8,6 +8,7 @@ export interface IRatingStarProps {
     ratingScore: number
     ratings?: string
     hideScore?: boolean
+    hideRating?: boolean
     className?: string
 }
 
@@ -64,7 +65,7 @@ export default function RatingStar(props: IRatingStarProps) {
                 </div>
             )}
             {ratingStar()}
-            {props?.ratings && (
+            {props?.ratings && !props?.hideRating && (
                 <div className="font-light text-xs">{`(${props.ratings})`}</div>
             )}
         </div>

@@ -21,14 +21,17 @@ import DragAndDropInput from './components/drag-drop-input'
 import Subtitle from '../components/subtitle'
 import Title from '../components/title'
 import { useAppSelector } from '@/hooks'
-import { getCourseDetail, getCourseDetailState } from '@/store/course/selectors'
+import {
+    getMyCourseDetail,
+    getCourseDetailState,
+} from '@/store/course/selectors'
 import Loading from '@/components/core/animate/loading'
 import { updateCourseGoals, updateCourseRequirements } from '@/store/course'
 
 export interface IIntendedLearnersContainerProps {}
 
 export default function IntendedLearnersContainer() {
-    const courseId = useAppSelector(getCourseDetail)._id
+    const courseId = useAppSelector(getMyCourseDetail)._id
     const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
 
