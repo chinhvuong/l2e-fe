@@ -85,7 +85,7 @@ export default function CourseContent() {
                                 className="pt-1 px-6"
                             />
                             <div className="text-hyperlink underline">
-                                What you’re goint to get from this course
+                                What you’re going to get from this course
                             </div>
                         </div>
                         <div className="text-description">03:27</div>

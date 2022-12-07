@@ -56,7 +56,7 @@ export default function Header() {
     }, [router.query.slug])
 
     const goBack = () => {
-        Router.back()
+        Router.push('/instructor')
     }
 
     const handleUpdateCourseDetail = () => {

@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getWhatYouWillLearn } from '@/store/course/selectors'
 import ShowMore from '@/components/core/show-more'
 import { useAppSelector } from '@/hooks'
+import { dataCourses_detail } from '@/data/course-detail'
 
 export interface IWhatYouWillLearnProps {}
 
 export default function WhatYouWillLearn() {
-    const data = useAppSelector(getWhatYouWillLearn)
+    // const data = useAppSelector(getWhatYouWillLearn)
     const [showFullContent, setShowFullContent] = useState(true)
 
     return (
@@ -18,7 +18,7 @@ export default function WhatYouWillLearn() {
         >
             <span className="font-semibold text-[26px]">What you’ll learn</span>
             <div className="flex flex-wrap justify-between under_lg:flex-col">
-                {data.map((item, index) => {
+                {dataCourses_detail.goals.map((item, index) => {
                     return (
                         <div
                             className="flex items-start space-x-3 mb-2"

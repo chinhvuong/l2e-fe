@@ -1,3 +1,4 @@
+import { dataCourses_detail } from '@/data/course-detail'
 import { useAppSelector } from '@/hooks'
 import { getCourseIncludeList } from '@/store/course/selectors'
 import * as React from 'react'
@@ -10,12 +11,15 @@ import WhatYouWillLearn from './what-you-will-learn'
 export interface ICurriculumProps {}
 
 export default function Curriculum({}) {
-    const data = useAppSelector(getCourseIncludeList)
+    // const data = useAppSelector(getCourseIncludeList)
 
     return (
         <div className="space-y-7" id="curriculum-section">
             <WhatYouWillLearn />
-            <IncludeList data={data} className="2xl:hidden" />
+            <IncludeList
+                data={dataCourses_detail.include}
+                className="2xl:hidden"
+            />
             <CourseContent />
             <Requirement />
             <Description />
