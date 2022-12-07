@@ -16,7 +16,7 @@ export default function StudentFeedback() {
                         4.7
                     </div>
                     <div className="sm:hidden">
-                        <RatingStar id={4.7} ratingScore={4.7} hideScore />
+                        <RatingStar id="4.7" ratingScore={4.7} hideScore />
                     </div>
                     <div className="text-primary font-bold mt-1">
                         Course rating

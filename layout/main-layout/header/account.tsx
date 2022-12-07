@@ -7,6 +7,8 @@ import {
     faGear,
     faRightFromBracket,
     faWallet,
+    faGraduationCap,
+    faChalkboardTeacher,
 } from '@fortawesome/free-solid-svg-icons'
 import { WalletAccount } from '@/wallet/ui'
 import { useAppDispatch, useAppSelector } from '@/hooks'
@@ -23,12 +25,12 @@ const Account = (props: any) => {
     const loginState = useAppSelector(getLoginState)
     const dispatch = useAppDispatch()
 
-    const goToHomePage = () => {
-        Router.push('/')
+    const goToLearnerPage = () => {
+        Router.push('/learner')
     }
 
-    const goToAboutUsPage = () => {
-        Router.push('/about-us')
+    const goToInstructorPage = () => {
+        Router.push('/instructor')
     }
 
     const logOut = async () => {
@@ -72,6 +74,26 @@ const Account = (props: any) => {
                                 className="w-[16px]"
                             />
                             <div>Profile</div>
+                        </div>
+                        <div
+                            className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
+                            onClick={() => goToLearnerPage()}
+                        >
+                            <FontAwesomeIcon
+                                icon={faGraduationCap}
+                                className="w-[16px]"
+                            />
+                            <div>Learner</div>
+                        </div>
+                        <div
+                            className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
+                            onClick={() => goToInstructorPage()}
+                        >
+                            <FontAwesomeIcon
+                                icon={faChalkboardTeacher}
+                                className="w-[16px]"
+                            />
+                            <div>Instructor</div>
                         </div>
                         <div
                             className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"

@@ -79,11 +79,6 @@ const HomePageContainer = () => {
             {isLogin && (
                 <>
                     <div className="flex justify-center text-white mt-10">
-                        <Button onClick={() => goToCreateCoursePage()}>
-                            Create course
-                        </Button>
-                    </div>
-                    <div className="flex justify-center text-white mt-10">
                         <Button onClick={() => goToMyCoursesPage()}>
                             My courses
                         </Button>
@@ -93,16 +88,25 @@ const HomePageContainer = () => {
                             {!isLogin ? <div></div> : <Loading />}
                         </div>
                     ) : (
-                        <div className="flex justify-center mt-6">
-                            {data.data.map((item, index) => (
-                                <div className="w-[400px]" key={index}>
-                                    <VerticalCourseCard
-                                        key={item._id}
-                                        data={item}
-                                        className="mx-[8px]"
-                                    />
+                        <div>
+                            <div className="flex justify-center mt-12 mb-4">
+                                <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
+                                    <div className="font-bold text-[30px]">
+                                        Popular courses
+                                    </div>
                                 </div>
-                            ))}
+                            </div>
+                            <div className="flex justify-center">
+                                {data.data.map((item, index) => (
+                                    <div className="w-[400px]" key={index}>
+                                        <VerticalCourseCard
+                                            key={item._id}
+                                            data={item}
+                                            className="mx-[8px]"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </>

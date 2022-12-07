@@ -4,16 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getRequirements } from '@/store/course/selectors'
 import ShowMore from '@/components/core/show-more'
 import { useAppSelector } from '@/hooks'
+import { dataCourses_detail } from '@/data/course-detail'
 
 export interface IRequirementProps {}
 
 export default function Requirement() {
-    const data = useAppSelector(getRequirements)
+    // const data = useAppSelector(getRequirements)
 
     return (
         <div id="requirement" className="space-y-3 overflow-hidden relative">
             <div className="font-semibold text-[26px]">Requirement</div>
-            {data.map((item, index) => {
+            {dataCourses_detail.requirements.map((item, index) => {
                 return (
                     <div className="flex items-start" key={index}>
                         <FontAwesomeIcon
