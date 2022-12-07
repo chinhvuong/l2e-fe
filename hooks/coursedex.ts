@@ -29,10 +29,14 @@ export const createCourse = async (
 export const enroll = async (
     signer: ethers.Signer | null,
     amount: string,
-    courseId: string,
+    courseId: number,
 ): Promise<void> => {
     await approve(signer, amount);
-    const coursedex: ethers.Contract = getContract(signer);
-    const tx = coursedex.enroll(courseId);
-    tx.wait();
+    try {
+        const coursedex: ethers.Contract = getContract(signer);
+        const tx = await coursedex.enrollCourse(courseId);
+        await tx.wait();
+    } catch (err) {
+        console.log(err , "Error enrolling");
+    }
 }

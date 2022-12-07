@@ -46,7 +46,7 @@ export default function Sidebar() {
             />
             <div className="space-y-4 mt-4">
                 <div className="mx-7">
-                    <PriceEnrollShare price={data.price} _id = "0" />
+                    <PriceEnrollShare price={data.price} courseId = {1} />
                     <IncludeList data={data.include} />
                 </div>
                 <Divider />

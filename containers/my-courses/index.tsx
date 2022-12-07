@@ -13,7 +13,7 @@ import { useAccount, useSigner } from 'wagmi'
 import { createCourse } from '@/hooks/coursedex'
 import { goerli } from 'wagmi/chains'
 export default function MyCoursesContainer() {
-    const [isLoading, setIsLoading] = useState(true)
+  //  const [isLoading, setIsLoading] = useState(false)
     const [allMyCourses, setAllMyCourses] = useState<CoursePreview[]>([])
     const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
     const [courseId, setCourseId] = useState<string>('')
@@ -38,15 +38,18 @@ export default function MyCoursesContainer() {
     const mintCourse = async (id: string) => {
         setCourseId(id)
     }
+    const approve = async (id: string) => {
+        
+    }
     useEffect(() => {
         ;(async () => {
             if (courseId) {
                 refetch()
                 if (requireinfo) {
-                    setIsLoading(true)
+                 //   setIsLoading(true)
                     setCourseId('')
                     await createCourse(signer!, requireinfo)
-                    setIsLoading(false)
+                 //   setIsLoading(false)
                 }
             }
         })()
@@ -78,25 +81,30 @@ export default function MyCoursesContainer() {
                                         <div
                                             className={`flex justify-center text-white ${
                                                 !course?.courseId &&
-                                                course.approved && isLoading
+                                                course.approved
                                                     ? ''
                                                     : 'hidden'
                                             }`}
                                         >
-                                            {' '}
-                                            {isLoading ? (
-                                                <div className="flex justify-center items-center h-20">
-                                                    <Loading />
-                                                </div>
-                                            ) : (
-                                                <Button
-                                                    onClick={() =>
-                                                        mintCourse(course._id)
-                                                    }
-                                                >
-                                                    Mint course
-                                                </Button>
-                                            )}
+                                            <Button
+                                                onClick={() => mintCourse(course._id)}
+                                            >
+                                                Mint course
+                                            </Button>
+                                        </div>
+                                        <div
+                                            className={`flex justify-center text-white ${
+                                                !course?.courseId &&
+                                                course.approved
+                                                    ? ''
+                                                    : 'hidden'
+                                            }`}
+                                        >
+                                            <Button
+                                                onClick={() => approve(course._id)}
+                                            >
+                                                Request Approve
+                                            </Button>
                                         </div>
                                     </div>
                                 )

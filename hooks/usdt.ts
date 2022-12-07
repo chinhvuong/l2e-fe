@@ -23,5 +23,10 @@ export const approve = async (signer: ethers.Signer | null,amount : string): Pro
   // Collect token contract
   const usdt: ethers.Contract = getusdtContract(signer);
   // Return claimed status
-  await usdt.approve(process.env.NEXT_PUBLIC_COURSEDEX_CONTRACT,ethers.utils.parseUnits(amount,parseInt(process.env.NEXT_PUBLIC_DECIMAL as string)));
+  try {
+    const tx = await usdt.approve(process.env.NEXT_PUBLIC_COURSEDEX_CONTRACT,ethers.utils.parseUnits(amount,parseInt(process.env.NEXT_PUBLIC_DECIMAL as string)));
+    await tx.wait();
+  } catch (err) {
+    console.error(err);
+  }
 };
