@@ -12,8 +12,9 @@ import Router, { useRouter } from 'next/router'
 import { useAccount, useSigner } from 'wagmi'
 import { createCourse } from '@/hooks/coursedex'
 import { goerli } from 'wagmi/chains'
+import axios from 'axios'
 export default function MyCoursesContainer() {
-  //  const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [allMyCourses, setAllMyCourses] = useState<CoursePreview[]>([])
     const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
     const [courseId, setCourseId] = useState<string>('')
@@ -39,14 +40,17 @@ export default function MyCoursesContainer() {
         setCourseId(id)
     }
     const approve = async (id: string) => {
-        
+       await axios.post('https://l2e-be-v1.herokuapp.com/course/manage/own-courses/send-approve-request',{
+            id: id,
+            notes : [""],
+        })
     }
     useEffect(() => {
         ;(async () => {
             if (courseId) {
                 refetch()
                 if (requireinfo) {
-                 //   setIsLoading(true)
+                    setIsLoading(true)
                     setCourseId('')
                     await createCourse(signer!, requireinfo)
                  //   setIsLoading(false)
@@ -81,11 +85,11 @@ export default function MyCoursesContainer() {
                                         <div
                                             className={`flex justify-center text-white ${
                                                 !course?.courseId &&
-                                                course.approved
+                                                course.approved && !isLoading
                                                     ? ''
                                                     : 'hidden'
                                             }`}
-                                        >
+                                        > 
                                             <Button
                                                 onClick={() => mintCourse(course._id)}
                                             >
@@ -95,7 +99,7 @@ export default function MyCoursesContainer() {
                                         <div
                                             className={`flex justify-center text-white ${
                                                 !course?.courseId &&
-                                                course.approved
+                                                !course.approved
                                                     ? ''
                                                     : 'hidden'
                                             }`}
@@ -105,6 +109,16 @@ export default function MyCoursesContainer() {
                                             >
                                                 Request Approve
                                             </Button>
+                                        </div>
+                                        <div
+                                            className={`flex justify-center text-white ${
+                                                !course?.courseId &&
+                                                course.approved && isLoading
+                                                    ? ''
+                                                    : 'hidden'
+                                            }`}
+                                        >
+                                            <Loading></Loading> 
                                         </div>
                                     </div>
                                 )
