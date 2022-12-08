@@ -165,6 +165,11 @@ export interface GetAllMyCoursesResponse {
     data: CourseDetail[]
 }
 
+export interface GetAllMyEnrollCoursesResponse {
+    total: number
+    data: CoursePreview[]
+}
+
 export interface GetMintSignatureResponse {
     price: string
     v: number

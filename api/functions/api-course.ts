@@ -12,6 +12,7 @@ import {
     GetCourseDetailResponse,
     UpdateCourseRequest,
     UpdateCourseResponse,
+    GetAllMyEnrollCoursesResponse,
 } from '../dto/course.dto'
 
 export const apiCourse = {
@@ -52,6 +53,8 @@ export const apiCourse = {
         callAPI('get', apiPath.GET_ALL_COURSES, {}),
     getAllMyCourse: (): Promise<GetAllMyCoursesResponse> =>
         callAPI('get', apiPath.GET_ALL_MY_COURSES, {}),
+    getAllMyEnrollCourse: (): Promise<GetAllMyEnrollCoursesResponse> =>
+        callAPI('get', apiPath.GET_ALL_MY_ENROLL_COURSES, {}),
     getCategory: (): Promise<GetCategoryResponse> =>
         callAPI('get', apiPath.GET_CATEGORY, {}),
     getMintSignature: (courseId: string): Promise<GetMintSignatureResponse> =>

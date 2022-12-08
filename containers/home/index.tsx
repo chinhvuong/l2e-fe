@@ -83,7 +83,7 @@ const HomePageContainer = () => {
                             My courses
                         </Button>
                     </div>
-                    {data?.data === undefined || data.data.length === 0 ? (
+                    {data?.data === undefined ? (
                         <div className="flex justify-center items-center h-20">
                             {!isLogin ? <div></div> : <Loading />}
                         </div>
