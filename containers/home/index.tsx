@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
-import { dataCourses_preview_swiper } from '@/data/course-preview'
 import CourseListSwiper from '@/components/common/course-list-swiper'
 import Router from 'next/router'
 import VerticalCourseCard from '@/components/core/vertical-course-card'
@@ -11,7 +10,6 @@ import Loading from '@/components/core/animate/loading'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { getLoginState } from '@/store/user/selectors'
 import { ACCESS_TOKEN } from '@/constants/localStorage'
-import { CoursePreview } from '@/api/dto/course.dto'
 import { updateLoginState } from '@/store/user'
 
 const HomePageContainer = () => {
@@ -78,11 +76,6 @@ const HomePageContainer = () => {
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
             {isLogin && (
                 <>
-                    <div className="flex justify-center text-white mt-10">
-                        <Button onClick={() => goToMyCoursesPage()}>
-                            My courses
-                        </Button>
-                    </div>
                     {data?.data === undefined ? (
                         <div className="flex justify-center items-center h-20">
                             {!isLogin ? <div></div> : <Loading />}
@@ -96,17 +89,25 @@ const HomePageContainer = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex justify-center">
-                                {data.data.map((item, index) => (
-                                    <div className="w-[400px]" key={index}>
-                                        <VerticalCourseCard
-                                            key={item._id}
-                                            data={item}
-                                            className="mx-[8px]"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
+                            {data.data.length < 5 ? (
+                                <div className="flex justify-center">
+                                    {data.data.map((item, index) => (
+                                        <div className="w-[300px]" key={index}>
+                                            <VerticalCourseCard
+                                                key={item._id}
+                                                data={item}
+                                                className="mx-[8px]"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <CourseListSwiper
+                                    data={data.data}
+                                    title="Short and sweet courses for you"
+                                    className="mt-8"
+                                />
+                            )}
                         </div>
                     )}
                 </>

@@ -9,9 +9,10 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CourseInfo_Preview } from '@/constants/interfaces'
+import { CoursePreview } from '@/api/dto/course.dto'
 export interface ICourseListProps {
     title?: string
-    data: CourseInfo_Preview[]
+    data: CoursePreview[]
     className?: string
 }
 
@@ -130,7 +131,7 @@ export default function CourseListSwiper(props: ICourseListProps) {
                     {props.data.map((course) => {
                         return (
                             <VerticalCourseCard
-                                key={course.id}
+                                key={course._id}
                                 data={course}
                                 className="mx-[8px]"
                             />
