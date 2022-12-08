@@ -2,6 +2,7 @@ import { apiPath } from '@/api/api-path'
 import { STORAGE_URL } from '@/constants/urls'
 import { callAPI } from '../axios-client'
 import {
+    GetMintSignatureResponse,
     CoursePreview,
     CreateCourseRequest,
     CreateCourseResponse,
@@ -53,4 +54,6 @@ export const apiCourse = {
         callAPI('get', apiPath.GET_ALL_MY_COURSES, {}),
     getCategory: (): Promise<GetCategoryResponse> =>
         callAPI('get', apiPath.GET_CATEGORY, {}),
+    getMintSignature: (courseId: string): Promise<GetMintSignatureResponse> =>
+        callAPI('get', apiPath.GET_MINT_SIGNATURE + '?id=' + courseId, {}),
 }

@@ -1,5 +1,6 @@
 import VerticalCourseCard from '@/components/core/vertical-course-card'
 import { CoursePreview } from '@/api/dto/course.dto'
+import { GetMintSignatureResponse } from '@/api/dto/course.dto'
 import Button from '@/components/core/button'
 import { useEffect, useState } from 'react'
 import { useCourse } from '@/api/hooks/useCourse'
@@ -7,18 +8,56 @@ import Loading from '@/components/core/animate/loading'
 import { CourseDetail } from '@/store/course/types'
 import VerticalCourseList from '@/components/common/vertical-course-list'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
-
+import Router, { useRouter } from 'next/router'
+import { useAccount, useSigner } from 'wagmi'
+import { createCourse } from '@/hooks/coursedex'
+import { goerli } from 'wagmi/chains'
+import axios from 'axios'
 export default function MyCoursesContainer() {
+    const [isLoading, setIsLoading] = useState(false)
     const [allMyCourses, setAllMyCourses] = useState<CoursePreview[]>([])
-    const mintCourse = () => {}
-
-    const { useGetAllMyCourses } = useCourse()
+    const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
+    const [courseId, setCourseId] = useState<string>('')
+    const { useGetAllMyCourses, useGetSignatureMint } = useCourse()
+    const router = useRouter()
+    const { refetch } = useGetSignatureMint(courseId, {
+        onError: () => {},
+        onSuccess: (response) => {
+            setRequireinfo(response)
+        },
+    })
     const { data } = useGetAllMyCourses({
         onError: () => {},
         onSuccess: (response) => {
             setAllMyCourses(response.data)
         },
     })
+    const { address, isConnected } = useAccount()
+    const { data: signer } = useSigner({
+        chainId: goerli.id,
+    })
+    const mintCourse = async (id: string) => {
+        setCourseId(id)
+    }
+    const approve = async (id: string) => {
+       await axios.post('https://l2e-be-v1.herokuapp.com/course/manage/own-courses/send-approve-request',{
+            id: id,
+            notes : [""],
+        })
+    }
+    useEffect(() => {
+        ;(async () => {
+            if (courseId) {
+                refetch()
+                if (requireinfo) {
+                    setIsLoading(true)
+                    setCourseId('')
+                    await createCourse(signer!, requireinfo)
+                 //   setIsLoading(false)
+                }
+            }
+        })()
+    }, [requireinfo, courseId])
 
     return (
         <div className="bg-second text-white space-x-10 px-14 py-8">
@@ -46,16 +85,40 @@ export default function MyCoursesContainer() {
                                         <div
                                             className={`flex justify-center text-white ${
                                                 !course?.courseId &&
+                                                course.approved && !isLoading
+                                                    ? ''
+                                                    : 'hidden'
+                                            }`}
+                                        > 
+                                            <Button
+                                                onClick={() => mintCourse(course._id)}
+                                            >
+                                                Mint course
+                                            </Button>
+                                        </div>
+                                        <div
+                                            className={`flex justify-center text-white ${
+                                                !course?.courseId &&
                                                 !course.approved
                                                     ? ''
                                                     : 'hidden'
                                             }`}
                                         >
                                             <Button
-                                                onClick={() => mintCourse()}
+                                                onClick={() => approve(course._id)}
                                             >
-                                                Mint course
+                                                Request Approve
                                             </Button>
+                                        </div>
+                                        <div
+                                            className={`flex justify-center text-white ${
+                                                !course?.courseId &&
+                                                course.approved && isLoading
+                                                    ? ''
+                                                    : 'hidden'
+                                            }`}
+                                        >
+                                            <Loading></Loading> 
                                         </div>
                                     </div>
                                 )

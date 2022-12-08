@@ -164,3 +164,18 @@ export interface GetAllMyCoursesResponse {
     total: number
     data: CourseDetail[]
 }
+
+export interface GetMintSignatureResponse {
+    price: string
+    v: number
+    r: string
+    s: string
+    nonce: number
+}
+export interface GetMintSignatureResponse {
+    price: string
+    v: number
+    r: string
+    s: string
+    nonce: number
+}

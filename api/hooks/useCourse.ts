@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { MutationProps } from '../types'
 import { apiCourse } from '../functions/api-course'
 import {
+    GetMintSignatureResponse,
     CreateCourseRequest,
     CreateCourseResponse,
     UpdateCourseRequest,
@@ -132,8 +133,27 @@ export const useCourse = () => {
             },
         })
     }
-
+    const useGetSignatureMint = (
+        courseId: string,
+        { onError, onSuccess }: MutationProps,
+    ) => {
+        return useQuery(
+            ['signature-mint'],
+            () => apiCourse.getMintSignature(courseId),
+            {
+                refetchOnWindowFocus: false,
+                enabled: false,
+                onError: (error) => onError(error),
+                onSuccess: async (response: GetCourseDetailResponse) => {
+                    if (response) {
+                        onSuccess(response)
+                    }
+                },
+            },
+        )
+    }
     return {
+        useGetSignatureMint,
         useUploadSingleFile,
         useCreateCourse,
         useUpdateCourse,

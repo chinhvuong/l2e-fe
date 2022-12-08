@@ -40,14 +40,13 @@ export default function Sidebar() {
             style={scrollY > 500 ? { right: rightMargin } : {}}
         >
             <VideoPreview
-                // thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
-                thumbnail="https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg"
+                thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
                 className={`${scrollY > 500 ? 'hidden' : ''}`}
                 textSize="small"
             />
             <div className="space-y-4 mt-4">
                 <div className="mx-7">
-                    <PriceEnrollShare price={data.price} />
+                    <PriceEnrollShare price={data.price} courseId = {1} />
                     <IncludeList data={data.include} />
                 </div>
                 <Divider />
