@@ -36,6 +36,12 @@ export const apiCourse = {
         payload: UpdateCourseRequest,
     ): Promise<UpdateCourseResponse> =>
         callAPI('put', apiPath.UPDATE_COURSE + payload._id, payload),
+    getMyCourseDetail: (courseId: string): Promise<GetCourseDetailResponse> =>
+        callAPI(
+            'get',
+            apiPath.GET_MY_COURSE_DETAIL + courseId + '?id=' + courseId,
+            {},
+        ),
     getCourseDetail: (courseId: string): Promise<GetCourseDetailResponse> =>
         callAPI(
             'get',

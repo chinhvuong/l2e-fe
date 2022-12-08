@@ -3,34 +3,6 @@ import { CourseDetail, CourseDetailState } from './types'
 import { dataRatings } from '@/data/ratings'
 
 const initialState: CourseDetailState = {
-    // courseDetail: {
-    //     _id: '',
-    //     owner: '',
-    //     author: '',
-    //     name: '',
-    //     overview: '',
-    //     description: '',
-    //     price: 0,
-    //     rating: null,
-    //     reviews: null,
-    //     students: null,
-    //     language: '',
-    //     requirements: [],
-    //     goals: [],
-    //     thumbnail: null,
-    //     include: {
-    //         duration: '',
-    //         resource: '',
-    //         assignments: '',
-    //         certificate: '',
-    //         lifetimeAccess: '',
-    //         device: '',
-    //         articles: '',
-    //         exercise: '',
-    //     },
-    //     category: '',
-    //     updatedAt: '',
-    // },
     courseDetail: {
         include: {
             duration: '65 hours on-demand video',
@@ -44,7 +16,6 @@ const initialState: CourseDetailState = {
         },
         _id: '635761a7464c91f76922339f',
         owner: '0x6AB0Cc7184F27b7ABbA97de7d23B26665a4f7d5C',
-        author: '0x9f6A4b91Ed1d6cAF84a35b93790123d81c3ec0CB',
         name: '100 Days of Code: The Complete Python Pro Bootcamp for 2022',
         overview:
             'Become a Full-Stack Web Developer with just ONE course. HTML, CSS, Javascript, Node, React, MongoDB, Web3 and DApps',
@@ -80,6 +51,19 @@ const initialState: CourseDetailState = {
         __v: 0,
         students: 0,
         courseId: 1,
+        author: {
+            _id: '6379136f9212c6d10a1d7f0b',
+            __v: 0,
+            avatar: null,
+            bio: null,
+            createdAt: '2022-11-19T17:33:35.190Z',
+            name: null,
+            nonce: 0,
+            rating: 0,
+            title: null,
+            updatedAt: '2022-11-30T14:52:04.358Z',
+            walletAddress: '0x9f6A4b91Ed1d6cAF84a35b93790123d81c3ec0CB',
+        },
     },
     reviews: dataRatings,
     isNewData: false,

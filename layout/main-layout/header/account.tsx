@@ -6,6 +6,9 @@ import {
     faUser,
     faGear,
     faRightFromBracket,
+    faWallet,
+    faGraduationCap,
+    faChalkboardTeacher,
 } from '@fortawesome/free-solid-svg-icons'
 import { WalletAccount } from '@/wallet/ui'
 import { useAppDispatch, useAppSelector } from '@/hooks'
@@ -22,12 +25,12 @@ const Account = (props: any) => {
     const loginState = useAppSelector(getLoginState)
     const dispatch = useAppDispatch()
 
-    const goToHomePage = () => {
-        Router.push('/')
+    const goToLearnerPage = () => {
+        Router.push('/learner')
     }
 
-    const goToAboutUsPage = () => {
-        Router.push('/about-us')
+    const goToInstructorPage = () => {
+        Router.push('/instructor')
     }
 
     const logOut = async () => {
@@ -43,15 +46,11 @@ const Account = (props: any) => {
                     !props.darkTheme ? 'text-black' : 'text-white'
                 }`}
             />
-            <div className="ml-8 relative">
-                {/* <img
-                                src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
-                                alt=""
-                                className="rounded-full h-[35px] w-[35px] mx-[35px] cursor-pointer"
-                                onMouseEnter={() => setHoverUser(true)}
-                                onMouseLeave={() => setHoverUser(false)}
-                            /> */}
-                <WalletAccount
+            <div className="relative">
+                <img
+                    src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
+                    alt=""
+                    className="rounded-full h-[35px] w-[35px] mx-[35px] cursor-pointer"
                     onMouseEnter={() => setHoverUser(true)}
                     onMouseLeave={() => setHoverUser(false)}
                 />
@@ -78,6 +77,26 @@ const Account = (props: any) => {
                         </div>
                         <div
                             className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
+                            onClick={() => goToLearnerPage()}
+                        >
+                            <FontAwesomeIcon
+                                icon={faGraduationCap}
+                                className="w-[16px]"
+                            />
+                            <div>Learner</div>
+                        </div>
+                        <div
+                            className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
+                            onClick={() => goToInstructorPage()}
+                        >
+                            <FontAwesomeIcon
+                                icon={faChalkboardTeacher}
+                                className="w-[16px]"
+                            />
+                            <div>Instructor</div>
+                        </div>
+                        <div
+                            className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
                             // onClick={() => onSelectRating(item)}
                         >
                             <FontAwesomeIcon
@@ -99,11 +118,12 @@ const Account = (props: any) => {
                     </div>
                 </div>
             </div>
-            {/* <FontAwesomeIcon
-                            icon={faWallet}
-                            className={`text-[25px] cursor-pointer ${!props.darkTheme ? 'text-black' : 'text-white'
-                                }`}
-                        /> */}
+            <FontAwesomeIcon
+                icon={faWallet}
+                className={`text-[25px] cursor-pointer ${
+                    !props.darkTheme ? 'text-black' : 'text-white'
+                }`}
+            />
         </div>
     )
 }

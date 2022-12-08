@@ -82,13 +82,13 @@ export const useCourse = () => {
         })
     }
 
-    const useGetCourseDetail = (
+    const useGetMyCourseDetail = (
         courseId: string,
         { onError, onSuccess }: MutationProps,
     ) => {
         return useQuery(
             ['course-detail'],
-            () => apiCourse.getCourseDetail(courseId),
+            () => apiCourse.getMyCourseDetail(courseId),
             {
                 refetchOnWindowFocus: false,
                 enabled: false,
@@ -102,13 +102,13 @@ export const useCourse = () => {
         )
     }
 
-    const useGetSignatureMint = (
+    const useGetCourseDetail = (
         courseId: string,
         { onError, onSuccess }: MutationProps,
     ) => {
         return useQuery(
-            ['signature-mint'],
-            () => apiCourse.getMintSignature(courseId),
+            ['course-detail'],
+            () => apiCourse.getCourseDetail(courseId),
             {
                 refetchOnWindowFocus: false,
                 enabled: false,
@@ -133,7 +133,25 @@ export const useCourse = () => {
             },
         })
     }
-
+    const useGetSignatureMint = (
+        courseId: string,
+        { onError, onSuccess }: MutationProps,
+    ) => {
+        return useQuery(
+            ['signature-mint'],
+            () => apiCourse.getMintSignature(courseId),
+            {
+                refetchOnWindowFocus: false,
+                enabled: false,
+                onError: (error) => onError(error),
+                onSuccess: async (response: GetCourseDetailResponse) => {
+                    if (response) {
+                        onSuccess(response)
+                    }
+                },
+            },
+        )
+    }
     return {
         useGetSignatureMint,
         useUploadSingleFile,
@@ -141,6 +159,7 @@ export const useCourse = () => {
         useUpdateCourse,
         useGetAllCourses,
         useGetAllMyCourses,
+        useGetMyCourseDetail,
         useGetCourseDetail,
         useGetCategory,
     }

@@ -25,6 +25,7 @@ export const getCourseOverviewInfo = (state: RootState) => {
         language: state.courseDetail.courseDetail.language,
         thumbnail: state.courseDetail.courseDetail.thumbnail,
         updatedAt: state.courseDetail.courseDetail.updatedAt,
+        author: state.courseDetail.courseDetail.author,
     }
 }
 
@@ -64,7 +65,7 @@ export const getCourseIncludeList = (state: RootState) => {
     return state.courseDetail.courseDetail.include
 }
 
-export const getCourseDetail = (state: RootState) => {
+export const getMyCourseDetail = (state: RootState) => {
     return state.courseDetail.courseDetail
 }
 

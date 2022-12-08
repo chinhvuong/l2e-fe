@@ -1,7 +1,7 @@
 import { CourseDetail } from '@/constants/interfaces'
 
 export const dataCourses_detail: CourseDetail = {
-    _id: 1,
+    _id: '1',
     owner: 'Theresa Webb',
     name: 'The Complete 2022 Web Development Bootcamp The Complete 2022 Web Development Bootcamp',
     overview:

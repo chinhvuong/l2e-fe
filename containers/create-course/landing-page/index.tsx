@@ -6,7 +6,10 @@ import UploadPreview from '@/components/core/upload-preview'
 import Title from '../components/title'
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { getCourseDetail, getCourseDetailState } from '@/store/course/selectors'
+import {
+    getMyCourseDetail,
+    getCourseDetailState,
+} from '@/store/course/selectors'
 import {
     updateCourseLanguage,
     updateCourseName,
@@ -24,7 +27,7 @@ export default function LandingPageContainer() {
     const languageList = { en: 'English', vi: 'Vietnamese' }
 
     const dispatch = useAppDispatch()
-    const courseDetail = useAppSelector(getCourseDetail)
+    const courseDetail = useAppSelector(getMyCourseDetail)
     const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
 
@@ -64,16 +67,16 @@ export default function LandingPageContainer() {
             //     courseDetail.thumbnail ?? '/images/placeholder.jpeg',
             // )
         }
-        if (courseDetail._id !== '') {
+        if (courseDetail._id !== '' && isNewCourseDetail) {
             setIsLoading(false)
         }
     }, [isNewCourseDetail])
 
-    const handleTitleChange = (value: string) => {
+    const handleTitleChange = ({ value }: HTMLInputElement) => {
         setTitle(value)
         dispatch(updateCourseName(value))
     }
-    const handleSubtitleChange = (value: string) => {
+    const handleSubtitleChange = ({ value }: HTMLInputElement) => {
         setSubtitle(value)
         dispatch(updateCourseOverview(value))
     }
@@ -81,7 +84,7 @@ export default function LandingPageContainer() {
         setLanguage(value)
         dispatch(updateCourseLanguage(value))
     }
-    const handlePriceChange = (value: string) => {
+    const handlePriceChange = ({ value }: HTMLInputElement) => {
         setPrice(value)
         dispatch(updateCoursePrice(parseInt(value)))
     }

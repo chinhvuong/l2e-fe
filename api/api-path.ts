@@ -7,7 +7,8 @@ export enum apiPath {
     GET_ALL_MY_COURSES = '/course/manage/own-courses',
     CREATE_COURSE = '/course',
     UPDATE_COURSE = '/course/',
-    GET_COURSE_DETAIL = '/course/manage/own-courses/',
+    GET_MY_COURSE_DETAIL = '/course/manage/own-courses/',
     GET_CATEGORY = '/category',
     GET_MINT_SIGNATURE = '/course/request-mint-signature',
+    GET_COURSE_DETAIL = '/course/preview/',
 }

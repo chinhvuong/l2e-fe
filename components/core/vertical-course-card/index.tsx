@@ -36,7 +36,10 @@ export default function VerticalCourseCard(props: IVerticalCourseCardProps) {
             <div className="font-bold">{props.data.price}</div>
             <div className="flex gap-x-2">
                 {/* <Label name="Bestseller" hidden={!props.data.isBestseller} /> */}
-                <Label name={props.data.category.name} />
+                <Label
+                    name={props.data.category.name}
+                    color={props.data.category.color}
+                />
             </div>
         </div>
     )

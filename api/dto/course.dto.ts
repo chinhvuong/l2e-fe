@@ -168,7 +168,14 @@ export interface GetAllMyCoursesResponse {
 export interface GetMintSignatureResponse {
     price: string
     v: number
-    r : string
-    s : string
-    nonce : number
+    r: string
+    s: string
+    nonce: number
+}
+export interface GetMintSignatureResponse {
+    price: string
+    v: number
+    r: string
+    s: string
+    nonce: number
 }
