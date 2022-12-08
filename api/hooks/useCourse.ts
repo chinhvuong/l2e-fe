@@ -12,6 +12,7 @@ import {
     CoursePreview,
     GetAllCoursesResponse,
     GetAllMyCoursesResponse,
+    GetAllMyEnrollCoursesResponse,
 } from '../dto/course.dto'
 
 export const useCourse = () => {
@@ -80,6 +81,25 @@ export const useCourse = () => {
                 }
             },
         })
+    }
+
+    const useGetAllMyEnrollCourses = ({
+        onError,
+        onSuccess,
+    }: MutationProps) => {
+        return useQuery(
+            ['all-my-enroll-courses'],
+            apiCourse.getAllMyEnrollCourse,
+            {
+                refetchOnWindowFocus: false,
+                onError: (error) => onError(error),
+                onSuccess: async (response: GetAllMyEnrollCoursesResponse) => {
+                    if (response) {
+                        onSuccess(response)
+                    }
+                },
+            },
+        )
     }
 
     const useGetMyCourseDetail = (
@@ -159,6 +179,7 @@ export const useCourse = () => {
         useUpdateCourse,
         useGetAllCourses,
         useGetAllMyCourses,
+        useGetAllMyEnrollCourses,
         useGetMyCourseDetail,
         useGetCourseDetail,
         useGetCategory,

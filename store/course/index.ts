@@ -103,40 +103,7 @@ export const courseDetailSlice = createSlice({
             state.courseDetail.requirements = [...action.payload]
         },
         updateCourseDetail(state, action: PayloadAction<CourseDetail>) {
-            state.courseDetail._id = action.payload._id
-            state.courseDetail.owner = action.payload.owner
-            state.courseDetail.author = action.payload.author
-            state.courseDetail.name = action.payload.name
-            state.courseDetail.overview = action.payload.overview
-            state.courseDetail.description = action.payload.description
-            state.courseDetail.price = action.payload.price
-            state.courseDetail.rating = action.payload.rating
-            state.courseDetail.reviews = action.payload.reviews
-            state.courseDetail.students = action.payload.students
-            state.courseDetail.language = action.payload.language
-            state.courseDetail.requirements = action.payload.requirements
-            state.courseDetail.goals = action.payload.goals
-            state.courseDetail.thumbnail = action.payload.thumbnail
-            if (action.payload.include) {
-                state.courseDetail.include.duration =
-                    action.payload.include.duration
-                state.courseDetail.include.resource =
-                    action.payload.include.resource
-                state.courseDetail.include.assignments =
-                    action.payload.include.assignments
-                state.courseDetail.include.certificate =
-                    action.payload.include.certificate
-                state.courseDetail.include.lifetimeAccess =
-                    action.payload.include.lifetimeAccess
-                state.courseDetail.include.device =
-                    action.payload.include.device
-                state.courseDetail.include.articles =
-                    action.payload.include.articles
-                state.courseDetail.include.exercise =
-                    action.payload.include.exercise
-            }
-            state.courseDetail.category = action.payload.category
-            state.courseDetail.updatedAt = action.payload.updatedAt
+            state.courseDetail = { ...action.payload }
         },
         updateGetCourseDetailState(state, action: PayloadAction<boolean>) {
             state.isNewData = action.payload
