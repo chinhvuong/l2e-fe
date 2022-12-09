@@ -8,15 +8,20 @@ import Sidebar from '../components/sidebar'
 import { getCourseOverviewInfo } from '@/store/course/selectors'
 import VideoPreview from '@/components/core/video-preview'
 import PriceEnrollShare from '../components/price-enroll-share'
-import { useAppSelector } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { CATEGORY } from '@/constants/localStorage'
 import { Category } from '@/constants/interfaces'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
+import { apiCourse } from '@/api/functions/api-course'
+import { updateEnrollStatus } from '@/store/course'
+import { useSelector } from 'react-redux'
+import { getLoginState } from '@/store/user/selectors'
 
 export default function CourseInfo() {
     const data = useAppSelector(getCourseOverviewInfo)
     const [category, setCategory] = useState<Category | null>(null)
-
+    const loginState = useSelector(getLoginState)
+    const dispatch = useAppDispatch()
     const breadcrumb = [
         {
             text: 'Home',
@@ -27,6 +32,21 @@ export default function CourseInfo() {
             href: '/about-us',
         },
     ]
+    useEffect(() => {
+        const f = async () => {
+            try {
+                const isEnr = await apiCourse.checkEnroll(data._id)
+                dispatch(updateEnrollStatus(isEnr.enroll))
+            } catch (error) {
+                console.log("🚀 ~ file: index.tsx:41 ~ f ~ error", error)
+
+            }
+        }
+        f()
+    }, [
+        loginState,
+        data._id
+    ])
 
     const getLastUpdated = () => {
         return `Last updated ${new Date(data.updatedAt).getMonth()}/${new Date(
@@ -84,19 +104,19 @@ export default function CourseInfo() {
                             </div>
                             {(data.reviews !== null ||
                                 data.students !== null) && (
-                                <div className="flex items-center space-x-4 my-2">
-                                    {data.reviews !== null && (
-                                        <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                                            {`(${data.reviews} ratings)`}
-                                        </div>
-                                    )}
-                                    {data.students !== null && (
-                                        <div className="text-[14px] font-light">
-                                            {`${data.students} students`}
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                                    <div className="flex items-center space-x-4 my-2">
+                                        {data.reviews !== null && (
+                                            <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
+                                                {`(${data.reviews} ratings)`}
+                                            </div>
+                                        )}
+                                        {data.students !== null && (
+                                            <div className="text-[14px] font-light">
+                                                {`${data.students} students`}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                         </div>
                         <div className="text-[14px] font-light">
                             Created by{' '}
@@ -117,10 +137,13 @@ export default function CourseInfo() {
                                 <div>{data.language}</div>
                             </div>
                         </div>
-                        <PriceEnrollShare
+                        {/* <PriceEnrollShare
                             price={data.price}
                             className="2xl:hidden"
-                        />
+                            _id={data._id}
+                            courseId={data.courseId}
+
+                        /> */}
                     </div>
                 </div>
                 <Sidebar />

@@ -49,6 +49,12 @@ export const apiCourse = {
             apiPath.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
             {},
         ),
+    checkEnroll: (courseId: string): Promise<{ enroll: boolean }> =>
+        callAPI(
+            'get',
+            apiPath.CHECK_ENROLL + courseId,
+            {},
+        ),
     getAllCourses: (): Promise<GetAllCoursesResponse> =>
         callAPI('get', apiPath.GET_ALL_COURSES, {}),
     getAllMyCourse: (): Promise<GetAllMyCoursesResponse> =>
@@ -59,4 +65,7 @@ export const apiCourse = {
         callAPI('get', apiPath.GET_CATEGORY, {}),
     getMintSignature: (courseId: string): Promise<GetMintSignatureResponse> =>
         callAPI('get', apiPath.GET_MINT_SIGNATURE + '?id=' + courseId, {}),
+
+    requestApprove: (data: { id: string, notes: string[] }): Promise<{ success: boolean }> =>
+        callAPI('post', apiPath.REQUEST_APPROVE, data),
 }

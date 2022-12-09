@@ -1,11 +1,13 @@
 import * as React from 'react'
 
-export interface ILoadingProps {}
+export interface ILoadingProps {
+    className?: string
+}
 
 export default function Loading(props: ILoadingProps) {
     return (
         <svg
-            className="animate-spin h-5 w-5 text-primary"
+            className={`animate-spin h-5 w-5 text-primary ${props.className}`}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"

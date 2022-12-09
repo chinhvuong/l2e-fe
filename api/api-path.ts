@@ -12,4 +12,6 @@ export enum apiPath {
     GET_CATEGORY = '/category',
     GET_MINT_SIGNATURE = '/course/request-mint-signature',
     GET_COURSE_DETAIL = '/course/preview/',
+    CHECK_ENROLL = '/course/check-enroll/',
+    REQUEST_APPROVE = '/course/manage/own-courses/send-approve-request'
 }

@@ -32,21 +32,20 @@ export default function Sidebar() {
 
     return (
         <div
-            className={`under_2xl:hidden bg-white z-20 right-[30px] w-[320px] drop-shadow-xl ${
-                scrollY <= 500
-                    ? 'absolute h-[860px]'
-                    : `fixed top-[20px] h-[690px]`
-            }`}
+            className={`under_2xl:hidden bg-white z-20 right-[30px] w-[320px] drop-shadow-xl ${scrollY <= 500
+                ? 'absolute h-[860px]'
+                : `fixed top-[20px] h-[690px]`
+                }`}
             style={scrollY > 500 ? { right: rightMargin } : {}}
         >
             <VideoPreview
-                thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
+                thumbnail={data.thumbnail || '/images/placeholder.jpeg'}
                 className={`${scrollY > 500 ? 'hidden' : ''}`}
                 textSize="small"
             />
             <div className="space-y-4 mt-4">
                 <div className="mx-7">
-                    <PriceEnrollShare price={data.price} courseId = {1} />
+                    <PriceEnrollShare price={data.price} courseId={data.courseId} _id={data._id} />
                     <IncludeList data={data.include} />
                 </div>
                 <Divider />

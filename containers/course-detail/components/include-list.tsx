@@ -26,6 +26,7 @@ export interface IIncludeListProps {
 }
 
 export default function IncludeList(props: IIncludeListProps) {
+    
     return (
         <div className={`space-y-3 ${props.className}`}>
             <span className="font-bold">This course includes:</span>
@@ -53,14 +54,14 @@ export default function IncludeList(props: IIncludeListProps) {
                     <FontAwesomeIcon icon={faAward} className="text-[20px]" />
                 </div>
                 <div className="flex flex-col space-y-2">
-                    <span>{props.data.duration}</span>
-                    <span>{props.data.articles}</span>
-                    <span>{props.data.resource}</span>
-                    <span>{props.data.exercise}</span>
-                    <span>{props.data.lifetimeAccess}</span>
-                    <span>{props.data.device}</span>
-                    <span>{props.data.assignments}</span>
-                    <span>{props.data.certificate}</span>
+                    <span>{props?.data?.duration}</span>
+                    <span>{props?.data?.articles}</span>
+                    <span>{props?.data?.resource}</span>
+                    <span>{props?.data?.exercise}</span>
+                    <span>{props?.data?.lifetimeAccess}</span>
+                    <span>{props?.data?.device}</span>
+                    <span>{props?.data?.assignments}</span>
+                    <span>{props?.data?.certificate}</span>
                 </div>
             </div>
         </div>
