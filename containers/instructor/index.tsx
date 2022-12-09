@@ -9,6 +9,7 @@ import { useAccount, useSigner } from 'wagmi'
 import { CoursePreview, GetMintSignatureResponse } from '@/api/dto/course.dto'
 import { useCourse } from '@/api/hooks/useCourse'
 import { createCourse } from '@/hooks/coursedex'
+import MyCourseCard from './my-course-card'
 
 export default function InstructorContainer() {
     const [isLoading, setIsLoading] = useState(false)
@@ -26,26 +27,19 @@ export default function InstructorContainer() {
         onError: () => {},
         onSuccess: (response) => {
             setAllMyCourses(response.data)
+            setIsLoading(false)
         },
     })
-    const { address, isConnected } = useAccount()
+    // const { address, isConnected } = useAccount()
     const { data: signer } = useSigner({
         chainId: goerli.id,
     })
     const mintCourse = async (id: string) => {
         setCourseId(id)
     }
-    const approve = async (id: string) => {
-        await axios.post(
-            'https://l2e-be-v1.herokuapp.com/course/manage/own-courses/send-approve-request',
-            {
-                id: id,
-                notes: [''],
-            },
-        )
-    }
+
     useEffect(() => {
-        ;(async () => {
+        ; (async () => {
             if (courseId) {
                 refetch()
                 if (requireinfo) {
@@ -71,72 +65,27 @@ export default function InstructorContainer() {
                     </Button>
                 </div>
             </div>
-            <div className="flex justify-center mt-6">
-                {allMyCourses.length === 0 ? (
+            <div className="">
+                {isLoading ? (
                     <div className="flex justify-center items-center h-20">
                         <Loading />
                     </div>
                 ) : (
-                    <div className="flex justify-center">
-                        <div className="space-y-8">
-                            {allMyCourses.map((course) => {
-                                return (
-                                    <div
-                                        key={course._id}
-                                        className="flex items-center"
-                                    >
-                                        <HorizontalCourseCard
-                                            key={course._id}
-                                            data={course}
-                                        />
-                                        <div
-                                            className={`flex justify-center text-white pr-14 ${
-                                                !course?.courseId &&
-                                                course.approved &&
-                                                !isLoading
-                                                    ? ''
-                                                    : 'hidden'
-                                            }`}
-                                        >
-                                            <Button
-                                                onClick={() =>
-                                                    mintCourse(course._id)
-                                                }
-                                            >
-                                                Mint course
-                                            </Button>
-                                        </div>
-                                        <div
-                                            className={`flex justify-center text-white pr-14 ${
-                                                !course?.courseId &&
-                                                !course.approved
-                                                    ? ''
-                                                    : 'hidden'
-                                            }`}
-                                        >
-                                            <Button
-                                                onClick={() =>
-                                                    approve(course._id)
-                                                }
-                                            >
-                                                Request Approve
-                                            </Button>
-                                        </div>
-                                        <div
-                                            className={`flex justify-center text-white ${
-                                                !course?.courseId &&
-                                                course.approved &&
-                                                isLoading
-                                                    ? ''
-                                                    : 'hidden'
-                                            }`}
-                                        >
-                                            <Loading></Loading>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
+                    <div className=' pt-4'>
+                        {
+                            allMyCourses.length <= 0 ? (
+                                <div className='text-stone-400'>You don't have any courses yet!</div>
+                            ) : (
+                                <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+
+                                    {allMyCourses.map((course) => {
+                                        return (
+                                            <MyCourseCard course={course} />
+                                        )
+                                    })}
+                                </div>
+                            )
+                        }
                     </div>
                 )}
             </div>

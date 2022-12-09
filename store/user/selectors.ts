@@ -7,3 +7,8 @@ export const getInstructorInfo = (state: RootState) => {
 export const getLoginState = (state: RootState) => {
     return state.user.isLogin
 }
+
+
+export const getAssetState = (state: RootState) => {
+    return state.user.asset
+}

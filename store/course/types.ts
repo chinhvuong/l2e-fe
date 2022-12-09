@@ -48,7 +48,8 @@ export interface CourseDetail {
 export type CourseDetailState = {
     courseDetail: CourseDetail
     reviews: Rating[]
-    isNewData: boolean
+    isNewData: boolean,
+    isEnroll: boolean
 }
 
 export type TInputUpdate = {

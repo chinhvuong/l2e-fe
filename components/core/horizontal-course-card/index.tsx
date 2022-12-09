@@ -3,6 +3,7 @@ import Label from '@/components/core/label'
 import RatingStar from '../rating-star'
 import Router from 'next/router'
 import { CoursePreview } from '@/api/dto/course.dto'
+import course from '@/store/course'
 
 export interface IHorizontalCourseCardProps {
     data: CoursePreview
@@ -13,7 +14,7 @@ export default function HorizontalCourseCard(
     props: IHorizontalCourseCardProps,
 ) {
     const viewCourseDetail = () => {
-        Router.push('/course/1')
+        Router.push(`/course/${props.data._id}`)
     }
     return (
         <div
