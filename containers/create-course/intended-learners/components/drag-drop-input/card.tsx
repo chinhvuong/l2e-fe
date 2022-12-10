@@ -11,6 +11,11 @@ import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { TInput } from '@/store/course/intended-learners/types'
 import { TInputUpdate } from '@/store/course/types'
 import { RootState } from '@/store'
+import {
+    updateIntendedLearnersState,
+    updateRequirementsState,
+    updateWhatYouWillLearnState,
+} from '@/store/course/intended-learners'
 
 export interface CardProps {
     id: string
@@ -45,7 +50,7 @@ export const Card: FC<CardProps> = ({
 }) => {
     const ref = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
-    const whatYouWillLearn = useAppSelector(getCards)
+    const cardContent = useAppSelector(getCards)
 
     const [{ handlerId }, drop] = useDrop<
         DragItem,
@@ -123,8 +128,16 @@ export const Card: FC<CardProps> = ({
     drag(drop(ref))
 
     const handleDeleteCard = (id: number) => {
-        if (whatYouWillLearn.length > defaultInputBlock) {
+        if (cardContent.length > defaultInputBlock) {
+            console.log('handleDeleteCard', id)
             dispatch(deleteCard(id))
+            if (name === 'What you will learn') {
+                dispatch(updateWhatYouWillLearnState(true))
+            } else if (name === 'Requirements') {
+                dispatch(updateRequirementsState(true))
+            } else if (name === 'Intended learners') {
+                dispatch(updateIntendedLearnersState(true))
+            }
         }
     }
 
@@ -140,13 +153,13 @@ export const Card: FC<CardProps> = ({
                     defaultValue={defaultValue}
                 />
             </div>
-            {whatYouWillLearn[index].content !== '' ? (
+            {cardContent[index]?.content !== '' ? (
                 <div className="flex space-x-3 items-center">
                     <div>
                         <FontAwesomeIcon
                             icon={faTrash}
                             className={`text-lg bg-red-500 text-white rounded-full py-[10px] px-[11px] ${
-                                whatYouWillLearn.length > defaultInputBlock
+                                cardContent.length > defaultInputBlock
                                     ? 'cursor-pointer'
                                     : 'cursor-not-allowed'
                             }`}

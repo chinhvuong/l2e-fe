@@ -16,7 +16,7 @@ export interface ISectionProps {
     updateOrderItems: ActionCreatorWithPayload<string[], string>
     deleteItem: ActionCreatorWithPayload<number, string>
     getItems: (state: RootState) => CurriculumSection[]
-    getItemName: (id: string) => (state: RootState) => string
+    getItemDetail: (id: string) => (state: RootState) => CurriculumSection
 }
 
 export default function Section({
@@ -25,7 +25,7 @@ export default function Section({
     updateOrderItems,
     deleteItem,
     getItems,
-    getItemName,
+    getItemDetail,
 }: ISectionProps) {
     return (
         <DndProvider backend={HTML5Backend}>
@@ -35,7 +35,7 @@ export default function Section({
                 updateOrderItems={updateOrderItems}
                 deleteItem={deleteItem}
                 getItems={getItems}
-                getItemName={getItemName}
+                getItemDetail={getItemDetail}
             />
         </DndProvider>
     )

@@ -39,7 +39,7 @@ export default function InstructorContainer() {
     }
 
     useEffect(() => {
-        ; (async () => {
+        ;(async () => {
             if (courseId) {
                 refetch()
                 if (requireinfo) {
@@ -71,21 +71,23 @@ export default function InstructorContainer() {
                         <Loading />
                     </div>
                 ) : (
-                    <div className=' pt-4'>
-                        {
-                            allMyCourses.length <= 0 ? (
-                                <div className='text-stone-400'>You don't have any courses yet!</div>
-                            ) : (
-                                <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-
-                                    {allMyCourses.map((course) => {
-                                        return (
-                                            <MyCourseCard course={course} />
-                                        )
-                                    })}
-                                </div>
-                            )
-                        }
+                    <div className=" pt-4">
+                        {allMyCourses.length <= 0 ? (
+                            <div className="text-stone-400">
+                                {`You don't have any courses yet!`}
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+                                {allMyCourses.map((course, index) => {
+                                    return (
+                                        <MyCourseCard
+                                            key={index}
+                                            course={course}
+                                        />
+                                    )
+                                })}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

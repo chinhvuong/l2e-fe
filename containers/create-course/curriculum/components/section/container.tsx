@@ -12,7 +12,7 @@ export const Container = ({
     updateOrderItems,
     deleteItem,
     getItems,
-    getItemName,
+    getItemDetail,
 }: ISectionProps) => {
     const cardsFromStore = useAppSelector(getItems)
     const [cards, setCards] = useState(cardsFromStore)
@@ -63,7 +63,7 @@ export const Container = ({
                 updateCard={updateItem}
                 deleteCard={deleteItem}
                 getCards={getItems}
-                getCardName={getItemName}
+                getCardDetail={getItemDetail}
             />
         )
     }, [])
