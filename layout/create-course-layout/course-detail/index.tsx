@@ -1,6 +1,11 @@
 import Button from '@/components/core/button'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import Footer from '@/layout/components/footer'
-import React, { ReactChild } from 'react'
+import { updateSaveCourseState } from '@/store/course'
+import { getSaveCourseState } from '@/store/course/selectors'
+import React, { ReactChild, useEffect } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Header from './header'
 import Sidebar from './sidebar'
 
@@ -9,6 +14,22 @@ export default function CreateCourseLayout({
 }: {
     children: ReactChild
 }) {
+    const isSaved = useAppSelector(getSaveCourseState)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        if (isSaved) {
+            toast.success('Cập nhật khóa học thành công!', {
+                position: 'top-center',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                progress: undefined,
+                theme: 'light',
+            })
+            dispatch(updateSaveCourseState(false))
+        }
+    }, [isSaved])
+
     return (
         <div>
             <Header />
@@ -18,6 +39,7 @@ export default function CreateCourseLayout({
                     id="content"
                 >
                     <div className="flex pt-[120px] w-[1200px] space-x-7">
+                        <ToastContainer />
                         <Sidebar />
                         <div className="w-full h-full bg-white border shadow-xl">
                             {children}

@@ -19,6 +19,7 @@ export default function MainContent() {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [uploadedFileURL, setUploadedFileURL] = useState<string | null>(null)
     const [uploadedVideoDuration, setUploadedVideoDuration] = useState('')
+    const [article, setArticle] = useState<string>('')
 
     useEffect(() => {
         if (uploadedFileURL) {
@@ -71,6 +72,10 @@ export default function MainContent() {
                 // uploadFile(formData)
             }
         }
+    }
+
+    const handleUpdateArticle = (value: string) => {
+        setArticle(value)
     }
 
     const getContent = () => {
@@ -162,7 +167,10 @@ export default function MainContent() {
         if (contentType === 'article') {
             return (
                 <div className="space-y-3 px-10 py-5 border-t border-black">
-                    <RichTextEditor label="Article" />
+                    <RichTextEditor
+                        label="Article"
+                        updateState={handleUpdateArticle}
+                    />
                     <div className="flex space-x-3 justify-end items-center">
                         <Button>
                             <div>Save</div>
