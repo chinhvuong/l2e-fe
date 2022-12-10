@@ -4,8 +4,6 @@ import {
     addWhatYouWillLearn,
     deleteRequirements,
     deleteWhatYouWillLearn,
-    updateOrderRequirements,
-    updateOrderWhatYouWillLearn,
     updateRequirements,
     updateWhatYouWillLearn,
 } from '@/store/course/intended-learners'
@@ -74,7 +72,6 @@ export default function IntendedLearnersContainer() {
                         addItem={addWhatYouWillLearn}
                         updateItem={updateWhatYouWillLearn}
                         updateItemToPayload={updateCourseGoals}
-                        updateOrderItems={updateOrderWhatYouWillLearn}
                         deleteItem={deleteWhatYouWillLearn}
                         getItems={getWhatYouWillLearnForm}
                         getUpdateState={getWhatYouWillLearnState}
@@ -91,7 +88,6 @@ export default function IntendedLearnersContainer() {
                         addItem={addRequirements}
                         updateItem={updateRequirements}
                         updateItemToPayload={updateCourseRequirements}
-                        updateOrderItems={updateOrderRequirements}
                         deleteItem={deleteRequirements}
                         getItems={getRequirementsForm}
                         getUpdateState={getRequirementsState}
@@ -109,7 +105,6 @@ export default function IntendedLearnersContainer() {
                         name="Intended learners"
                         addItem={addIntendedLearners}
                         updateItem={updateIntendedLearners}
-                        updateOrderItems={updateOrderIntendedLearners}
                         deleteItem={deleteIntendedLearners}
                         getItems={getIntendedLearnersForm}
                         getUpdateState={getIntendedLearnersState}

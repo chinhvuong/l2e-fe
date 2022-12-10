@@ -82,29 +82,34 @@ const HomePageContainer = () => {
                         </div>
                     ) : (
                         <div>
-                            <div className="flex justify-center mt-12 mb-4">
-                                <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
-                                    <div className="font-bold text-[30px]">
-                                        Popular courses
-                                    </div>
-                                </div>
-                            </div>
                             {data.data.length < 5 ? (
-                                <div className="flex justify-center">
-                                    {data.data.map((item, index) => (
-                                        <div className="w-[300px]" key={index}>
-                                            <VerticalCourseCard
-                                                key={item._id}
-                                                data={item}
-                                                className="mx-[8px]"
-                                            />
+                                <>
+                                    <div className="flex justify-center mt-12 mb-4">
+                                        <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
+                                            <div className="font-bold text-[30px]">
+                                                Popular courses
+                                            </div>
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        {data.data.map((item, index) => (
+                                            <div
+                                                className="w-[300px]"
+                                                key={index}
+                                            >
+                                                <VerticalCourseCard
+                                                    key={item._id}
+                                                    data={item}
+                                                    className="mx-[8px]"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
                             ) : (
                                 <CourseListSwiper
                                     data={data.data}
-                                    title="Short and sweet courses for you"
+                                    title="Popular courses"
                                     className="mt-8"
                                 />
                             )}

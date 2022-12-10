@@ -1,9 +1,10 @@
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import {
+    updateOrderRequirements,
+    updateOrderWhatYouWillLearn,
     updateRequirementsState,
     updateWhatYouWillLearnState,
 } from '@/store/course/intended-learners'
-import { getAllIntendedLearners } from '@/store/course/intended-learners/selectors'
 import { TInput } from '@/store/course/intended-learners/types'
 import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
@@ -16,7 +17,6 @@ export const Container = ({
     addItem,
     updateItem,
     updateItemToPayload,
-    updateOrderItems,
     deleteItem,
     getItems,
     getUpdateState,
@@ -24,40 +24,36 @@ export const Container = ({
 }: IDragAndDropInputProps) => {
     const cardsFromStore = useAppSelector(getItems)
     const [cards, setCards] = useState(cardsFromStore)
-    const [cardsOrder, setCardsOrder] = useState(cards.map((item) => item.id))
     const dispatch = useAppDispatch()
     const isUpdate = useAppSelector(getUpdateState)
-    const intendedLearners = useAppSelector(getAllIntendedLearners)
 
     useEffect(() => {
         setCards(cardsFromStore)
     }, [cardsFromStore])
 
     useEffect(() => {
-        isChangeCardsOrder()
-    }, [cards])
-
-    useEffect(() => {
-        dispatch(updateOrderItems(cardsOrder))
-    }, [cardsOrder])
-
-    useEffect(() => {
         if (isUpdate) {
             if (name === 'What you will learn') {
+                console.log(
+                    'What you will learn',
+                    updateItemToPayload,
+                    cardsFromStore.map((item) => item.content),
+                )
                 dispatch(
                     updateItemToPayload(
-                        intendedLearners.whatYouWillLearn.map(
-                            (item) => item.content,
-                        ),
+                        cardsFromStore.map((item) => item.content),
                     ),
                 )
                 dispatch(updateWhatYouWillLearnState(false))
             } else if (name === 'Requirements') {
+                console.log(
+                    'Requirements',
+                    updateItemToPayload,
+                    cardsFromStore.map((item) => item.content),
+                )
                 dispatch(
                     updateItemToPayload(
-                        intendedLearners.requirements.map(
-                            (item) => item.content,
-                        ),
+                        cardsFromStore.map((item) => item.content),
                     ),
                 )
                 dispatch(updateRequirementsState(false))
@@ -72,8 +68,9 @@ export const Container = ({
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
+        let newCards: TInput[] = []
         setCards((prevCards: TInput[]) => {
-            const newCards = [...prevCards]
+            newCards = [...prevCards]
 
             // dragCard is card we are dragging
             const dragCard = newCards[dragIndex]
@@ -85,6 +82,12 @@ export const Container = ({
             newCards.splice(hoverIndex, 0, dragCard)
             return newCards
         })
+        if (name === 'What you will learn') {
+            dispatch(updateOrderWhatYouWillLearn(newCards))
+        } else if (name === 'Requirements') {
+            dispatch(updateOrderRequirements(newCards))
+        }
+        dispatch(updateItemToPayload(newCards.map((item) => item.content)))
     }, [])
 
     const renderCard = useCallback((card: TInput, index: number) => {
@@ -104,21 +107,6 @@ export const Container = ({
             />
         )
     }, [])
-
-    const isChangeCardsOrder = () => {
-        const newOrder = [...cardsOrder]
-        let isChange = false
-        for (let i = 0; i < cards.length; i++) {
-            if (cards[i].id !== cardsFromStore[i].id) {
-                newOrder[i] = cards[i].id
-                isChange = true
-            }
-        }
-        if (isChange) {
-            setCardsOrder(newOrder)
-        }
-        return isChange
-    }
 
     return (
         <>

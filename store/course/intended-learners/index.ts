@@ -7,31 +7,29 @@ const initialState: CourseIntendedLearnersState = {
     whatYouWillLearn: [
         {
             id: uuidv4(),
-            placeholder:
-                'Example: Define the roles and responsibilities of a project manager.',
+            placeholder: 'Insert a learning objective or outcome',
             content: '',
         },
         {
             id: uuidv4(),
-            placeholder: 'Example: Estimate project timelines and budgets.',
+            placeholder: 'Insert a learning objective or outcome',
             content: '',
         },
         {
             id: uuidv4(),
-            placeholder: 'Example: Identify and manage project risks.',
+            placeholder: 'Insert a learning objective or outcome',
             content: '',
         },
         {
             id: uuidv4(),
-            placeholder: 'Example: Complete a case study to manage a project.',
+            placeholder: 'Insert a learning objective or outcome',
             content: '',
         },
     ],
     requirements: [
         {
             id: uuidv4(),
-            placeholder:
-                'Example: No programming experience needed. You will learn everything you need to know.',
+            placeholder: 'Insert a requirement or prerequisite',
             content: '',
         },
     ],
@@ -67,34 +65,34 @@ export const courseIntendedLearnersSlice = createSlice({
             }
         },
         updateAllWhatYouWillLearn(state, action: PayloadAction<string[]>) {
-            // const newList: TInput[] = []
-            // action.payload.forEach((item) => {
-            //     newList.push({
-            //         id: uuidv4(),
-            //         placeholder: '',
-            //         content: item,
-            //     })
-            // })
-            // state.whatYouWillLearn = [...newList]
-
-            state.whatYouWillLearn = action.payload.map((item) => {
-                return {
+            const newList = [
+                ...action.payload.map((item) => {
+                    return {
+                        id: uuidv4(),
+                        placeholder: 'Insert a learning objective or outcome',
+                        content: item,
+                    }
+                }),
+            ]
+            for (let i = 0; i < 4 - newList.length; i++) {
+                newList.push({
                     id: uuidv4(),
-                    placeholder: '',
-                    content: item,
-                }
-            })
-        },
-        updateOrderWhatYouWillLearn(state, action: PayloadAction<string[]>) {
-            const prevState = [...state.whatYouWillLearn]
-            for (let i = 0; i < state.whatYouWillLearn.length; i++) {
-                state.whatYouWillLearn[i] =
-                    prevState.find((item) => {
-                        if (item.id === action.payload[i]) {
-                            return item
-                        }
-                    }) ?? prevState[i]
+                    placeholder: 'Insert a learning objective or outcome',
+                    content: '',
+                })
             }
+            state.whatYouWillLearn = newList
+        },
+        updateOrderWhatYouWillLearn(state, action: PayloadAction<TInput[]>) {
+            const newOrderList: TInput[] = []
+            action.payload.forEach((item) => {
+                state.whatYouWillLearn.forEach((el) => {
+                    if (el.id === item.id) {
+                        newOrderList.push(el)
+                    }
+                })
+            })
+            state.whatYouWillLearn = [...newOrderList]
         },
         deleteWhatYouWillLearn(state, action: PayloadAction<number>) {
             state.whatYouWillLearn.splice(action.payload, 1)
@@ -114,24 +112,27 @@ export const courseIntendedLearnersSlice = createSlice({
             }
         },
         updateAllRequirements(state, action: PayloadAction<string[]>) {
-            state.requirements = action.payload.map((item) => {
-                return {
-                    id: uuidv4(),
-                    placeholder: '',
-                    content: item,
-                }
-            })
+            const newList = [
+                ...action.payload.map((item) => {
+                    return {
+                        id: uuidv4(),
+                        placeholder: 'Insert a requirement or prerequisite',
+                        content: item,
+                    }
+                }),
+            ]
+            state.requirements = newList
         },
-        updateOrderRequirements(state, action: PayloadAction<string[]>) {
-            const prevState = [...state.requirements]
-            for (let i = 0; i < state.requirements.length; i++) {
-                state.requirements[i] =
-                    prevState.find((item) => {
-                        if (item.id === action.payload[i]) {
-                            return item
-                        }
-                    }) ?? prevState[i]
-            }
+        updateOrderRequirements(state, action: PayloadAction<TInput[]>) {
+            const newOrderList: TInput[] = []
+            action.payload.forEach((item) => {
+                state.requirements.forEach((el) => {
+                    if (el.id === item.id) {
+                        newOrderList.push(el)
+                    }
+                })
+            })
+            state.requirements = [...newOrderList]
         },
         deleteRequirements(state, action: PayloadAction<number>) {
             state.requirements.splice(action.payload, 1)

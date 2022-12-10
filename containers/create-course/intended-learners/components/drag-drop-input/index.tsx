@@ -15,7 +15,6 @@ export interface IDragAndDropInputProps {
     addItem: ActionCreatorWithoutPayload<string>
     updateItem: ActionCreatorWithPayload<TInputUpdate, string>
     updateItemToPayload: ActionCreatorWithPayload<string[], string>
-    updateOrderItems: ActionCreatorWithPayload<string[], string>
     deleteItem: ActionCreatorWithPayload<number, string>
     getItems: (state: RootState) => TInput[]
     getUpdateState: (state: RootState) => boolean
@@ -27,7 +26,6 @@ export default function DragAndDropInput({
     addItem,
     updateItem,
     updateItemToPayload,
-    updateOrderItems,
     deleteItem,
     getItems,
     getUpdateState,
@@ -40,7 +38,6 @@ export default function DragAndDropInput({
                 addItem={addItem}
                 updateItem={updateItem}
                 updateItemToPayload={updateItemToPayload}
-                updateOrderItems={updateOrderItems}
                 deleteItem={deleteItem}
                 getItems={getItems}
                 getUpdateState={getUpdateState}
