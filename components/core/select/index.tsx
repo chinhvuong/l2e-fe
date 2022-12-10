@@ -11,6 +11,7 @@ export interface ISelectProps {
     selected: string
     setSelected?: Function
     isLoading?: boolean
+    disabled?: boolean
 }
 
 export default function Select(props: ISelectProps) {
@@ -24,6 +25,12 @@ export default function Select(props: ISelectProps) {
         setSelected(item)
         props.setSelected && props.setSelected(item)
         setOpenSelect(false)
+    }
+
+    const handleOpenSelect = () => {
+        if (!props.disabled) {
+            setOpenSelect(!openSelect)
+        }
     }
 
     useOutsideClick(clickOutSideRef, () => {
@@ -106,11 +113,14 @@ export default function Select(props: ISelectProps) {
                     {props.label}
                 </div>
             )}
-            <div
-                onClick={() => setOpenSelect(!openSelect)}
-                ref={clickOutSideRef}
-            >
-                <div className="flex items-center justify-between py-[10px] rounded-[80px] border-[1px] border-black px-[20px] cursor-pointer hover:bg-border-box">
+            <div onClick={() => handleOpenSelect()} ref={clickOutSideRef}>
+                <div
+                    className={`flex items-center justify-between py-[10px] rounded-[80px] border-[1px] border-black px-[20px] hover:bg-border-box ${
+                        props.disabled
+                            ? 'bg-slate-300 cursor-not-allowed'
+                            : 'bg-white cursor-pointer'
+                    }`}
+                >
                     <div className="flex items-center space-x-2">
                         {selected}
                     </div>

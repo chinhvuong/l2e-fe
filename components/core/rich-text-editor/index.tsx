@@ -7,9 +7,11 @@ const Editor = dynamic(
     { ssr: false },
 )
 import './style.scss'
+import { convertToHTML } from 'draft-convert'
 
 export interface IRichTextEditorProps {
     label?: string
+    updateState: Function
 }
 
 // bug ở phần placeholder, click order/unorder list đầu tiên
@@ -56,6 +58,9 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
                 editorClassName="mx-[20px]"
                 toolbarClassName="toolbar"
                 onEditorStateChange={(newState) => {
+                    props.updateState(
+                        convertToHTML(editorState.getCurrentContent()),
+                    )
                     setEditorState(newState)
                 }}
                 toolbar={{

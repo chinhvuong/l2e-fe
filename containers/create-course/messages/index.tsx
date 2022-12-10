@@ -14,6 +14,9 @@ export default function MessagesContainer() {
     const courseDetail = useAppSelector(getMyCourseDetail)
     const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
+    const [welcomeMessage, setWelcomeMessage] = useState<string>('')
+    const [congratulationMessage, setCongratulationMessage] =
+        useState<string>('')
 
     useEffect(() => {
         if (isNewCourseDetail) {
@@ -32,8 +35,14 @@ export default function MessagesContainer() {
             ) : (
                 <div className="py-10 px-14 space-y-5">
                     <div>{`Write messages to your students (optional) that will be sent automatically when they join or complete your course to encourage students to engage with course content. If you do not wish to send a welcome or congratulations message, leave the text box blank.`}</div>
-                    <RichTextEditor label="Welcome Message" />
-                    <RichTextEditor label="Congratulations Message" />
+                    <RichTextEditor
+                        label="Welcome Message"
+                        updateState={setWelcomeMessage}
+                    />
+                    <RichTextEditor
+                        label="Congratulations Message"
+                        updateState={setCongratulationMessage}
+                    />
                 </div>
             )}
         </div>

@@ -11,6 +11,8 @@ import {
     getCourseDetailState,
 } from '@/store/course/selectors'
 import {
+    updateCourseCategory,
+    updateCourseDescription,
     updateCourseLanguage,
     updateCourseName,
     updateCourseOverview,
@@ -18,7 +20,11 @@ import {
     updateCourseThumbnail,
 } from '@/store/course'
 import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
-import { convertToCategoryName, getLanguageName } from '@/utils'
+import {
+    convertToCategoryID,
+    convertToCategoryName,
+    getLanguageName,
+} from '@/utils'
 import Loading from '../../../components/core/animate/loading'
 
 export interface ILandingPageContainerProps {}
@@ -41,6 +47,7 @@ export default function LandingPageContainer() {
     const [price, setPrice] = useState<string>(() =>
         courseDetail.price === 0 ? '' : courseDetail.price.toString(),
     )
+    const [description, setDescription] = useState<string>('')
     const [thumbnail, setThumbnail] = useState<string>(
         '/images/placeholder.jpeg',
     )
@@ -72,21 +79,36 @@ export default function LandingPageContainer() {
         }
     }, [isNewCourseDetail])
 
-    const handleTitleChange = ({ value }: HTMLInputElement) => {
+    const handleTitleChange = (value: string) => {
         setTitle(value)
         dispatch(updateCourseName(value))
     }
-    const handleSubtitleChange = ({ value }: HTMLInputElement) => {
+    const handleSubtitleChange = (value: string) => {
         setSubtitle(value)
         dispatch(updateCourseOverview(value))
     }
     const handleLanguageChange = (value: string) => {
         setLanguage(value)
-        dispatch(updateCourseLanguage(value))
+        dispatch(updateCourseLanguage(value === 'English' ? 'en' : 'vi'))
     }
-    const handlePriceChange = ({ value }: HTMLInputElement) => {
+    const handleCategoryChange = (value: string) => {
+        setCategory(value)
+        dispatch(
+            updateCourseCategory(
+                convertToCategoryID(
+                    JSON.parse(localStorage.getItem(CATEGORY) ?? '[]'),
+                    value,
+                ),
+            ),
+        )
+    }
+    const handlePriceChange = (value: string) => {
         setPrice(value)
         dispatch(updateCoursePrice(parseInt(value)))
+    }
+    const handleDescriptionChange = (value: string) => {
+        setDescription(value)
+        dispatch(updateCourseDescription(value))
     }
     const handleThumbnailChange = (value: string) => {
         dispatch(updateCourseThumbnail(value))
@@ -130,6 +152,8 @@ export default function LandingPageContainer() {
                             selectList={categoryList}
                             placeholder="Select category"
                             selected={category}
+                            setSelected={handleCategoryChange}
+                            disabled
                         />
                         <div className="w-full">
                             <Input
@@ -142,7 +166,10 @@ export default function LandingPageContainer() {
                             ></Input>
                         </div>
                     </div>
-                    <RichTextEditor label="Description" />
+                    <RichTextEditor
+                        label="Description"
+                        updateState={handleDescriptionChange}
+                    />
                     <UploadPreview
                         label="Thumbnail"
                         type="image"
