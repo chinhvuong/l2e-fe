@@ -8,19 +8,19 @@ import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { CurriculumLecture } from '@/store/course/curriculum/types'
+import { CurriculumSection } from '@/store/course/curriculum/types'
 import { RootState } from '@/store'
 import { TInputUpdate } from '@/store/course/types'
 import Lecture from '../lecture'
 import {
     addCurriculumLecture,
     deleteCurriculumLecture,
-    updateCurriculumLectureName,
-    updateOrderCurriculumLecture,
+    updateCurriculumLecture,
 } from '@/store/course/curriculum'
 import {
+    getCurriculumLectureDetail,
     getCurriculumLecturesForm,
-    getInputContentCurriculumLecture,
+    getCurriculumLecturesOfSection,
 } from '@/store/course/curriculum/selectors'
 
 export interface CardProps {
@@ -29,8 +29,8 @@ export interface CardProps {
     moveCard: Function
     updateCard: ActionCreatorWithPayload<TInputUpdate, string>
     deleteCard: ActionCreatorWithPayload<number, string>
-    getCards: (state: RootState) => CurriculumLecture[]
-    getCardName: (id: string) => (state: RootState) => string
+    getCards: (state: RootState) => CurriculumSection[]
+    getCardDetail: (id: string) => (state: RootState) => CurriculumSection
 }
 
 interface DragItem {
@@ -46,12 +46,12 @@ export const Card: FC<CardProps> = ({
     updateCard,
     deleteCard,
     getCards,
-    getCardName,
+    getCardDetail,
 }) => {
     const ref = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
     const curriculum = useAppSelector(getCards)
-    const sectionName = useAppSelector(getCardName(id))
+    const sectionDetail = useAppSelector(getCardDetail(id))
     const [expandSection, setExpandSection] = useState(true)
 
     const [{ handlerId }, drop] = useDrop<
@@ -150,12 +150,13 @@ export const Card: FC<CardProps> = ({
                             charLimit={{ minLength: 10, maxLength: 80 }}
                             placeholder="Insert section title"
                             id={id}
+                            defaultValue={sectionDetail.name}
                             updateToStore={updateCard}
                         />
                     </div>
                 </div>
                 <div className="flex space-x-3 items-center">
-                    {sectionName !== '' ? (
+                    {sectionDetail.name !== '' ? (
                         <>
                             <div>
                                 <FontAwesomeIcon
@@ -202,12 +203,12 @@ export const Card: FC<CardProps> = ({
             </div>
             <div className={`mt-5 ml-10 ${!expandSection && 'hidden'}`}>
                 <Lecture
+                    sectionId={sectionDetail._id}
                     addItem={addCurriculumLecture}
-                    updateItem={updateCurriculumLectureName}
-                    updateOrderItems={updateOrderCurriculumLecture}
+                    updateItem={updateCurriculumLecture}
                     deleteItem={deleteCurriculumLecture}
                     getItems={getCurriculumLecturesForm}
-                    getItemName={getInputContentCurriculumLecture}
+                    getCardDetail={getCurriculumLectureDetail}
                 ></Lecture>
             </div>
         </div>

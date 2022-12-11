@@ -59,7 +59,7 @@ export default function UploadPreview(props: IUploadPreviewProps) {
 
     return (
         <div className="space-y-3">
-            <div className="font-bold ml-[10px]">{props.label}</div>
+            <div className="font-bold ml-[25px]">{props.label}</div>
             <div className="flex">
                 <div className="basis-1/2">
                     <img

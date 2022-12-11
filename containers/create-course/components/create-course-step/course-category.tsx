@@ -1,4 +1,6 @@
 import Select from '@/components/core/select'
+import { useAppSelector } from '@/hooks'
+import { getCanCreateCourseState } from '@/store/course/selectors'
 
 export interface ICourseCategoryProps {
     selected: string
@@ -13,6 +15,8 @@ export default function CourseCategory({
     setCategory,
     isLoading,
 }: ICourseCategoryProps) {
+    const canCreateCourse = useAppSelector(getCanCreateCourseState)
+
     return (
         <div className="flex flex-col items-center">
             <div className="text-3xl mt-16 mb-6 font-bold">{`How about a course title?`}</div>
@@ -24,6 +28,7 @@ export default function CourseCategory({
                     setSelected={setCategory}
                     isLoading={isLoading}
                     selected={selected}
+                    validate={!canCreateCourse}
                 />
             </div>
         </div>

@@ -2,17 +2,22 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { MutationProps } from '../types'
 import { apiCourse } from '../functions/api-course'
 import {
-    GetMintSignatureResponse,
     CreateCourseRequest,
     CreateCourseResponse,
     UpdateCourseRequest,
     UpdateCourseResponse,
     GetCategoryResponse,
     GetCourseDetailResponse,
-    CoursePreview,
     GetAllCoursesResponse,
     GetAllMyCoursesResponse,
     GetAllMyEnrollCoursesResponse,
+    SectionRequestItem,
+    TSection,
+    GetAllCourseSectionsResponse,
+    TLesson,
+    LessonRequestItem,
+    SectionResponseItem,
+    LessonResponseItem,
 } from '../dto/course.dto'
 
 export const useCourse = () => {
@@ -172,6 +177,53 @@ export const useCourse = () => {
             },
         )
     }
+    const useGetSections = (
+        courseId: string,
+        { onError, onSuccess }: MutationProps,
+    ) => {
+        return useQuery(
+            ['course-sections'],
+            () => apiCourse.getSections(courseId),
+            {
+                refetchOnWindowFocus: false,
+                enabled: false,
+                onError: (error) => onError(error),
+                onSuccess: async (response: GetAllCourseSectionsResponse) => {
+                    if (response) {
+                        onSuccess(response)
+                    }
+                },
+            },
+        )
+    }
+
+    const useUpsertSections = ({ onError, onSuccess }: MutationProps) => {
+        return useMutation(
+            (body: SectionRequestItem[]) => apiCourse.upsertSections(body),
+            {
+                onError: (error) => onError(error),
+                onSuccess: async (response: SectionResponseItem[]) => {
+                    if (response) {
+                        onSuccess(response)
+                    }
+                },
+            },
+        )
+    }
+
+    const useUpsertLessons = ({ onError, onSuccess }: MutationProps) => {
+        return useMutation(
+            (body: LessonRequestItem[]) => apiCourse.upsertLessons(body),
+            {
+                onError: (error) => onError(error),
+                onSuccess: async (response: LessonResponseItem[]) => {
+                    if (response) {
+                        onSuccess(response)
+                    }
+                },
+            },
+        )
+    }
     return {
         useGetSignatureMint,
         useUploadSingleFile,
@@ -183,5 +235,8 @@ export const useCourse = () => {
         useGetMyCourseDetail,
         useGetCourseDetail,
         useGetCategory,
+        useGetSections,
+        useUpsertSections,
+        useUpsertLessons,
     }
 }

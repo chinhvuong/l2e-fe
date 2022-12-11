@@ -20,6 +20,7 @@ export interface IInputProps {
     updateToStore?: ActionCreatorWithPayload<any, string>
     updateInput?: Function
     type?: string
+    validate?: boolean
 }
 
 export default function Input({
@@ -32,11 +33,16 @@ export default function Input({
     updateInput,
     updateToStore,
     type,
+    validate = false,
 }: IInputProps) {
     const dispatch = useAppDispatch()
     const [input, setInput] = useState(defaultValue ?? '')
+    const [isTyped, setIsTyped] = useState(false)
 
     useEffect(() => {
+        if (!isTyped && input !== '') {
+            setIsTyped(true)
+        }
         updateCard(input)
     }, [input])
 
@@ -70,8 +76,14 @@ export default function Input({
 
     return (
         <div>
-            {label && <div className="font-bold ml-[10px] pb-2">{label}</div>}
-            <div className="flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] border-black space-x-5">
+            {label && <div className="font-bold ml-[25px] pb-2">{label}</div>}
+            <div
+                className={`flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] ${
+                    validate && input === '' && isTyped
+                        ? 'border-red-500'
+                        : 'border-black'
+                } space-x-5`}
+            >
                 <input
                     type={type ?? 'text'}
                     name="name"
@@ -87,6 +99,15 @@ export default function Input({
                     {getInputCharLeft()}
                 </div>
             </div>
+            {validate && (
+                <div
+                    className={`ml-[25px] text-sm mt-1 ${
+                        input === '' && isTyped ? 'text-red-500' : 'text-white'
+                    }`}
+                >
+                    Không được để trống!
+                </div>
+            )}
         </div>
     )
 }

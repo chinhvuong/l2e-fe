@@ -12,14 +12,10 @@ export interface IResourceProps {}
 
 export default function Resource(props: IResourceProps) {
     const [selected, setSelected] = useState<'file' | 'link'>('file')
-    const [downloadableMaterials, setDownloadableMaterials] = useState([
-        'Screenshot (1).png',
-        'Screenshot (2).png',
-    ])
-    const [externalResources, setExternalResources] = useState<string[]>([
-        'Youtube',
-        'Facebook',
-    ])
+    const [downloadableMaterials, setDownloadableMaterials] = useState<
+        string[]
+    >([])
+    const [externalResources, setExternalResources] = useState<string[]>([])
     const [newResourceTitle, setNewResourceTitle] = useState('')
     const [newResourceURL, setNewResourceURL] = useState('')
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
@@ -147,6 +143,14 @@ export default function Resource(props: IResourceProps) {
         }
     }
 
+    const updateNewResourceTitle = (value: string) => {
+        setNewResourceTitle(value)
+    }
+
+    const updateNewResourceURL = (value: string) => {
+        setNewResourceURL(value)
+    }
+
     return (
         <div className="py-5 px-10">
             {getDownloadableMaterialsContent()}
@@ -193,13 +197,13 @@ export default function Resource(props: IResourceProps) {
                         charLimit={{ minLength: 10, maxLength: 60 }}
                         label="Title"
                         placeholder="Insert your course title."
-                        updateInput={setNewResourceTitle}
+                        updateInput={updateNewResourceTitle}
                     />
                     <Input
                         id="link"
                         label="URL"
                         placeholder="https://example.com"
-                        updateInput={setNewResourceURL}
+                        updateInput={updateNewResourceURL}
                     />
                     <div className="flex justify-end">
                         <Button onClick={() => addExternalResourceItem()}>

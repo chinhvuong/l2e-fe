@@ -7,34 +7,49 @@ import { ILectureProps } from '.'
 import { Card } from './card'
 
 export const Container = ({
+    sectionId,
     addItem,
     updateItem,
-    updateOrderItems,
     deleteItem,
     getItems,
-    getItemName,
+    getCardDetail,
 }: ILectureProps) => {
     const cardsFromStore = useAppSelector(getItems)
-    const [cards, setCards] = useState(cardsFromStore)
+    const [cards, setCards] = useState<CurriculumLecture[]>([])
     const [cardsOrder, setCardsOrder] = useState(cards.map((item) => item._id))
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        setCards(cardsFromStore)
+        const cardsPlacedInStore = cardsFromStore.find((item) => {
+            if (item[0].sectionId === sectionId) {
+                return item
+            }
+        })
+        if (
+            cardsPlacedInStore !== undefined &&
+            !arraysEqual(cards, cardsPlacedInStore)
+        ) {
+            console.log('arraysEqual', cards, cardsPlacedInStore)
+            setCards(cardsPlacedInStore)
+        }
     }, [cardsFromStore])
 
-    useEffect(() => {
-        isChangeCardsOrder()
-    }, [cards])
-
-    useEffect(() => {
-        dispatch(updateOrderItems(cardsOrder))
-    }, [cardsOrder])
+    const arraysEqual = (
+        arr1: CurriculumLecture[],
+        arr2: CurriculumLecture[],
+    ) =>
+        arr1.length === arr2.length &&
+        arr1.every((item, index) => {
+            Object.values(item).toString() ===
+                Object.values(arr2[index]).toString()
+        })
 
     const addCard = () => {
-        if (cardsFromStore.every((item) => item.name !== '')) {
-            dispatch(addItem())
-        }
+        // if (
+        //     cardsFromStore.every((item: CurriculumLecture) => item.name !== '')
+        // ) {
+        //     dispatch(addItem(sectionId))
+        // }
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
@@ -59,29 +74,15 @@ export const Container = ({
                 key={card._id}
                 index={index}
                 id={card._id}
+                sectionId={sectionId}
                 moveCard={moveCard}
                 updateCard={updateItem}
                 deleteCard={deleteItem}
                 getCards={getItems}
-                getCardName={getItemName}
+                getCardDetail={getCardDetail}
             />
         )
     }, [])
-
-    const isChangeCardsOrder = () => {
-        const newOrder = [...cardsOrder]
-        let isChange = false
-        for (let i = 0; i < cards.length; i++) {
-            if (cards[i]._id !== cardsFromStore[i]._id) {
-                newOrder[i] = cards[i]._id
-                isChange = true
-            }
-        }
-        if (isChange) {
-            setCardsOrder(newOrder)
-        }
-        return isChange
-    }
 
     return (
         <>

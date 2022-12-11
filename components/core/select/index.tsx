@@ -12,23 +12,34 @@ export interface ISelectProps {
     setSelected?: Function
     isLoading?: boolean
     disabled?: boolean
+    validate?: boolean
 }
 
-export default function Select(props: ISelectProps) {
-    const [selected, setSelected] = useState(
-        props.selected === '' ? props.placeholder : props.selected,
+export default function Select({
+    label,
+    selectList,
+    placeholder,
+    selected,
+    setSelected,
+    isLoading,
+    disabled,
+    validate = false,
+}: ISelectProps) {
+    const [selectedItem, setSelectedItem] = useState(
+        selected === '' ? placeholder : selected,
     )
+    console.log(345345, selectedItem === placeholder)
     const [openSelect, setOpenSelect] = useState(false)
     const clickOutSideRef = useRef(null)
 
     const onSelect = (item: string) => {
-        setSelected(item)
-        props.setSelected && props.setSelected(item)
+        setSelectedItem(item)
+        setSelected && setSelected(item)
         setOpenSelect(false)
     }
 
     const handleOpenSelect = () => {
-        if (!props.disabled) {
+        if (!disabled) {
             setOpenSelect(!openSelect)
         }
     }
@@ -38,48 +49,45 @@ export default function Select(props: ISelectProps) {
     })
 
     const getSelectContent = () => {
-        if (props.selectList.length === 1) {
+        if (selectList.length === 1) {
             return (
                 <div
                     className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer rounded-[20px]"
-                    onClick={() => onSelect(props.selectList[0])}
+                    onClick={() => onSelect(selectList[0])}
                 >
-                    {props.selectList[0]}
+                    {selectList[0]}
                 </div>
             )
         }
-        if (props.selectList.length === 2) {
+        if (selectList.length === 2) {
             return (
                 <>
                     <div
                         className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-t-[20px] cursor-pointer"
-                        onClick={() => onSelect(props.selectList[0])}
+                        onClick={() => onSelect(selectList[0])}
                     >
-                        {props.selectList[0]}
+                        {selectList[0]}
                     </div>
                     <div
                         className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-b-[20px] cursor-pointer"
-                        onClick={() => onSelect(props.selectList[1])}
+                        onClick={() => onSelect(selectList[1])}
                     >
-                        {props.selectList[1]}
+                        {selectList[1]}
                     </div>
                 </>
             )
         }
-        if (props.selectList.length > 2) {
+        if (selectList.length > 2) {
             return (
                 <>
                     <div
                         className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-t-[20px] cursor-pointer"
-                        onClick={() => onSelect(props.selectList[0])}
+                        onClick={() => onSelect(selectList[0])}
                     >
-                        {props.selectList[0]}
+                        {selectList[0]}
                     </div>
-                    {props.selectList.map((item, index) => {
-                        if (
-                            index !== 0 &&
-                            index !== props.selectList.length - 1
-                        ) {
+                    {selectList.map((item, index) => {
+                        if (index !== 0 && index !== selectList.length - 1) {
                             return (
                                 <div
                                     className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
@@ -94,12 +102,10 @@ export default function Select(props: ISelectProps) {
                     <div
                         className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-b-[20px] cursor-pointer"
                         onClick={() =>
-                            onSelect(
-                                props.selectList[props.selectList.length - 1],
-                            )
+                            onSelect(selectList[selectList.length - 1])
                         }
                     >
-                        {props.selectList[props.selectList.length - 1]}
+                        {selectList[selectList.length - 1]}
                     </div>
                 </>
             )
@@ -108,21 +114,21 @@ export default function Select(props: ISelectProps) {
 
     return (
         <div className="w-full relative">
-            {props.label && (
-                <div className="font-bold pb-2 pl-3 sm:text-xs sm:mt-2">
-                    {props.label}
+            {label && (
+                <div className="font-bold pb-2 pl-[25px] sm:text-xs sm:mt-2">
+                    {label}
                 </div>
             )}
             <div onClick={() => handleOpenSelect()} ref={clickOutSideRef}>
                 <div
-                    className={`flex items-center justify-between py-[10px] rounded-[80px] border-[1px] border-black px-[20px] hover:bg-border-box ${
-                        props.disabled
+                    className={`flex items-center justify-between py-[10px] rounded-[80px] border-[1px] border-black px-[25px] hover:bg-border-box ${
+                        disabled
                             ? 'bg-slate-300 cursor-not-allowed'
                             : 'bg-white cursor-pointer'
                     }`}
                 >
                     <div className="flex items-center space-x-2">
-                        {selected}
+                        {selectedItem}
                     </div>
                     <FontAwesomeIcon
                         icon={faChevronDown}
@@ -134,7 +140,7 @@ export default function Select(props: ISelectProps) {
                         !openSelect && 'hidden'
                     }`}
                 >
-                    {props?.isLoading ? (
+                    {isLoading ? (
                         <div className="flex justify-center items-center h-20">
                             <Loading />
                         </div>
@@ -142,6 +148,15 @@ export default function Select(props: ISelectProps) {
                         getSelectContent()
                     )}
                 </div>
+            </div>
+            <div
+                className={`ml-[25px] text-sm mt-1 ${
+                    validate && selectedItem === placeholder
+                        ? 'text-red-500'
+                        : 'text-white'
+                }`}
+            >
+                Không được để trống!
             </div>
         </div>
     )

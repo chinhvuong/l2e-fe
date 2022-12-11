@@ -5,6 +5,7 @@ import {
     updateOrderCurriculumSection,
 } from '@/store/course/curriculum'
 import {
+    getCurriculumSectionDetail,
     getCurriculumSectionsForm,
     getInputContentCurriculumSection,
 } from '@/store/course/curriculum/selectors'
@@ -21,17 +22,18 @@ import {
 export interface ICurriculumContainerProps {}
 
 export default function CurriculumContainer() {
-    const courseDetail = useAppSelector(getMyCourseDetail)
+    const courseDetail = useAppSelector(getCurriculumSectionsForm)
     const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (isNewCourseDetail) {
         }
-        if (courseDetail._id !== '') {
+        console.log('useEffect courseDetail', courseDetail)
+        if (courseDetail.length > 0) {
             setIsLoading(false)
         }
-    }, [isNewCourseDetail])
+    }, [isNewCourseDetail, courseDetail])
     return (
         <div>
             <Title title={'Curriculum'} />
@@ -44,10 +46,9 @@ export default function CurriculumContainer() {
                     <Section
                         addItem={addCurriculumSection}
                         updateItem={updateCurriculumSectionName}
-                        updateOrderItems={updateOrderCurriculumSection}
                         deleteItem={deleteCurriculumSection}
                         getItems={getCurriculumSectionsForm}
-                        getItemName={getInputContentCurriculumSection}
+                        getItemDetail={getCurriculumSectionDetail}
                     ></Section>
                 </div>
             )}
