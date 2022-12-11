@@ -83,3 +83,7 @@ export const getEnrollStatusState = (state: RootState) => {
 export const getSaveCourseState = (state: RootState) => {
     return state.courseDetail.isSaved
 }
+
+export const getCanCreateCourseState = (state: RootState) => {
+    return state.courseDetail.canCreateCourse
+}

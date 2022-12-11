@@ -1,8 +1,8 @@
 export enum apiPath {
     REFRESH = '/auth/refresh',
     LOGIN = '/auth/login',
-    UPLOAD_SINGLE_FILE = '/upload-single-file',
-    UPLOAD_MULTI_FILES = '/upload-multi-files',
+    UPLOAD_SINGLE_FILE = '/upload/upload-one',
+    UPLOAD_MULTI_FILES = '/upload/upload-multi',
     GET_ALL_COURSES = '/course',
     GET_ALL_MY_COURSES = '/course/manage/own-courses',
     GET_ALL_MY_ENROLL_COURSES = '/course/my/enroll-courses',
@@ -13,5 +13,9 @@ export enum apiPath {
     GET_MINT_SIGNATURE = '/course/request-mint-signature',
     GET_COURSE_DETAIL = '/course/preview/',
     CHECK_ENROLL = '/course/check-enroll/',
-    REQUEST_APPROVE = '/course/manage/own-courses/send-approve-request'
+    REQUEST_APPROVE = '/course/manage/own-courses/send-approve-request',
+    GET_SECTIONS = '/section/manage/get-sections/',
+    UPSERT_SECTIONS = '/section/upsert-sections/',
+    GET_LESSONS = '/lesson/manage/get-lessons',
+    UPSERT_LESSONS = '/lesson/upsert-lesions/',
 }

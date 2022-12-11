@@ -1,34 +1,30 @@
 import { apiPath } from '@/api/api-path'
-import { STORAGE_URL } from '@/constants/urls'
 import { callAPI } from '../axios-client'
 import {
     GetMintSignatureResponse,
-    CoursePreview,
     CreateCourseRequest,
     CreateCourseResponse,
     GetAllCoursesResponse,
     GetAllMyCoursesResponse,
     GetCategoryResponse,
     GetCourseDetailResponse,
+    LessonRequestItem,
+    SectionRequestItem,
     UpdateCourseRequest,
     UpdateCourseResponse,
     GetAllMyEnrollCoursesResponse,
+    SectionResponseItem,
+    LessonResponseItem,
 } from '../dto/course.dto'
 
 export const apiCourse = {
     uploadSingleFile: (payload: FormData): Promise<string> =>
-        callAPI(
-            'post',
-            apiPath.UPLOAD_SINGLE_FILE,
-            payload,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Access-Control-Allow-Origin': '*',
-                },
+        callAPI('post', apiPath.UPLOAD_SINGLE_FILE, payload, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Access-Control-Allow-Origin': '*',
             },
-            STORAGE_URL,
-        ),
+        }),
     createCourse: (
         payload: CreateCourseRequest,
     ): Promise<CreateCourseResponse> =>
@@ -50,11 +46,7 @@ export const apiCourse = {
             {},
         ),
     checkEnroll: (courseId: string): Promise<{ enroll: boolean }> =>
-        callAPI(
-            'get',
-            apiPath.CHECK_ENROLL + courseId,
-            {},
-        ),
+        callAPI('get', apiPath.CHECK_ENROLL + courseId, {}),
     getAllCourses: (): Promise<GetAllCoursesResponse> =>
         callAPI('get', apiPath.GET_ALL_COURSES, {}),
     getAllMyCourse: (): Promise<GetAllMyCoursesResponse> =>
@@ -65,7 +57,19 @@ export const apiCourse = {
         callAPI('get', apiPath.GET_CATEGORY, {}),
     getMintSignature: (courseId: string): Promise<GetMintSignatureResponse> =>
         callAPI('get', apiPath.GET_MINT_SIGNATURE + '?id=' + courseId, {}),
-
-    requestApprove: (data: { id: string, notes: string[] }): Promise<{ success: boolean }> =>
+    requestApprove: (data: {
+        id: string
+        notes: string[]
+    }): Promise<{ success: boolean }> =>
         callAPI('post', apiPath.REQUEST_APPROVE, data),
+    getSections: (courseId: string): Promise<SectionRequestItem[]> =>
+        callAPI('get', apiPath.GET_SECTIONS + '?courseId=' + courseId, {}),
+    upsertSections: (
+        payload: SectionRequestItem[],
+    ): Promise<SectionResponseItem[]> =>
+        callAPI('post', apiPath.UPSERT_SECTIONS + payload[0].courseId, payload),
+    upsertLessons: (
+        payload: LessonRequestItem[],
+    ): Promise<LessonResponseItem[]> =>
+        callAPI('post', apiPath.UPSERT_LESSONS + payload[0].sectionId, payload),
 }

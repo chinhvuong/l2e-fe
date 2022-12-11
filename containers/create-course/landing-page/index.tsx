@@ -122,7 +122,7 @@ export default function LandingPageContainer() {
                     <Loading />
                 </div>
             ) : (
-                <div className="py-10 px-14 space-y-5">
+                <div className="py-10 px-14 space-y-2">
                     <Input
                         id="landing-page-title"
                         charLimit={{ minLength: 10, maxLength: 60 }}
@@ -130,6 +130,7 @@ export default function LandingPageContainer() {
                         placeholder="Insert your course title."
                         defaultValue={title}
                         updateInput={handleTitleChange}
+                        validate
                     />
                     <Input
                         id="landing-page-subtitle"
@@ -138,6 +139,7 @@ export default function LandingPageContainer() {
                         placeholder="Insert your course subtitle."
                         defaultValue={subtitle}
                         updateInput={handleSubtitleChange}
+                        validate
                     />
                     <div className="flex justify-between space-x-5">
                         <Select
@@ -163,49 +165,52 @@ export default function LandingPageContainer() {
                                 defaultValue={price}
                                 updateInput={handlePriceChange}
                                 type="number"
+                                validate
                             ></Input>
                         </div>
                     </div>
-                    <RichTextEditor
-                        label="Description"
-                        updateState={handleDescriptionChange}
-                    />
-                    <UploadPreview
-                        label="Thumbnail"
-                        type="image"
-                        defaultPreview={thumbnail}
-                        setFileLink={handleThumbnailChange}
-                    >
-                        <div>
-                            <span>
-                                {`Upload your course image here. It must meet our `}
-                            </span>
-                            <Hyperlink>
-                                course image quality standards
-                            </Hyperlink>
-                            <span>{` to
+                    <div className="space-y-5">
+                        <RichTextEditor
+                            label="Description"
+                            updateState={handleDescriptionChange}
+                        />
+                        <UploadPreview
+                            label="Thumbnail"
+                            type="image"
+                            defaultPreview={thumbnail}
+                            setFileLink={handleThumbnailChange}
+                        >
+                            <div>
+                                <span>
+                                    {`Upload your course image here. It must meet our `}
+                                </span>
+                                <Hyperlink>
+                                    course image quality standards
+                                </Hyperlink>
+                                <span>{` to
                         be accepted. Important guidelines: 750x422 pixels; .jpg,
                         .jpeg,. gif, or .png. no text on the image.`}</span>
-                        </div>
-                    </UploadPreview>
-                    <UploadPreview
-                        label="Promotional video"
-                        type="video"
-                        defaultPreview="/images/placeholder.jpeg"
-                    >
-                        <div>
-                            <span>{`Students who watch a well-made promo video are `}</span>
-                            <span className="font-bold">
-                                5X more likely to enroll
-                            </span>
-                            <span>{`
+                            </div>
+                        </UploadPreview>
+                        <UploadPreview
+                            label="Promotional video"
+                            type="video"
+                            defaultPreview="/images/placeholder.jpeg"
+                        >
+                            <div>
+                                <span>{`Students who watch a well-made promo video are `}</span>
+                                <span className="font-bold">
+                                    5X more likely to enroll
+                                </span>
+                                <span>{`
                         in your course. We've seen that statistic go up to 10X
                         for exceptionally awesome videos. `}</span>
-                            <Hyperlink>
-                                Learn how to make yours awesome!
-                            </Hyperlink>
-                        </div>
-                    </UploadPreview>
+                                <Hyperlink>
+                                    Learn how to make yours awesome!
+                                </Hyperlink>
+                            </div>
+                        </UploadPreview>
+                    </div>
                 </div>
             )}
         </div>

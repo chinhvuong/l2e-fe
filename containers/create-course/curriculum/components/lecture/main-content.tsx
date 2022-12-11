@@ -142,13 +142,13 @@ export default function MainContent() {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[140px]">
+                        {/* <div className="w-[140px]">
                             <Select
                                 selectList={['As Instructor', 'As Student']}
                                 placeholder="Preview"
                                 selected=""
                             />
-                        </div>
+                        </div> */}
                     </div>
                     <div className="flex space-x-3 justify-end items-center mt-10">
                         <Button onClick={() => handleUploadFile()}>

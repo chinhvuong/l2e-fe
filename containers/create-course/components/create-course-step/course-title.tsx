@@ -1,4 +1,6 @@
 import Input from '@/components/core/input'
+import { useAppSelector } from '@/hooks'
+import { getCanCreateCourseState } from '@/store/course/selectors'
 import * as React from 'react'
 
 export interface ICourseTitleProps {
@@ -21,6 +23,7 @@ export default function CourseTitle({
                     placeholder="E.g. Learn Photoshop ES6 from Scratch"
                     updateInput={setTitle}
                     defaultValue={defaultValue}
+                    validate
                 />
             </div>
         </div>

@@ -9,7 +9,6 @@ import { Card } from './card'
 export const Container = ({
     addItem,
     updateItem,
-    updateOrderItems,
     deleteItem,
     getItems,
     getItemDetail,
@@ -22,14 +21,6 @@ export const Container = ({
     useEffect(() => {
         setCards(cardsFromStore)
     }, [cardsFromStore])
-
-    useEffect(() => {
-        isChangeCardsOrder()
-    }, [cards])
-
-    useEffect(() => {
-        dispatch(updateOrderItems(cardsOrder))
-    }, [cardsOrder])
 
     const addCard = () => {
         if (cardsFromStore.every((item) => item.name !== '')) {
@@ -67,21 +58,6 @@ export const Container = ({
             />
         )
     }, [])
-
-    const isChangeCardsOrder = () => {
-        const newOrder = [...cardsOrder]
-        let isChange = false
-        for (let i = 0; i < cards.length; i++) {
-            if (cards[i]._id !== cardsFromStore[i]._id) {
-                newOrder[i] = cards[i]._id
-                isChange = true
-            }
-        }
-        if (isChange) {
-            setCardsOrder(newOrder)
-        }
-        return isChange
-    }
 
     return (
         <>

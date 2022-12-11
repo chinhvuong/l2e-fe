@@ -1,11 +1,11 @@
 export type CourseCurriculumState = {
     sections: CurriculumSection[]
-    lectures: CurriculumLecture[]
+    lectures: CurriculumLecture[][]
 }
 
 export type CurriculumSection = {
     _id: string
-    courseId: number
+    courseId: string
     name: string
     description: string
 }
@@ -16,7 +16,13 @@ export type CurriculumLecture = {
     description: string
     media: string
     mediaType: string
-    quizzes: number[]
-    sectionId: number
+    quizzes: string[]
+    sectionId: string
     mode: string
+}
+
+export type TInputUpdateLecture = {
+    sectionId: string
+    id: string
+    content: string
 }

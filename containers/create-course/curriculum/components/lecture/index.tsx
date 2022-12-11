@@ -6,36 +6,37 @@ import {
     ActionCreatorWithPayload,
 } from '@reduxjs/toolkit'
 import * as React from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Container } from './container'
 
 export interface ILectureProps {
-    addItem: ActionCreatorWithoutPayload<string>
-    updateItem: ActionCreatorWithPayload<TInputUpdate, string>
-    updateOrderItems: ActionCreatorWithPayload<string[], string>
+    sectionId: string
+    addItem: ActionCreatorWithPayload<string, string>
+    updateItem: ActionCreatorWithPayload<CurriculumLecture, string>
     deleteItem: ActionCreatorWithPayload<number, string>
-    getItems: (state: RootState) => CurriculumLecture[]
-    getItemName: (id: string) => (state: RootState) => string
+    getItems: (state: RootState) => CurriculumLecture[][]
+    getCardDetail: (
+        id: string,
+        sectionId: string,
+    ) => (state: RootState) => CurriculumLecture
 }
 
 export default function Lecture({
+    sectionId,
     addItem,
     updateItem,
-    updateOrderItems,
     deleteItem,
     getItems,
-    getItemName,
+    getCardDetail,
 }: ILectureProps) {
     return (
         // <DndProvider backend={HTML5Backend}>
         <Container
+            sectionId={sectionId}
             addItem={addItem}
             updateItem={updateItem}
-            updateOrderItems={updateOrderItems}
             deleteItem={deleteItem}
             getItems={getItems}
-            getItemName={getItemName}
+            getCardDetail={getCardDetail}
         />
         // </DndProvider>
     )

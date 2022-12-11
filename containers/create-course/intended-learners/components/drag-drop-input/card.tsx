@@ -142,7 +142,7 @@ export const Card: FC<CardProps> = ({
     }
 
     return (
-        <div className="flex items-center space-x-3" style={{ opacity }}>
+        <div className="flex space-x-3" style={{ opacity }}>
             <div className="basis-3/4">
                 <Input
                     charLimit={{ minLength: 10, maxLength: 160 }}
@@ -151,10 +151,11 @@ export const Card: FC<CardProps> = ({
                     name={name}
                     updateToStore={updateCard}
                     defaultValue={defaultValue}
+                    validate
                 />
             </div>
             {cardContent[index]?.content !== '' ? (
-                <div className="flex space-x-3 items-center">
+                <div className="flex space-x-3 mt-0.5">
                     <div>
                         <FontAwesomeIcon
                             icon={faTrash}
@@ -174,7 +175,7 @@ export const Card: FC<CardProps> = ({
                     </div>
                 </div>
             ) : (
-                <div className="flex space-x-3 items-center">
+                <div className="flex space-x-3 mt-0.5">
                     <div>
                         <FontAwesomeIcon
                             icon={faTrash}

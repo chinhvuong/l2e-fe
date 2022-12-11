@@ -1,17 +1,13 @@
-import { apiCourse } from '@/api/functions/api-course'
 import { useCourse } from '@/api/hooks/useCourse'
 import Loading from '@/components/core/animate/loading'
 import { useAppDispatch } from '@/hooks'
-import { updateCourseDetail, updateEnrollStatus, updateGetCourseDetailState } from '@/store/course'
+import { updateCourseDetail } from '@/store/course'
 import {
     updateAllRequirements,
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
-import { getCourseDetailState, getCourseOverviewInfo } from '@/store/course/selectors'
-import { getLoginState } from '@/store/user/selectors'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import NavBar from './components/nav-bar'
 import Curriculum from './curriculum'
 import CourseInfo from './info'
@@ -31,8 +27,8 @@ export default function CourseDetailContainer() {
         return router.query.slug
     }
 
-    const { useGetCourseDetail } = useCourse()
-    const { refetch, isFetching } = useGetCourseDetail(getCourseId(), {
+    const { useGetMyCourseDetail } = useCourse()
+    const { refetch, isFetching } = useGetMyCourseDetail(getCourseId(), {
         onError: () => {},
         onSuccess: async (response) => {
             dispatch(updateCourseDetail(response))
@@ -43,14 +39,11 @@ export default function CourseDetailContainer() {
         },
     })
 
-
     useEffect(() => {
         if (typeof router.query.slug === 'string') {
             refetch()
         }
     }, [router.query.slug])
-
-
 
     if (isFetching) {
         return (
@@ -61,8 +54,6 @@ export default function CourseDetailContainer() {
             </div>
         )
     }
-
-
 
     return (
         <div>

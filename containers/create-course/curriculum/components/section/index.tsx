@@ -13,7 +13,6 @@ import { Container } from './container'
 export interface ISectionProps {
     addItem: ActionCreatorWithoutPayload<string>
     updateItem: ActionCreatorWithPayload<TInputUpdate, string>
-    updateOrderItems: ActionCreatorWithPayload<string[], string>
     deleteItem: ActionCreatorWithPayload<number, string>
     getItems: (state: RootState) => CurriculumSection[]
     getItemDetail: (id: string) => (state: RootState) => CurriculumSection
@@ -22,7 +21,6 @@ export interface ISectionProps {
 export default function Section({
     addItem,
     updateItem,
-    updateOrderItems,
     deleteItem,
     getItems,
     getItemDetail,
@@ -32,7 +30,6 @@ export default function Section({
             <Container
                 addItem={addItem}
                 updateItem={updateItem}
-                updateOrderItems={updateOrderItems}
                 deleteItem={deleteItem}
                 getItems={getItems}
                 getItemDetail={getItemDetail}

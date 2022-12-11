@@ -48,14 +48,14 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
     return (
         <div>
             {props.label && (
-                <div className="font-bold pb-2 pl-3 sm:text-xs sm:mt-2">
+                <div className="font-bold pb-2 pl-[25px] sm:text-xs sm:mt-2">
                     {props.label}
                 </div>
             )}
             <Editor
                 editorState={editorState}
                 wrapperClassName="border border-black rounded-[20px]"
-                editorClassName="mx-[20px]"
+                editorClassName="mx-[25px]"
                 toolbarClassName="toolbar"
                 onEditorStateChange={(newState) => {
                     props.updateState(

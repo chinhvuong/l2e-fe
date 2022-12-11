@@ -1,14 +1,33 @@
+import {
+    LessonResponseItem,
+    SectionResponseItem,
+    TLesson,
+    TSection,
+} from '@/api/dto/course.dto'
 import { useCourse } from '@/api/hooks/useCourse'
 import Button from '@/components/core/button'
 import { Category } from '@/constants/interfaces'
-import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
-import { useAppDispatch } from '@/hooks'
+import {
+    CATEGORY,
+    CATEGORY_NAME_LIST,
+    COURSE_ID,
+} from '@/constants/localStorage'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import Logo from '@/layout/main-layout/header/logo'
-import { updateCourseDetail } from '@/store/course'
+import { updateCanCreateCourseState, updateCourseDetail } from '@/store/course'
+import {
+    updateAllCurriculumLectures,
+    updateAllCurriculumSections,
+} from '@/store/course/curriculum'
+import {
+    CurriculumLecture,
+    CurriculumSection,
+} from '@/store/course/curriculum/types'
 import {
     updateAllRequirements,
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
+import { getCanCreateCourseState } from '@/store/course/selectors'
 import { convertToCategoryID } from '@/utils'
 import Router from 'next/router'
 import { useState } from 'react'
@@ -28,19 +47,76 @@ export default function CourseBasicCreateContainer() {
     const [courseName, setCourseName] = useState('')
     const [courseCategory, setCourseCategory] = useState('')
     const [courseCategoryList, setCourseCategoryList] = useState<string[]>([])
+    const [courseId, setCourseId] = useState<string>('')
 
     const dispatch = useAppDispatch()
 
-    const { useCreateCourse } = useCourse()
+    const { useCreateCourse, useUpsertSections, useUpsertLessons } = useCourse()
     const { mutate: createCourse } = useCreateCourse({
         onError: () => {},
         onSuccess: (response) => {
             dispatch(updateCourseDetail(response))
             response?.goals &&
+                response.goals.length > 0 &&
                 dispatch(updateAllWhatYouWillLearn(response.goals))
             response?.requirements &&
+                response.requirements.length > 0 &&
                 dispatch(updateAllRequirements(response.requirements))
+            localStorage.setItem(COURSE_ID, response._id)
+            setCourseId(response._id)
+            upsertSections([
+                {
+                    name: '',
+                    description: '',
+                    courseId: response._id,
+                },
+            ])
             Router.push(`/create-course/${response._id}/landing-page`)
+        },
+    })
+
+    const { mutate: upsertSections } = useUpsertSections({
+        onError: () => {},
+        onSuccess: (response) => {
+            const sectionsBasicInfo: CurriculumSection[] = []
+            response.forEach((item: SectionResponseItem) => {
+                sectionsBasicInfo.push({
+                    _id: item._id,
+                    courseId: courseId,
+                    name: item.name,
+                    description: item.description,
+                })
+                upsertLessons([
+                    {
+                        name: '',
+                        description: '',
+                        media: '',
+                        mediaType: '',
+                        quizzes: [],
+                        sectionId: item._id,
+                    },
+                ])
+            })
+            dispatch(updateAllCurriculumSections(sectionsBasicInfo))
+        },
+    })
+
+    const { mutate: upsertLessons } = useUpsertLessons({
+        onError: () => {},
+        onSuccess: (response) => {
+            const lessonsBasicInfo: CurriculumLecture[] = []
+            response.forEach((item: LessonResponseItem) => {
+                lessonsBasicInfo.push({
+                    name: item.name,
+                    description: item.description,
+                    media: item.media,
+                    mediaType: item.mediaType,
+                    quizzes: item.quizzes,
+                    _id: item._id,
+                    sectionId: item.sectionId,
+                    mode: item.mode,
+                })
+            })
         },
     })
 
@@ -78,14 +154,18 @@ export default function CourseBasicCreateContainer() {
 
     const validateCurrentStep = () => {
         if (currentStep === 1) {
+            dispatch(updateCanCreateCourseState(true))
             return true
         }
         if (currentStep === 2 && courseName !== '') {
+            dispatch(updateCanCreateCourseState(true))
             return true
         }
         if (currentStep === 3 && courseCategory !== '') {
+            dispatch(updateCanCreateCourseState(true))
             return true
         }
+        dispatch(updateCanCreateCourseState(false))
         return false
     }
 
@@ -103,11 +183,17 @@ export default function CourseBasicCreateContainer() {
                 })
             }
         } else {
-            createCourse({
-                name: courseName,
-                category: convertToCategoryID(data?.data, courseCategory),
-            })
+            if (courseName !== '' && courseCategory !== '') {
+                createCourse({
+                    name: courseName,
+                    category: convertToCategoryID(data?.data, courseCategory),
+                })
+            }
         }
+    }
+
+    const updateCourseName = (value: string) => {
+        setCourseName(value)
     }
 
     const getStepContent = () => {
@@ -116,7 +202,7 @@ export default function CourseBasicCreateContainer() {
         } else if (currentStep === 2) {
             return (
                 <CourseTitle
-                    setTitle={setCourseName}
+                    setTitle={updateCourseName}
                     defaultValue={courseName}
                 />
             )

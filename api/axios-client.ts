@@ -7,7 +7,7 @@ import { store } from '../store/index'
 import { apiAuth } from './functions/api-auth'
 
 let isAlreadyFetchingAccessToken = false
-let refreshToken: any = null
+const refreshToken: any = null
 
 const axiosInstance = axios.create({
     headers: {
@@ -72,48 +72,6 @@ export const callAPI = async (
             return resp
         })
         .catch(async (error: any) => {
-            if (!error.config?.skipErrorHandle) {
-                switch (error.response?.status) {
-                    case 400: // Wrong url or params
-                        alert(error.response.data.message)
-                        break
-                    case 500: // Server error
-                        // Show toast if error code global, likes: 500 Unknown Error
-                        // Other: handled in vue component catch
-                        alert('Server Error')
-                        break
-                    case 403: // Permission
-                        break
-                    case 401: // Signature verification failed | Token has been revoked
-                        // check url # refresh token
-                        // true: try to refresh access token. then call queue apis
-                        // else: logout
-
-                        if (path !== apiPath.REFRESH) {
-                            if (!isAlreadyFetchingAccessToken) {
-                                isAlreadyFetchingAccessToken = true
-                                refreshToken = new Promise(
-                                    async (resolve: any) => {
-                                        // dispatch action call refresh token
-                                        await store.dispatch(
-                                            fetchRefreshToken(),
-                                        )
-                                        resolve(true)
-                                    },
-                                )
-                            }
-                            await refreshToken
-                            return callAPI(method, path, body, config)
-                        } else {
-                            // handle logout
-                            localStorage.clear()
-                            // redirect to login page
-                            throw error.response.data
-                        }
-                    default:
-                        throw error.response.data
-                }
-            }
-            throw error.response.data
+            throw error
         })
 }

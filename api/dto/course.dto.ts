@@ -1,3 +1,7 @@
+import {
+    CurriculumLecture,
+    CurriculumSection,
+} from '@/store/course/curriculum/types'
 import { CourseDetail } from '@/store/course/types'
 
 export interface CreateCourseRequest {
@@ -165,9 +169,95 @@ export interface GetAllMyCoursesResponse {
     data: CourseDetail[]
 }
 
+export interface GetAllCourseSectionsResponse {
+    total: number
+    data: CurriculumSection[]
+}
+
+export interface SectionRequestItem {
+    name: string
+    description: string
+    courseId: string
+}
+
+export interface SectionResponseItem {
+    courseId: string
+    createdAt: string
+    description: string
+    name: string
+    order: number
+    updatedAt: string
+    __v: number
+    _id: string
+}
+
+export interface TSection {
+    courseId: {
+        name: string | null
+        overview: string
+        description: string
+        price: number
+        rating: number
+        reviews: number
+        students: number
+        language: string
+        approved: boolean
+        requirements: string[]
+        goals: string[]
+        thumbnail: string | null
+        _id: string
+        createdAt: string
+        updatedAt: string
+    }
+    name: string
+    description: string
+    _id: string
+    __v: number
+    createdAt: string
+    updatedAt: string
+}
+
+export interface GetAllCourseLessonsResponse {
+    total: number
+    data: CurriculumLecture[]
+}
 export interface GetAllMyEnrollCoursesResponse {
     total: number
     data: CoursePreview[]
+}
+
+export interface TLesson {
+    name: string
+    description: string
+    media: string
+    mediaType: string
+    quizzes: string[]
+    _id: string
+    sectionId: string
+}
+
+export interface LessonRequestItem {
+    name: string
+    description: string
+    media: string
+    mediaType: string
+    quizzes: string[]
+    sectionId: string
+}
+
+export interface LessonResponseItem {
+    sectionId: string
+    name: string
+    description: string
+    media: string
+    mediaType: string
+    quizzes: string[]
+    mode: string
+    order: number
+    _id: string
+    createdAt: string
+    updatedAt: string
+    __v: number
 }
 
 export interface GetMintSignatureResponse {

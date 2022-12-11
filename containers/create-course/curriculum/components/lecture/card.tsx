@@ -10,19 +10,22 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { CurriculumLecture } from '@/store/course/curriculum/types'
 import { RootState } from '@/store'
-import { TInputUpdate } from '@/store/course/types'
 import '@/styles/animations.scss'
 import MainContent from './main-content'
 import Resource from './resource'
 
 export interface CardProps {
     id: string
+    sectionId: string
     index: number
     moveCard: Function
-    updateCard: ActionCreatorWithPayload<TInputUpdate, string>
+    updateCard: ActionCreatorWithPayload<CurriculumLecture, string>
     deleteCard: ActionCreatorWithPayload<number, string>
-    getCards: (state: RootState) => CurriculumLecture[]
-    getCardName: (id: string) => (state: RootState) => string
+    getCards: (state: RootState) => CurriculumLecture[][]
+    getCardDetail: (
+        id: string,
+        sectionId: string,
+    ) => (state: RootState) => CurriculumLecture
 }
 
 interface DragItem {
@@ -33,18 +36,38 @@ interface DragItem {
 
 export const Card: FC<CardProps> = ({
     id,
+    sectionId,
     index,
     moveCard,
     updateCard,
     deleteCard,
     getCards,
-    getCardName,
+    getCardDetail,
 }) => {
     const ref = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
-    const curriculum = useAppSelector(getCards)
-    const lectureName = useAppSelector(getCardName(id))
+    const curriculum =
+        useAppSelector(getCards).find((item: CurriculumLecture[]) => {
+            if (item[0].sectionId === sectionId) {
+                return item
+            }
+        }) ?? []
+    const lectureDetail = useAppSelector(getCardDetail(id, sectionId))
     const [expandLecture, setExpandLecture] = useState(true)
+
+    const updateLectureTitle = (value: string) => {
+        const newDetail = { ...lectureDetail }
+        newDetail.name = value
+        console.log('updateCardDetail', lectureDetail, newDetail)
+        dispatch(updateCard(newDetail))
+    }
+
+    const updateLectureDescription = (value: string) => {
+        const newDetail = { ...lectureDetail }
+        newDetail.description = value
+        console.log('updateCardDetail', lectureDetail, newDetail)
+        dispatch(updateCard(newDetail))
+    }
 
     const [{ handlerId }, drop] = useDrop<
         DragItem,
@@ -142,12 +165,14 @@ export const Card: FC<CardProps> = ({
                             charLimit={{ minLength: 10, maxLength: 80 }}
                             placeholder="Insert lecture title"
                             id={id}
-                            updateToStore={updateCard}
+                            name="Title"
+                            defaultValue={lectureDetail.name}
+                            updateInput={updateLectureTitle}
                         />
                     </div>
                 </div>
                 <div className="flex space-x-3 items-center">
-                    {lectureName !== '' ? (
+                    {lectureDetail.name !== '' ? (
                         <>
                             <div className="flex items-center">
                                 <FontAwesomeIcon
@@ -208,7 +233,9 @@ export const Card: FC<CardProps> = ({
                                 charLimit={{ minLength: 10, maxLength: 80 }}
                                 placeholder="Insert lecture description"
                                 id={id}
-                                updateToStore={updateCard}
+                                name="Description"
+                                defaultValue={lectureDetail.description}
+                                updateInput={updateLectureDescription}
                             />
                         </div>
                     </div>
