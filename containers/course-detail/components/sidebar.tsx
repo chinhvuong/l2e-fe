@@ -32,10 +32,9 @@ export default function Sidebar() {
 
     return (
         <div
-            className={`under_2xl:hidden bg-white z-20 right-[30px] w-[320px] drop-shadow-xl ${scrollY <= 500
-                ? 'absolute h-[860px]'
-                : `fixed top-[20px] h-[690px]`
-                }`}
+            className={`under_2xl:hidden bg-white z-20 right-[30px] w-[320px] drop-shadow-xl ${
+                scrollY <= 500 ? 'absolute' : `fixed top-[20px]`
+            }`}
             style={scrollY > 500 ? { right: rightMargin } : {}}
         >
             <VideoPreview
@@ -43,10 +42,17 @@ export default function Sidebar() {
                 className={`${scrollY > 500 ? 'hidden' : ''}`}
                 textSize="small"
             />
-            <div className="space-y-4 mt-4">
+            <div className="space-y-4 mt-4 mb-6">
                 <div className="mx-7">
-                    <PriceEnrollShare price={data.price} courseId={data.courseId} _id={data._id} />
-                    <IncludeList data={data.include} />
+                    <PriceEnrollShare
+                        price={data.price}
+                        courseId={data.courseId}
+                        _id={data._id}
+                    />
+                    {data.include &&
+                        !Object.values(data.include).every(
+                            (item) => item === '',
+                        ) && <IncludeList data={data.include} />}
                 </div>
                 <Divider />
                 <div className="mx-7">
@@ -58,7 +64,7 @@ export default function Sidebar() {
                         anytime, anywhere.
                     </div>
                     <Button className="btn-primary-outline w-full">
-                        <div className="font-medium text-[16px]">
+                        <div className="font-medium text-[16px] w-full">
                             Try Skilline Business
                         </div>
                     </Button>

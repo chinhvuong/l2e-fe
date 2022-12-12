@@ -27,8 +27,8 @@ export default function CourseDetailContainer() {
         return router.query.slug
     }
 
-    const { useGetMyCourseDetail } = useCourse()
-    const { refetch, isFetching } = useGetMyCourseDetail(getCourseId(), {
+    const { useGetCourseDetail } = useCourse()
+    const { refetch, isFetching } = useGetCourseDetail(getCourseId(), {
         onError: () => {},
         onSuccess: async (response) => {
             dispatch(updateCourseDetail(response))

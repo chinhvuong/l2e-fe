@@ -7,9 +7,7 @@ export interface IStudentFeedbackProps {}
 export default function StudentFeedback() {
     return (
         <div>
-            <div className="font-semibold text-[26px]">
-                ??? Student feedback
-            </div>
+            <div className="font-semibold text-[26px]">Student feedback</div>
             <div className="flex justify-between under_lg:flex-wrap under_lg:justify-center mt-3">
                 <div className="flex flex-col items-center sm:hidden">
                     <div className="text-primary text-[70px] font-bold leading-[95px]">

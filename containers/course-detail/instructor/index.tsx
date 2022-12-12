@@ -58,14 +58,14 @@ export default function Instructor() {
                             icon={faUserGroup}
                             className="text-sm"
                         />
-                        <div>??? 526,234 Reviews</div>
+                        <div>526,234 Reviews</div>
                     </div>
                     <div className="flex items-center space-x-2">
                         <FontAwesomeIcon
                             icon={faAward}
                             className="text-xl mr-0.5"
                         />
-                        <div>??? 1,634,289 Students</div>
+                        <div>1,634,289 Students</div>
                     </div>
                     <div className="flex items-center space-x-2">
                         <FontAwesomeIcon

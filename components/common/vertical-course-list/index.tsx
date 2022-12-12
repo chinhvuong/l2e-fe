@@ -1,6 +1,7 @@
 import React from 'react'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 import { CoursePreview } from '@/api/dto/course.dto'
+import Divider from '@/components/core/divider'
 
 export interface IVerticalCourseListProps {
     title?: string
@@ -21,10 +22,25 @@ export default function VerticalCourseList(props: IVerticalCourseListProps) {
                 </div>
             </div>
             <div className="space-y-5">
-                {props.data.map((course) => {
-                    return (
-                        <HorizontalCourseCard key={course._id} data={course} />
-                    )
+                {props.data.map((course, index) => {
+                    if (index !== props.data.length - 1) {
+                        return (
+                            <div key={course._id} className="space-y-6">
+                                <HorizontalCourseCard
+                                    key={course._id}
+                                    data={course}
+                                />
+                                <Divider />
+                            </div>
+                        )
+                    } else {
+                        return (
+                            <HorizontalCourseCard
+                                key={course._id}
+                                data={course}
+                            />
+                        )
+                    }
                 })}
             </div>
         </div>
