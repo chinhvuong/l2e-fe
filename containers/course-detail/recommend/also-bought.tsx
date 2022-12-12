@@ -12,9 +12,6 @@ export default function AlsoBought() {
                 Students also bought
             </div>
             <VerticalCourseList data={dataCourses_preview_list} />
-            <Button className="btn-primary-outline w-full">
-                <div className="font-medium text-[16px]">Report abuse</div>
-            </Button>
         </div>
     )
 }

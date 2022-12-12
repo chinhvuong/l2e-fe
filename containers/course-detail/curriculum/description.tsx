@@ -31,13 +31,22 @@ export default function Description() {
     }, [])
 
     return (
-        <div id="description" className="space-y-3 overflow-hidden relative">
-            <div className="font-semibold text-[26px]">Description</div>
-            <div
-                className="text-justify space-y-3"
-                id="description-content"
-            ></div>
-            {showMore && <ShowMore el="description" elHeightPreview={400} />}
-        </div>
+        <>
+            {data !== '' && (
+                <div
+                    id="description"
+                    className="space-y-3 overflow-hidden relative"
+                >
+                    <div className="font-semibold text-[26px]">Description</div>
+                    <div
+                        className="text-justify space-y-3"
+                        id="description-content"
+                    ></div>
+                    {showMore && (
+                        <ShowMore el="description" elHeightPreview={400} />
+                    )}
+                </div>
+            )}
+        </>
     )
 }

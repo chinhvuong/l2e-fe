@@ -5,11 +5,13 @@ import Button from '@/components/core/button'
 import React, { useState } from 'react'
 import { apiCourse } from '@/api/functions/api-course'
 import MintBtn from './mint-btn'
+import Router from 'next/router'
+import { COURSE_ID } from '@/constants/localStorage'
+
 type Props = {
     course: CoursePreview
 }
 const MyCourseCard = ({ course }: Props) => {
-    console.log("🚀 ~ file: my-course-card.tsx:10 ~ MyCourseCard ~ course", course)
     const [isLoading, setIsLoading] = useState(false)
     const [sendApprove, setSendApprove] = useState(false)
 
@@ -24,12 +26,10 @@ const MyCourseCard = ({ course }: Props) => {
         setIsLoading(true)
         try {
             const rs = await apiCourse.requestApprove({ id, notes: [] })
-            console.log("🚀 ~ file: my-course-card.tsx:26 ~ requestApprove ~ rs", rs)
             if (rs.success) {
                 setSendApprove(true)
             }
             setIsLoading(false)
-
         } catch (error) {
             setIsLoading(false)
             setSendApprove(true)
@@ -39,12 +39,13 @@ const MyCourseCard = ({ course }: Props) => {
     const mintCourse = async (id: string) => {
         // setCourseId(id)
     }
+    const goToUpdateCoursePage = () => {
+        localStorage.setItem(COURSE_ID, course._id)
+        Router.push(`/update-course/${course._id}/landing-page`)
+    }
 
     return (
-        <div
-            key={course._id}
-            className="bg-red-200 p-4 shadow-md"
-        >
+        <div key={course._id} className="bg-red-200 p-4 shadow-md">
             {/* <HorizontalCourseCard
                 key={course._id}
                 data={course}
@@ -58,57 +59,38 @@ const MyCourseCard = ({ course }: Props) => {
             </div>
             <div className="font-semibold text-lg mt-4">
                 <h1>{course.name}</h1>
-                <div className="font-light text-xs truncate">
-                    Author: You
-                </div>
+                <div className="font-light text-xs truncate">Author: You</div>
                 <div className="font-bold text-xl">{course.price | 0} USDT</div>
             </div>
-            <div
-                className={`flex justify-end gap-4 text-white mt-4`}
-            >
-                {
-                    !course.approved && (
-                        <Button
-                            className='flex items-center gap-4 p-1 text-sm'
-                            onClick={() =>
-                                requestApprove(course._id)
-                            }
-                            disabled={sendApprove || isLoading}
-                        >
-                            <span>Request Approve</span>
-                            {isLoading && <Loading className='!text-white' />}
-                        </Button>
-                    )
+            <div className={`flex justify-end gap-4 text-white mt-4`}>
+                {!course.approved && (
+                    <Button
+                        className="flex items-center gap-4 p-1 text-sm"
+                        onClick={() => requestApprove(course._id)}
+                        disabled={sendApprove || isLoading}
+                    >
+                        <span>Request Approve</span>
+                        {isLoading && <Loading className="!text-white" />}
+                    </Button>
+                )}
 
-                }
+                {course.approved && !course.courseId && (
+                    <MintBtn id={course._id} />
+                )}
 
-                {
-                    course.approved && !course.courseId && (
-                        <MintBtn id={course._id} />
-                    )
-
-                }
-
-                {
-                    course.approved && course.courseId && (
-                        <Button
-                            className='flex gap-4 p-1 text-sm'
-                            onClick={() =>
-                                alert('Coming soon')
-                            }
-                        >
-                            <span>View Detail</span>
-                            {isLoading && <Loading className='!text-white' />}
-                        </Button>
-                    )
-
-                }
+                {course.approved && course.courseId && (
+                    <Button
+                        className="flex gap-4 p-1 text-sm"
+                        onClick={() => alert('Coming soon')}
+                    >
+                        <span>View Detail</span>
+                        {isLoading && <Loading className="!text-white" />}
+                    </Button>
+                )}
 
                 <Button
-                    className='flex gap-4 p-1 text-sm'
-                    onClick={() =>
-                        alert("Coming soon")
-                    }
+                    className="flex gap-4 p-1 text-sm"
+                    onClick={() => goToUpdateCoursePage()}
                 >
                     <span>Edit</span>
                     {/* {isLoading && <Loading className='!text-white' />} */}

@@ -15,8 +15,7 @@ import { getEnrollStatusState } from '@/store/course/selectors'
 import EnrollBtn from './enroll-btn'
 export interface IPriceEnrollShareProps {
     price: number
-    className?: string
-    courseId?: number,
+    courseId?: number
     _id: string
 }
 
@@ -29,7 +28,6 @@ export default function PriceEnrollShare(props: IPriceEnrollShareProps) {
     // const { data: signer } = useSigner({
     //     chainId: goerli.id,
     // })
-
 
     // const { address } = useAccount()
     // const enrollCourse = async (courseId: number) => {
@@ -60,51 +58,45 @@ export default function PriceEnrollShare(props: IPriceEnrollShareProps) {
     //     })()
     // }, [ballance, address, signer])
 
-
-
     return (
-        <div className="flex justify-center mt-6">
+        <div>
             {false ? (
                 <div className="flex justify-center items-center h-20">
                     <Loading />
                 </div>
             ) : (
-                <div className={`${props.className}`}>
+                <div>
                     <div className="font-semibold text-[36px]">
                         {props.price + ' USDT'}
                     </div>
-                    <div className="flex items-center justify-center space-x-4 mt-3 mb-5">
-
-                        {
-                            isEnrolled === true ? (
-                                <Button
-                                    className="btn-primary w-full"
-                                    onClick={() => alert('Coming soon')}
-                                >
-                                    <div className="font-medium text-[20px]">
-                                        Learn
-                                    </div>
-                                </Button>
-                            ) : (
-                                // <Button
-                                //     className="btn-primary w-full"
-                                //     onClick={() => enrollCourse(Number(props.courseId))}
-                                // >
-                                //     <div className="font-medium text-[20px]">
-                                //         Enroll
-                                //     </div>
-                                // </Button>
-                                <EnrollBtn />
-                            )
-                        }
+                    <div className="flex items-center space-x-4 mt-3 mb-5">
+                        {isEnrolled === true ? (
+                            <Button
+                                className="w-max"
+                                onClick={() => alert('Coming soon')}
+                            >
+                                <div className="font-medium text-[20px]">
+                                    Learn
+                                </div>
+                            </Button>
+                        ) : (
+                            // <Button
+                            //     className="btn-primary w-full"
+                            //     onClick={() => enrollCourse(Number(props.courseId))}
+                            // >
+                            //     <div className="font-medium text-[20px]">
+                            //         Enroll
+                            //     </div>
+                            // </Button>
+                            <EnrollBtn />
+                        )}
                         <FontAwesomeIcon
                             icon={faShareNodes}
                             className="text-[20px] text-black rounded-full bg-white py-[14px] px-[16px] border border-black"
                         />
                     </div>
                 </div>
-            )
-            }
-        </div >
+            )}
+        </div>
     )
 }
