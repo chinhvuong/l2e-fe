@@ -110,7 +110,18 @@ export default function Header() {
     })
     const { mutate: upsertSections } = useUpsertSections({
         onError: () => {},
-        onSuccess: () => {},
+        onSuccess: (response) => {
+            courseLectures.forEach((item, index) =>
+                upsertLessons(
+                    item.map((item) => {
+                        const el: any = { ...item }
+                        delete el._id
+                        el.sectionId = response[index]._id
+                        return el
+                    }),
+                ),
+            )
+        },
     })
     const { mutate: upsertLessons } = useUpsertLessons({
         onError: () => {},
@@ -146,8 +157,13 @@ export default function Header() {
         if (!isLoading) {
             setIsLoading(true)
             updateCourse(courseDetail)
-            upsertSections(courseSections)
-            courseLectures.forEach((item) => upsertLessons(item))
+            upsertSections(
+                courseSections.map((item) => {
+                    const el: any = { ...item }
+                    delete el._id
+                    return el
+                }),
+            )
         }
     }
 

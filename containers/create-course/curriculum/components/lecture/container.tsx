@@ -20,17 +20,21 @@ export const Container = ({
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        const cardsPlacedInStore = cardsFromStore.find((item) => {
-            if (item[0].sectionId === sectionId) {
-                return item
+        console.log('useEffect cardsFromStore', cardsFromStore)
+        if (cardsFromStore.length !== 0 && cardsFromStore[0].length !== 0) {
+            console.log('useEffect', cardsFromStore)
+            const cardsPlacedInStore = cardsFromStore.find((item) => {
+                if (item[0].sectionId === sectionId) {
+                    return item
+                }
+            })
+            if (
+                cardsPlacedInStore !== undefined &&
+                !arraysEqual(cards, cardsPlacedInStore)
+            ) {
+                console.log('arraysEqual', cards, cardsPlacedInStore)
+                setCards(cardsPlacedInStore)
             }
-        })
-        if (
-            cardsPlacedInStore !== undefined &&
-            !arraysEqual(cards, cardsPlacedInStore)
-        ) {
-            console.log('arraysEqual', cards, cardsPlacedInStore)
-            setCards(cardsPlacedInStore)
         }
     }, [cardsFromStore])
 
@@ -45,11 +49,9 @@ export const Container = ({
         })
 
     const addCard = () => {
-        // if (
-        //     cardsFromStore.every((item: CurriculumLecture) => item.name !== '')
-        // ) {
-        //     dispatch(addItem(sectionId))
-        // }
+        if (cards.every((item: CurriculumLecture) => item.name !== '')) {
+            dispatch(addItem(sectionId))
+        }
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {

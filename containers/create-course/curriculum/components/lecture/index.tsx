@@ -1,5 +1,8 @@
 import { RootState } from '@/store'
-import { CurriculumLecture } from '@/store/course/curriculum/types'
+import {
+    CurriculumLecture,
+    DeleteLecture,
+} from '@/store/course/curriculum/types'
 import { TInputUpdate } from '@/store/course/types'
 import {
     ActionCreatorWithoutPayload,
@@ -12,7 +15,7 @@ export interface ILectureProps {
     sectionId: string
     addItem: ActionCreatorWithPayload<string, string>
     updateItem: ActionCreatorWithPayload<CurriculumLecture, string>
-    deleteItem: ActionCreatorWithPayload<number, string>
+    deleteItem: ActionCreatorWithPayload<DeleteLecture, string>
     getItems: (state: RootState) => CurriculumLecture[][]
     getCardDetail: (
         id: string,
