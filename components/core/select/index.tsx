@@ -28,7 +28,6 @@ export default function Select({
     const [selectedItem, setSelectedItem] = useState(
         selected === '' ? placeholder : selected,
     )
-    console.log(345345, selectedItem === placeholder)
     const [openSelect, setOpenSelect] = useState(false)
     const clickOutSideRef = useRef(null)
 

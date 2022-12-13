@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { ReactChild } from 'react'
+import { ToastContainer } from 'react-toastify'
 import Footer from './components/footer'
 import Header from './main-layout/header'
 const Layout = ({ children }: { children: ReactChild }) => {
@@ -18,6 +19,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
                     className="w-full app-transition main-transition h-full bg-white"
                     id="content"
                 >
+                    <ToastContainer />
                     {children}
                 </div>
             </main>

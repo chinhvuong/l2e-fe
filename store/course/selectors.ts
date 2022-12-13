@@ -52,6 +52,10 @@ export const getDescription = (state: RootState) => {
     return state.courseDetail.courseDetail.description
 }
 
+export const getThumbnail = (state: RootState) => {
+    return state.courseDetail.courseDetail.thumbnail
+}
+
 export const getGoals = (state: RootState) => {
     return state.courseDetail.courseDetail.goals
 }
@@ -82,6 +86,10 @@ export const getEnrollStatusState = (state: RootState) => {
 
 export const getSaveCourseState = (state: RootState) => {
     return state.courseDetail.isSaved
+}
+
+export const getCreatingCourseState = (state: RootState) => {
+    return state.courseDetail.isCreatingCourse
 }
 
 export const getCanCreateCourseState = (state: RootState) => {

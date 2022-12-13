@@ -28,7 +28,7 @@ export interface CardProps {
     index: number
     moveCard: Function
     updateCard: ActionCreatorWithPayload<TInputUpdate, string>
-    deleteCard: ActionCreatorWithPayload<number, string>
+    deleteCard: ActionCreatorWithPayload<string, string>
     getCards: (state: RootState) => CurriculumSection[]
     getCardDetail: (id: string) => (state: RootState) => CurriculumSection
 }
@@ -129,7 +129,7 @@ export const Card: FC<CardProps> = ({
     const opacity = isDragging ? 0 : 1
     drag(drop(ref))
 
-    const handleDeleteCard = (id: number) => {
+    const handleDeleteCard = (id: string) => {
         if (curriculum.length > 1) {
             dispatch(deleteCard(id))
         }
@@ -166,7 +166,7 @@ export const Card: FC<CardProps> = ({
                                             ? 'cursor-pointer'
                                             : 'cursor-not-allowed'
                                     }`}
-                                    onClick={() => handleDeleteCard(index)}
+                                    onClick={() => handleDeleteCard(id)}
                                 />
                             </div>
                             <div ref={ref} data-handler-id={handlerId}>

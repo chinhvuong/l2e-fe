@@ -15,10 +15,11 @@ import {
     GetAllMyEnrollCoursesResponse,
     SectionResponseItem,
     LessonResponseItem,
+    UploadOneFileResponse,
 } from '../dto/course.dto'
 
 export const apiCourse = {
-    uploadSingleFile: (payload: FormData): Promise<string> =>
+    uploadSingleFile: (payload: FormData): Promise<UploadOneFileResponse> =>
         callAPI('post', apiPath.UPLOAD_SINGLE_FILE, payload, {
             headers: {
                 'Content-Type': 'multipart/form-data',

@@ -1,3 +1,4 @@
+import { UploadOneFileResponse } from '@/api/dto/course.dto'
 import { useCourse } from '@/api/hooks/useCourse'
 import { ReactNode, ReactText, useEffect, useState } from 'react'
 import Button from '../button'
@@ -18,8 +19,8 @@ export default function UploadPreview(props: IUploadPreviewProps) {
     const { useUploadSingleFile } = useCourse()
     const { mutate: uploadFile } = useUploadSingleFile({
         onError: () => {},
-        onSuccess: (response) => {
-            props.setFileLink && props.setFileLink(response)
+        onSuccess: (response: UploadOneFileResponse) => {
+            props.setFileLink && props.setFileLink(response.url)
         },
     })
 

@@ -29,7 +29,6 @@ export default function CurriculumContainer() {
     useEffect(() => {
         if (isNewCourseDetail) {
         }
-        console.log('useEffect courseDetail', courseDetail)
         if (courseDetail.length > 0) {
             setIsLoading(false)
         }

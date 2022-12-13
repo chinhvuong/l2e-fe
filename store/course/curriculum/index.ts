@@ -64,19 +64,22 @@ export const courseCurriculumSlice = createSlice({
                 }
             }
         },
-        updateOrderCurriculumSection(state, action: PayloadAction<string[]>) {
-            const prevState = [...state.sections]
-            for (let i = 0; i < state.sections.length; i++) {
-                state.sections[i] =
-                    prevState.find((item) => {
-                        if (item._id === action.payload[i]) {
-                            return item
-                        }
-                    }) ?? prevState[i]
-            }
+        updateOrderCurriculumSection(
+            state,
+            action: PayloadAction<CurriculumSection[]>,
+        ) {
+            state.sections = [...action.payload]
         },
-        deleteCurriculumSection(state, action: PayloadAction<number>) {
-            state.sections.splice(action.payload, 1)
+        deleteCurriculumSection(state, action: PayloadAction<string>) {
+            const sectionIndex = state.sections.findIndex(
+                (item) => item._id === action.payload,
+            )
+            state.sections.splice(sectionIndex, 1)
+
+            const lectureIndex = state.lectures.findIndex(
+                (item) => item[0].sectionId === action.payload,
+            )
+            state.lectures.splice(lectureIndex, 1)
         },
         addCurriculumLecture(state, action: PayloadAction<string>) {
             state.lectures.forEach((item) => {
@@ -98,7 +101,6 @@ export const courseCurriculumSlice = createSlice({
             state,
             action: PayloadAction<CurriculumLecture>,
         ) {
-            console.log('updateCurriculumLecture', action.payload)
             state.lectures.forEach((item) => {
                 if (item[0].sectionId === action.payload.sectionId) {
                     item.forEach((el) => {
@@ -115,17 +117,15 @@ export const courseCurriculumSlice = createSlice({
                 }
             })
         },
-        // updateOrderCurriculumLecture(state, action: PayloadAction<string[]>) {
-        //     const prevState = [...state.lectures]
-        //     for (let i = 0; i < state.lectures.length; i++) {
-        //         state.lectures[i] =
-        //             prevState.find((item) => {
-        //                 if (item._id === action.payload[i]) {
-        //                     return item
-        //                 }
-        //             }) ?? prevState[i]
-        //     }
-        // },
+        updateOrderCurriculumLecture(
+            state,
+            action: PayloadAction<CurriculumLecture[]>,
+        ) {
+            const index = state.lectures.findIndex(
+                (item) => item[0].sectionId === action.payload[0].sectionId,
+            )
+            state.lectures[index] = [...action.payload]
+        },
         deleteCurriculumLecture(state, action: PayloadAction<DeleteLecture>) {
             const index = state.lectures.findIndex(
                 (item) => item[0].sectionId === action.payload.sectionId,
@@ -137,7 +137,11 @@ export const courseCurriculumSlice = createSlice({
             action: PayloadAction<CurriculumLecture[]>,
         ) {
             // call in loop to gradually update lectures for each section
-            state.lectures.push(action.payload)
+            if (action.payload.length === 0) {
+                state.lectures = []
+            } else {
+                state.lectures.push(action.payload)
+            }
         },
     },
 })
@@ -151,7 +155,7 @@ export const {
     updateAllCurriculumLectures,
     addCurriculumLecture,
     updateCurriculumLecture,
-    // updateOrderCurriculumLecture,
+    updateOrderCurriculumLecture,
     deleteCurriculumLecture,
 } = courseCurriculumSlice.actions
 

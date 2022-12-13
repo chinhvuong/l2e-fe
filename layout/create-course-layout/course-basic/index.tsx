@@ -1,4 +1,6 @@
 import Loading from '@/components/core/animate/loading'
+import { useAppSelector } from '@/hooks'
+import { getCreatingCourseState } from '@/store/course/selectors'
 import { ReactChild } from 'react'
 
 export interface ICourseBasicCreateLayoutProps {}
@@ -8,6 +10,8 @@ export default function CourseBasicCreateLayout({
 }: {
     children: ReactChild
 }) {
+    const isLoading = useAppSelector(getCreatingCourseState)
+
     return (
         <div>
             <main id="main">
@@ -16,11 +20,13 @@ export default function CourseBasicCreateLayout({
                     id="content"
                 >
                     <div className="flex justify-center w-full">
-                        {/* <div className="bg-slate-400 bg-opacity-40 flex justify-center items-center absolute z-10 w-full h-full">
-                            <div className="flex justify-center w-full">
-                                <Loading />
+                        {isLoading && (
+                            <div className="bg-slate-400 bg-opacity-40 flex justify-center items-center absolute z-10 w-full h-full">
+                                <div className="flex justify-center w-full">
+                                    <Loading />
+                                </div>
                             </div>
-                        </div> */}
+                        )}
                         <div className="w-full">{children}</div>
                     </div>
                 </div>

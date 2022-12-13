@@ -88,6 +88,7 @@ export default function Header() {
                 dispatch(updateAllRequirements(response.requirements))
             dispatch(updateGetCourseDetailState(true))
             setIsLoading(false)
+            dispatch(updateAllCurriculumLectures([]))
             refetchSections()
         },
     })
@@ -135,7 +136,6 @@ export default function Header() {
             {},
         )
             .then((response) => {
-                console.log('updateAllCurriculumLectures', response.data)
                 dispatch(updateAllCurriculumLectures([...response.data]))
             })
             .catch((er) => console.log(er))

@@ -1,5 +1,6 @@
 import AddMoreButton from '@/components/core/button/add-button'
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import { updateOrderCurriculumSection } from '@/store/course/curriculum'
 import { CurriculumSection } from '@/store/course/curriculum/types'
 import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
@@ -15,7 +16,6 @@ export const Container = ({
 }: ISectionProps) => {
     const cardsFromStore = useAppSelector(getItems)
     const [cards, setCards] = useState(cardsFromStore)
-    const [cardsOrder, setCardsOrder] = useState(cards.map((item) => item._id))
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -29,8 +29,9 @@ export const Container = ({
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
+        let newCards: CurriculumSection[] = []
         setCards((prevCards: CurriculumSection[]) => {
-            const newCards = [...prevCards]
+            newCards = [...prevCards]
 
             // dragCard is card we are dragging
             const dragCard = newCards[dragIndex]
@@ -42,6 +43,7 @@ export const Container = ({
             newCards.splice(hoverIndex, 0, dragCard)
             return newCards
         })
+        dispatch(updateOrderCurriculumSection(newCards))
     }, [])
 
     const renderCard = useCallback((card, index: number) => {

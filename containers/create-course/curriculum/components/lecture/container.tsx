@@ -1,5 +1,6 @@
 import AddMoreButton from '@/components/core/button/add-button'
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import { updateAllCurriculumLectures } from '@/store/course/curriculum'
 import { CurriculumLecture } from '@/store/course/curriculum/types'
 import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
@@ -16,13 +17,10 @@ export const Container = ({
 }: ILectureProps) => {
     const cardsFromStore = useAppSelector(getItems)
     const [cards, setCards] = useState<CurriculumLecture[]>([])
-    const [cardsOrder, setCardsOrder] = useState(cards.map((item) => item._id))
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        console.log('useEffect cardsFromStore', cardsFromStore)
         if (cardsFromStore.length !== 0 && cardsFromStore[0].length !== 0) {
-            console.log('useEffect', cardsFromStore)
             const cardsPlacedInStore = cardsFromStore.find((item) => {
                 if (item[0].sectionId === sectionId) {
                     return item
@@ -32,7 +30,6 @@ export const Container = ({
                 cardsPlacedInStore !== undefined &&
                 !arraysEqual(cards, cardsPlacedInStore)
             ) {
-                console.log('arraysEqual', cards, cardsPlacedInStore)
                 setCards(cardsPlacedInStore)
             }
         }
@@ -55,8 +52,9 @@ export const Container = ({
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
+        let newCards: CurriculumLecture[] = []
         setCards((prevCards: CurriculumLecture[]) => {
-            const newCards = [...prevCards]
+            newCards = [...prevCards]
 
             // dragCard is card we are dragging
             const dragCard = newCards[dragIndex]
@@ -68,6 +66,7 @@ export const Container = ({
             newCards.splice(hoverIndex, 0, dragCard)
             return newCards
         })
+        dispatch(updateAllCurriculumLectures(newCards))
     }, [])
 
     const renderCard = useCallback((card, index: number) => {

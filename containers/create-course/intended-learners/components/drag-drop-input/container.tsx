@@ -34,11 +34,6 @@ export const Container = ({
     useEffect(() => {
         if (isUpdate) {
             if (name === 'What you will learn') {
-                console.log(
-                    'What you will learn',
-                    updateItemToPayload,
-                    cardsFromStore.map((item) => item.content),
-                )
                 dispatch(
                     updateItemToPayload(
                         cardsFromStore.map((item) => item.content),
@@ -46,11 +41,6 @@ export const Container = ({
                 )
                 dispatch(updateWhatYouWillLearnState(false))
             } else if (name === 'Requirements') {
-                console.log(
-                    'Requirements',
-                    updateItemToPayload,
-                    cardsFromStore.map((item) => item.content),
-                )
                 dispatch(
                     updateItemToPayload(
                         cardsFromStore.map((item) => item.content),

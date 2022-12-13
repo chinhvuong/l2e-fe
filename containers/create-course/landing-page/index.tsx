@@ -49,7 +49,7 @@ export default function LandingPageContainer() {
     )
     const [description, setDescription] = useState<string>('')
     const [thumbnail, setThumbnail] = useState<string>(
-        '/images/placeholder.jpeg',
+        courseDetail.thumbnail ?? '/images/placeholder.jpeg',
     )
     // const [promotionalVideo, setPromotionalVideo] = useState<string>(
     //     '/images/placeholder.jpeg',

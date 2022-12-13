@@ -9,6 +9,8 @@ import {
     ActionCreatorWithPayload,
 } from '@reduxjs/toolkit'
 import * as React from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Container } from './container'
 
 export interface ILectureProps {
@@ -32,15 +34,15 @@ export default function Lecture({
     getCardDetail,
 }: ILectureProps) {
     return (
-        // <DndProvider backend={HTML5Backend}>
-        <Container
-            sectionId={sectionId}
-            addItem={addItem}
-            updateItem={updateItem}
-            deleteItem={deleteItem}
-            getItems={getItems}
-            getCardDetail={getCardDetail}
-        />
-        // </DndProvider>
+        <DndProvider backend={HTML5Backend}>
+            <Container
+                sectionId={sectionId}
+                addItem={addItem}
+                updateItem={updateItem}
+                deleteItem={deleteItem}
+                getItems={getItems}
+                getCardDetail={getCardDetail}
+            />
+        </DndProvider>
     )
 }

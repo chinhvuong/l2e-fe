@@ -61,14 +61,12 @@ export const Card: FC<CardProps> = ({
     const updateLectureTitle = (value: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.name = value
-        console.log('updateCardDetail', lectureDetail, newDetail)
         dispatch(updateCard(newDetail))
     }
 
     const updateLectureDescription = (value: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.description = value
-        console.log('updateCardDetail', lectureDetail, newDetail)
         dispatch(updateCard(newDetail))
     }
 

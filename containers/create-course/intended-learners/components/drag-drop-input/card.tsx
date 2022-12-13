@@ -129,7 +129,6 @@ export const Card: FC<CardProps> = ({
 
     const handleDeleteCard = (id: number) => {
         if (cardContent.length > defaultInputBlock) {
-            console.log('handleDeleteCard', id)
             dispatch(deleteCard(id))
             if (name === 'What you will learn') {
                 dispatch(updateWhatYouWillLearnState(true))

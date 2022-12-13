@@ -1,9 +1,4 @@
-import {
-    LessonResponseItem,
-    SectionResponseItem,
-    TLesson,
-    TSection,
-} from '@/api/dto/course.dto'
+import { LessonResponseItem, SectionResponseItem } from '@/api/dto/course.dto'
 import { useCourse } from '@/api/hooks/useCourse'
 import Button from '@/components/core/button'
 import { Category } from '@/constants/interfaces'
@@ -12,13 +7,13 @@ import {
     CATEGORY_NAME_LIST,
     COURSE_ID,
 } from '@/constants/localStorage'
-import { useAppDispatch, useAppSelector } from '@/hooks'
+import { useAppDispatch } from '@/hooks'
 import Logo from '@/layout/main-layout/header/logo'
-import { updateCanCreateCourseState, updateCourseDetail } from '@/store/course'
 import {
-    updateAllCurriculumLectures,
-    updateAllCurriculumSections,
-} from '@/store/course/curriculum'
+    updateCanCreateCourseState,
+    updateCourseDetail,
+    updateCreatingCourseState,
+} from '@/store/course'
 import {
     CurriculumLecture,
     CurriculumSection,
@@ -27,7 +22,6 @@ import {
     updateAllRequirements,
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
-import { getCanCreateCourseState } from '@/store/course/selectors'
 import { convertToCategoryID } from '@/utils'
 import Router from 'next/router'
 import { useState } from 'react'
@@ -97,7 +91,6 @@ export default function CourseBasicCreateContainer() {
                     },
                 ])
             })
-            dispatch(updateAllCurriculumSections(sectionsBasicInfo))
         },
     })
 
@@ -184,6 +177,7 @@ export default function CourseBasicCreateContainer() {
             }
         } else {
             if (courseName !== '' && courseCategory !== '') {
+                dispatch(updateCreatingCourseState(true))
                 createCourse({
                     name: courseName,
                     category: convertToCategoryID(data?.data, courseCategory),

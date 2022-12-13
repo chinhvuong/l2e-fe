@@ -13,7 +13,7 @@ import { Container } from './container'
 export interface ISectionProps {
     addItem: ActionCreatorWithoutPayload<string>
     updateItem: ActionCreatorWithPayload<TInputUpdate, string>
-    deleteItem: ActionCreatorWithPayload<number, string>
+    deleteItem: ActionCreatorWithPayload<string, string>
     getItems: (state: RootState) => CurriculumSection[]
     getItemDetail: (id: string) => (state: RootState) => CurriculumSection
 }
