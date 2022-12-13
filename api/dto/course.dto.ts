@@ -274,3 +274,7 @@ export interface GetMintSignatureResponse {
     s: string
     nonce: number
 }
+
+export interface UploadOneFileResponse {
+    url: string
+}

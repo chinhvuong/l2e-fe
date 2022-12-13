@@ -1,11 +1,22 @@
 import { RootState } from '@/store'
+import { CurriculumLecture } from './types'
 
 export const getCurriculumSectionsForm = (state: RootState) => {
     return state.curriculum.sections
 }
 
 export const getCurriculumLecturesForm = (state: RootState) => {
-    return state.curriculum.lectures
+    const lectures: CurriculumLecture[][] = []
+    if (state.curriculum.lectures.length !== 0) {
+        state.curriculum.sections.forEach((item) => {
+            state.curriculum.lectures.forEach((el) => {
+                if (item._id === el[0].sectionId) {
+                    lectures.push(el)
+                }
+            })
+        })
+    }
+    return lectures
 }
 
 export const getCurriculumSectionDetail =
@@ -35,11 +46,6 @@ export const getInputContentCurriculumSection =
 
 export const getCurriculumLecturesOfSection =
     (sectionId: string) => (state: RootState) => {
-        console.log(
-            'getCurriculumLecturesOfSection',
-            state.curriculum.lectures,
-            sectionId,
-        )
         state.curriculum.lectures.forEach((item) => {
             if (item[0].sectionId === sectionId) {
                 return item
@@ -56,7 +62,6 @@ export const getCurriculumLectureDetail =
                 result = item.find((el) => el._id === id)
             }
         })
-        console.log('result', result)
         return (
             result ?? {
                 _id: 'error',

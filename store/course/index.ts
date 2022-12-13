@@ -99,6 +99,7 @@ const initialState: CourseDetailState = {
     isNewData: false,
     isEnroll: false,
     isSaved: false,
+    isCreatingCourse: false,
     canCreateCourse: true,
 }
 
@@ -147,6 +148,9 @@ export const courseDetailSlice = createSlice({
         updateSaveCourseState(state, action: PayloadAction<boolean>) {
             state.isSaved = action.payload
         },
+        updateCreatingCourseState(state, action: PayloadAction<boolean>) {
+            state.isCreatingCourse = action.payload
+        },
         updateCanCreateCourseState(state, action: PayloadAction<boolean>) {
             state.canCreateCourse = action.payload
         },
@@ -167,6 +171,7 @@ export const {
     updateGetCourseDetailState,
     updateEnrollStatus,
     updateSaveCourseState,
+    updateCreatingCourseState,
     updateCanCreateCourseState,
 } = courseDetailSlice.actions
 

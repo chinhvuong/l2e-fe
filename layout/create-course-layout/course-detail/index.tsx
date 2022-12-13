@@ -1,8 +1,15 @@
+import Loading from '@/components/core/animate/loading'
 import Button from '@/components/core/button'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import Footer from '@/layout/components/footer'
-import { updateSaveCourseState } from '@/store/course'
-import { getSaveCourseState } from '@/store/course/selectors'
+import {
+    updateCreatingCourseState,
+    updateSaveCourseState,
+} from '@/store/course'
+import {
+    getCreatingCourseState,
+    getSaveCourseState,
+} from '@/store/course/selectors'
 import React, { ReactChild, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -15,9 +22,11 @@ export default function CreateCourseLayout({
     children: ReactChild
 }) {
     const isSaved = useAppSelector(getSaveCourseState)
+    const isLoading = useAppSelector(getCreatingCourseState)
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (isSaved) {
+            dispatch(updateSaveCourseState(false))
             toast.success('Cập nhật khóa học thành công!', {
                 position: 'top-center',
                 autoClose: 3000,
@@ -26,9 +35,12 @@ export default function CreateCourseLayout({
                 progress: undefined,
                 theme: 'light',
             })
-            dispatch(updateSaveCourseState(false))
         }
     }, [isSaved])
+
+    useEffect(() => {
+        dispatch(updateCreatingCourseState(false))
+    }, [isLoading])
 
     return (
         <div>
@@ -41,6 +53,13 @@ export default function CreateCourseLayout({
                     <div className="flex pt-[120px] w-[1200px] space-x-7">
                         <ToastContainer />
                         <Sidebar />
+                        {isLoading && (
+                            <div className="bg-slate-400 bg-opacity-40 flex justify-center items-center absolute z-10 w-full h-full">
+                                <div className="flex justify-center w-full">
+                                    <Loading />
+                                </div>
+                            </div>
+                        )}
                         <div className="w-full h-full bg-white border shadow-xl">
                             {children}
                         </div>

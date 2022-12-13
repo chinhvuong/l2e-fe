@@ -3,6 +3,7 @@ import {
     CourseCurriculumState,
     CurriculumLecture,
     CurriculumSection,
+    DeleteLecture,
 } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { TInputUpdate } from '../types'
@@ -63,70 +64,22 @@ export const courseCurriculumSlice = createSlice({
                 }
             }
         },
-        updateOrderCurriculumSection(state, action: PayloadAction<string[]>) {
-            const prevState = [...state.sections]
-            for (let i = 0; i < state.sections.length; i++) {
-                state.sections[i] =
-                    prevState.find((item) => {
-                        if (item._id === action.payload[i]) {
-                            return item
-                        }
-                    }) ?? prevState[i]
-            }
-        },
-        deleteCurriculumSection(state, action: PayloadAction<number>) {
-            state.sections.splice(action.payload, 1)
-        },
-        // addCurriculumLecture(state, action: PayloadAction<string>) {
-        //     state.lectures.push({
-        //         _id: uuidv4(),
-        //         name: '',
-        //         description: '',
-        //         media: '',
-        //         mediaType: '',
-        //         quizzes: [],
-        //         sectionId: action.payload,
-        //         mode: '',
-        //     })
-        // },
-        // updateCurriculumLecture(
-        //     state,
-        //     action: PayloadAction<CurriculumLecture>,
-        // ) {
-        //     for (let i = 0; i < state.lectures.length; i++) {
-        //         if (state.lectures[i]._id === action.payload._id) {
-        //             console.log('updateCurriculumLecture')
-        //             state.lectures[i].name = action.payload.name
-        //             state.lectures[i].description = action.payload.description
-        //             state.lectures[i].media = action.payload.media
-        //             state.lectures[i].mediaType = action.payload.mediaType
-        //             state.lectures[i].quizzes = action.payload.quizzes
-        //             state.lectures[i].sectionId = action.payload.sectionId
-        //             state.lectures[i].mode = action.payload.mode
-        //             break
-        //         }
-        //     }
-        // },
-        // updateOrderCurriculumLecture(state, action: PayloadAction<string[]>) {
-        //     const prevState = [...state.lectures]
-        //     for (let i = 0; i < state.lectures.length; i++) {
-        //         state.lectures[i] =
-        //             prevState.find((item) => {
-        //                 if (item._id === action.payload[i]) {
-        //                     return item
-        //                 }
-        //             }) ?? prevState[i]
-        //     }
-        // },
-        deleteCurriculumLecture(state, action: PayloadAction<number>) {
-            state.lectures.splice(action.payload, 1)
-        },
-        updateAllCurriculumLectures(
+        updateOrderCurriculumSection(
             state,
-            action: PayloadAction<CurriculumLecture[]>,
+            action: PayloadAction<CurriculumSection[]>,
         ) {
-            // call in loop to gradually update lectures for each section
-            state.lectures.push(action.payload)
+            state.sections = [...action.payload]
+        },
+        deleteCurriculumSection(state, action: PayloadAction<string>) {
+            const sectionIndex = state.sections.findIndex(
+                (item) => item._id === action.payload,
+            )
+            state.sections.splice(sectionIndex, 1)
+
+            const lectureIndex = state.lectures.findIndex(
+                (item) => item[0].sectionId === action.payload,
+            )
+            state.lectures.splice(lectureIndex, 1)
         },
         addCurriculumLecture(state, action: PayloadAction<string>) {
             state.lectures.forEach((item) => {
@@ -148,7 +101,6 @@ export const courseCurriculumSlice = createSlice({
             state,
             action: PayloadAction<CurriculumLecture>,
         ) {
-            console.log('updateCurriculumLecture', action.payload)
             state.lectures.forEach((item) => {
                 if (item[0].sectionId === action.payload.sectionId) {
                     item.forEach((el) => {
@@ -165,6 +117,32 @@ export const courseCurriculumSlice = createSlice({
                 }
             })
         },
+        updateOrderCurriculumLecture(
+            state,
+            action: PayloadAction<CurriculumLecture[]>,
+        ) {
+            const index = state.lectures.findIndex(
+                (item) => item[0].sectionId === action.payload[0].sectionId,
+            )
+            state.lectures[index] = [...action.payload]
+        },
+        deleteCurriculumLecture(state, action: PayloadAction<DeleteLecture>) {
+            const index = state.lectures.findIndex(
+                (item) => item[0].sectionId === action.payload.sectionId,
+            )
+            state.lectures[index].splice(action.payload.index, 1)
+        },
+        updateAllCurriculumLectures(
+            state,
+            action: PayloadAction<CurriculumLecture[]>,
+        ) {
+            // call in loop to gradually update lectures for each section
+            if (action.payload.length === 0) {
+                state.lectures = []
+            } else {
+                state.lectures.push(action.payload)
+            }
+        },
     },
 })
 
@@ -177,7 +155,7 @@ export const {
     updateAllCurriculumLectures,
     addCurriculumLecture,
     updateCurriculumLecture,
-    // updateOrderCurriculumLecture,
+    updateOrderCurriculumLecture,
     deleteCurriculumLecture,
 } = courseCurriculumSlice.actions
 

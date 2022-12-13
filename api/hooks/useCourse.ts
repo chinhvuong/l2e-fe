@@ -18,6 +18,7 @@ import {
     LessonRequestItem,
     SectionResponseItem,
     LessonResponseItem,
+    UploadOneFileResponse,
 } from '../dto/course.dto'
 
 export const useCourse = () => {
@@ -26,7 +27,7 @@ export const useCourse = () => {
             (body: FormData) => apiCourse.uploadSingleFile(body),
             {
                 onError: (error) => onError(error),
-                onSuccess: async (response: string) => {
+                onSuccess: async (response: UploadOneFileResponse) => {
                     if (response) {
                         onSuccess(response)
                     }

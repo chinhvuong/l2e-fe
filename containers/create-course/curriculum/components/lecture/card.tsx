@@ -8,7 +8,10 @@ import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { CurriculumLecture } from '@/store/course/curriculum/types'
+import {
+    CurriculumLecture,
+    DeleteLecture,
+} from '@/store/course/curriculum/types'
 import { RootState } from '@/store'
 import '@/styles/animations.scss'
 import MainContent from './main-content'
@@ -20,7 +23,7 @@ export interface CardProps {
     index: number
     moveCard: Function
     updateCard: ActionCreatorWithPayload<CurriculumLecture, string>
-    deleteCard: ActionCreatorWithPayload<number, string>
+    deleteCard: ActionCreatorWithPayload<DeleteLecture, string>
     getCards: (state: RootState) => CurriculumLecture[][]
     getCardDetail: (
         id: string,
@@ -58,14 +61,12 @@ export const Card: FC<CardProps> = ({
     const updateLectureTitle = (value: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.name = value
-        console.log('updateCardDetail', lectureDetail, newDetail)
         dispatch(updateCard(newDetail))
     }
 
     const updateLectureDescription = (value: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.description = value
-        console.log('updateCardDetail', lectureDetail, newDetail)
         dispatch(updateCard(newDetail))
     }
 
@@ -146,7 +147,7 @@ export const Card: FC<CardProps> = ({
 
     const handleDeleteCard = (id: number) => {
         if (curriculum.length > 1) {
-            dispatch(deleteCard(id))
+            dispatch(deleteCard({ sectionId: sectionId, index: id }))
         }
     }
 

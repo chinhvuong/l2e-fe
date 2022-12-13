@@ -88,6 +88,7 @@ export default function Header() {
                 dispatch(updateAllRequirements(response.requirements))
             dispatch(updateGetCourseDetailState(true))
             setIsLoading(false)
+            dispatch(updateAllCurriculumLectures([]))
             refetchSections()
         },
     })
@@ -110,7 +111,18 @@ export default function Header() {
     })
     const { mutate: upsertSections } = useUpsertSections({
         onError: () => {},
-        onSuccess: () => {},
+        onSuccess: (response) => {
+            courseLectures.forEach((item, index) =>
+                upsertLessons(
+                    item.map((item) => {
+                        const el: any = { ...item }
+                        delete el._id
+                        el.sectionId = response[index]._id
+                        return el
+                    }),
+                ),
+            )
+        },
     })
     const { mutate: upsertLessons } = useUpsertLessons({
         onError: () => {},
@@ -124,7 +136,6 @@ export default function Header() {
             {},
         )
             .then((response) => {
-                console.log('updateAllCurriculumLectures', response.data)
                 dispatch(updateAllCurriculumLectures([...response.data]))
             })
             .catch((er) => console.log(er))
@@ -146,8 +157,13 @@ export default function Header() {
         if (!isLoading) {
             setIsLoading(true)
             updateCourse(courseDetail)
-            upsertSections(courseSections)
-            courseLectures.forEach((item) => upsertLessons(item))
+            upsertSections(
+                courseSections.map((item) => {
+                    const el: any = { ...item }
+                    delete el._id
+                    return el
+                }),
+            )
         }
     }
 

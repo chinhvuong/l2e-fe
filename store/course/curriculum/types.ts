@@ -26,3 +26,8 @@ export type TInputUpdateLecture = {
     id: string
     content: string
 }
+
+export type DeleteLecture = {
+    sectionId: string
+    index: number
+}

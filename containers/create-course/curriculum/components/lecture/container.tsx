@@ -1,5 +1,6 @@
 import AddMoreButton from '@/components/core/button/add-button'
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import { updateAllCurriculumLectures } from '@/store/course/curriculum'
 import { CurriculumLecture } from '@/store/course/curriculum/types'
 import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
@@ -16,21 +17,21 @@ export const Container = ({
 }: ILectureProps) => {
     const cardsFromStore = useAppSelector(getItems)
     const [cards, setCards] = useState<CurriculumLecture[]>([])
-    const [cardsOrder, setCardsOrder] = useState(cards.map((item) => item._id))
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        const cardsPlacedInStore = cardsFromStore.find((item) => {
-            if (item[0].sectionId === sectionId) {
-                return item
+        if (cardsFromStore.length !== 0 && cardsFromStore[0].length !== 0) {
+            const cardsPlacedInStore = cardsFromStore.find((item) => {
+                if (item[0].sectionId === sectionId) {
+                    return item
+                }
+            })
+            if (
+                cardsPlacedInStore !== undefined &&
+                !arraysEqual(cards, cardsPlacedInStore)
+            ) {
+                setCards(cardsPlacedInStore)
             }
-        })
-        if (
-            cardsPlacedInStore !== undefined &&
-            !arraysEqual(cards, cardsPlacedInStore)
-        ) {
-            console.log('arraysEqual', cards, cardsPlacedInStore)
-            setCards(cardsPlacedInStore)
         }
     }, [cardsFromStore])
 
@@ -45,16 +46,15 @@ export const Container = ({
         })
 
     const addCard = () => {
-        // if (
-        //     cardsFromStore.every((item: CurriculumLecture) => item.name !== '')
-        // ) {
-        //     dispatch(addItem(sectionId))
-        // }
+        if (cards.every((item: CurriculumLecture) => item.name !== '')) {
+            dispatch(addItem(sectionId))
+        }
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
+        let newCards: CurriculumLecture[] = []
         setCards((prevCards: CurriculumLecture[]) => {
-            const newCards = [...prevCards]
+            newCards = [...prevCards]
 
             // dragCard is card we are dragging
             const dragCard = newCards[dragIndex]
@@ -66,6 +66,7 @@ export const Container = ({
             newCards.splice(hoverIndex, 0, dragCard)
             return newCards
         })
+        dispatch(updateAllCurriculumLectures(newCards))
     }, [])
 
     const renderCard = useCallback((card, index: number) => {
