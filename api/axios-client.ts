@@ -58,15 +58,22 @@ export const callAPI = async (
 ): Promise<AxiosResponse<any, any> | any> => {
     axiosInstance.defaults.baseURL = baseURL
 
-    const res = axiosInstance[method](path, body, config)
-    // switch (method) {
-    //     case 'get':
-    //         // in case GET method: body is config
-    //         res = axiosInstance[method](path, body || config)
-    //         break
-    //     default:
-    //         res = axiosInstance[method](path, body, config)
-    // }
+    // const res = axiosInstance[method](path, body, config)
+
+    let res = null
+
+    switch (method) {
+        case 'get':
+            res = axiosInstance({ url: path, method: method, data: body })
+            break
+        default:
+            res = axiosInstance({
+                url: path,
+                method: method,
+                data: body,
+                headers: { ...config },
+            })
+    }
 
     return res
         .then((resp: any) => {
