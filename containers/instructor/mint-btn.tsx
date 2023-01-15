@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
-import { useContractWrite, useNetwork, usePrepareContractWrite, useSigner } from 'wagmi'
+import {
+    useContractWrite,
+    useNetwork,
+    usePrepareContractWrite,
+    useSigner,
+} from 'wagmi'
 import { coursedexabi } from '@/abi/courseDex'
 import Button from '@/components/core/button'
 import Loading from '@/components/core/animate/loading'
@@ -21,22 +26,18 @@ const MintBtn = ({ id }: { id: string }) => {
             const payload = await apiCourse.getMintSignature(id)
             await createCourse(signer as ethers.Signer, payload)
             setIsLoading(false)
-
         } catch (error) {
             setIsLoading(false)
         }
-
     }
 
     return (
         <Button
-            className='flex items-center gap-4 p-1 text-sm'
-            onClick={() =>
-                mintCourse(id)
-            }
+            className="flex items-center gap-4 p-1 text-sm"
+            onClick={() => mintCourse(id)}
         >
             <span>Mint Course</span>
-            {isLoading && <Loading className='!text-white' />}
+            {isLoading && <Loading className="!text-white" />}
         </Button>
     )
 }

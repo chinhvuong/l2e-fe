@@ -7,6 +7,8 @@ export interface IRatingAnalysisBarProps {
 }
 
 export default function RatingAnalysisBar(props: IRatingAnalysisBarProps) {
+    const id = (props.percent + props.star).toString()
+
     return (
         <div className="flex items-center space-x-5">
             <div className="relative bg-border-box w-[420px] lg:w-[270px] md:w-[200px] sm:w-[25vw] h-[10px] rounded-[80px]">
@@ -15,11 +17,7 @@ export default function RatingAnalysisBar(props: IRatingAnalysisBarProps) {
                     style={{ width: `${props.percent}%` }}
                 ></div>
             </div>
-            <RatingStar
-                id={props.percent + props.star}
-                ratingScore={props.star}
-                hideScore
-            />
+            <RatingStar id={id} ratingScore={props.star} hideScore />
             <div className="text-hyperlink underline font-semibold">{`${props.percent}%`}</div>
         </div>
     )

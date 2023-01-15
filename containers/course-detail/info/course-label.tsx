@@ -5,7 +5,10 @@ import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
 import { courseCatagories } from '@/data/category'
-import { getCourseLabelInfo, getEnrollStatusState } from '@/store/course/selectors'
+import {
+    getCourseLabelInfo,
+    getEnrollStatusState,
+} from '@/store/course/selectors'
 import { useAppSelector } from '@/hooks'
 import { useSelector } from 'react-redux'
 import EnrollBtn from '../components/enroll-btn'
@@ -42,8 +45,9 @@ export default function CourseLabel() {
 
     return (
         <div
-            className={`h-[80px] w-full bg-black z-20 py-3 px-[30px] 2xl:top-0 under_2xl:bottom-0 under_2xl:fixed ${scrollY <= 500 ? 'hidden' : 'sticky'
-                } under_lg:hidden`}
+            className={`h-[80px] w-full bg-black z-20 py-3 px-[30px] 2xl:top-0 under_2xl:bottom-0 under_2xl:fixed ${
+                scrollY <= 500 ? 'hidden' : 'sticky'
+            } under_lg:hidden`}
         >
             <div className="flex items-center justify-between">
                 <div className="space-y-1 w-[650px] lg:w-[450px]">
@@ -82,7 +86,7 @@ export default function CourseLabel() {
                             <div className="font-medium text-[20px]">Learn</div>
                         </Button>
                     ) : (
-                        <EnrollBtn className='btn-primary under_lg:w-full flex gap-4 items-center' />
+                        <EnrollBtn className="btn-primary under_lg:w-full flex gap-4 items-center" />
                     )}
 
                     <FontAwesomeIcon
