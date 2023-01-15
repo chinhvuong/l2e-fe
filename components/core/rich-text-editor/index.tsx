@@ -2,12 +2,13 @@ import { EditorState } from 'draft-js'
 import { useEffect, useState } from 'react'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import dynamic from 'next/dynamic'
-const Editor = dynamic(
+const Editor = dynamic<EditorProps>(
     () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
     { ssr: false },
 )
 import './style.scss'
 import { convertToHTML } from 'draft-convert'
+import { EditorProps } from 'react-draft-wysiwyg'
 
 export interface IRichTextEditorProps {
     label?: string
