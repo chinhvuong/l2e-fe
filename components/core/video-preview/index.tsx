@@ -11,12 +11,19 @@ export interface IVideoPreviewProps {
 
 export default function VideoPreview(props: IVideoPreviewProps) {
     return (
-        <div className={`relative w-full video-preview ${props.className} min-h-[180px]`}>
-            <img src={props.thumbnail} alt="" className="w-full" />
+        <div
+            className={`relative w-full video-preview ${props.className} min-h-[180px]`}
+        >
+            <img
+                src={props.thumbnail ?? '/svgs/thumbnails/thumbnail_1.svg'}
+                alt=""
+                className="w-full"
+            />
             <div className="flex flex-col items-center justify-between sm:justify-center absolute z-30 w-full h-full top-[0px] py-2">
                 <div
-                    className={`font-semibold ${props.textSize === 'big' ? 'text-xl' : 'text-xs'
-                        } text-white text-transparent sm:hidden`}
+                    className={`font-semibold ${
+                        props.textSize === 'big' ? 'text-xl' : 'text-xs'
+                    } text-white text-transparent sm:hidden`}
                 >
                     Preview this course
                 </div>
@@ -34,8 +41,9 @@ export default function VideoPreview(props: IVideoPreviewProps) {
                     )}
                 </div>
                 <div
-                    className={`font-semibold ${props.textSize === 'big' ? 'text-xl' : 'text-xs'
-                        } text-white sm:hidden`}
+                    className={`font-semibold ${
+                        props.textSize === 'big' ? 'text-xl' : 'text-xs'
+                    } text-white sm:hidden`}
                 >
                     Preview this course
                 </div>

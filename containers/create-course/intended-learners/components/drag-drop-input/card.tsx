@@ -150,7 +150,6 @@ export const Card: FC<CardProps> = ({
                     name={name}
                     updateToStore={updateCard}
                     defaultValue={defaultValue}
-                    validate
                 />
             </div>
             {cardContent[index]?.content !== '' ? (

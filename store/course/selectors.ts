@@ -95,3 +95,7 @@ export const getCreatingCourseState = (state: RootState) => {
 export const getCanCreateCourseState = (state: RootState) => {
     return state.courseDetail.canCreateCourse
 }
+
+export const getCourseSectionsWithNestedLectures = (state: RootState) => {
+    return state.courseDetail.courseDetail.sections
+}

@@ -148,15 +148,17 @@ export default function Select({
                     )}
                 </div>
             </div>
-            <div
-                className={`ml-[25px] text-sm mt-1 ${
-                    validate && selectedItem === placeholder
-                        ? 'text-red-500'
-                        : 'text-white'
-                }`}
-            >
-                Không được để trống!
-            </div>
+            {validate && (
+                <div
+                    className={`ml-[25px] text-sm mt-1 ${
+                        validate && selectedItem === placeholder
+                            ? 'text-red-500'
+                            : 'text-white'
+                    }`}
+                >
+                    Không được để trống!
+                </div>
+            )}
         </div>
     )
 }

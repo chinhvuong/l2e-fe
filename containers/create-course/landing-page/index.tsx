@@ -122,7 +122,7 @@ export default function LandingPageContainer() {
                     <Loading />
                 </div>
             ) : (
-                <div className="py-10 px-14 space-y-2">
+                <div className="py-10 px-14 space-y-5">
                     <Input
                         id="landing-page-title"
                         charLimit={{ minLength: 10, maxLength: 60 }}
@@ -130,7 +130,6 @@ export default function LandingPageContainer() {
                         placeholder="Insert your course title."
                         defaultValue={title}
                         updateInput={handleTitleChange}
-                        validate
                     />
                     <Input
                         id="landing-page-subtitle"
@@ -139,7 +138,6 @@ export default function LandingPageContainer() {
                         placeholder="Insert your course subtitle."
                         defaultValue={subtitle}
                         updateInput={handleSubtitleChange}
-                        validate
                     />
                     <div className="flex justify-between space-x-5">
                         <Select
@@ -165,7 +163,6 @@ export default function LandingPageContainer() {
                                 defaultValue={price}
                                 updateInput={handlePriceChange}
                                 type="number"
-                                validate
                             ></Input>
                         </div>
                     </div>

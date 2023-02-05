@@ -1,4 +1,16 @@
 import { Rating } from '@/constants/interfaces'
+export interface CourseNestedLecture {
+    name: string
+    description: string
+    mediaType: 'video'
+}
+export interface CourseSectionWithLectures {
+    _id: string
+    name: string
+    description: string
+    order: number
+    lessons: CourseNestedLecture[]
+}
 
 export interface CourseDetail {
     _id: string
@@ -43,6 +55,7 @@ export interface CourseDetail {
     createdAt: string
     updatedAt: string
     courseId?: number
+    sections: CourseSectionWithLectures[]
 }
 
 export type CourseDetailState = {
