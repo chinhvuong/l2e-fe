@@ -3,22 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
 import CourseListSwiper from '@/components/common/course-list-swiper'
-import Router from 'next/router'
 import VerticalCourseCard from '@/components/core/vertical-course-card'
-import { useCourse } from '@/api/hooks/useCourse'
 import Loading from '@/components/core/animate/loading'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { getLoginState } from '@/store/user/selectors'
 import { ACCESS_TOKEN } from '@/constants/localStorage'
 import { updateLoginState } from '@/store/user'
+import useAPI from '@/api/hooks/useAPI'
+import { UserAPI } from '@/api/api-path'
+import { CoursePreview } from '@/api/dto/course.dto'
 
 const HomePageContainer = () => {
     const isLogin = useAppSelector(getLoginState)
     const dispatch = useAppDispatch()
-    const { useGetAllCourses } = useCourse()
-    const { data, refetch } = useGetAllCourses({
-        onError: () => {},
-        onSuccess: () => {},
+    const { data, refetch } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
+        refetchOnWindowFocus: false,
+        enabled: false,
     })
 
     useEffect(() => {
@@ -26,18 +26,9 @@ const HomePageContainer = () => {
             refetch()
         }
         if (!isLogin && localStorage.getItem(ACCESS_TOKEN)) {
-            console.log('isLogin', localStorage.getItem(ACCESS_TOKEN))
             dispatch(updateLoginState(true))
         }
     }, [isLogin])
-
-    const goToCreateCoursePage = () => {
-        Router.push('/create-course')
-    }
-
-    const goToMyCoursesPage = () => {
-        Router.push('/my-courses')
-    }
 
     return (
         <div>
@@ -92,18 +83,23 @@ const HomePageContainer = () => {
                                         </div>
                                     </div>
                                     <div className="flex justify-center">
-                                        {data.data.map((item, index) => (
-                                            <div
-                                                className="w-[300px]"
-                                                key={index}
-                                            >
-                                                <VerticalCourseCard
-                                                    key={item._id}
-                                                    data={item}
-                                                    className="mx-[8px]"
-                                                />
-                                            </div>
-                                        ))}
+                                        {data.data.map(
+                                            (
+                                                item: CoursePreview,
+                                                index: number,
+                                            ) => (
+                                                <div
+                                                    className="w-[300px]"
+                                                    key={index}
+                                                >
+                                                    <VerticalCourseCard
+                                                        key={item._id}
+                                                        data={item}
+                                                        className="mx-[8px]"
+                                                    />
+                                                </div>
+                                            ),
+                                        )}
                                     </div>
                                 </>
                             ) : (

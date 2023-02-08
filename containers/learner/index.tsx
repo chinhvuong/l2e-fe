@@ -1,13 +1,12 @@
+import { LearnerAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
-import { useCourse } from '@/api/hooks/useCourse'
+import useAPI from '@/api/hooks/useAPI'
 import Loading from '@/components/core/animate/loading'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 
 export default function LearnerContainer() {
-    const { useGetAllMyEnrollCourses } = useCourse()
-    const { data } = useGetAllMyEnrollCourses({
-        onError: () => {},
-        onSuccess: () => {},
+    const { data } = useAPI.get(LearnerAPI.GET_ALL_MY_ENROLL_COURSES, {}, '', {
+        refetchOnWindowFocus: false,
     })
 
     return (
@@ -21,7 +20,7 @@ export default function LearnerContainer() {
                         <Loading />
                     </div>
                 ) : (
-                    data.data.map((course) => {
+                    data.data.map((course: CoursePreview) => {
                         return (
                             <HorizontalCourseCard
                                 key={course._id}

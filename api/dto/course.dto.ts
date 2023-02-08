@@ -166,7 +166,7 @@ export interface GetAllCoursesResponse {
 
 export interface GetAllMyCoursesResponse {
     total: number
-    data: CourseDetail[]
+    data: CoursePreview[]
 }
 
 export interface GetAllCourseSectionsResponse {

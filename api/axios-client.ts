@@ -1,15 +1,6 @@
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/localStorage'
+import { ACCESS_TOKEN } from '@/constants/localStorage'
 import { BACKEND_URL } from '@/constants/urls'
-import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import Router from 'next/router'
-import { toast } from 'react-toastify'
-import { store } from '../store/index'
-import { apiPath } from './api-path'
-import { apiAuth } from './functions/api-auth'
-
-let isAlreadyFetchingAccessToken = false
-let refreshToken: any = null
 
 const axiosInstance = axios.create({
     headers: {
@@ -42,13 +33,6 @@ axiosInstance.interceptors.response.use(
     },
 )
 
-export const fetchRefreshToken = createAsyncThunk('auth/refresh', async () => {
-    const response = await apiAuth.refreshToken({
-        token: localStorage.getItem(REFRESH_TOKEN) || '',
-    })
-    return response
-})
-
 export const callAPI = async (
     method: 'get' | 'post' | 'put' | 'delete',
     path: string,
@@ -58,94 +42,39 @@ export const callAPI = async (
 ): Promise<AxiosResponse<any, any> | any> => {
     axiosInstance.defaults.baseURL = baseURL
 
-    // const res = axiosInstance[method](path, body, config)
-
     let res = null
 
     switch (method) {
         case 'get':
-            res = axiosInstance({ url: path, method: method, data: body })
+            // in case GET method: body is config
+            res = axiosInstance[method](path, body || config)
             break
         default:
-            res = axiosInstance({
-                url: path,
-                method: method,
-                data: body,
-                headers: { ...config },
-            })
+            res = axiosInstance[method](path, body, config)
     }
 
     return res
         .then((resp: any) => {
-            isAlreadyFetchingAccessToken = false
             return resp
         })
         .catch(async (error: any) => {
-            if (!error.config?.skipErrorHandle) {
-                switch (error.response?.status) {
-                    case 400: // Wrong url or params
-                        toast.error(error.response.data.message, {
-                            position: 'top-center',
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            progress: undefined,
-                            theme: 'light',
-                        })
-                        break
-                    case 500: // Server error
-                        // Show toastr if error code global, likes: 500 Unknow Error
-                        // Other: handled in vue component catch
-                        toast.error('Server Error', {
-                            position: 'top-center',
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            progress: undefined,
-                            theme: 'light',
-                        })
-                        break
-                    case 403: // Permission
-                        break
-                    case 401: // Signature verification failed | Token has been revoked
-                        // check url # refresh token
-                        // true: try to refresh access token. then call queue apis
-                        // else: logout
+            switch (error.response?.status) {
+                case 400: // Wrong url or params
+                    break
+                case 401: // Wrong url or params
+                    // token.remove();
+                    // window.location.href = '/login';
 
-                        if (path !== apiPath.REFRESH) {
-                            if (!isAlreadyFetchingAccessToken) {
-                                isAlreadyFetchingAccessToken = true
-                                refreshToken = new Promise(
-                                    async (resolve: any) => {
-                                        // dispatch action call refresh token
-                                        await store.dispatch(
-                                            fetchRefreshToken(),
-                                        )
-                                        resolve(true)
-                                    },
-                                )
-                            }
-                            await refreshToken
-                            return callAPI(method, path, body, config)
-                        } else {
-                            // handle logut
-                            Router.push('/')
-                            localStorage.clear()
-                            toast.error('Phiên làm việc kết thúc!', {
-                                position: 'top-center',
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                progress: undefined,
-                                theme: 'light',
-                            })
-                            // redirect to login page
-                            throw error.response.data
-                        }
-                    default:
-                        throw error.response.data
-                }
+                    break
+                case 403: // Wrong url or params
+                    // token.remove();
+                    // window.location.href = '/login';
+                    break
+                case 500: // Server error
+                    break
+                default:
+                    throw error
             }
-            throw error.response.data
+            throw error
         })
 }

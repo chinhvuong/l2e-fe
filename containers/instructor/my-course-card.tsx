@@ -3,42 +3,34 @@ import Loading from '@/components/core/animate/loading'
 import Button from '@/components/core/button'
 // import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 import React, { useState } from 'react'
-import { apiCourse } from '@/api/functions/api-course'
 import MintBtn from './mint-btn'
 import Router from 'next/router'
 import { COURSE_ID } from '@/constants/localStorage'
+import useAPI from '@/api/hooks/useAPI'
+import { InstructorAPI } from '@/api/api-path'
 
 type Props = {
     course: CoursePreview
 }
 const MyCourseCard = ({ course }: Props) => {
-    const [isLoading, setIsLoading] = useState(false)
     const [sendApprove, setSendApprove] = useState(false)
 
-    const requestApprove = async (id: string) => {
-        // await axios.post(
-        //     'https://l2e-be-v1.herokuapp.com/course/manage/own-courses/send-approve-request',
-        //     {
-        //         id: id,
-        //         notes: [''],
-        //     },
-        // )
-        setIsLoading(true)
-        try {
-            const rs = await apiCourse.requestApprove({ id, notes: [] })
-            if (rs.success) {
+    const handleRequestApprove = async (id: string) => {
+        requestApprove({ id, notes: [] })
+    }
+
+    const { mutate: requestApprove, isLoading } = useAPI.post(
+        InstructorAPI.REQUEST_APPROVE,
+        {
+            onSuccess(response) {
                 setSendApprove(true)
-            }
-            setIsLoading(false)
-        } catch (error) {
-            setIsLoading(false)
-            setSendApprove(true)
-            // alert("Error occur")s
-        }
-    }
-    const mintCourse = async (id: string) => {
-        // setCourseId(id)
-    }
+            },
+            onError(error) {
+                setSendApprove(true)
+            },
+        },
+    )
+
     const goToUpdateCoursePage = () => {
         localStorage.setItem(COURSE_ID, course._id)
         Router.push(`/update-course/${course._id}/landing-page`)
@@ -46,10 +38,6 @@ const MyCourseCard = ({ course }: Props) => {
 
     return (
         <div key={course._id} className="bg-red-200 p-4 shadow-md">
-            {/* <HorizontalCourseCard
-                key={course._id}
-                data={course}
-            /> */}
             <div className="">
                 <img
                     src="https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg"
@@ -66,7 +54,7 @@ const MyCourseCard = ({ course }: Props) => {
                 {!course.approved && (
                     <Button
                         className="flex items-center gap-4 p-1 text-sm"
-                        onClick={() => requestApprove(course._id)}
+                        onClick={() => handleRequestApprove(course._id)}
                         disabled={sendApprove || isLoading}
                     >
                         <span>Request Approve</span>
@@ -93,34 +81,8 @@ const MyCourseCard = ({ course }: Props) => {
                     onClick={() => goToUpdateCoursePage()}
                 >
                     <span>Edit</span>
-                    {/* {isLoading && <Loading className='!text-white' />} */}
                 </Button>
             </div>
-            {/* <div
-                className={`flex justify-center text-white pr-14 ${!course?.courseId &&
-                    !course.approved
-                    ? ''
-                    : 'hidden'
-                    }`}
-            >
-                <Button
-                    onClick={() =>
-                        approve(course._id)
-                    }
-                >
-                    Request Approve
-                </Button>
-            </div>
-            <div
-                className={`flex justify-center text-white ${!course?.courseId &&
-                    course.approved &&
-                    isLoading
-                    ? ''
-                    : 'hidden'
-                    }`}
-            >
-                <Loading />
-            </div> */}
         </div>
     )
 }

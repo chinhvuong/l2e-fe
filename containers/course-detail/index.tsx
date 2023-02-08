@@ -1,4 +1,5 @@
-import { useCourse } from '@/api/hooks/useCourse'
+import { LearnerAPI } from '@/api/api-path'
+import useAPI from '@/api/hooks/useAPI'
 import Loading from '@/components/core/animate/loading'
 import { useAppDispatch } from '@/hooks'
 import { updateCourseDetail } from '@/store/course'
@@ -7,7 +8,7 @@ import {
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import NavBar from './components/nav-bar'
 import Curriculum from './curriculum'
 import CourseInfo from './info'
@@ -19,33 +20,30 @@ import Review from './review'
 export default function CourseDetailContainer() {
     const dispatch = useAppDispatch()
     const router = useRouter()
+    const [courseId, setCourseId] = useState('')
 
-    const getCourseId = () => {
-        if (typeof router.query.slug === 'object') {
-            return router.query.slug[0]
-        }
-        return router.query.slug
-    }
-
-    const { useGetCourseDetail } = useCourse()
-    const { refetch, isFetching } = useGetCourseDetail(getCourseId(), {
-        onError: () => {},
-        onSuccess: async (response) => {
-            dispatch(updateCourseDetail(response))
-            response?.goals &&
-                dispatch(updateAllWhatYouWillLearn(response.goals))
-            response?.requirements &&
-                dispatch(updateAllRequirements(response.requirements))
+    const { mutate: getCourseDetail, isLoading } = useAPI.getMutation(
+        LearnerAPI.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
+        {
+            onError: () => {},
+            onSuccess: async (response) => {
+                dispatch(updateCourseDetail(response))
+                response?.goals &&
+                    dispatch(updateAllWhatYouWillLearn(response.goals))
+                response?.requirements &&
+                    dispatch(updateAllRequirements(response.requirements))
+            },
         },
-    })
+    )
 
     useEffect(() => {
         if (typeof router.query.slug === 'string') {
-            refetch()
+            setCourseId(router.query.slug)
+            setTimeout(getCourseDetail, 1000)
         }
     }, [router.query.slug])
 
-    if (isFetching) {
+    if (isLoading) {
         return (
             <div className="bg-black w-full h-[500px] flex justify-center items-center">
                 <div className="flex justify-center items-center h-20">

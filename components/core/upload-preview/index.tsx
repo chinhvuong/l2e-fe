@@ -1,5 +1,7 @@
+import { FileAPI } from '@/api/api-path'
 import { UploadOneFileResponse } from '@/api/dto/course.dto'
-import { useCourse } from '@/api/hooks/useCourse'
+import useAPI from '@/api/hooks/useAPI'
+import { noop } from 'lodash'
 import { ReactNode, ReactText, useEffect, useState } from 'react'
 import Button from '../button'
 
@@ -16,13 +18,19 @@ export default function UploadPreview(props: IUploadPreviewProps) {
     const [uploadedFileURL, setUploadedFileURL] = useState(props.defaultPreview)
     const [showPlaceholder, setShowPlaceholder] = useState(true)
 
-    const { useUploadSingleFile } = useCourse()
-    const { mutate: uploadFile } = useUploadSingleFile({
-        onError: () => {},
-        onSuccess: (response: UploadOneFileResponse) => {
-            props.setFileLink && props.setFileLink(response.url)
+    const { mutate: uploadFile } = useAPI.post(
+        FileAPI.UPLOAD_SINGLE_FILE,
+        {
+            onError: noop,
+            onSuccess: (response: UploadOneFileResponse) => {
+                props.setFileLink && props.setFileLink(response.url)
+            },
         },
-    })
+        {
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*',
+        },
+    )
 
     useEffect(() => {
         if (!uploadedFile) {

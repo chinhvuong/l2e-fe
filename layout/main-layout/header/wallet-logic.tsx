@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import './style.scss'
-import { useAuth } from '@/api/hooks/useAuth'
 import { SIGN_MESSAGE } from '@/constants'
-import { useAppDispatch, useAppSelector } from '@/hooks'
+import { useAppDispatch } from '@/hooks'
 import { updateAssetState, updateLoginState } from '@/store/user'
-import useWeb3 from '@/wallet/hooks/useWeb3'
-import {
-    useAccount,
-    useContractRead,
-    useDisconnect,
-    useEnsAvatar,
-    useEnsName,
-    useSignMessage,
-} from 'wagmi'
+import { useAccount, useContractRead, useSignMessage } from 'wagmi'
 import { getLoginState } from '@/store/user/selectors'
 import { usdtAbi } from '@/abi/usdt'
 import { useSelector } from 'react-redux'
 import { verifyMessage } from 'ethers/lib/utils'
+import useAPI from '@/api/hooks/useAPI'
+import { AuthAPI } from '@/api/api-path'
+import { noop } from 'lodash'
+import { AuthResponse } from '@/api/dto/auth.dto'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/localStorage'
 export default function WalletLogic() {
-    // const { address, isConnected } = useWeb3()
-    // const loginState = useAppSelector(getLoginState)
-    // const { data, isSuccess, signMessage } = useSignMessage()
     const [address, setAddress] = useState<string | undefined>(undefined)
 
     const { data: balance, refetch: refetchBalance } = useContractRead({
@@ -42,13 +35,17 @@ export default function WalletLogic() {
     })
 
     const dispatch = useAppDispatch()
-    const { useLogin } = useAuth()
-    const { mutate: login } = useLogin({
-        onError: () => {},
-        onSuccess: () => {
-            dispatch(updateLoginState(true))
+    const { mutate: login } = useAPI.post(AuthAPI.LOGIN, {
+        onError: noop,
+        onSuccess: (response: AuthResponse) => {
+            if (response) {
+                localStorage.setItem(ACCESS_TOKEN, response.accessToken)
+                localStorage.setItem(REFRESH_TOKEN, response.refreshToken)
+                dispatch(updateLoginState(true))
+            }
         },
     })
+
     useEffect(() => {
         console.log(balance, approve)
         const asset: any = {}

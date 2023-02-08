@@ -1,5 +1,10 @@
-import { LessonResponseItem, SectionResponseItem } from '@/api/dto/course.dto'
-import { useCourse } from '@/api/hooks/useCourse'
+import { InstructorAPI, UserAPI } from '@/api/api-path'
+import {
+    GetCategoryResponse,
+    LessonResponseItem,
+    SectionResponseItem,
+} from '@/api/dto/course.dto'
+import useAPI from '@/api/hooks/useAPI'
 import Button from '@/components/core/button'
 import { Category } from '@/constants/interfaces'
 import {
@@ -23,6 +28,7 @@ import {
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
 import { convertToCategoryID } from '@/utils'
+import { noop } from 'lodash'
 import Router from 'next/router'
 import { useState } from 'react'
 import CourseCategory from './components/create-course-step/course-category'
@@ -40,13 +46,15 @@ export default function CourseBasicCreateContainer() {
 
     const [courseName, setCourseName] = useState('')
     const [courseCategory, setCourseCategory] = useState('')
+    const [courseCategoryOriginalList, setCourseCategoryOriginalList] =
+        useState<Category[]>()
     const [courseCategoryList, setCourseCategoryList] = useState<string[]>([])
     const [courseId, setCourseId] = useState<string>('')
+    const [sectionId, setSectionId] = useState('')
 
     const dispatch = useAppDispatch()
 
-    const { useCreateCourse, useUpsertSections, useUpsertLessons } = useCourse()
-    const { mutate: createCourse } = useCreateCourse({
+    const { mutate: createCourse } = useAPI.post(InstructorAPI.CREATE_COURSE, {
         onError: () => {},
         onSuccess: (response) => {
             dispatch(updateCourseDetail(response))
@@ -58,76 +66,84 @@ export default function CourseBasicCreateContainer() {
                 dispatch(updateAllRequirements(response.requirements))
             localStorage.setItem(COURSE_ID, response._id)
             setCourseId(response._id)
-            upsertSections([
-                {
-                    name: '',
-                    description: '',
-                    courseId: response._id,
-                },
-            ])
+            setTimeout(
+                () =>
+                    upsertSections([
+                        {
+                            name: '',
+                            description: '',
+                            courseId: response._id,
+                        },
+                    ]),
+                1000,
+            )
             Router.push(`/create-course/${response._id}/landing-page`)
         },
     })
 
-    const { mutate: upsertSections } = useUpsertSections({
-        onError: () => {},
-        onSuccess: (response) => {
-            const sectionsBasicInfo: CurriculumSection[] = []
-            response.forEach((item: SectionResponseItem) => {
-                sectionsBasicInfo.push({
-                    _id: item._id,
-                    courseId: courseId,
-                    name: item.name,
-                    description: item.description,
+    const { mutate: upsertSections } = useAPI.post(
+        InstructorAPI.UPSERT_SECTIONS + courseId,
+        {
+            onError: () => {},
+            onSuccess: (response) => {
+                const sectionsBasicInfo: CurriculumSection[] = []
+                response.forEach((item: SectionResponseItem) => {
+                    sectionsBasicInfo.push({
+                        _id: item._id,
+                        courseId: courseId,
+                        name: item.name,
+                        description: item.description,
+                    })
+                    setSectionId(item._id)
+                    setTimeout(
+                        () =>
+                            upsertLessons([
+                                {
+                                    name: '',
+                                    description: '',
+                                    media: '',
+                                    mediaType: '',
+                                    quizzes: [],
+                                    sectionId: item._id,
+                                },
+                            ]),
+                        1000,
+                    )
                 })
-                upsertLessons([
-                    {
-                        name: '',
-                        description: '',
-                        media: '',
-                        mediaType: '',
-                        quizzes: [],
-                        sectionId: item._id,
-                    },
-                ])
-            })
+            },
         },
-    })
+    )
 
-    const { mutate: upsertLessons } = useUpsertLessons({
-        onError: () => {},
-        onSuccess: (response) => {
-            const lessonsBasicInfo: CurriculumLecture[] = []
-            response.forEach((item: LessonResponseItem) => {
-                lessonsBasicInfo.push({
-                    name: item.name,
-                    description: item.description,
-                    media: item.media,
-                    mediaType: item.mediaType,
-                    quizzes: item.quizzes,
-                    _id: item._id,
-                    sectionId: item.sectionId,
-                    mode: item.mode,
+    const { mutate: upsertLessons } = useAPI.post(
+        InstructorAPI.UPSERT_LESSONS + sectionId,
+        {
+            onError: () => {},
+            onSuccess: (response) => {
+                const lessonsBasicInfo: CurriculumLecture[] = []
+                response.forEach((item: LessonResponseItem) => {
+                    lessonsBasicInfo.push({
+                        name: item.name,
+                        description: item.description,
+                        media: item.media,
+                        mediaType: item.mediaType,
+                        quizzes: item.quizzes,
+                        _id: item._id,
+                        sectionId: item.sectionId,
+                        mode: item.mode,
+                    })
                 })
-            })
+            },
         },
-    })
+    )
 
-    const { useGetCategory } = useCourse()
-    const { data, isFetching } = useGetCategory({
-        onError: () => {},
-        onSuccess: (response) => {
-            if (response?.data) {
-                const category = response.data.map(
-                    (item: Category) => item.name,
-                )
-                setCourseCategoryList(category)
-                localStorage.setItem(CATEGORY, JSON.stringify(response.data))
-                localStorage.setItem(
-                    CATEGORY_NAME_LIST,
-                    JSON.stringify(category),
-                )
-            }
+    const { isLoading } = useAPI.getMutation(UserAPI.GET_CATEGORY, {
+        onError: noop,
+        onSuccess: (response: GetCategoryResponse) => {
+            setCourseCategoryOriginalList(response.data)
+            const category = response.data.map((item: Category) => item.name)
+            setCourseCategoryList(category)
+            localStorage.setItem(CATEGORY, JSON.stringify(response.data))
+            localStorage.setItem(CATEGORY_NAME_LIST, JSON.stringify(category))
         },
     })
 
@@ -180,7 +196,10 @@ export default function CourseBasicCreateContainer() {
                 dispatch(updateCreatingCourseState(true))
                 createCourse({
                     name: courseName,
-                    category: convertToCategoryID(data?.data, courseCategory),
+                    category: convertToCategoryID(
+                        courseCategoryOriginalList,
+                        courseCategory,
+                    ),
                 })
             }
         }
@@ -206,7 +225,7 @@ export default function CourseBasicCreateContainer() {
                     setCategory={setCourseCategory}
                     selected={courseCategory}
                     categoryItemList={courseCategoryList}
-                    isLoading={isFetching}
+                    isLoading={isLoading}
                 />
             )
         }

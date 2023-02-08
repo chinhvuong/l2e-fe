@@ -2,51 +2,49 @@ import Button from '@/components/core/button'
 import { useEffect, useState } from 'react'
 import Router from 'next/router'
 import Loading from '@/components/core/animate/loading'
-import HorizontalCourseCard from '@/components/core/horizontal-course-card'
-import axios from 'axios'
 import { goerli } from 'wagmi/chains'
-import { useAccount, useSigner } from 'wagmi'
+import { useSigner } from 'wagmi'
 import { CoursePreview, GetMintSignatureResponse } from '@/api/dto/course.dto'
-import { useCourse } from '@/api/hooks/useCourse'
 import { createCourse } from '@/hooks/coursedex'
 import MyCourseCard from './my-course-card'
+import useAPI from '@/api/hooks/useAPI'
+import { InstructorAPI } from '@/api/api-path'
 
 export default function InstructorContainer() {
     const [isLoading, setIsLoading] = useState(false)
-    const [allMyCourses, setAllMyCourses] = useState<CoursePreview[]>([])
     const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
     const [courseId, setCourseId] = useState<string>('')
-    const { useGetAllMyCourses, useGetSignatureMint } = useCourse()
-    const { refetch } = useGetSignatureMint(courseId, {
-        onError: () => {},
-        onSuccess: (response) => {
-            setRequireinfo(response)
+    const { mutate: getSignatureMint } = useAPI.getMutation(
+        InstructorAPI.GET_MINT_SIGNATURE + '?id=' + courseId,
+        {
+            onError: () => {},
+            onSuccess: (response) => {
+                setRequireinfo(response)
+            },
         },
-    })
-    const { data } = useGetAllMyCourses({
-        onError: () => {},
-        onSuccess: (response) => {
-            setAllMyCourses(response.data)
-            setIsLoading(false)
+    )
+
+    const { data: allMyCourses } = useAPI.get(
+        InstructorAPI.GET_ALL_MY_COURSES,
+        {},
+        '',
+        {
+            refetchOnWindowFocus: false,
         },
-    })
-    // const { address, isConnected } = useAccount()
+    )
+
     const { data: signer } = useSigner({
         chainId: goerli.id,
     })
-    const mintCourse = async (id: string) => {
-        setCourseId(id)
-    }
 
     useEffect(() => {
         ;(async () => {
             if (courseId) {
-                refetch()
+                getSignatureMint({})
                 if (requireinfo) {
                     setIsLoading(true)
                     setCourseId('')
                     await createCourse(signer!, requireinfo)
-                    //   setIsLoading(false)
                 }
             }
         })()
@@ -78,14 +76,16 @@ export default function InstructorContainer() {
                             </div>
                         ) : (
                             <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-                                {allMyCourses.map((course, index) => {
-                                    return (
-                                        <MyCourseCard
-                                            key={index}
-                                            course={course}
-                                        />
-                                    )
-                                })}
+                                {allMyCourses.map(
+                                    (course: CoursePreview, index: number) => {
+                                        return (
+                                            <MyCourseCard
+                                                key={index}
+                                                course={course}
+                                            />
+                                        )
+                                    },
+                                )}
                             </div>
                         )}
                     </div>

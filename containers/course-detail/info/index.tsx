@@ -16,6 +16,8 @@ import { apiCourse } from '@/api/functions/api-course'
 import { updateEnrollStatus } from '@/store/course'
 import { useSelector } from 'react-redux'
 import { getLoginState } from '@/store/user/selectors'
+import { LearnerAPI } from '@/api/api-path'
+import { callAPI } from '@/api/axios-client'
 
 export default function CourseInfo() {
     const data = useAppSelector(getCourseOverviewInfo)
@@ -35,18 +37,18 @@ export default function CourseInfo() {
     useEffect(() => {
         const f = async () => {
             try {
-                const isEnr = await apiCourse.checkEnroll(data._id)
+                const isEnr = await callAPI(
+                    'get',
+                    LearnerAPI.CHECK_ENROLL + data._id,
+                    {},
+                )
                 dispatch(updateEnrollStatus(isEnr.enroll))
             } catch (error) {
-                console.log("🚀 ~ file: index.tsx:41 ~ f ~ error", error)
-
+                console.log('🚀 ~ file: index.tsx:41 ~ f ~ error', error)
             }
         }
         f()
-    }, [
-        loginState,
-        data._id
-    ])
+    }, [loginState, data._id])
 
     const getLastUpdated = () => {
         return `Last updated ${new Date(data.updatedAt).getMonth()}/${new Date(
@@ -104,19 +106,19 @@ export default function CourseInfo() {
                             </div>
                             {(data.reviews !== null ||
                                 data.students !== null) && (
-                                    <div className="flex items-center space-x-4 my-2">
-                                        {data.reviews !== null && (
-                                            <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                                                {`(${data.reviews} ratings)`}
-                                            </div>
-                                        )}
-                                        {data.students !== null && (
-                                            <div className="text-[14px] font-light">
-                                                {`${data.students} students`}
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                                <div className="flex items-center space-x-4 my-2">
+                                    {data.reviews !== null && (
+                                        <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
+                                            {`(${data.reviews} ratings)`}
+                                        </div>
+                                    )}
+                                    {data.students !== null && (
+                                        <div className="text-[14px] font-light">
+                                            {`${data.students} students`}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                         <div className="text-[14px] font-light">
                             Created by{' '}
