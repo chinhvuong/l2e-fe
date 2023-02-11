@@ -23,8 +23,8 @@ import {
     getMyCourseDetail,
     getCourseDetailState,
 } from '@/store/course/selectors'
-import Loading from '@/components/core/animate/loading'
 import { updateCourseGoals, updateCourseRequirements } from '@/store/course'
+import useLoadingScreen from '@/hooks/useLoadingScreen'
 
 export interface IIntendedLearnersContainerProps {}
 
@@ -41,14 +41,12 @@ export default function IntendedLearnersContainer() {
         }
     }, [isNewCourseDetail])
 
+    useLoadingScreen(isLoading)
+
     return (
         <div>
             <Title title={'Intended learners'} />
-            {isLoading ? (
-                <div className="flex justify-center items-center h-40">
-                    <Loading />
-                </div>
-            ) : (
+            {!isLoading && (
                 <div className="py-10 px-14 space-y-5">
                     <div>
                         <span>{`The following descriptions will be publicly visible on your `}</span>

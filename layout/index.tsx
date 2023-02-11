@@ -1,3 +1,6 @@
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import { useAppSelector } from '@/hooks'
+import { getLoadingState } from '@/store/course/selectors'
 import { useRouter } from 'next/router'
 import { ReactChild } from 'react'
 import { ToastContainer } from 'react-toastify'
@@ -5,6 +8,7 @@ import Footer from './components/footer'
 import Header from './main-layout/header'
 const Layout = ({ children }: { children: ReactChild }) => {
     const router = useRouter()
+    const isLoading = useAppSelector(getLoadingState)
 
     const darkTheme =
         router.pathname === '/about-us' || router.pathname === '/'
@@ -12,7 +16,8 @@ const Layout = ({ children }: { children: ReactChild }) => {
             : false
 
     return (
-        <div>
+        <div className="relative">
+            <LoadingScreen isLoading={isLoading} />
             <Header darkTheme={darkTheme} />
             <main id="main">
                 <div

@@ -3,7 +3,6 @@ import { NextPage } from 'next'
 import { appWithTranslation } from 'next-i18next'
 import '@/styles/global-style.css'
 import '@/styles/base.scss'
-import { eth } from '@/hooks/useEth' // Eth state provider
 import { Provider } from 'react-redux'
 import { store } from '@/store'
 import { AppProps } from 'next/app'

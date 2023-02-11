@@ -32,8 +32,6 @@ function createFile(name, content) {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir)
 
         fs.writeFileSync(dir + '/common.json', JSON.stringify(content))
-
-        console.log(`\x1b[32m${name} \x1b[0mlanguage has been updated`)
     } catch (error) {
         console.log(
             `There was an \x1b[31merror \x1b[0mwhile updating the \x1b[32m${name} \x1b[0mlanguage file`,

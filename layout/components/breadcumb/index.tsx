@@ -84,9 +84,6 @@ const BreadCrumbWraper = () => {
     const { t } = useTransHook()
     const router = useRouter()
     const data = useMemo(() => calculate(router.route, t), [router.route])
-    // useEffect(() => {
-    //     calculate(router.route, t)
-    // }, []);
 
     return (
         <div className="mt-[21px] mb-[46px]">

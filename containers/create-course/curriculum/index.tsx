@@ -18,6 +18,9 @@ import {
     getMyCourseDetail,
     getCourseDetailState,
 } from '@/store/course/selectors'
+import { useDispatch } from 'react-redux'
+import { updateLoadingState } from '@/store/course'
+import useLoadingScreen from '@/hooks/useLoadingScreen'
 
 export interface ICurriculumContainerProps {}
 
@@ -33,14 +36,13 @@ export default function CurriculumContainer() {
             setIsLoading(false)
         }
     }, [isNewCourseDetail, courseDetail])
+
+    useLoadingScreen(isLoading)
+
     return (
         <div>
             <Title title={'Curriculum'} />
-            {isLoading ? (
-                <div className="flex justify-center items-center h-40">
-                    <Loading />
-                </div>
-            ) : (
+            {!isLoading && (
                 <div className="py-10 px-14 space-y-5">
                     <Section
                         addItem={addCurriculumSection}

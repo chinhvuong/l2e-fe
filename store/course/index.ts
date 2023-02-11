@@ -53,8 +53,8 @@ const initialState: CourseDetailState = {
     isNewData: false,
     isEnroll: false,
     isSaved: false,
-    isCreatingCourse: false,
     canCreateCourse: true,
+    isLoading: false,
 }
 
 // thêm 1 trường là promotional
@@ -102,11 +102,11 @@ export const courseDetailSlice = createSlice({
         updateSaveCourseState(state, action: PayloadAction<boolean>) {
             state.isSaved = action.payload
         },
-        updateCreatingCourseState(state, action: PayloadAction<boolean>) {
-            state.isCreatingCourse = action.payload
-        },
         updateCanCreateCourseState(state, action: PayloadAction<boolean>) {
             state.canCreateCourse = action.payload
+        },
+        updateLoadingState(state, action: PayloadAction<boolean>) {
+            state.isLoading = action.payload
         },
     },
 })
@@ -125,8 +125,8 @@ export const {
     updateGetCourseDetailState,
     updateEnrollStatus,
     updateSaveCourseState,
-    updateCreatingCourseState,
     updateCanCreateCourseState,
+    updateLoadingState,
 } = courseDetailSlice.actions
 
 export default courseDetailSlice.reducer

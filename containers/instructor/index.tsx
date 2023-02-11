@@ -9,6 +9,7 @@ import { createCourse } from '@/hooks/coursedex'
 import MyCourseCard from './my-course-card'
 import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
+import useLoadingScreen from '@/hooks/useLoadingScreen'
 
 export default function InstructorContainer() {
     const [isLoading, setIsLoading] = useState(false)
@@ -49,6 +50,9 @@ export default function InstructorContainer() {
             }
         })()
     }, [requireinfo, courseId])
+
+    useLoadingScreen(isLoading)
+
     const goToCreateCoursePage = () => {
         Router.push('/create-course')
     }
@@ -64,11 +68,7 @@ export default function InstructorContainer() {
                 </div>
             </div>
             <div className="">
-                {isLoading ? (
-                    <div className="flex justify-center items-center h-20">
-                        <Loading />
-                    </div>
-                ) : (
+                {!isLoading && (
                     <div className=" pt-4">
                         {allMyCourses.length <= 0 ? (
                             <div className="text-stone-400">

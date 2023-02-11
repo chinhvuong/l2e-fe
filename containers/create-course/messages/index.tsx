@@ -1,12 +1,12 @@
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Title from '../components/title'
 import { useState, useEffect } from 'react'
-import Loading from '@/components/core/animate/loading'
 import { useAppSelector } from '@/hooks'
 import {
     getMyCourseDetail,
     getCourseDetailState,
 } from '@/store/course/selectors'
+import useLoadingScreen from '@/hooks/useLoadingScreen'
 
 export interface IMessagesContainerProps {}
 
@@ -25,14 +25,13 @@ export default function MessagesContainer() {
             setIsLoading(false)
         }
     }, [isNewCourseDetail])
+
+    useLoadingScreen(isLoading)
+
     return (
         <div>
             <Title title={'Course messages'} />
-            {isLoading ? (
-                <div className="flex justify-center items-center h-40">
-                    <Loading />
-                </div>
-            ) : (
+            {!isLoading && (
                 <div className="py-10 px-14 space-y-5">
                     <div>{`Write messages to your students (optional) that will be sent automatically when they join or complete your course to encourage students to engage with course content. If you do not wish to send a welcome or congratulations message, leave the text box blank.`}</div>
                     <RichTextEditor

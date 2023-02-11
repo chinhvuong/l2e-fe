@@ -88,14 +88,14 @@ export const getSaveCourseState = (state: RootState) => {
     return state.courseDetail.isSaved
 }
 
-export const getCreatingCourseState = (state: RootState) => {
-    return state.courseDetail.isCreatingCourse
-}
-
 export const getCanCreateCourseState = (state: RootState) => {
     return state.courseDetail.canCreateCourse
 }
 
 export const getCourseSectionsWithNestedLectures = (state: RootState) => {
     return state.courseDetail.courseDetail.sections
+}
+
+export const getLoadingState = (state: RootState) => {
+    return state.courseDetail.isLoading
 }

@@ -32,9 +32,6 @@ const UseClientQuery = (
                             })
                         }
                         if (error.response.status === 403) {
-                            console.log(
-                                'Your account does not have permission to access that resource.',
-                            )
                             toast.error(
                                 'Your account does not have permission to access that resource.',
                                 {

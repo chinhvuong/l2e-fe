@@ -1,13 +1,20 @@
 import { LearnerAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
-import Loading from '@/components/core/animate/loading'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
+import useLoadingScreen from '@/hooks/useLoadingScreen'
 
 export default function LearnerContainer() {
-    const { data } = useAPI.get(LearnerAPI.GET_ALL_MY_ENROLL_COURSES, {}, '', {
-        refetchOnWindowFocus: false,
-    })
+    const { data, isLoading } = useAPI.get(
+        LearnerAPI.GET_ALL_MY_ENROLL_COURSES,
+        {},
+        '',
+        {
+            refetchOnWindowFocus: false,
+        },
+    )
+
+    useLoadingScreen(isLoading)
 
     return (
         <div className="space-x-10 px-14 py-8 h-full">
@@ -15,11 +22,7 @@ export default function LearnerContainer() {
                 <div className="font-semibold text-[30px]">My learning</div>
             </div>
             <div className="space-y-5">
-                {data?.data === undefined ? (
-                    <div className="flex justify-center items-center h-20">
-                        <Loading />
-                    </div>
-                ) : (
+                {!isLoading &&
                     data.data.map((course: CoursePreview) => {
                         return (
                             <HorizontalCourseCard
@@ -27,8 +30,7 @@ export default function LearnerContainer() {
                                 data={course}
                             />
                         )
-                    })
-                )}
+                    })}
             </div>
         </div>
     )

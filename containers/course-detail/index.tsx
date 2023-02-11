@@ -1,7 +1,7 @@
 import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import Loading from '@/components/core/animate/loading'
 import { useAppDispatch } from '@/hooks'
+import useLoadingScreen from '@/hooks/useLoadingScreen'
 import { updateCourseDetail } from '@/store/course'
 import {
     updateAllRequirements,
@@ -43,18 +43,10 @@ export default function CourseDetailContainer() {
         }
     }, [router.query.slug])
 
-    if (isLoading) {
-        return (
-            <div className="bg-black w-full h-[500px] flex justify-center items-center">
-                <div className="flex justify-center items-center h-20">
-                    <Loading />
-                </div>
-            </div>
-        )
-    }
+    useLoadingScreen(isLoading)
 
     return (
-        <div>
+        <>
             <CourseLabel />
             <NavBar />
             <CourseInfo />
@@ -68,6 +60,6 @@ export default function CourseDetailContainer() {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }

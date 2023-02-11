@@ -17,7 +17,7 @@ import Logo from '@/layout/main-layout/header/logo'
 import {
     updateCanCreateCourseState,
     updateCourseDetail,
-    updateCreatingCourseState,
+    updateLoadingState,
 } from '@/store/course'
 import {
     CurriculumLecture,
@@ -193,7 +193,7 @@ export default function CourseBasicCreateContainer() {
             }
         } else {
             if (courseName !== '' && courseCategory !== '') {
-                dispatch(updateCreatingCourseState(true))
+                dispatch(updateLoadingState(true))
                 createCourse({
                     name: courseName,
                     category: convertToCategoryID(

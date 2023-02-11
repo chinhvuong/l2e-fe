@@ -17,7 +17,6 @@ const UseClientMutation = (
                 },
                 (error: any) => {
                     if (error.response.status === 401) {
-                        console.log('Your token has been expired!')
                         toast.error('Your token has been expired!', {
                             position: 'top-center',
                             autoClose: 3000,
@@ -28,9 +27,6 @@ const UseClientMutation = (
                         })
                     }
                     if (error.response.status === 403) {
-                        console.log(
-                            'Your account does not have permission to access that resource.',
-                        )
                         toast.error(
                             'Your account does not have permission to access that resource.',
                             {

@@ -221,38 +221,3 @@ export const dataCourses_preview_list: CoursePreview[] = [
         approved: true,
     },
 ]
-// export const dataCourses_preview_list: CoursePreview[] = [
-//     {
-//         id: '1',
-//         thumbnail: '/svgs/thumbnails/thumbnail_1.svg',
-//         name: 'MAC 1140 Precalculus Algebra',
-//         author: 'Theresa Webb',
-//         ratingScore: 4.7,
-//         ratings: 123123,
-//         price: 8.99,
-//         isBestseller: true,
-//         category: 'Management',
-//     },
-//     {
-//         id: 2,
-//         thumbnail: '/svgs/thumbnails/thumbnail_2.svg',
-//         title: 'MAC 20311 Analytic Geometry and Calculus 1 MAC 20311 Analytic Geometry and Calculus 1',
-//         author: 'Dianne Russell',
-//         ratingScore: 4.7,
-//         ratings: '123,123',
-//         price: '$4.23',
-//         isBestseller: true,
-//         category: 'IT',
-//     },
-//     {
-//         id: 3,
-//         thumbnail: '/svgs/thumbnails/thumbnail_3.svg',
-//         title: 'ACG 2021 Financial Accounting',
-//         author: 'Courtney Henry',
-//         ratingScore: 4.7,
-//         ratings: '123,123',
-//         price: '$5.32',
-//         isBestseller: false,
-//         category: 'Language',
-//     },
-// ]

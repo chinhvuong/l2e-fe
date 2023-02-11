@@ -1,17 +1,12 @@
 import React, { useState } from 'react'
-import {
-    useContractWrite,
-    useNetwork,
-    usePrepareContractWrite,
-    useSigner,
-} from 'wagmi'
-import { coursedexabi } from '@/abi/courseDex'
+import { useSigner } from 'wagmi'
 import Button from '@/components/core/button'
 import Loading from '@/components/core/animate/loading'
-import { apiCourse } from '@/api/functions/api-course'
 import { createCourse } from '@/hooks/coursedex'
 import { goerli } from 'wagmi/chains'
 import { ethers } from 'ethers'
+import { callAPI } from '@/api/axios-client'
+import { InstructorAPI } from '@/api/api-path'
 
 const MintBtn = ({ id }: { id: string }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -20,10 +15,13 @@ const MintBtn = ({ id }: { id: string }) => {
     })
 
     const mintCourse = async (id: string) => {
-        // alert('alo')
         try {
             setIsLoading(true)
-            const payload = await apiCourse.getMintSignature(id)
+            const payload = await callAPI(
+                'get',
+                InstructorAPI.GET_MINT_SIGNATURE + '?id=' + id,
+                {},
+            )
             await createCourse(signer as ethers.Signer, payload)
             setIsLoading(false)
         } catch (error) {

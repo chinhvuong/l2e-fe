@@ -16,19 +16,46 @@ import { CoursePreview } from '@/api/dto/course.dto'
 const HomePageContainer = () => {
     const isLogin = useAppSelector(getLoginState)
     const dispatch = useAppDispatch()
-    const { data, refetch } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
+    const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
-        enabled: false,
     })
 
     useEffect(() => {
-        if (isLogin) {
-            refetch()
-        }
         if (!isLogin && localStorage.getItem(ACCESS_TOKEN)) {
             dispatch(updateLoginState(true))
         }
     }, [isLogin])
+
+    const getCourseListUI = () => {
+        return data.data.length < 5 ? (
+            <>
+                <div className="flex justify-center mt-12 mb-4">
+                    <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
+                        <div className="font-bold text-[30px]">
+                            Popular courses
+                        </div>
+                    </div>
+                </div>
+                <div className="flex justify-center">
+                    {data.data.map((item: CoursePreview, index: number) => (
+                        <div className="w-[300px]" key={index}>
+                            <VerticalCourseCard
+                                key={item._id}
+                                data={item}
+                                className="mx-[8px]"
+                            />
+                        </div>
+                    ))}
+                </div>
+            </>
+        ) : (
+            <CourseListSwiper
+                data={data.data}
+                title="Popular courses"
+                className="mt-8"
+            />
+        )
+    }
 
     return (
         <div>
@@ -65,54 +92,7 @@ const HomePageContainer = () => {
                 />
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
-            {isLogin && (
-                <>
-                    {data?.data === undefined ? (
-                        <div className="flex justify-center items-center h-20">
-                            {!isLogin ? <div></div> : <Loading />}
-                        </div>
-                    ) : (
-                        <div>
-                            {data.data.length < 5 ? (
-                                <>
-                                    <div className="flex justify-center mt-12 mb-4">
-                                        <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
-                                            <div className="font-bold text-[30px]">
-                                                Popular courses
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-center">
-                                        {data.data.map(
-                                            (
-                                                item: CoursePreview,
-                                                index: number,
-                                            ) => (
-                                                <div
-                                                    className="w-[300px]"
-                                                    key={index}
-                                                >
-                                                    <VerticalCourseCard
-                                                        key={item._id}
-                                                        data={item}
-                                                        className="mx-[8px]"
-                                                    />
-                                                </div>
-                                            ),
-                                        )}
-                                    </div>
-                                </>
-                            ) : (
-                                <CourseListSwiper
-                                    data={data.data}
-                                    title="Popular courses"
-                                    className="mt-8"
-                                />
-                            )}
-                        </div>
-                    )}
-                </>
-            )}
+            <div>{!isLoading && getCourseListUI()}</div>
 
             {/* <div className="flex justify-center mt-12 mb-4">
                 <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
