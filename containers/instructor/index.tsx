@@ -25,7 +25,7 @@ export default function InstructorContainer() {
         },
     )
 
-    const { data: allMyCourses } = useAPI.get(
+    const { data: allMyCourses, isLoading: isLoadingAllMyCourses } = useAPI.get(
         InstructorAPI.GET_ALL_MY_COURSES,
         {},
         '',
@@ -51,11 +51,19 @@ export default function InstructorContainer() {
         })()
     }, [requireinfo, courseId])
 
-    useLoadingScreen(isLoading)
+    useLoadingScreen(isLoading || isLoadingAllMyCourses)
 
     const goToCreateCoursePage = () => {
         Router.push('/create-course')
     }
+
+    console.log(
+        'allMyCourses',
+        allMyCourses,
+        isLoading,
+        isLoadingAllMyCourses,
+        !isLoading && !isLoadingAllMyCourses,
+    )
 
     return (
         <div className="space-x-10 py-8 h-full">
@@ -68,25 +76,14 @@ export default function InstructorContainer() {
                 </div>
             </div>
             <div className="">
-                {!isLoading && (
-                    <div className=" pt-4">
-                        {allMyCourses.length <= 0 ? (
-                            <div className="text-stone-400">
-                                {`You don't have any courses yet!`}
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-                                {allMyCourses.map(
-                                    (course: CoursePreview, index: number) => {
-                                        return (
-                                            <MyCourseCard
-                                                key={index}
-                                                course={course}
-                                            />
-                                        )
-                                    },
-                                )}
-                            </div>
+                {!isLoading && !isLoadingAllMyCourses && (
+                    <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+                        {allMyCourses.data.map(
+                            (course: CoursePreview, index: number) => {
+                                return (
+                                    <MyCourseCard key={index} course={course} />
+                                )
+                            },
                         )}
                     </div>
                 )}

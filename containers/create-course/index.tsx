@@ -30,7 +30,7 @@ import {
 import { convertToCategoryID } from '@/utils'
 import { noop } from 'lodash'
 import Router from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CourseCategory from './components/create-course-step/course-category'
 import CourseTitle from './components/create-course-step/course-title'
 import CourseType from './components/create-course-step/course-type'
@@ -136,16 +136,28 @@ export default function CourseBasicCreateContainer() {
         },
     )
 
-    const { isLoading } = useAPI.getMutation(UserAPI.GET_CATEGORY, {
-        onError: noop,
-        onSuccess: (response: GetCategoryResponse) => {
-            setCourseCategoryOriginalList(response.data)
-            const category = response.data.map((item: Category) => item.name)
-            setCourseCategoryList(category)
-            localStorage.setItem(CATEGORY, JSON.stringify(response.data))
-            localStorage.setItem(CATEGORY_NAME_LIST, JSON.stringify(category))
+    const { mutate: getCategory, isLoading } = useAPI.getMutation(
+        UserAPI.GET_CATEGORY,
+        {
+            onError: noop,
+            onSuccess: (response: GetCategoryResponse) => {
+                setCourseCategoryOriginalList(response.data)
+                const category = response.data.map(
+                    (item: Category) => item.name,
+                )
+                setCourseCategoryList(category)
+                localStorage.setItem(CATEGORY, JSON.stringify(response.data))
+                localStorage.setItem(
+                    CATEGORY_NAME_LIST,
+                    JSON.stringify(category),
+                )
+            },
         },
-    })
+    )
+
+    useEffect(() => {
+        getCategory({})
+    }, [])
 
     const backStep = () => {
         if (currentStep !== 1) {

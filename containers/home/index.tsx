@@ -12,6 +12,7 @@ import { updateLoginState } from '@/store/user'
 import useAPI from '@/api/hooks/useAPI'
 import { UserAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
+import ReactPlayer from 'react-player'
 
 const HomePageContainer = () => {
     const isLogin = useAppSelector(getLoginState)
@@ -93,6 +94,17 @@ const HomePageContainer = () => {
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
             <div>{!isLoading && getCourseListUI()}</div>
+            <div className="flex justify-center mt-5">
+                <ReactPlayer
+                    url="https://www.youtube.com/watch?v=ysz5S6PUM-U"
+                    playing={true}
+                    controls={true}
+                    volume={1}
+                    width="50vw"
+                    height="50vh"
+                    onReady={() => console.log('ready now')}
+                />
+            </div>
 
             {/* <div className="flex justify-center mt-12 mb-4">
                 <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">

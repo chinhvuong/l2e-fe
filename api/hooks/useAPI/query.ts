@@ -1,10 +1,13 @@
+import { updateLoginState } from '@/store/user'
+import { useAppDispatch } from '@/hooks'
 import { useCallback } from 'react'
-
 import { useQuery } from '@tanstack/react-query'
 import { ApiMethods } from '../../types'
 import { callAPI } from '../../axios-client'
 import { objectToQueryString } from '@/utils'
 import { toast } from 'react-toastify'
+import useWeb3 from '@/wallet/hooks/useWeb3'
+import Router from 'next/router'
 
 const UseClientQuery = (
     url: string,
@@ -12,6 +15,15 @@ const UseClientQuery = (
     key?: string,
     settings?: {},
 ) => {
+    const { disconnect } = useWeb3()
+    const dispatch = useAppDispatch()
+    const logOut = async () => {
+        await disconnect()
+        localStorage.clear()
+        dispatch(updateLoginState(false))
+        Router.push(`/`)
+    }
+
     const makeRequest = useCallback(
         () =>
             new Promise<any>((resolve: any, reject: any) => {
@@ -21,6 +33,7 @@ const UseClientQuery = (
                     },
                     (error: any) => {
                         if (error.response.status === 401) {
+                            logOut()
                             console.log('Your token has been expired!')
                             toast.error('Your token has been expired!', {
                                 position: 'top-center',

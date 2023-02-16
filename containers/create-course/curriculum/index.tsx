@@ -37,7 +37,7 @@ export default function CurriculumContainer() {
         }
     }, [isNewCourseDetail, courseDetail])
 
-    useLoadingScreen(isLoading)
+    // useLoadingScreen(isLoading)
 
     return (
         <div>
