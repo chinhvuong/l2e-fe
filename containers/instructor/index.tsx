@@ -12,7 +12,6 @@ import { InstructorAPI } from '@/api/api-path'
 import useLoadingScreen from '@/hooks/useLoadingScreen'
 
 export default function InstructorContainer() {
-    const [isLoading, setIsLoading] = useState(false)
     const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
     const [courseId, setCourseId] = useState<string>('')
     const { mutate: getSignatureMint } = useAPI.getMutation(
@@ -34,7 +33,7 @@ export default function InstructorContainer() {
         },
     )
 
-    const { data: signer } = useSigner({
+    const { data: signer, isLoading: isLoadingSigner } = useSigner({
         chainId: goerli.id,
     })
 
@@ -43,7 +42,6 @@ export default function InstructorContainer() {
             if (courseId) {
                 getSignatureMint({})
                 if (requireinfo) {
-                    setIsLoading(true)
                     setCourseId('')
                     await createCourse(signer!, requireinfo)
                 }
@@ -51,22 +49,14 @@ export default function InstructorContainer() {
         })()
     }, [requireinfo, courseId])
 
-    useLoadingScreen(isLoading || isLoadingAllMyCourses)
+    useLoadingScreen(isLoadingSigner || isLoadingAllMyCourses)
 
     const goToCreateCoursePage = () => {
         Router.push('/create-course')
     }
 
-    console.log(
-        'allMyCourses',
-        allMyCourses,
-        isLoading,
-        isLoadingAllMyCourses,
-        !isLoading && !isLoadingAllMyCourses,
-    )
-
     return (
-        <div className="space-x-10 py-8 h-full">
+        <div className="py-8 h-full space-y-10">
             <div className="flex justify-between px-14">
                 <div className="font-semibold text-[30px]">My courses</div>
                 <div className="text-white">
@@ -75,19 +65,15 @@ export default function InstructorContainer() {
                     </Button>
                 </div>
             </div>
-            <div className="">
-                {!isLoading && !isLoadingAllMyCourses && (
-                    <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-                        {allMyCourses.data.map(
-                            (course: CoursePreview, index: number) => {
-                                return (
-                                    <MyCourseCard key={index} course={course} />
-                                )
-                            },
-                        )}
-                    </div>
-                )}
-            </div>
+            {!isLoadingSigner && !isLoadingAllMyCourses && (
+                <div className="grid grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-4 px-14">
+                    {allMyCourses.data.map(
+                        (course: CoursePreview, index: number) => {
+                            return <MyCourseCard key={index} course={course} />
+                        },
+                    )}
+                </div>
+            )}
         </div>
     )
 }

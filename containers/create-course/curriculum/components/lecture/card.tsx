@@ -224,7 +224,10 @@ export const Card: FC<CardProps> = ({
             </div>
             <div className={`${!expandLecture && 'hidden'}`}>
                 <div className="border-x border-b border-black">
-                    <MainContent />
+                    <MainContent
+                        updateCard={updateCard}
+                        lectureDetail={lectureDetail}
+                    />
                 </div>
                 <div className="border-x border-b border-black">
                     <div className="flex items-center space-x-5 mx-10 py-5">

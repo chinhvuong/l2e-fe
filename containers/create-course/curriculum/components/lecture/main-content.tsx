@@ -1,6 +1,6 @@
+import useAPI from '@/api/hooks/useAPI'
 import Button from '@/components/core/button'
 import RichTextEditor from '@/components/core/rich-text-editor'
-import Select from '@/components/core/select'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
 import {
     faFileLines,
@@ -8,11 +8,22 @@ import {
     faFileVideo,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
 import { useEffect, useState } from 'react'
+import { FileAPI } from '@/api/api-path'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import { CurriculumLecture } from '@/store/course/curriculum/types'
+import { useAppDispatch } from '@/hooks'
 
-export interface IMainContentProps {}
+export interface IMainContentProps {
+    updateCard: ActionCreatorWithPayload<CurriculumLecture, string>
+    lectureDetail: CurriculumLecture
+}
 
-export default function MainContent() {
+export default function MainContent({
+    updateCard,
+    lectureDetail,
+}: IMainContentProps) {
     const [contentType, setContentType] = useState<
         'video' | 'slide' | 'article' | null
     >(null)
@@ -20,6 +31,14 @@ export default function MainContent() {
     const [uploadedFileURL, setUploadedFileURL] = useState<string | null>(null)
     const [uploadedVideoDuration, setUploadedVideoDuration] = useState('')
     const [article, setArticle] = useState<string>('')
+    const dispatch = useAppDispatch()
+
+    const updateLectureMainContent = (url: string) => {
+        const newDetail = { ...lectureDetail }
+        newDetail.media = url
+        newDetail.mediaType = 'video'
+        dispatch(updateCard(newDetail))
+    }
 
     useEffect(() => {
         if (uploadedFileURL) {
@@ -50,6 +69,20 @@ export default function MainContent() {
         setUploadedVideoDuration(h + ':' + m + ':' + s)
     }
 
+    const { mutate: uploadFile } = useAPI.post(
+        FileAPI.UPLOAD_SINGLE_FILE,
+        {
+            onError: noop,
+            onSuccess: (response) => {
+                updateLectureMainContent(response.url)
+            },
+        },
+        {
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*',
+        },
+    )
+
     const handleUploadFile = () => {
         const inputFile = document.createElement('input')
         inputFile.type = 'file'
@@ -66,10 +99,10 @@ export default function MainContent() {
 
                 setContentType('video')
 
-                // const formData = new FormData()
-                // formData.append('file', target.files[0])
+                const formData = new FormData()
+                formData.append('file', target.files[0])
 
-                // uploadFile(formData)
+                uploadFile(formData)
             }
         }
     }

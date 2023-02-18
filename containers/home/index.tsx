@@ -1,31 +1,21 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
 import CourseListSwiper from '@/components/common/course-list-swiper'
 import VerticalCourseCard from '@/components/core/vertical-course-card'
-import Loading from '@/components/core/animate/loading'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import { getLoginState } from '@/store/user/selectors'
-import { ACCESS_TOKEN } from '@/constants/localStorage'
-import { updateLoginState } from '@/store/user'
 import useAPI from '@/api/hooks/useAPI'
 import { UserAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
 import ReactPlayer from 'react-player'
+import useLoadingScreen from '@/hooks/useLoadingScreen'
 
 const HomePageContainer = () => {
-    const isLogin = useAppSelector(getLoginState)
-    const dispatch = useAppDispatch()
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
     })
 
-    useEffect(() => {
-        if (!isLogin && localStorage.getItem(ACCESS_TOKEN)) {
-            dispatch(updateLoginState(true))
-        }
-    }, [isLogin])
+    useLoadingScreen(isLoading)
 
     const getCourseListUI = () => {
         return data.data.length < 5 ? (
@@ -96,7 +86,7 @@ const HomePageContainer = () => {
             <div>{!isLoading && getCourseListUI()}</div>
             <div className="flex justify-center mt-5">
                 <ReactPlayer
-                    url="https://www.youtube.com/watch?v=ysz5S6PUM-U"
+                    url="https://l2e-store.s3.ap-northeast-1.amazonaws.com/file-1676645280808.mp4"
                     playing={true}
                     controls={true}
                     volume={1}
