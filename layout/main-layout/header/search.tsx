@@ -26,24 +26,9 @@ export default function Search(props: ISearch) {
             '/course?limit=5&query=' + queryword,
             {},
         )
-        console.log(queryword)
-        if (queryword.length >= 2) {
-            setResult(
-                data.filter((d: CoursePreview) =>
-                    d.name.toLowerCase().includes(queryword.toLowerCase()),
-                ),
-            )
-            return data.filter((d: CoursePreview) =>
-                d.name.toLowerCase().includes(queryword.toLowerCase()),
-            )
-        } else {
-            setResult([])
-            console.log(result)
-            return []
-        }
+        setResult(data)
     }
-
-    const debounceLoadData = useCallback(debounce(fetchData, 700), [result])
+    const debounceLoadData = useCallback(debounce(fetchData, 500), [])
     const goToSearchPageCourse = () => {
         Router.push('course/search?query=' + searchTerm)
     }
@@ -56,7 +41,7 @@ export default function Search(props: ISearch) {
             >
                 <FontAwesomeIcon
                     icon={faMagnifyingGlass}
-                    onClick ={() => goToSearchPageCourse()}
+                    onClick={() => goToSearchPageCourse()}
                 />
                 <input
                     className="ml-[20px] w-[320px] xl:w-[120px] outline-none"
@@ -64,25 +49,27 @@ export default function Search(props: ISearch) {
                     type="text"
                 ></input>
             </div>
-            {result.length > 0 && (
-                <ul>
-                    {result.map((f) => (
-                        <div
-                            className={`flex bg-white items-center text-black py-[5px] hover:bg-gray-400`}
-                            key={f._id}
-                        >
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                            <a
-                                className={`flex items-center pl-[10px]`}
-                                href={'course/' + f._id}
+            <div>
+                {result.length > 0 && (
+                    <ul>
+                        {result.map((f) => (
+                            <div
+                                className={`flex bg-white items-center z-100 text-black py-[5px] hover:bg-gray-400`}
+                                key={f._id}
                             >
-                                {' '}
-                                {f.name}
-                            </a>
-                        </div>
-                    ))}
-                </ul>
-            )}
+                                <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                <a
+                                    className={`flex items-center pl-[10px]`}
+                                    href={'course/' + f._id}
+                                >
+                                    {' '}
+                                    {f.name}
+                                </a>
+                            </div>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
     )
 }

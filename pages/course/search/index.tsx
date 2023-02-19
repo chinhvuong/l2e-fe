@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Sidebar from '@/containers/search/sidebar'
 import MyCourseCard from '@/containers/search/course'
 import useAPI from '@/api/hooks/useAPI'
-import useLoadingScreen from '@/hooks/useLoadingScreen'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 
 const SearchPage = () => {
     const router = useRouter()
@@ -40,9 +40,9 @@ const SearchPage = () => {
             })
         }
     }
-    useLoadingScreen(isLoading)
     return (
         <div>
+            <LoadingScreen isLoading={isLoading} />
             <main id="main">
                 <div
                     className=" flex justify-center w-full app-transition main-transition min-h-screen bg-white"
