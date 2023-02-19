@@ -22,10 +22,12 @@ function Button({
                 rest.className
             } flex items-center ${
                 isLoading ? 'cursor-not-allowed' : 'cursor-pointer'
-            }`}
+            } whitespace-nowrap	text-ellipsis overflow-hidden`}
             disabled={disabled}
         >
-            {children}
+            <span className="whitespace-nowrap	text-ellipsis overflow-hidden">
+                {children}
+            </span>
             {isLoading && <Loading className="!text-white ml-2" />}
         </button>
     )

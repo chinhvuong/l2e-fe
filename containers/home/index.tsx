@@ -1,30 +1,19 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/core/button'
 import CourseListSwiper from '@/components/common/course-list-swiper'
 import VerticalCourseCard from '@/components/core/vertical-course-card'
-import Loading from '@/components/core/animate/loading'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import { getLoginState } from '@/store/user/selectors'
-import { ACCESS_TOKEN } from '@/constants/localStorage'
-import { updateLoginState } from '@/store/user'
 import useAPI from '@/api/hooks/useAPI'
 import { UserAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
+import ReactPlayer from 'react-player'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 
 const HomePageContainer = () => {
-    const isLogin = useAppSelector(getLoginState)
-    const dispatch = useAppDispatch()
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
     })
-
-    useEffect(() => {
-        if (!isLogin && localStorage.getItem(ACCESS_TOKEN)) {
-            dispatch(updateLoginState(true))
-        }
-    }, [isLogin])
 
     const getCourseListUI = () => {
         return data.data.length < 5 ? (
@@ -59,6 +48,7 @@ const HomePageContainer = () => {
 
     return (
         <div>
+            <LoadingScreen isLoading={isLoading} />
             <div className="bg-second h-[550px] flex justify-center items-center text-white space-x-10 px-14">
                 <div className="w-[540px] space-y-7">
                     <div className="leading-snug font-bold text-5xl xl:text-4xl lg:text-3xl md:text-2xl sm:text-3xl">
@@ -93,7 +83,17 @@ const HomePageContainer = () => {
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
             <div>{!isLoading && getCourseListUI()}</div>
-
+            <div className="flex justify-center mt-5">
+                <ReactPlayer
+                    url="https://l2e-store.s3.ap-northeast-1.amazonaws.com/file-1676645280808.mp4"
+                    playing={true}
+                    controls={true}
+                    volume={1}
+                    width="50vw"
+                    height="50vh"
+                    onReady={() => console.log('ready now')}
+                />
+            </div>
             {/* <div className="flex justify-center mt-12 mb-4">
                 <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
                     <div className="font-extrabold text-[41px]">

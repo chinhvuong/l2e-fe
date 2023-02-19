@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks'
+import { getLoadingState } from '@/store/course/selectors'
 import Router from 'next/router'
 import { ReactChild } from 'react'
 
@@ -8,12 +10,14 @@ export default function InstructorLayout({
 }: {
     children: ReactChild
 }) {
+    const isLoading = useAppSelector(getLoadingState)
+
     const goToHomePage = () => {
         Router.push('/')
     }
 
     return (
-        <div>
+        <div className="relative">
             <main id="main">
                 <div
                     className="flex justify-center w-full app-transition main-transition min-h-screen bg-white"

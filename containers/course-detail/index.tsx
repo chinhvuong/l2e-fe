@@ -1,7 +1,7 @@
 import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 import { useAppDispatch } from '@/hooks'
-import useLoadingScreen from '@/hooks/useLoadingScreen'
 import { updateCourseDetail } from '@/store/course'
 import {
     updateAllRequirements,
@@ -43,10 +43,9 @@ export default function CourseDetailContainer() {
         }
     }, [router.query.slug])
 
-    useLoadingScreen(isLoading)
-
     return (
         <>
+            <LoadingScreen isLoading={isLoading} />
             <CourseLabel />
             <NavBar />
             <CourseInfo />

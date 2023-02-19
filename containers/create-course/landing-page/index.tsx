@@ -25,8 +25,7 @@ import {
     convertToCategoryName,
     getLanguageName,
 } from '@/utils'
-import Loading from '../../../components/core/animate/loading'
-import useLoadingScreen from '@/hooks/useLoadingScreen'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 
 export interface ILandingPageContainerProps {}
 
@@ -115,10 +114,9 @@ export default function LandingPageContainer() {
         dispatch(updateCourseThumbnail(value))
     }
 
-    useLoadingScreen(isLoading)
-
     return (
         <div>
+            <LoadingScreen isLoading={isLoading} />
             <Title title={'Landing page'} />
             {!isLoading && (
                 <div className="py-10 px-14 space-y-5">

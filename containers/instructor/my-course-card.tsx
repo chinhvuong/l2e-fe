@@ -47,7 +47,6 @@ const MyCourseCard = ({ course }: Props) => {
             </div>
             <div className="font-semibold text-lg mt-4">
                 <h1>{course.name}</h1>
-                <div className="font-light text-xs truncate">Author: You</div>
                 <div className="font-bold text-xl">{course.price | 0} USDT</div>
             </div>
             <div className={`flex justify-end gap-4 text-white mt-4`}>

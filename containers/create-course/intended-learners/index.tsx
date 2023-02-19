@@ -24,7 +24,7 @@ import {
     getCourseDetailState,
 } from '@/store/course/selectors'
 import { updateCourseGoals, updateCourseRequirements } from '@/store/course'
-import useLoadingScreen from '@/hooks/useLoadingScreen'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 
 export interface IIntendedLearnersContainerProps {}
 
@@ -41,10 +41,9 @@ export default function IntendedLearnersContainer() {
         }
     }, [isNewCourseDetail])
 
-    useLoadingScreen(isLoading)
-
     return (
         <div>
+            <LoadingScreen isLoading={isLoading} />
             <Title title={'Intended learners'} />
             {!isLoading && (
                 <div className="py-10 px-14 space-y-5">

@@ -138,7 +138,19 @@ export const courseCurriculumSlice = createSlice({
         ) {
             // call in loop to gradually update lectures for each section
             if (action.payload.length === 0) {
-                state.lectures = []
+                state.lectures.push([
+                    {
+                        _id: uuidv4(),
+                        name: '',
+                        description: '',
+                        media: '',
+                        mediaType: '',
+                        quizzes: [],
+                        sectionId:
+                            state.sections[state.sections.length - 1]._id,
+                        mode: '',
+                    },
+                ])
             } else {
                 state.lectures.push(action.payload)
             }
