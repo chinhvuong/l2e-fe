@@ -89,7 +89,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                         response.requirements.length > 0 &&
                         dispatch(updateAllRequirements(response.requirements))
                     dispatch(updateGetCourseDetailState(true))
-                    // dispatch(updateAllCurriculumLectures([]))
                     getSections({})
                 },
             },

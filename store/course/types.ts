@@ -65,7 +65,6 @@ export type CourseDetailState = {
     isEnroll: boolean
     isSaved: boolean
     canCreateCourse: boolean
-    isLoading: boolean
 }
 
 export type TInputUpdate = {

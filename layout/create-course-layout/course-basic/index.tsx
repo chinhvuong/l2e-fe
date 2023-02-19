@@ -1,5 +1,3 @@
-import { useAppSelector } from '@/hooks'
-import { getLoadingState } from '@/store/course/selectors'
 import { ReactChild } from 'react'
 
 export interface ICourseBasicCreateLayoutProps {}
@@ -9,8 +7,6 @@ export default function CourseBasicCreateLayout({
 }: {
     children: ReactChild
 }) {
-    const isLoading = useAppSelector(getLoadingState)
-
     return (
         <div className="relative">
             <main id="main">

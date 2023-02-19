@@ -1,5 +1,3 @@
-import { useAppSelector } from '@/hooks'
-import { getLoadingState } from '@/store/course/selectors'
 import Router from 'next/router'
 import { ReactChild } from 'react'
 
@@ -10,8 +8,6 @@ export default function InstructorLayout({
 }: {
     children: ReactChild
 }) {
-    const isLoading = useAppSelector(getLoadingState)
-
     const goToHomePage = () => {
         Router.push('/')
     }
