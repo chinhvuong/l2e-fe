@@ -8,14 +8,12 @@ import useAPI from '@/api/hooks/useAPI'
 import { UserAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
 import ReactPlayer from 'react-player'
-import useLoadingScreen from '@/hooks/useLoadingScreen'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 
 const HomePageContainer = () => {
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
     })
-
-    useLoadingScreen(isLoading)
 
     const getCourseListUI = () => {
         return data.data.length < 5 ? (
@@ -50,6 +48,7 @@ const HomePageContainer = () => {
 
     return (
         <div>
+            <LoadingScreen isLoading={isLoading} />
             <div className="bg-second h-[550px] flex justify-center items-center text-white space-x-10 px-14">
                 <div className="w-[540px] space-y-7">
                     <div className="leading-snug font-bold text-5xl xl:text-4xl lg:text-3xl md:text-2xl sm:text-3xl">
@@ -95,7 +94,6 @@ const HomePageContainer = () => {
                     onReady={() => console.log('ready now')}
                 />
             </div>
-
             {/* <div className="flex justify-center mt-12 mb-4">
                 <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
                     <div className="font-extrabold text-[41px]">

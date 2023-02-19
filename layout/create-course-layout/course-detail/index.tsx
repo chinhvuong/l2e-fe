@@ -1,4 +1,3 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import { CreateCourseProvider } from '@/containers/create-course/create-course-context'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import Footer from '@/layout/components/footer'
@@ -35,7 +34,6 @@ export default function CreateCourseLayout({
     return (
         <CreateCourseProvider>
             <div className="relative">
-                <LoadingScreen isLoading={isLoading} />
                 <Header />
                 <main id="main">
                     <div

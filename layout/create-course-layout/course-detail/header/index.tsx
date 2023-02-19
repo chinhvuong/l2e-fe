@@ -2,32 +2,6 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router from 'next/router'
 import Button from '@/components/core/button'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import { getMyCourseDetail } from '@/store/course/selectors'
-import {
-    updateCourseDetail,
-    updateGetCourseDetailState,
-    updateSaveCourseState,
-} from '@/store/course'
-import { useEffect, useState } from 'react'
-import {
-    updateAllRequirements,
-    updateAllWhatYouWillLearn,
-} from '@/store/course/intended-learners'
-import {
-    updateAllCurriculumLectures,
-    updateAllCurriculumSections,
-} from '@/store/course/curriculum'
-import { CurriculumSection } from '@/store/course/curriculum/types'
-import { COURSE_ID } from '@/constants/localStorage'
-import { InstructorAPI } from '@/api/api-path'
-import {
-    getCurriculumLecturesForm,
-    getCurriculumSectionsForm,
-} from '@/store/course/curriculum/selectors'
-import useAPI from '@/api/hooks/useAPI'
-import { noop } from 'lodash'
-import useLoadingScreen from '@/hooks/useLoadingScreen'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 
 export interface IHeaderProps {}

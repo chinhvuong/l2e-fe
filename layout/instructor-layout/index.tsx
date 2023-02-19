@@ -1,4 +1,3 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import { useAppSelector } from '@/hooks'
 import { getLoadingState } from '@/store/course/selectors'
 import Router from 'next/router'
@@ -19,8 +18,6 @@ export default function InstructorLayout({
 
     return (
         <div className="relative">
-            <LoadingScreen isLoading={isLoading} />
-
             <main id="main">
                 <div
                     className="flex justify-center w-full app-transition main-transition min-h-screen bg-white"

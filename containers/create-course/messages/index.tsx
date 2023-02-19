@@ -6,7 +6,7 @@ import {
     getMyCourseDetail,
     getCourseDetailState,
 } from '@/store/course/selectors'
-import useLoadingScreen from '@/hooks/useLoadingScreen'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 
 export interface IMessagesContainerProps {}
 
@@ -26,10 +26,9 @@ export default function MessagesContainer() {
         }
     }, [isNewCourseDetail])
 
-    useLoadingScreen(isLoading)
-
     return (
         <div>
+            <LoadingScreen isLoading={isLoading} />
             <Title title={'Course messages'} />
             {!isLoading && (
                 <div className="py-10 px-14 space-y-5">
