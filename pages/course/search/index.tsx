@@ -1,24 +1,30 @@
 import { useRouter } from 'next/router'
 import { CoursePreview } from '@/api/dto/course.dto'
 import { CourseLists } from '@/data/courses'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Sidebar from '@/containers/search/sidebar'
-import MyCourseCard from '@/containers/search/course'
+import MySearchCourseCard from '@/containers/search/course'
 import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import { InstructorAPI } from '@/api/api-path'
 
 const SearchPage = () => {
     const router = useRouter()
     const [rating, setRating] = useState<number>(0)
     const [dataFilter, setDataFilter] = useState<CoursePreview[]>(CourseLists)
-    let url
+    const [urlPath, setUrlPath] = useState<string>()
 
-    if (typeof window !== 'undefined') {
-        url = window.location.search
-    }
-    const { data, isLoading } = useAPI.get('course' + url, {}, '', {
-        refetchOnWindowFocus: false,
-    })
+    const { mutate: requestApprove, isLoading } = useAPI.getMutation(
+        InstructorAPI.CREATE_COURSE + urlPath,
+        {
+            onSuccess(response) {
+                setDataFilter(response)
+            },
+            onError(error) {
+                console.log(error)
+            },
+        },
+    )
     const handleRadioBox = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(router.query)
         setRating(parseFloat(e.target.value))
@@ -40,6 +46,11 @@ const SearchPage = () => {
             })
         }
     }
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setUrlPath(window.location.search)
+        }
+    }, [window.location.search])
     return (
         <div>
             <LoadingScreen isLoading={isLoading} />
@@ -57,10 +68,10 @@ const SearchPage = () => {
                         </div>
                         <div className="w-full h-full">
                             {!isLoading &&
-                                data.data.map(
+                                dataFilter.map(
                                     (course: CoursePreview, index: number) => {
                                         return (
-                                            <MyCourseCard
+                                            <MySearchCourseCard
                                                 key={index}
                                                 course={course}
                                             />

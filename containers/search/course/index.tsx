@@ -9,24 +9,8 @@ import RatingStar from '@/components/core/rating-star'
 type Props = {
     course: CoursePreview
 }
-const MyCourseCard = ({ course }: Props) => {
+const MySearchCourseCard = ({ course }: Props) => {
     const [sendApprove, setSendApprove] = useState(false)
-
-    const handleRequestApprove = async (id: string) => {
-        requestApprove({ id, notes: [] })
-    }
-
-    const { mutate: requestApprove, isLoading } = useAPI.post(
-        InstructorAPI.REQUEST_APPROVE,
-        {
-            onSuccess(response) {
-                setSendApprove(true)
-            },
-            onError(error) {
-                setSendApprove(true)
-            },
-        },
-    )
 
     const goToPreviewCoursePage = (id: string) => {
         Router.push(id)
@@ -56,10 +40,10 @@ const MyCourseCard = ({ course }: Props) => {
                 />
             </div>
             <div className="w-1/4">
-            <h1 className="pl-20 font-bold">{course.price | 0} USDT</h1>
+                <h1 className="pl-20 font-bold">{course.price | 0} USDT</h1>
             </div>
         </div>
     )
 }
 
-export default MyCourseCard
+export default MySearchCourseCard
