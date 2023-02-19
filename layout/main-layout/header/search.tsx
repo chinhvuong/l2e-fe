@@ -48,7 +48,7 @@ export default function Search(props: ISearch) {
         Router.push('course/search?query=' + searchTerm)
     }
     return (
-        <div>
+        <div className="relative">
             <div
                 className={`w-[400px] xl:w-[200px] under_xl:hidden py-[10px] bg-white rounded-[80px] my-[20px] pl-[20px] flex items-center text-black ${
                     !props.darkTheme && 'border-[1px] border-black'
@@ -56,7 +56,7 @@ export default function Search(props: ISearch) {
             >
                 <FontAwesomeIcon
                     icon={faMagnifyingGlass}
-                    onClick ={() => goToSearchPageCourse()}
+                    onClick={() => goToSearchPageCourse()}
                 />
                 <input
                     className="ml-[20px] w-[320px] xl:w-[120px] outline-none"
@@ -65,7 +65,7 @@ export default function Search(props: ISearch) {
                 ></input>
             </div>
             {result.length > 0 && (
-                <ul>
+                <div className="absolute z-10">
                     {result.map((f) => (
                         <div
                             className={`flex bg-white items-center text-black py-[5px] hover:bg-gray-400`}
@@ -81,7 +81,7 @@ export default function Search(props: ISearch) {
                             </a>
                         </div>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     )
