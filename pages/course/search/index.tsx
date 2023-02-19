@@ -7,28 +7,36 @@ import MySearchCourseCard from '@/containers/search/course'
 import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import { InstructorAPI } from '@/api/api-path'
+import { SortMethods } from '@/api/types'
 
 const SearchPage = () => {
     const router = useRouter()
-    const [rating, setRating] = useState<number>(0)
-    const [dataFilter, setDataFilter] = useState<CoursePreview[]>(CourseLists)
-    const [urlPath, setUrlPath] = useState<string>()
-
-    const { mutate: requestApprove, isLoading } = useAPI.getMutation(
-        InstructorAPI.CREATE_COURSE + urlPath,
+    const [sortType, setSortType] = useState<string>()
+    const { data, isLoading } = useAPI.get(
+        InstructorAPI.CREATE_COURSE +
+            router.asPath.replace(router.pathname, ''),
+        {},
+        '',
         {
-            onSuccess(response) {
-                setDataFilter(response)
-            },
-            onError(error) {
-                console.log(error)
-            },
+            refetchOnWindowFocus: false,
         },
     )
     const handleRadioBox = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(router.query)
-        setRating(parseFloat(e.target.value))
-        changeUrl('rating', e.target.value)
+        setSortType(e.target.value)
+        switch (e.target.value) {
+            case 'Most Rated':
+                changeUrl('sort', SortMethods.RATING_DESC)
+                break
+            case 'Most Enrolled':
+                changeUrl('sort', SortMethods.STUDENT_DESC)
+                break
+            case 'Lowest Price':
+                changeUrl('sort', SortMethods.PRICE_ASC)
+                break
+            default:
+            // code block
+        }
     }
 
     const changeUrl = (queryname: string, value: string) => {
@@ -46,11 +54,6 @@ const SearchPage = () => {
             })
         }
     }
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            setUrlPath(window.location.search)
-        }
-    }, [window.location.search])
     return (
         <div>
             <LoadingScreen isLoading={isLoading} />
@@ -62,13 +65,13 @@ const SearchPage = () => {
                     <div className="flex justify-center w-full">
                         <div className="w-[300px] flex justify-center pt-4">
                             <Sidebar
-                                rating={rating}
+                                sortType={String(sortType)}
                                 onRadioBoxChange={handleRadioBox}
                             />
                         </div>
                         <div className="w-full h-full">
                             {!isLoading &&
-                                dataFilter.map(
+                                data.data.map(
                                     (course: CoursePreview, index: number) => {
                                         return (
                                             <MySearchCourseCard
