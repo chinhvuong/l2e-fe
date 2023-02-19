@@ -46,6 +46,7 @@ export const courseCurriculumSlice = createSlice({
                     name: '',
                     description: '',
                     media: '',
+                    mediaName: '',
                     mediaType: '',
                     quizzes: [],
                     sectionId: sectionId,
@@ -89,6 +90,7 @@ export const courseCurriculumSlice = createSlice({
                         name: '',
                         description: '',
                         media: '',
+                        mediaName: '',
                         mediaType: '',
                         quizzes: [],
                         sectionId: action.payload,
@@ -108,6 +110,7 @@ export const courseCurriculumSlice = createSlice({
                             el.name = action.payload.name
                             el.description = action.payload.description
                             el.media = action.payload.media
+                            el.mediaName = action.payload.mediaName
                             el.mediaType = action.payload.mediaType
                             el.quizzes = action.payload.quizzes
                             el.sectionId = action.payload.sectionId
@@ -144,6 +147,7 @@ export const courseCurriculumSlice = createSlice({
                         name: '',
                         description: '',
                         media: '',
+                        mediaName: '',
                         mediaType: '',
                         quizzes: [],
                         sectionId:

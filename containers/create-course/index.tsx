@@ -5,6 +5,7 @@ import {
     SectionResponseItem,
 } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import { Category } from '@/constants/interfaces'
 import {
@@ -14,11 +15,7 @@ import {
 } from '@/constants/localStorage'
 import { useAppDispatch } from '@/hooks'
 import Logo from '@/layout/main-layout/header/logo'
-import {
-    updateCanCreateCourseState,
-    updateCourseDetail,
-    updateLoadingState,
-} from '@/store/course'
+import { updateCanCreateCourseState, updateCourseDetail } from '@/store/course'
 import {
     CurriculumLecture,
     CurriculumSection,
@@ -54,36 +51,36 @@ export default function CourseBasicCreateContainer() {
 
     const dispatch = useAppDispatch()
 
-    const { mutate: createCourse } = useAPI.post(InstructorAPI.CREATE_COURSE, {
-        onError: () => {},
-        onSuccess: (response) => {
-            dispatch(updateCourseDetail(response))
-            response?.goals &&
-                response.goals.length > 0 &&
-                dispatch(updateAllWhatYouWillLearn(response.goals))
-            response?.requirements &&
-                response.requirements.length > 0 &&
-                dispatch(updateAllRequirements(response.requirements))
-            localStorage.setItem(COURSE_ID, response._id)
-            setCourseId(response._id)
-            setTimeout(
-                () =>
-                    upsertSections([
-                        {
-                            name: '',
-                            description: '',
-                            courseId: response._id,
-                        },
-                    ]),
-                1000,
-            )
-            Router.push(`/create-course/${response._id}/landing-page`)
-        },
-    })
+    const { mutate: createCourse, isLoading: isLoadingCreateCourse } =
+        useAPI.post(InstructorAPI.CREATE_COURSE, {
+            onError: () => {},
+            onSuccess: (response) => {
+                dispatch(updateCourseDetail(response))
+                response?.goals &&
+                    response.goals.length > 0 &&
+                    dispatch(updateAllWhatYouWillLearn(response.goals))
+                response?.requirements &&
+                    response.requirements.length > 0 &&
+                    dispatch(updateAllRequirements(response.requirements))
+                localStorage.setItem(COURSE_ID, response._id)
+                setCourseId(response._id)
+                setTimeout(
+                    () =>
+                        upsertSections([
+                            {
+                                name: '',
+                                description: '',
+                                courseId: response._id,
+                            },
+                        ]),
+                    1000,
+                )
+                Router.push(`/create-course/${response._id}/landing-page`)
+            },
+        })
 
-    const { mutate: upsertSections } = useAPI.post(
-        InstructorAPI.UPSERT_SECTIONS + courseId,
-        {
+    const { mutate: upsertSections, isLoading: isLoadingUpsertSections } =
+        useAPI.post(InstructorAPI.UPSERT_SECTIONS + courseId, {
             onError: () => {},
             onSuccess: (response) => {
                 const sectionsBasicInfo: CurriculumSection[] = []
@@ -111,34 +108,21 @@ export default function CourseBasicCreateContainer() {
                     )
                 })
             },
-        },
-    )
+        })
 
-    const { mutate: upsertLessons } = useAPI.post(
-        InstructorAPI.UPSERT_LESSONS + sectionId,
-        {
+    const { mutate: upsertLessons, isLoading: isLoadingUpsertLessons } =
+        useAPI.post(InstructorAPI.UPSERT_LESSONS + sectionId, {
             onError: () => {},
             onSuccess: (response) => {
                 const lessonsBasicInfo: CurriculumLecture[] = []
-                response.forEach((item: LessonResponseItem) => {
-                    lessonsBasicInfo.push({
-                        name: item.name,
-                        description: item.description,
-                        media: item.media,
-                        mediaType: item.mediaType,
-                        quizzes: item.quizzes,
-                        _id: item._id,
-                        sectionId: item.sectionId,
-                        mode: item.mode,
-                    })
+                response.forEach((item: any) => {
+                    lessonsBasicInfo.push(item)
                 })
             },
-        },
-    )
+        })
 
-    const { mutate: getCategory, isLoading } = useAPI.getMutation(
-        UserAPI.GET_CATEGORY,
-        {
+    const { mutate: getCategory, isLoading: isLoadingGetCategory } =
+        useAPI.getMutation(UserAPI.GET_CATEGORY, {
             onError: noop,
             onSuccess: (response: GetCategoryResponse) => {
                 setCourseCategoryOriginalList(response.data)
@@ -152,8 +136,7 @@ export default function CourseBasicCreateContainer() {
                     JSON.stringify(category),
                 )
             },
-        },
-    )
+        })
 
     useEffect(() => {
         getCategory({})
@@ -205,7 +188,6 @@ export default function CourseBasicCreateContainer() {
             }
         } else {
             if (courseName !== '' && courseCategory !== '') {
-                dispatch(updateLoadingState(true))
                 createCourse({
                     name: courseName,
                     category: convertToCategoryID(
@@ -237,7 +219,7 @@ export default function CourseBasicCreateContainer() {
                     setCategory={setCourseCategory}
                     selected={courseCategory}
                     categoryItemList={courseCategoryList}
-                    isLoading={isLoading}
+                    isLoading={isLoadingGetCategory}
                 />
             )
         }
@@ -245,6 +227,14 @@ export default function CourseBasicCreateContainer() {
 
     return (
         <div>
+            <LoadingScreen
+                isLoading={
+                    isLoadingCreateCourse ||
+                    isLoadingUpsertSections ||
+                    isLoadingUpsertLessons ||
+                    isLoadingGetCategory
+                }
+            />
             <div className="flex justify-between items-center h-[100px] px-7">
                 <div className="w-[200px]">
                     <Button

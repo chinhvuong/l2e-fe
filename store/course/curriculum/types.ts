@@ -15,6 +15,7 @@ export type CurriculumLecture = {
     name: string
     description: string
     media: string
+    mediaName: string
     mediaType: string
     quizzes: string[]
     sectionId: string
