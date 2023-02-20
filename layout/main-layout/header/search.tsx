@@ -6,7 +6,7 @@ import { CourseLists } from '@/data/courses'
 import { useCallback, useMemo, useState } from 'react'
 import { debounce } from 'lodash'
 import { CoursePreview } from '@/api/dto/course.dto'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { callAPI } from '@/api/axios-client'
 
 interface ISearch {
@@ -14,12 +14,13 @@ interface ISearch {
 }
 
 export default function Search(props: ISearch) {
+    const router = useRouter()
     const [searchTerm, setSearchTerm] = useState('')
     const [result, setResult] = useState<CoursePreview[]>([])
 
     async function fetchData(e: React.ChangeEvent<HTMLInputElement>) {
         const queryword = e.target.value
-        console.log(queryword)
+        console.log(router)
         setSearchTerm(queryword)
         const { data } = await callAPI(
             'get',
@@ -28,9 +29,15 @@ export default function Search(props: ISearch) {
         )
         setResult(data)
     }
-    const debounceLoadData = useCallback(debounce(fetchData, 500), [])
+    const debounceLoadData = useCallback(debounce(fetchData, 600), [])
     const goToSearchPageCourse = () => {
-        Router.push('course/search?query=' + searchTerm)
+        console.log(router.basePath)
+        router.replace('/course/search?query=' + searchTerm)
+    }
+    const handleEnterEvent = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            goToSearchPageCourse()
+        }
     }
     return (
         <div className="relative">
@@ -47,18 +54,22 @@ export default function Search(props: ISearch) {
                     className="ml-[20px] w-[320px] xl:w-[120px] outline-none"
                     onChange={debounceLoadData}
                     type="text"
+                    onKeyDown={handleEnterEvent}
                 ></input>
             </div>
             {result.length > 0 && (
-                <div className="absolute z-10">
+                <div className="absolute z-10 w-[400px] xl:w-[200px]">
                     {result.map((f) => (
                         <div
-                            className={`flex bg-white items-center text-black py-[5px] hover:bg-gray-400`}
+                            className={`flex bg-white items-center text-black py-[10px] hover:bg-gray-400`}
                             key={f._id}
                         >
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            <FontAwesomeIcon
+                                icon={faMagnifyingGlass}
+                                className="pl-[18px]"
+                            />
                             <a
-                                className={`flex items-center pl-[10px]`}
+                                className={`flex items-center pl-[18px] font-bold`}
                                 href={'course/' + f._id}
                             >
                                 {' '}

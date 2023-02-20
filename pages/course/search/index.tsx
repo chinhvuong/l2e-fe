@@ -22,7 +22,7 @@ const SearchPage = () => {
         },
     )
     const handleRadioBox = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(router.query)
+        console.log(router)
         setSortType(e.target.value)
         switch (e.target.value) {
             case 'Most Rated':
