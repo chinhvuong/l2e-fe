@@ -24,11 +24,15 @@ export default function MainContent({
     updateCard,
     lectureDetail,
 }: IMainContentProps) {
-    const [contentType, setContentType] = useState<
-        'video' | 'slide' | 'article' | null
-    >(null)
-    const [uploadedFile, setUploadedFile] = useState<File | null>(null)
-    const [uploadedFileURL, setUploadedFileURL] = useState<string | null>(null)
+    const [contentType, setContentType] = useState<string | null>(
+        lectureDetail.mediaType !== '' ? lectureDetail.mediaType : null,
+    )
+    const [contentName, setContentName] = useState<string | null>(
+        lectureDetail.mediaName !== '' ? lectureDetail.mediaName : null,
+    )
+    const [uploadedFileURL, setUploadedFileURL] = useState<string | null>(
+        lectureDetail.media !== '' ? lectureDetail.media : null,
+    )
     const [uploadedVideoDuration, setUploadedVideoDuration] = useState('')
     const [article, setArticle] = useState<string>('')
     const dispatch = useAppDispatch()
@@ -36,6 +40,7 @@ export default function MainContent({
     const updateLectureMainContent = (url: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.media = url
+        newDetail.mediaName = contentName ?? ''
         newDetail.mediaType = 'video'
         dispatch(updateCard(newDetail))
     }
@@ -93,7 +98,7 @@ export default function MainContent({
         inputFile.onchange = (e) => {
             const target = e.target as HTMLInputElement
             if (target.files && target.files[0]) {
-                setUploadedFile(target.files[0])
+                setContentName(target.files[0].name)
                 const objectUrl = URL.createObjectURL(target.files[0])
                 setUploadedFileURL(objectUrl)
 
@@ -167,21 +172,12 @@ export default function MainContent({
                                 src={uploadedFileURL ?? ''}
                             ></video>
                             <div>
-                                <div className="font-bold">
-                                    {uploadedFile?.name}
-                                </div>
+                                <div className="font-bold">{contentName}</div>
                                 <div className="mb-5">
                                     {uploadedVideoDuration}
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="w-[140px]">
-                            <Select
-                                selectList={['As Instructor', 'As Student']}
-                                placeholder="Preview"
-                                selected=""
-                            />
-                        </div> */}
                     </div>
                     <div className="flex space-x-3 justify-end items-center mt-10">
                         <Button onClick={() => handleUploadFile()}>
