@@ -17,6 +17,7 @@ export interface CourseDetail {
     approved: boolean
     category: number
     thumbnail: string
+    promotionalVideo: string
     requirements: string[]
     goals: string[]
     include: {

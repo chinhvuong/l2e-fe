@@ -1,9 +1,5 @@
 import { InstructorAPI, UserAPI } from '@/api/api-path'
-import {
-    GetCategoryResponse,
-    LessonResponseItem,
-    SectionResponseItem,
-} from '@/api/dto/course.dto'
+import { GetCategoryResponse, SectionResponseItem } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
@@ -99,6 +95,7 @@ export default function CourseBasicCreateContainer() {
                                     name: '',
                                     description: '',
                                     media: '',
+                                    mediaName: '',
                                     mediaType: '',
                                     quizzes: [],
                                     sectionId: item._id,

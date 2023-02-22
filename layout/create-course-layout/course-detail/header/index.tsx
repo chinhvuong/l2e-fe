@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router from 'next/router'
 import Button from '@/components/core/button'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
+import { useAppSelector } from '@/hooks'
+import { getCanSaveCourseState } from '@/store/course/selectors'
 
 export interface IHeaderProps {}
 
@@ -15,12 +17,24 @@ export default function Header() {
         isLoading,
     } = useCreateCourseContext()
 
+    const canSaveCourse = useAppSelector(getCanSaveCourseState)
+
+    console.log('canSaveCourse', canSaveCourse)
+
     const goBack = () => {
         Router.push('/instructor')
     }
 
     const handleUpdateCourseDetail = () => {
         updateCourse(courseDetail)
+        console.log(
+            'upsertSections',
+            courseSections.map((item) => {
+                const el: any = { ...item }
+                delete el._id
+                return el
+            }),
+        )
         upsertSections(
             courseSections.map((item) => {
                 const el: any = { ...item }
@@ -43,7 +57,7 @@ export default function Header() {
                 <div className="text-white">Back</div>
             </div>
             <Button
-                isLoading={isLoading}
+                isLoading={isLoading || !canSaveCourse}
                 onClick={() => handleUpdateCourseDetail()}
             >
                 <div className="font-semibold">Save</div>

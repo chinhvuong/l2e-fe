@@ -24,6 +24,7 @@ export interface CreateCourseResponse {
     requirements: string[]
     goals: string[]
     thumbnail: string | null
+    promotionalVideo: string | null
     category: string
     _id: string
     createdAt: string
@@ -41,6 +42,7 @@ export interface UpdateCourseRequest {
     requirements: string[]
     goals: string[]
     thumbnail: string | null
+    promotionalVideo: string | null
     include: {
         duration: string
         resource: string
@@ -80,6 +82,7 @@ export interface UpdateCourseResponse {
     requirements: string
     goals: string
     thumbnail: string | null
+    promotionalVideo: string | null
     category: string
     createdAt: string
     updatedAt: string
@@ -128,6 +131,7 @@ export interface GetCourseDetailResponse {
     requirements: string
     goals: string
     thumbnail: string | null
+    promotionalVideo: string | null
     category: string
     createdAt: string
     updatedAt: string
@@ -230,6 +234,7 @@ export interface TLesson {
     name: string
     description: string
     media: string
+    mediaName: string
     mediaType: string
     quizzes: string[]
     _id: string
@@ -240,6 +245,7 @@ export interface LessonRequestItem {
     name: string
     description: string
     media: string
+    mediaName: string
     mediaType: string
     quizzes: string[]
     sectionId: string
@@ -250,6 +256,7 @@ export interface LessonResponseItem {
     name: string
     description: string
     media: string
+    mediaName: string
     mediaType: string
     quizzes: string[]
     mode: string

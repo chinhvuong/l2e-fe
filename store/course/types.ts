@@ -40,6 +40,7 @@ export interface CourseDetail {
     requirements: string[]
     goals: string[]
     thumbnail: string | null
+    promotionalVideo: string | null
     include: {
         duration: string
         resource: string
@@ -64,6 +65,7 @@ export type CourseDetailState = {
     isNewData: boolean
     isEnroll: boolean
     isSaved: boolean
+    canSaveCourse: boolean
     canCreateCourse: boolean
 }
 

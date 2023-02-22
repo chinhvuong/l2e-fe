@@ -17,6 +17,7 @@ import {
     updateCourseName,
     updateCourseOverview,
     updateCoursePrice,
+    updateCoursePromotionalVideo,
     updateCourseThumbnail,
 } from '@/store/course'
 import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
@@ -51,9 +52,9 @@ export default function LandingPageContainer() {
     const [thumbnail, setThumbnail] = useState<string>(
         courseDetail.thumbnail ?? '/images/placeholder.jpeg',
     )
-    // const [promotionalVideo, setPromotionalVideo] = useState<string>(
-    //     '/images/placeholder.jpeg',
-    // )
+    const [promotionalVideo, setPromotionalVideo] = useState<string>(
+        courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',
+    )
 
     useEffect(() => {
         const listWithId = JSON.parse(localStorage.getItem(CATEGORY) ?? '[]')
@@ -70,9 +71,9 @@ export default function LandingPageContainer() {
                 courseDetail.price === 0 ? '' : courseDetail.price.toString(),
             )
             setThumbnail(courseDetail.thumbnail ?? '/images/placeholder.jpeg')
-            // setPromotionalVideo(
-            //     courseDetail.thumbnail ?? '/images/placeholder.jpeg',
-            // )
+            setPromotionalVideo(
+                courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',
+            )
         }
         if (courseDetail._id !== '' && isNewCourseDetail) {
             setIsLoading(false)
@@ -112,6 +113,9 @@ export default function LandingPageContainer() {
     }
     const handleThumbnailChange = (value: string) => {
         dispatch(updateCourseThumbnail(value))
+    }
+    const handlePromotionalVideoChange = (value: string) => {
+        dispatch(updateCoursePromotionalVideo(value))
     }
 
     return (
@@ -189,7 +193,8 @@ export default function LandingPageContainer() {
                         <UploadPreview
                             label="Promotional video"
                             type="video"
-                            defaultPreview="/images/placeholder.jpeg"
+                            defaultPreview={promotionalVideo}
+                            setFileLink={handlePromotionalVideoChange}
                         >
                             <div>
                                 <span>{`Students who watch a well-made promo video are `}</span>

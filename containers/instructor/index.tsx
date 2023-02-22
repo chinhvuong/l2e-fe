@@ -3,25 +3,52 @@ import { useEffect, useState } from 'react'
 import Router from 'next/router'
 import { goerli } from 'wagmi/chains'
 import { useSigner } from 'wagmi'
-import { CoursePreview, GetMintSignatureResponse } from '@/api/dto/course.dto'
+import {
+    CoursePreview,
+    GetCategoryResponse,
+    GetMintSignatureResponse,
+} from '@/api/dto/course.dto'
 import { createCourse } from '@/hooks/coursedex'
 import MyCourseCard from './my-course-card'
 import useAPI from '@/api/hooks/useAPI'
-import { InstructorAPI } from '@/api/api-path'
+import { InstructorAPI, UserAPI } from '@/api/api-path'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import { noop } from 'lodash'
+import { Category } from '@/constants/interfaces'
+import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
 
 export default function InstructorContainer() {
     const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
     const [courseId, setCourseId] = useState<string>('')
-    const { mutate: getSignatureMint } = useAPI.getMutation(
-        InstructorAPI.GET_MINT_SIGNATURE + '?id=' + courseId,
-        {
-            onError: () => {},
-            onSuccess: (response) => {
-                setRequireinfo(response)
+    const { mutate: getSignatureMint, isLoading: isLoadingGetSignatureMint } =
+        useAPI.getMutation(
+            InstructorAPI.GET_MINT_SIGNATURE + '?id=' + courseId,
+            {
+                onError: () => {},
+                onSuccess: (response) => {
+                    setRequireinfo(response)
+                },
             },
-        },
-    )
+        )
+
+    const { mutate: getCategory, isLoading: isLoadingGetCategory } =
+        useAPI.getMutation(UserAPI.GET_CATEGORY, {
+            onError: noop,
+            onSuccess: (response: GetCategoryResponse) => {
+                const category = response.data.map(
+                    (item: Category) => item.name,
+                )
+                localStorage.setItem(CATEGORY, JSON.stringify(response.data))
+                localStorage.setItem(
+                    CATEGORY_NAME_LIST,
+                    JSON.stringify(category),
+                )
+            },
+        })
+
+    useEffect(() => {
+        getCategory({})
+    }, [])
 
     const { data: allMyCourses, isLoading: isLoadingAllMyCourses } = useAPI.get(
         InstructorAPI.GET_ALL_MY_COURSES,
@@ -55,7 +82,12 @@ export default function InstructorContainer() {
     return (
         <>
             <LoadingScreen
-                isLoading={isLoadingSigner || isLoadingAllMyCourses}
+                isLoading={
+                    isLoadingSigner ||
+                    isLoadingAllMyCourses ||
+                    isLoadingGetSignatureMint ||
+                    isLoadingGetCategory
+                }
             />
             <div className="py-8 h-full space-y-10">
                 <div className="flex justify-between px-14">

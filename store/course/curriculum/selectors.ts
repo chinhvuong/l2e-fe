@@ -68,6 +68,7 @@ export const getCurriculumLectureDetail =
                 name: '',
                 description: '',
                 media: '',
+                mediaName: '',
                 mediaType: '',
                 quizzes: [],
                 sectionId: 'abc',

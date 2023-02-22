@@ -123,6 +123,15 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             onSuccess: (response) => {
                 courseLectures.forEach((item, index) => {
                     setSectionId(response[index]._id)
+                    console.log(
+                        'upsertLessons',
+                        item.map((item) => {
+                            const el: any = { ...item }
+                            delete el._id
+                            el.sectionId = response[index]._id
+                            return el
+                        }),
+                    )
                     setTimeout(
                         () =>
                             upsertLessons(

@@ -14,16 +14,15 @@ import { FileAPI } from '@/api/api-path'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { CurriculumLecture } from '@/store/course/curriculum/types'
 import { useAppDispatch } from '@/hooks'
+import { updateCurriculumLectureMainContent } from '@/store/course/curriculum'
+import Loading from '@/components/core/animate/loading'
+import { updateCanSaveCourseState } from '@/store/course'
 
 export interface IMainContentProps {
-    updateCard: ActionCreatorWithPayload<CurriculumLecture, string>
     lectureDetail: CurriculumLecture
 }
 
-export default function MainContent({
-    updateCard,
-    lectureDetail,
-}: IMainContentProps) {
+export default function MainContent({ lectureDetail }: IMainContentProps) {
     const [contentType, setContentType] = useState<string | null>(
         lectureDetail.mediaType !== '' ? lectureDetail.mediaType : null,
     )
@@ -42,7 +41,17 @@ export default function MainContent({
         newDetail.media = url
         newDetail.mediaName = contentName ?? ''
         newDetail.mediaType = 'video'
-        dispatch(updateCard(newDetail))
+        dispatch(updateCurriculumLectureMainContent(newDetail))
+        setTimeout(() => dispatch(updateCanSaveCourseState(true)), 1000)
+    }
+
+    const removeLectureMainContent = () => {
+        setContentType(null)
+        const newDetail = { ...lectureDetail }
+        newDetail.media = ''
+        newDetail.mediaName = ''
+        newDetail.mediaType = ''
+        dispatch(updateCurriculumLectureMainContent(newDetail))
     }
 
     useEffect(() => {
@@ -74,7 +83,7 @@ export default function MainContent({
         setUploadedVideoDuration(h + ':' + m + ':' + s)
     }
 
-    const { mutate: uploadFile } = useAPI.post(
+    const { mutate: uploadFile, isLoading: isLoadingUploadFile } = useAPI.post(
         FileAPI.UPLOAD_SINGLE_FILE,
         {
             onError: noop,
@@ -107,6 +116,7 @@ export default function MainContent({
                 const formData = new FormData()
                 formData.append('file', target.files[0])
 
+                dispatch(updateCanSaveCourseState(false))
                 uploadFile(formData)
             }
         }
@@ -184,7 +194,7 @@ export default function MainContent({
                             <div>Change video</div>
                         </Button>
                         <Button
-                            onClick={() => setContentType(null)}
+                            onClick={() => removeLectureMainContent()}
                             className="btn-primary-outline"
                         >
                             <div>Cancel</div>
@@ -216,5 +226,15 @@ export default function MainContent({
         }
     }
 
-    return <>{getContent()}</>
+    return (
+        <>
+            {isLoadingUploadFile ? (
+                <div className="px-10 py-8 border-t border-black flex justify-center">
+                    <Loading />
+                </div>
+            ) : (
+                getContent()
+            )}
+        </>
+    )
 }

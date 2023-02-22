@@ -56,6 +56,10 @@ export const getThumbnail = (state: RootState) => {
     return state.courseDetail.courseDetail.thumbnail
 }
 
+export const getPromotionalVideo = (state: RootState) => {
+    return state.courseDetail.courseDetail.promotionalVideo
+}
+
 export const getGoals = (state: RootState) => {
     return state.courseDetail.courseDetail.goals
 }
@@ -86,6 +90,10 @@ export const getEnrollStatusState = (state: RootState) => {
 
 export const getSaveCourseState = (state: RootState) => {
     return state.courseDetail.isSaved
+}
+
+export const getCanSaveCourseState = (state: RootState) => {
+    return state.courseDetail.canSaveCourse
 }
 
 export const getCanCreateCourseState = (state: RootState) => {

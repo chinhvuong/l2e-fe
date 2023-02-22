@@ -41,6 +41,7 @@ const initialState: CourseDetailState = {
         goals: [],
         thumbnail:
             'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg',
+        promotionalVideo: '',
         category: '',
         createdAt: '2022-10-25T04:10:15.411Z',
         updatedAt: '2022-11-19T17:18:50.955Z',
@@ -53,10 +54,9 @@ const initialState: CourseDetailState = {
     isNewData: false,
     isEnroll: false,
     isSaved: false,
+    canSaveCourse: true,
     canCreateCourse: true,
 }
-
-// thêm 1 trường là promotional
 
 export const courseDetailSlice = createSlice({
     name: 'courseDetailSlice',
@@ -83,6 +83,9 @@ export const courseDetailSlice = createSlice({
         updateCourseThumbnail(state, action: PayloadAction<string>) {
             state.courseDetail.thumbnail = action.payload
         },
+        updateCoursePromotionalVideo(state, action: PayloadAction<string>) {
+            state.courseDetail.promotionalVideo = action.payload
+        },
         updateCourseGoals(state, action: PayloadAction<string[]>) {
             state.courseDetail.goals = [...action.payload]
         },
@@ -101,6 +104,9 @@ export const courseDetailSlice = createSlice({
         updateSaveCourseState(state, action: PayloadAction<boolean>) {
             state.isSaved = action.payload
         },
+        updateCanSaveCourseState(state, action: PayloadAction<boolean>) {
+            state.canSaveCourse = action.payload
+        },
         updateCanCreateCourseState(state, action: PayloadAction<boolean>) {
             state.canCreateCourse = action.payload
         },
@@ -115,12 +121,14 @@ export const {
     updateCoursePrice,
     updateCourseDescription,
     updateCourseThumbnail,
+    updateCoursePromotionalVideo,
     updateCourseGoals,
     updateCourseRequirements,
     updateCourseDetail,
     updateGetCourseDetailState,
     updateEnrollStatus,
     updateSaveCourseState,
+    updateCanSaveCourseState,
     updateCanCreateCourseState,
 } = courseDetailSlice.actions
 

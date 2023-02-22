@@ -1,8 +1,11 @@
 import { FileAPI } from '@/api/api-path'
 import { UploadOneFileResponse } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
+import { useAppDispatch } from '@/hooks'
+import { updateCanSaveCourseState } from '@/store/course'
 import { noop } from 'lodash'
 import { ReactNode, ReactText, useEffect, useState } from 'react'
+import Loading from '../animate/loading'
 import Button from '../button'
 
 export interface IUploadPreviewProps {
@@ -16,14 +19,15 @@ export interface IUploadPreviewProps {
 export default function UploadPreview(props: IUploadPreviewProps) {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [uploadedFileURL, setUploadedFileURL] = useState(props.defaultPreview)
-    const [showPlaceholder, setShowPlaceholder] = useState(true)
+    const dispatch = useAppDispatch()
 
-    const { mutate: uploadFile } = useAPI.post(
+    const { mutate: uploadFile, isLoading } = useAPI.post(
         FileAPI.UPLOAD_SINGLE_FILE,
         {
             onError: noop,
             onSuccess: (response: UploadOneFileResponse) => {
                 props.setFileLink && props.setFileLink(response.url)
+                setTimeout(() => dispatch(updateCanSaveCourseState(true)), 1000)
             },
         },
         {
@@ -57,11 +61,8 @@ export default function UploadPreview(props: IUploadPreviewProps) {
                 const formData = new FormData()
                 formData.append('file', target.files[0])
 
+                dispatch(updateCanSaveCourseState(false))
                 uploadFile(formData)
-
-                if (props.type === 'video') {
-                    setShowPlaceholder(false)
-                }
             }
         }
     }
@@ -71,17 +72,35 @@ export default function UploadPreview(props: IUploadPreviewProps) {
             <div className="font-bold ml-[25px]">{props.label}</div>
             <div className="flex">
                 <div className="basis-1/2">
-                    <img
-                        src={uploadedFileURL}
-                        alt="Course image"
-                        className={`w-full ${!showPlaceholder && 'hidden'}`}
-                    />
-                    {!showPlaceholder && (
-                        <div className="flex items-center w-full h-[230px] px-5 bg-slate-300">
-                            Save the changes in order to complete the upload of
-                            your file. Once you save it, we will process it to
-                            ensure it works smoothly on Skilline.
+                    {isLoading ? (
+                        <div className="flex justify-center items-center h-full">
+                            <Loading />
                         </div>
+                    ) : (
+                        <>
+                            {props.type === 'image' && (
+                                <img
+                                    src={uploadedFileURL}
+                                    alt="Course image"
+                                    className="w-full"
+                                />
+                            )}
+                            {props.type === 'video' &&
+                                (uploadedFileURL ===
+                                '/images/placeholder.jpeg' ? (
+                                    <img
+                                        src={uploadedFileURL}
+                                        alt="Course image"
+                                        className="w-full"
+                                    />
+                                ) : (
+                                    <video
+                                        id="video-thumbnail"
+                                        src={uploadedFileURL}
+                                        className="w-full"
+                                    ></video>
+                                ))}
+                        </>
                     )}
                 </div>
                 <div className="basis-1/2 ml-5 space-y-3">
