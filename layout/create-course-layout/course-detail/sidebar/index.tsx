@@ -216,10 +216,7 @@ export default function Sidebar() {
                         {!courseDetail.courseId ? (
                             <MintBtn id={courseDetail._id} />
                         ) : (
-                            <Button
-                                className="mt-10 mb-5 bg-green-500"
-                                disabled
-                            >
+                            <Button className="bg-green-500" disabled>
                                 <div className="font-semibold w-full flex justify-center">
                                     Minted!
                                 </div>

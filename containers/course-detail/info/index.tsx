@@ -6,7 +6,6 @@ import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Sidebar from '../components/sidebar'
 import { getCourseOverviewInfo } from '@/store/course/selectors'
-import VideoPreview from '@/components/core/video-preview'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { CATEGORY } from '@/constants/localStorage'
 import { Category } from '@/constants/interfaces'
@@ -16,11 +15,13 @@ import { useSelector } from 'react-redux'
 import { getLoginState } from '@/store/user/selectors'
 import { LearnerAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
+import VideoModal from '@/components/core/modal/video-modal'
 
 export default function CourseInfo() {
     const data = useAppSelector(getCourseOverviewInfo)
     const [category, setCategory] = useState<Category | null>(null)
     const loginState = useSelector(getLoginState)
+    const [showModal, setShowModal] = useState(false)
     const dispatch = useAppDispatch()
     const breadcrumb = [
         {
@@ -70,12 +71,15 @@ export default function CourseInfo() {
                     <div className="under_lg:px-8">
                         <Breadcrumb data={breadcrumb} />
                     </div>
-                    <VideoPreview
-                        thumbnail={data.thumbnail ?? '/images/placeholder.jpeg'}
-                        // thumbnail="https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg"
-                        className="2xl:hidden"
-                        textSize="big"
-                    />
+                    <div className="2xl:hidden">
+                        {data.promotionalVideo && (
+                            <VideoModal
+                                isShow={showModal}
+                                setIsShow={setShowModal}
+                                url={data.promotionalVideo}
+                            />
+                        )}
+                    </div>
                     <div className="under_lg:w-full text-white space-y-5 under_lg:px-8">
                         <div className="font-bold text-[35px] leading-[45px]">
                             {data.name}
