@@ -1,7 +1,6 @@
 import { dataCourses_detail } from '@/data/course-detail'
 import { useAppSelector } from '@/hooks'
 import { getCourseSectionsWithNestedLectures } from '@/store/course/selectors'
-import { CourseSectionWithLectures } from '@/store/course/types'
 import * as React from 'react'
 import IncludeList from '../components/include-list'
 import CourseContent from './course-content'
