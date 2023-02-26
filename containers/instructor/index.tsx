@@ -59,6 +59,10 @@ export default function InstructorContainer() {
         },
     )
 
+    useEffect(() => {
+        console.log('allMyCourses', allMyCourses)
+    }, [allMyCourses])
+
     const { data: signer, isLoading: isLoadingSigner } = useSigner({
         chainId: goerli.id,
     })

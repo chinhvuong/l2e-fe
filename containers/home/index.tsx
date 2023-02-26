@@ -8,13 +8,11 @@ import useAPI from '@/api/hooks/useAPI'
 import { UserAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
 import LoadingScreen from '@/components/core/animate/loading-screen'
-import VideoModal from '@/components/core/modal/video-modal'
 
 const HomePageContainer = () => {
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
     })
-    const [showModal, setShowModal] = useState(false)
 
     const getCourseListUI = () => {
         return data.data.length < 5 ? (
@@ -84,20 +82,6 @@ const HomePageContainer = () => {
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
             <div>{!isLoading && getCourseListUI()}</div>
-            <button
-                className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                onClick={() => setShowModal(!showModal)}
-            >
-                Open regular modal
-            </button>
-            <VideoModal
-                isShow={showModal}
-                setIsShow={setShowModal}
-                url={
-                    'https://l2e-store.s3.ap-northeast-1.amazonaws.com/file-1676645280808.mp4'
-                }
-            />
             {/* <div className="flex justify-center mt-12 mb-4">
                 <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
                     <div className="font-extrabold text-[41px]">

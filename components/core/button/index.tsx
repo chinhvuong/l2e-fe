@@ -18,16 +18,14 @@ function Button({
     return (
         <button
             {...rest}
-            className={`${textButton ? 'btn-text' : 'btn-primary btn-common'} ${
-                rest.className
-            } flex items-center ${
+            className={`${textButton ? 'btn-text' : 'btn-common'} ${
+                disabled ? 'bg-gray-600 text-white' : 'btn-primary'
+            } ${rest.className} flex items-center ${
                 isLoading ? 'cursor-not-allowed' : 'cursor-pointer'
             } whitespace-nowrap	text-ellipsis overflow-hidden`}
             disabled={disabled}
         >
-            <span className="whitespace-nowrap	text-ellipsis overflow-hidden">
-                {children}
-            </span>
+            {children}
             {isLoading && <Loading className="!text-white ml-2" />}
         </button>
     )

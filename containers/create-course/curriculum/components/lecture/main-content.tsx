@@ -17,6 +17,7 @@ import { useAppDispatch } from '@/hooks'
 import { updateCurriculumLectureMainContent } from '@/store/course/curriculum'
 import Loading from '@/components/core/animate/loading'
 import { updateCanSaveCourseState } from '@/store/course'
+import VideoModal from '@/components/core/modal/video-modal'
 
 export interface IMainContentProps {
     lectureDetail: CurriculumLecture
@@ -33,6 +34,7 @@ export default function MainContent({ lectureDetail }: IMainContentProps) {
         lectureDetail.media !== '' ? lectureDetail.media : null,
     )
     const [uploadedVideoDuration, setUploadedVideoDuration] = useState('')
+    const [showModal, setShowModal] = useState(false)
     const [article, setArticle] = useState<string>('')
     const dispatch = useAppDispatch()
 
@@ -171,16 +173,20 @@ export default function MainContent({ lectureDetail }: IMainContentProps) {
             )
         }
         if (contentType === 'video') {
+            if (!uploadedFileURL) {
+                return
+            }
             return (
                 <div className="px-10 py-5 border-t border-black">
                     <div className="flex justify-between">
                         <div className="flex items-start space-x-3">
-                            <video
-                                id="video-thumbnail"
-                                width={120}
-                                height={67.5}
-                                src={uploadedFileURL ?? ''}
-                            ></video>
+                            <div className="basis-1/2">
+                                <VideoModal
+                                    isShow={showModal}
+                                    setIsShow={setShowModal}
+                                    url={uploadedFileURL}
+                                />
+                            </div>
                             <div>
                                 <div className="font-bold">{contentName}</div>
                                 <div className="mb-5">

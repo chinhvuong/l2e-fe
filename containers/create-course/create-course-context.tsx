@@ -4,6 +4,7 @@ import { COURSE_ID } from '@/constants/localStorage'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import {
     updateCourseDetail,
+    updateDescriptionLength,
     updateGetCourseDetailState,
     updateSaveCourseState,
 } from '@/store/course'
@@ -23,11 +24,13 @@ import {
 import { getMyCourseDetail } from '@/store/course/selectors'
 import { CourseDetail } from '@/store/course/types'
 import { UseMutateFunction } from '@tanstack/react-query'
+import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import { noop } from 'lodash'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 interface ICreateCourseContext {
     isLoading: boolean
+    getCourseDetail: UseMutateFunction<unknown, any, object, unknown>
     updateCourse: UseMutateFunction<unknown, any, object, unknown>
     upsertSections: UseMutateFunction<unknown, any, object, unknown>
     courseDetail: CourseDetail
@@ -89,6 +92,20 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                         response.requirements.length > 0 &&
                         dispatch(updateAllRequirements(response.requirements))
                     dispatch(updateGetCourseDetailState(true))
+                    dispatch(
+                        updateDescriptionLength(
+                            EditorState.createWithContent(
+                                ContentState.createFromBlockArray(
+                                    convertFromHTML(response.description)
+                                        .contentBlocks,
+                                ),
+                            )
+                                .getCurrentContent()
+                                .getPlainText()
+                                .split(/(\s+)/)
+                                .filter((e) => e.trim().length > 0).length,
+                        ),
+                    )
                     getSections({})
                 },
             },
@@ -123,15 +140,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             onSuccess: (response) => {
                 courseLectures.forEach((item, index) => {
                     setSectionId(response[index]._id)
-                    console.log(
-                        'upsertLessons',
-                        item.map((item) => {
-                            const el: any = { ...item }
-                            delete el._id
-                            el.sectionId = response[index]._id
-                            return el
-                        }),
-                    )
                     setTimeout(
                         () =>
                             upsertLessons(
@@ -195,6 +203,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         <CreateCourseContext.Provider
             value={{
                 isLoading,
+                getCourseDetail,
                 updateCourse,
                 upsertSections,
                 courseDetail,
