@@ -14,7 +14,6 @@ const HomePageContainer = () => {
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
     })
-
     const [showModal, setShowModal] = useState(false)
 
     const getCourseListUI = () => {

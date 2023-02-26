@@ -49,6 +49,16 @@ module.exports = {
                 md: { max: '767px', min: '640px' },
                 sm: { max: '639px' },
             },
+            boxShadow: {
+                '3xl': '0 0.125rem 0.25rem ',
+            },
+            minHeight: {
+                r: '3.625rem',
+            },
+            margin: {
+                r2: '-2rem',
+                'r2.5': '2.5rem',
+            },
         },
     },
     plugins: [require('@tailwindcss/line-clamp')],

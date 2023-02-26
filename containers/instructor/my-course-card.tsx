@@ -33,6 +33,10 @@ const MyCourseCard = ({ course }: Props) => {
         localStorage.setItem(COURSE_ID, course._id)
         Router.push(`/update-course/${course._id}/landing-page`)
     }
+    const goToQuestionPage = () => {
+        localStorage.setItem(COURSE_ID, course._id)
+        Router.push(`instructor/${course._id}/question/`)
+    }
 
     return (
         <>
@@ -86,6 +90,14 @@ const MyCourseCard = ({ course }: Props) => {
                         onClick={() => goToUpdateCoursePage()}
                     >
                         <span>Edit</span>
+                    </Button>
+                </div>
+                <div className={`flex justify-end gap-4 text-white mt-4`}>
+                    <Button
+                        className="flex gap-4 p-1 text-sm"
+                        onClick={() => goToQuestionPage()}
+                    >
+                        <span>Question Bank</span>
                     </Button>
                 </div>
             </div>
