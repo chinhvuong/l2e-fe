@@ -7,6 +7,7 @@ import { noop } from 'lodash'
 import { ReactNode, ReactText, useEffect, useState } from 'react'
 import Loading from '../animate/loading'
 import Button from '../button'
+import VideoModal from '../modal/video-modal'
 
 export interface IUploadPreviewProps {
     label: string
@@ -19,6 +20,7 @@ export interface IUploadPreviewProps {
 export default function UploadPreview(props: IUploadPreviewProps) {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [uploadedFileURL, setUploadedFileURL] = useState(props.defaultPreview)
+    const [showModal, setShowModal] = useState(false)
     const dispatch = useAppDispatch()
 
     const { mutate: uploadFile, isLoading } = useAPI.post(
@@ -94,11 +96,11 @@ export default function UploadPreview(props: IUploadPreviewProps) {
                                         className="w-full"
                                     />
                                 ) : (
-                                    <video
-                                        id="video-thumbnail"
-                                        src={uploadedFileURL}
-                                        className="w-full"
-                                    ></video>
+                                    <VideoModal
+                                        isShow={showModal}
+                                        setIsShow={setShowModal}
+                                        url={uploadedFileURL}
+                                    />
                                 ))}
                         </>
                     )}

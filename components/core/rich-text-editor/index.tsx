@@ -1,4 +1,4 @@
-import { EditorState } from 'draft-js'
+import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import { useEffect, useState } from 'react'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import dynamic from 'next/dynamic'
@@ -9,18 +9,26 @@ const Editor = dynamic<EditorProps>(
 import './style.scss'
 import { convertToHTML } from 'draft-convert'
 import { EditorProps } from 'react-draft-wysiwyg'
+import { useAppDispatch } from '@/hooks'
+import { updateDescriptionLength } from '@/store/course'
 
 export interface IRichTextEditorProps {
     label?: string
     updateState: Function
+    defaultValue?: string
 }
 
 // bug ở phần placeholder, click order/unorder list đầu tiên
 
 export default function RichTextEditor(props: IRichTextEditorProps) {
     const [editorState, setEditorState] = useState<EditorState>(
-        EditorState.createEmpty(),
+        EditorState.createWithContent(
+            ContentState.createFromBlockArray(
+                convertFromHTML(props.defaultValue ?? '').contentBlocks,
+            ),
+        ),
     )
+    const dispatch = useAppDispatch()
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
     const [uploadedFilesURLs, setUploadedFilesURLs] = useState<string[]>([])
 
@@ -61,6 +69,15 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
                 onEditorStateChange={(newState) => {
                     props.updateState(
                         convertToHTML(editorState.getCurrentContent()),
+                    )
+                    dispatch(
+                        updateDescriptionLength(
+                            editorState
+                                .getCurrentContent()
+                                .getPlainText()
+                                .split(/(\s+)/)
+                                .filter((e) => e.trim().length > 0).length,
+                        ),
                     )
                     setEditorState(newState)
                 }}

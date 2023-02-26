@@ -57,6 +57,7 @@ export interface CourseDetail {
     updatedAt: string
     courseId?: number
     sections: CourseSectionWithLectures[]
+    lastApproveRequestAt: string | null
 }
 
 export type CourseDetailState = {
@@ -67,6 +68,7 @@ export type CourseDetailState = {
     isSaved: boolean
     canSaveCourse: boolean
     canCreateCourse: boolean
+    descriptionLength: number
 }
 
 export type TInputUpdate = {

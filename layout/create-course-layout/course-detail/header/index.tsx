@@ -27,14 +27,6 @@ export default function Header() {
 
     const handleUpdateCourseDetail = () => {
         updateCourse(courseDetail)
-        console.log(
-            'upsertSections',
-            courseSections.map((item) => {
-                const el: any = { ...item }
-                delete el._id
-                return el
-            }),
-        )
         upsertSections(
             courseSections.map((item) => {
                 const el: any = { ...item }

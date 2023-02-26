@@ -49,6 +49,9 @@ const initialState: CourseDetailState = {
         students: 0,
         courseId: 0,
         sections: [],
+        lastApproveRequestAt: new Date(
+            new Date().setDate(new Date().getDate() - 1),
+        ).toISOString(),
     },
     reviews: dataRatings,
     isNewData: false,
@@ -56,6 +59,7 @@ const initialState: CourseDetailState = {
     isSaved: false,
     canSaveCourse: true,
     canCreateCourse: true,
+    descriptionLength: 0,
 }
 
 export const courseDetailSlice = createSlice({
@@ -110,6 +114,9 @@ export const courseDetailSlice = createSlice({
         updateCanCreateCourseState(state, action: PayloadAction<boolean>) {
             state.canCreateCourse = action.payload
         },
+        updateDescriptionLength(state, action: PayloadAction<number>) {
+            state.descriptionLength = action.payload
+        },
     },
 })
 
@@ -130,6 +137,7 @@ export const {
     updateSaveCourseState,
     updateCanSaveCourseState,
     updateCanCreateCourseState,
+    updateDescriptionLength,
 } = courseDetailSlice.actions
 
 export default courseDetailSlice.reducer

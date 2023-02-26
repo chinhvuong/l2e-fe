@@ -46,7 +46,7 @@ export default function LandingPageContainer() {
     const [categoryList, setCategoryList] = useState([])
     const [category, setCategory] = useState<string>('')
     const [price, setPrice] = useState<string>(() =>
-        courseDetail.price === 0 ? '' : courseDetail.price.toString(),
+        courseDetail.price === null ? '' : courseDetail.price.toString(),
     )
     const [description, setDescription] = useState<string>('')
     const [thumbnail, setThumbnail] = useState<string>(
@@ -68,7 +68,9 @@ export default function LandingPageContainer() {
             setSubtitle(courseDetail.overview)
             setLanguage(getLanguageName(courseDetail.language))
             setPrice(
-                courseDetail.price === 0 ? '' : courseDetail.price.toString(),
+                courseDetail.price === null
+                    ? ''
+                    : courseDetail.price.toString(),
             )
             setThumbnail(courseDetail.thumbnail ?? '/images/placeholder.jpeg')
             setPromotionalVideo(
@@ -171,6 +173,7 @@ export default function LandingPageContainer() {
                         <RichTextEditor
                             label="Description"
                             updateState={handleDescriptionChange}
+                            defaultValue={courseDetail.description}
                         />
                         <UploadPreview
                             label="Thumbnail"

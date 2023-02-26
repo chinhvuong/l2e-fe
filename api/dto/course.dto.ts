@@ -2,7 +2,6 @@ import {
     CurriculumLecture,
     CurriculumSection,
 } from '@/store/course/curriculum/types'
-import { CourseDetail } from '@/store/course/types'
 
 export interface CreateCourseRequest {
     name: string

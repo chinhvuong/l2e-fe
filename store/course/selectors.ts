@@ -103,3 +103,7 @@ export const getCanCreateCourseState = (state: RootState) => {
 export const getCourseSectionsWithNestedLectures = (state: RootState) => {
     return state.courseDetail.courseDetail.sections
 }
+
+export const getDescriptionLength = (state: RootState) => {
+    return state.courseDetail.descriptionLength
+}
