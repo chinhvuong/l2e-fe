@@ -7,10 +7,11 @@ interface IVideoModalProps {
     setIsShow: React.Dispatch<React.SetStateAction<boolean>>
     url: string
     className?: string
+    showPreview?: boolean
 }
 
 export default function VideoModal(props: IVideoModalProps) {
-    const { isShow, setIsShow, url, className } = props
+    const { isShow, setIsShow, url, className, showPreview = true } = props
 
     const [showModal, setShowModal] = useState(isShow)
 
@@ -25,11 +26,13 @@ export default function VideoModal(props: IVideoModalProps) {
 
     return (
         <>
-            <VideoPreview
-                video={url}
-                onClick={() => setShowModal(!showModal)}
-                className={className}
-            />
+            {showPreview && (
+                <VideoPreview
+                    video={url}
+                    onClick={() => setShowModal(!showModal)}
+                    className={className}
+                />
+            )}
             {showModal ? (
                 <>
                     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

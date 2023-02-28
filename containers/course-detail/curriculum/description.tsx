@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getDescription } from '@/store/course/selectors'
 import ShowMore from '@/components/core/show-more'
 import { useAppSelector } from '@/hooks'
+import parse from 'html-react-parser'
 
 export interface IDescriptionProps {}
 
@@ -10,25 +11,27 @@ export default function Description() {
 
     const [showMore, setShowMore] = useState(false)
 
-    const convertStringToHTML = () => {
-        const element = document.getElementById('description-content')
-        let displayedData = data.replaceAll(
+    const getUIContent = () => {
+        let formattedData = data.replaceAll(
             '<li>',
             '<li class="list-disc list-inside ml-2">',
         )
-        displayedData = displayedData.replaceAll(
+        formattedData = formattedData.replaceAll(
             '<ul>',
             '<ul class="space-y-3">',
         )
-        if (element) {
-            element.innerHTML = displayedData
-        }
+        console.log('convertStringToHTML', formattedData)
+
+        return (
+            <div className="text-justify space-y-3" id="description-content">
+                {parse(formattedData)}
+            </div>
+        )
     }
 
     useEffect(() => {
-        convertStringToHTML()
         setShowMore(true)
-    }, [])
+    }, [data])
 
     return (
         <>
@@ -38,10 +41,7 @@ export default function Description() {
                     className="space-y-3 overflow-hidden relative"
                 >
                     <div className="font-semibold text-[26px]">Description</div>
-                    <div
-                        className="text-justify space-y-3"
-                        id="description-content"
-                    ></div>
+                    {data && getUIContent()}
                     {showMore && (
                         <ShowMore el="description" elHeightPreview={400} />
                     )}

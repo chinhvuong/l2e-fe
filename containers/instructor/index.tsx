@@ -59,10 +59,6 @@ export default function InstructorContainer() {
         },
     )
 
-    useEffect(() => {
-        console.log('allMyCourses', allMyCourses)
-    }, [allMyCourses])
-
     const { data: signer, isLoading: isLoadingSigner } = useSigner({
         chainId: goerli.id,
     })
@@ -102,7 +98,7 @@ export default function InstructorContainer() {
                         </Button>
                     </div>
                 </div>
-                {!isLoadingSigner && !isLoadingAllMyCourses && (
+                {!isLoadingSigner && !isLoadingAllMyCourses && allMyCourses && (
                     <div className="grid grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-4 px-14">
                         {allMyCourses.data.map(
                             (course: CoursePreview, index: number) => {

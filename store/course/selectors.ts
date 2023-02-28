@@ -24,6 +24,7 @@ export const getCourseOverviewInfo = (state: RootState) => {
         category: state.courseDetail.courseDetail.category,
         language: state.courseDetail.courseDetail.language,
         thumbnail: state.courseDetail.courseDetail.thumbnail,
+        promotionalVideo: state.courseDetail.courseDetail.promotionalVideo,
         updatedAt: state.courseDetail.courseDetail.updatedAt,
         author: state.courseDetail.courseDetail.author,
         courseId: state.courseDetail.courseDetail.courseId,
@@ -34,6 +35,7 @@ export const getSidebarInfo = (state: RootState) => {
     return {
         price: state.courseDetail.courseDetail.price,
         thumbnail: state.courseDetail.courseDetail.thumbnail,
+        promotionalVideo: state.courseDetail.courseDetail.promotionalVideo,
         include: state.courseDetail.courseDetail.include,
         courseId: state.courseDetail.courseDetail.courseId,
         _id: state.courseDetail.courseDetail._id,
