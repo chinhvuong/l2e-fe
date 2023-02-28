@@ -7,6 +7,7 @@ import { getAssetState } from '@/store/user/selectors'
 import { ethers } from 'ethers'
 import React, { HtmlHTMLAttributes, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import { useSigner } from 'wagmi'
 import { goerli } from 'wagmi/chains'
 type Props = HtmlHTMLAttributes<HTMLButtonElement> & {}
@@ -27,20 +28,31 @@ const EnrollBtn = ({ ...rest }: Props) => {
         if (asset.balance >= data.price) {
             setIsLoading(true)
             try {
-                if (asset.approve / 10 ** 18 <= Number(data.price)) {
-                    await approve(
-                        signer as ethers.Signer,
-                        data.price.toString(),
-                    )
-                }
+                // if (asset.approve / 10 ** 18 <= Number(data.price)) {
+                //     await approve(
+                //         signer as ethers.Signer,
+                //         data.price.toString(),
+                //     )
+                // }
 
-                await enroll(signer!, data.price.toString(), courseId)
+                await enroll(
+                    signer as ethers.Signer,
+                    data.price.toString(),
+                    courseId,
+                )
                 setIsLoading(false)
             } catch (error) {
                 setIsLoading(false)
             }
         } else {
-            alert('You are not balance')
+            toast.error('You are not balance!', {
+                position: 'top-center',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                progress: undefined,
+                theme: 'light',
+            })
         }
     }
     return (
