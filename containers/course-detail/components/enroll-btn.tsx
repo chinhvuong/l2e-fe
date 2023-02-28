@@ -34,7 +34,11 @@ const EnrollBtn = ({ ...rest }: Props) => {
                     )
                 }
 
-                await enroll(signer!, data.price.toString(), courseId)
+                await enroll(
+                    signer as ethers.Signer,
+                    data.price.toString(),
+                    courseId,
+                )
                 setIsLoading(false)
             } catch (error) {
                 setIsLoading(false)
