@@ -35,9 +35,8 @@ export const enroll = async (
     courseId: number,
 ): Promise<void> => {
     // await approve(signer, amount)
-
     const courseDex: ethers.Contract = getContract(signer)
-    console.log('🚀 ~ file: coursedex.ts:38 ~ courseDex:', courseDex)
+    console.log(courseId)
     const tx = await courseDex.enrollCourse(courseId)
     await tx.wait()
 }

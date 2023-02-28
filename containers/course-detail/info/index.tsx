@@ -49,7 +49,9 @@ export default function CourseInfo() {
                 console.log('🚀 ~ file: index.tsx:41 ~ f ~ error', error)
             }
         }
-        f()
+        if (data._id) {
+            f()
+        }
     }, [loginState, data._id])
 
     const getLastUpdated = () => {
