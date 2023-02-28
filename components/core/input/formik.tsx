@@ -1,14 +1,10 @@
 import { useAppDispatch } from '@/hooks'
-import {
-    updateIntendedLearnersState,
-    updateRequirementsState,
-    updateWhatYouWillLearnState,
-} from '@/store/course/intended-learners'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { ChangeEventHandler, useEffect, useState } from 'react'
+import { useFormikContext } from 'formik'
+import { useEffect, useState } from 'react'
 
 export interface IInputProps {
-    id: string
+    id?: string
     name?: string
     label?: string
     charLimit?: {
@@ -16,14 +12,16 @@ export interface IInputProps {
         maxLength: number
     }
     placeholder?: string
-    defaultValue?: string | number | readonly string[] | undefined
+    defaultValue?: string | null
     updateToStore?: ActionCreatorWithPayload<any, string>
-    updateInput?: ChangeEventHandler<HTMLInputElement>
+    updateInput?: Function
     type?: string
     validate?: boolean
+    widtharray?: boolean
 }
 
 export default function FormikInput({
+    widtharray,
     id,
     name,
     label,
@@ -38,35 +36,15 @@ export default function FormikInput({
     const dispatch = useAppDispatch()
     const [input, setInput] = useState(defaultValue ?? '')
     const [isTyped, setIsTyped] = useState(false)
-
+    const context = useFormikContext<IInputProps>()
     useEffect(() => {
         if (!isTyped && input !== '') {
             setIsTyped(true)
         }
-        updateCard(input)
     }, [input])
 
     const getInputCharLeft = () => {
         return charLimit?.maxLength ? charLimit?.maxLength - input.length : 0
-    }
-
-    const updateCard = (content: string) => {
-        updateToStore &&
-            dispatch(
-                updateToStore({
-                    id: id,
-                    content: content,
-                }),
-            )
-        if (name) {
-            if (name === 'What you will learn') {
-                dispatch(updateWhatYouWillLearnState(true))
-            } else if (name === 'Requirements') {
-                dispatch(updateRequirementsState(true))
-            } else if (name === 'Intended learners') {
-                dispatch(updateIntendedLearnersState(true))
-            }
-        }
     }
 
     return (
@@ -77,18 +55,18 @@ export default function FormikInput({
                     validate && input === '' && isTyped
                         ? 'border-red-500'
                         : 'border-black'
-                } space-x-5`}
+                } space-x-5 ${widtharray ? 'w-4/5' : 'w-full'}`}
             >
                 <input
                     type={type ?? 'text'}
                     name={name}
-                    value={defaultValue}
+                    defaultValue={context.values.name}
                     minLength={charLimit?.minLength}
                     maxLength={charLimit?.maxLength}
                     placeholder={placeholder}
                     className="w-full outline-none"
                     autoComplete="off"
-                    onChange={updateInput}
+                    onChange={context.handleChange}
                 />
                 <div className={`${!charLimit?.maxLength && 'hidden'}`}>
                     {getInputCharLeft()}

@@ -34,6 +34,7 @@ const MyCourseCard = ({ course }: Props) => {
         Router.push(`/update-course/${course._id}/landing-page`)
     }
     const goToQuestionPage = () => {
+        console.log(course._id)
         localStorage.setItem(COURSE_ID, course._id)
         Router.push(`instructor/${course._id}/question/`)
     }

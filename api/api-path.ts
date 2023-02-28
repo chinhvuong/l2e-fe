@@ -29,4 +29,5 @@ export const InstructorAPI = {
     UPSERT_LESSONS: '/lesson/upsert-lesions/',
     REQUEST_APPROVE: '/course/manage/own-courses/send-approve-request',
     GET_MINT_SIGNATURE: '/course/request-mint-signature',
+    CREATE_QUESTIONS: '/question/create-batch',
 }
