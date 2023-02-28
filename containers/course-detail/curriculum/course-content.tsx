@@ -1,16 +1,8 @@
-import { useEffect, useState } from 'react'
-import {
-    faCirclePlay,
-    faCircleQuestion,
-    faFile,
-    faChevronDown,
-    faChevronUp,
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Button from '@/components/core/button'
-import '@/styles/animations.scss'
 import Accordion from '@/components/core/accordion'
+import Button from '@/components/core/button'
 import { CourseSectionWithLectures } from '@/store/course/types'
+import '@/styles/animations.scss'
+import { useState } from 'react'
 
 export interface ICourseContentProps {
     sections: CourseSectionWithLectures[]
@@ -58,8 +50,8 @@ export default function CourseContent({ sections }: ICourseContentProps) {
                     } all sections`}
                 </div>
             </div>
-            {getCourseContentUI()}
-            {sections.length > 10 && (
+            {sections && getCourseContentUI()}
+            {sections && sections.length > 10 && (
                 <Button
                     className="btn-primary-outline w-full mt-5"
                     onClick={() => setShowAllSections(!showAllSections)}

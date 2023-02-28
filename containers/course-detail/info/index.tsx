@@ -1,24 +1,27 @@
-import Breadcrumb from '@/components/core/breadcrumb'
-import RatingStar from '@/components/core/rating-star'
-import Label from '@/components/core/label'
-import { useEffect, useState } from 'react'
-import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Sidebar from '../components/sidebar'
-import { getCourseOverviewInfo } from '@/store/course/selectors'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import { CATEGORY } from '@/constants/localStorage'
-import { Category } from '@/constants/interfaces'
-import Hyperlink from '@/containers/create-course/components/hyperlink'
-import { updateEnrollStatus } from '@/store/course'
-import { useSelector } from 'react-redux'
-import { getLoginState } from '@/store/user/selectors'
 import { LearnerAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
+import Breadcrumb from '@/components/core/breadcrumb'
+import Label from '@/components/core/label'
 import VideoModal from '@/components/core/modal/video-modal'
+import RatingStar from '@/components/core/rating-star'
+import Hyperlink from '@/containers/create-course/components/hyperlink'
+import { useAppDispatch } from '@/hooks'
+import { updateEnrollStatus } from '@/store/course'
+import { getLoginState } from '@/store/user/selectors'
+import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import Sidebar from '../components/sidebar'
+import { useCourseDetailContext } from '../course-detail-context'
+
+type Category = {
+    name: string
+    color: string
+}
 
 export default function CourseInfo() {
-    const data = useAppSelector(getCourseOverviewInfo)
+    const { data } = useCourseDetailContext()
     const [category, setCategory] = useState<Category | null>(null)
     const loginState = useSelector(getLoginState)
     const [showModal, setShowModal] = useState(false)
@@ -56,13 +59,14 @@ export default function CourseInfo() {
     }
 
     useEffect(() => {
-        const categoryList: Category[] = JSON.parse(
-            localStorage.getItem(CATEGORY) ?? '[]',
-        )
-        setCategory(
-            categoryList.find((item) => item._id === data.category) ?? null,
-        )
-    }, [])
+        if (data) {
+            const courseCategory = {
+                name: data?.category?.name,
+                color: data?.category?.color,
+            }
+            setCategory(courseCategory)
+        }
+    }, [data])
 
     return (
         <div className="bg-black flex justify-center" id="overview-section">
@@ -111,12 +115,20 @@ export default function CourseInfo() {
                                 <div className="flex items-center space-x-4 my-2">
                                     {data.reviews !== null && (
                                         <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                                            {`(${data.reviews} ratings)`}
+                                            {`(${data.reviews} ${
+                                                data.reviews === 0
+                                                    ? 'rating'
+                                                    : 'ratings'
+                                            })`}
                                         </div>
                                     )}
                                     {data.students !== null && (
                                         <div className="text-[14px] font-light">
-                                            {`${data.students} students`}
+                                            {`${data.students} ${
+                                                data.students === 0
+                                                    ? 'student'
+                                                    : 'students'
+                                            }`}
                                         </div>
                                     )}
                                 </div>
@@ -125,7 +137,7 @@ export default function CourseInfo() {
                         <div className="text-[14px] font-light">
                             Created by{' '}
                             <Hyperlink>
-                                {data.author.name ?? 'Anonymous'}
+                                {data?.author?.name ?? 'Anonymous'}
                             </Hyperlink>
                             {/* <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
                                 {data.owner}

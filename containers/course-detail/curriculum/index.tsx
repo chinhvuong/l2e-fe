@@ -1,8 +1,6 @@
 import { dataCourses_detail } from '@/data/course-detail'
-import { useAppSelector } from '@/hooks'
-import { getCourseSectionsWithNestedLectures } from '@/store/course/selectors'
-import * as React from 'react'
 import IncludeList from '../components/include-list'
+import { useCourseDetailContext } from '../course-detail-context'
 import CourseContent from './course-content'
 import Description from './description'
 import Requirement from './requirement'
@@ -11,7 +9,7 @@ import WhatYouWillLearn from './what-you-will-learn'
 export interface ICurriculumProps {}
 
 export default function Curriculum() {
-    const data = useAppSelector(getCourseSectionsWithNestedLectures)
+    const { data } = useCourseDetailContext()
 
     return (
         <div className="space-y-7" id="curriculum-section">
@@ -20,7 +18,7 @@ export default function Curriculum() {
                 data={dataCourses_detail.include}
                 className="2xl:hidden"
             />
-            <CourseContent sections={data} />
+            <CourseContent sections={data.sections} />
             <Requirement />
             <Description />
         </div>

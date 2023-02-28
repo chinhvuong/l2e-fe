@@ -25,6 +25,7 @@ export const createCourse = async (
         object.s,
     )
     await tx.wait()
+    await tx.wait()
 
     // Collect token contract
 }
@@ -36,6 +37,7 @@ export const enroll = async (
     // await approve(signer, amount)
 
     const courseDex: ethers.Contract = getContract(signer)
+    console.log('🚀 ~ file: coursedex.ts:38 ~ courseDex:', courseDex)
     const tx = await courseDex.enrollCourse(courseId)
     await tx.wait()
 }

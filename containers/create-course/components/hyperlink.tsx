@@ -11,7 +11,7 @@ export default function Hyperlink({
     return (
         <span
             {...rest}
-            className="text-hyperlink underline underline-offset-4 cursor-pointer"
+            className="text-hyperlink-light underline underline-offset-4 cursor-pointer"
         >
             {children}
         </span>

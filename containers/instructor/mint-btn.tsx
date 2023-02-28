@@ -30,7 +30,7 @@ const MintBtn = ({ id }: { id: string }) => {
     }
 
     return (
-        <Button onClick={() => mintCourse(id)}>
+        <Button onClick={() => mintCourse(id)} isLoading={isLoading}>
             <div className="font-semibold w-full flex justify-center">
                 Mint Course
             </div>

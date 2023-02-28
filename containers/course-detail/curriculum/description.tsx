@@ -20,7 +20,6 @@ export default function Description() {
             '<ul>',
             '<ul class="space-y-3">',
         )
-        console.log('convertStringToHTML', formattedData)
 
         return (
             <div className="text-justify space-y-3" id="description-content">

@@ -1,23 +1,20 @@
 import Button from '@/components/core/button'
-import RatingStar from '@/components/core/rating-star'
 import Label from '@/components/core/label'
-import { useState, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
+import RatingStar from '@/components/core/rating-star'
 import { courseCatagories } from '@/data/category'
-import {
-    getCourseLabelInfo,
-    getEnrollStatusState,
-} from '@/store/course/selectors'
-import { useAppSelector } from '@/hooks'
+import { getEnrollStatusState } from '@/store/course/selectors'
+import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import EnrollBtn from '../components/enroll-btn'
+import { useCourseDetailContext } from '../course-detail-context'
 
 export interface ICourseLabelProps {}
 
 export default function CourseLabel() {
     const [scrollY, setScrollY] = useState(0)
-    const data = useAppSelector(getCourseLabelInfo)
+    const { data } = useCourseDetailContext()
     const isEnroll = useSelector(getEnrollStatusState)
 
     const getCourseCategory = () => {
