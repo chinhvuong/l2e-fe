@@ -37,12 +37,14 @@
         "react-draft-wysiwyg": "^1.15.0",
         "react-player": "^2.11.2",
         "react-redux": "^8.0.2",
+        "react-select": "^5.7.0",
         "react-slick": "^0.29.0",
         "react-toastify": "^9.1.1",
         "slick-carousel": "^1.8.1",
         "unstated-next": "^1.1.0",
         "uuid": "^9.0.0",
-        "wagmi": "^0.8.6"
+        "wagmi": "^0.8.6",
+        "yup": "^1.0.2"
     },
     "devDependencies": {
         "@tailwindcss/line-clamp": "^0.4.2",

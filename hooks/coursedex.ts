@@ -14,6 +14,7 @@ export const createCourse = async (
     signer: ethers.Signer | null,
     object: GetMintSignatureResponse,
 ): Promise<void> => {
+    console.log(process.env.NEXT_PUBLIC_COURSEDEX_CONTRACT)
     const coursedex: ethers.Contract = getContract(signer)
     // Return claimed status
     const tx = await coursedex.createCourse(
@@ -24,6 +25,7 @@ export const createCourse = async (
         object.s,
     )
     await tx.wait()
+    await tx.wait()
 
     // Collect token contract
 }
@@ -33,9 +35,8 @@ export const enroll = async (
     courseId: number,
 ): Promise<void> => {
     // await approve(signer, amount)
-
     const courseDex: ethers.Contract = getContract(signer)
-    console.log('🚀 ~ file: coursedex.ts:38 ~ courseDex:', courseDex)
+    console.log(courseId)
     const tx = await courseDex.enrollCourse(courseId)
     await tx.wait()
 }

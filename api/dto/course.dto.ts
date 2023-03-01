@@ -284,3 +284,11 @@ export interface GetMintSignatureResponse {
 export interface UploadOneFileResponse {
     url: string
 }
+
+export interface QuestionCreateType {
+    question: string
+    choices: string[]
+    correctAnswer: number
+    courseId: string
+    medias: string[]
+}

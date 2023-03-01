@@ -19,7 +19,6 @@ const EnrollBtn = ({ ...rest }: Props) => {
     const { data: signer } = useSigner({
         chainId: goerli.id,
     })
-
     // const { address } = useAccount()
     const enrollCourse = async (courseId: number) => {
         if (isLoading) {
@@ -28,13 +27,12 @@ const EnrollBtn = ({ ...rest }: Props) => {
         if (asset.balance >= data.price) {
             setIsLoading(true)
             try {
-                // if (asset.approve / 10 ** 18 <= Number(data.price)) {
-                //     await approve(
-                //         signer as ethers.Signer,
-                //         data.price.toString(),
-                //     )
-                // }
-
+                if (asset.approve / 10 ** 18 <= Number(data.price)) {
+                    await approve(
+                        signer as ethers.Signer,
+                        data.price.toString(),
+                    )
+                }
                 await enroll(
                     signer as ethers.Signer,
                     data.price.toString(),

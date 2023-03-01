@@ -3,6 +3,8 @@ import Label from '@/components/core/label'
 import RatingStar from '../rating-star'
 import Router from 'next/router'
 import { CoursePreview } from '@/api/dto/course.dto'
+import { updateCourseIdState } from '@/store/course'
+import { useAppDispatch } from '@/hooks'
 
 export interface IVerticalCourseCardProps {
     data: CoursePreview
@@ -10,7 +12,9 @@ export interface IVerticalCourseCardProps {
 }
 
 export default function VerticalCourseCard(props: IVerticalCourseCardProps) {
+    const dispatch = useAppDispatch()
     const viewCourseDetail = () => {
+        dispatch(updateCourseIdState(Number(props.data.courseId)))
         Router.push(`/course/${props.data._id}`)
     }
     return (
