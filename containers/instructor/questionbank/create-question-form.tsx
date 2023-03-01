@@ -39,7 +39,7 @@ export default function CreateQuestionPageContainer() {
                 }),
             )
             .required('Ít nhất phải có 1 câu hỏi') // these constraints are shown if and only if inner constraints are satisfied
-            .min(1, 'Ít Nhất phải tạo ra được 1 câu hỏi'),
+            .min(1, 'Ít nhất phải tạo ra được 1 câu hỏi'),
     })
     const { mutate: createQuestions, isLoading: isLoadingCreateQuestion } =
         useAPI.post(InstructorAPI.CREATE_QUESTIONS, {
@@ -93,10 +93,6 @@ export default function CreateQuestionPageContainer() {
                                             <div className="py-10 px-14 space-y-5">
                                                 <FormikInput
                                                     name={`questions[${index}].question`}
-                                                    charLimit={{
-                                                        minLength: 10,
-                                                        maxLength: 1000,
-                                                    }}
                                                     label="Question Content"
                                                     placeholder="Insert your question content."
                                                 />
