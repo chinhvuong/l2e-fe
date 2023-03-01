@@ -57,10 +57,10 @@ export default function FormikSelect({
             setOpenSelect(!openSelect)
         }
     }
-
     useOutsideClick(clickOutSideRef, () => {
         setOpenSelect(false)
     })
+    console.log()
     return (
         <div>
             {label && <div className="font-bold ml-[25px] pb-2">{label}</div>}
@@ -69,11 +69,10 @@ export default function FormikSelect({
             >
                 <select
                     name={name}
-                    value={parseInt(
-                        String(context.values.questions?.[index].correctAnswer),
-                    )}
+                    value={context.values.questions?.[index].correctAnswer}
                     onChange={(event) =>
-                        context.handleChange(event.target.name)(
+                        context.setFieldValue(
+                            String(name),
                             parseInt(event.target.value),
                         )
                     }

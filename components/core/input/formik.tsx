@@ -1,8 +1,7 @@
 import { useAppDispatch } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { useFormikContext } from 'formik'
+import { ErrorMessage, useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
-
 export interface IInputProps {
     id?: string
     name?: string
@@ -72,15 +71,9 @@ export default function FormikInput({
                     {getInputCharLeft()}
                 </div>
             </div>
-            {validate && (
-                <div
-                    className={`ml-[25px] text-sm mt-1 ${
-                        input === '' && isTyped ? 'text-red-500' : 'text-white'
-                    }`}
-                >
-                    Không được để trống!
-                </div>
-            )}
+            <div className="ml-[25px] text-sm mt-1 text-red-500">
+                <ErrorMessage name={String(name)} />
+            </div>
         </div>
     )
 }

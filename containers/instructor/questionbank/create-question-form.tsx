@@ -1,18 +1,8 @@
-import Hyperlink from '@/containers/create-course/components/hyperlink'
-import Input from '@/components/core/input'
-import RichTextEditor from '@/components/core/rich-text-editor'
-import Select from '@/components/core/select'
-import UploadPreview from '@/components/core/upload-preview'
-import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import {
-    getMyCourseDetail,
-    getCourseDetailState,
-} from '@/store/course/selectors'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Title from '@/containers/create-course/components/title'
-import { useFormik, FormikProvider, FieldArray } from 'formik'
-import { UpdateAllQuestionState } from '@/store/question'
+import { useFormik, FormikProvider, FieldArray, ErrorMessage } from 'formik'
+import { AddALLQuestionState } from '@/store/question'
 import { useRouter } from 'next/router'
 import FormikInput from '@/components/core/input/formik'
 import ChoicesArray from '@/components/core/input/formikarray'
@@ -33,23 +23,23 @@ export default function CreateQuestionPageContainer() {
                 yup.object().shape({
                     question: yup
                         .string()
-                        .min(10, 'too short')
-                        .max(60, 'too long')
-                        .required('Required'), // these constraints take precedence
+                        .min(1, 'Câu hỏi quá ngắn')
+                        .required('Không được để trống!'), // these constraints take precedence
                     correctAnswer: yup.number(),
                     choices: yup
                         .array()
                         .of(
                             yup
                                 .string()
-                                .min(1, 'too short')
-                                .max(100, 'too long'),
+                                .min(1, 'Lựa chọn quá ngắn')
+                                .required('Không được để trống!'),
                         )
-                        .required('Required'),
+                        .min(4, 'Mỗi câu hỏi cần ít nhất 4 lựa chọn')
+                        .required('Không được để trống!'),
                 }),
             )
-            .required('Must have questions') // these constraints are shown if and only if inner constraints are satisfied
-            .min(1, 'Minimum of 1 questions'),
+            .required('Ít nhất phải có 1 câu hỏi') // these constraints are shown if and only if inner constraints are satisfied
+            .min(1, 'Ít Nhất phải tạo ra được 1 câu hỏi'),
     })
     const { mutate: createQuestions, isLoading: isLoadingCreateQuestion } =
         useAPI.post(InstructorAPI.CREATE_QUESTIONS, {
@@ -76,8 +66,8 @@ export default function CreateQuestionPageContainer() {
         validationSchema: schema,
         onSubmit: (values) => {
             console.log(values.questions)
-            dispatch(UpdateAllQuestionState(values.questions))
-            // createQuestions(values.questions)
+            dispatch(AddALLQuestionState(values.questions))
+            createQuestions(values.questions)
         },
     })
     const dispatch = useAppDispatch()
@@ -105,7 +95,7 @@ export default function CreateQuestionPageContainer() {
                                                     name={`questions[${index}].question`}
                                                     charLimit={{
                                                         minLength: 10,
-                                                        maxLength: 60,
+                                                        maxLength: 1000,
                                                     }}
                                                     label="Question Content"
                                                     placeholder="Insert your question content."
