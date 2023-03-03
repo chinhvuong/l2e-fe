@@ -4,9 +4,14 @@ import { useEffect, useState } from 'react'
 import { QuestionDetailType } from '@/store/question/types'
 import { useAppSelector } from '@/hooks'
 import { getQuestionsInfo } from '@/store/question/selectors'
+import QuestionCard from './flashcard'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
 export default function QuestionBankContainers() {
     const router = useRouter()
+    const [selectedQuestion, setSelectedQuestion] =
+        useState<QuestionDetailType>()
     const questionsData = useAppSelector(getQuestionsInfo)
     const goToCreateQuestionsPage = () => {
         router.push({
@@ -28,7 +33,11 @@ export default function QuestionBankContainers() {
                     </h1>
                 </div>
                 <div className="flex flex-col justify-between leading-relaxed text-black">
-                    <div className="block"></div>
+                    <div className="block">
+                        {selectedQuestion && (
+                            <QuestionCard question={selectedQuestion} />
+                        )}
+                    </div>
                     <div className="flex h-full w-full m-auto"></div>
                 </div>
                 <div className="block mr-80 min-w-0">
@@ -43,7 +52,14 @@ export default function QuestionBankContainers() {
                                                 className="p-0.25 rounded inline-block shadow-3xl min-h-r w-full"
                                             >
                                                 <div className="p-4 w-full block">
-                                                    <div className="inline-block float-left w-4/5 mt-2 align-top">
+                                                    <div
+                                                        className="inline-block float-left w-4/5 mt-2 align-top"
+                                                        onClick={() =>
+                                                            setSelectedQuestion(
+                                                                item,
+                                                            )
+                                                        }
+                                                    >
                                                         <div className="py-0 px-2 flex">
                                                             <div className="text-black w-2/5">
                                                                 <span className="text-black">
@@ -62,6 +78,13 @@ export default function QuestionBankContainers() {
                                                                         ]
                                                                     }
                                                                 </span>
+                                                            </div>
+                                                            <div className="text-black w-1/5">
+                                                                <FontAwesomeIcon
+                                                                    icon={
+                                                                        faEdit
+                                                                    }
+                                                                />
                                                             </div>
                                                         </div>
                                                     </div>
