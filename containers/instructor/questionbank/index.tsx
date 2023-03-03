@@ -1,27 +1,73 @@
 import Button from '@/components/core/button'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { QuestionDetailType } from '@/store/question/types'
-import { useAppSelector } from '@/hooks'
-import { getQuestionsInfo } from '@/store/question/selectors'
+import { QuestionDetailType } from '@/store/questions/types'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { getQuestionsInfo } from '@/store/questions/selectors'
 import QuestionCard from './flashcard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import useAPI from '@/api/hooks/useAPI'
+import { InstructorAPI } from '@/api/api-path'
+import { COURSE_ID } from '@/constants/localStorage'
+import { UpdateAllQuestionState } from '@/store/questions'
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import {
+    UpdateDetailQuestionState,
+    ClearQuestionState,
+} from '@/store/course/question'
+import { getCourseDetailInfo } from '@/store/course/question/selectors'
 
 export default function QuestionBankContainers() {
     const router = useRouter()
+    const [courseId, setCourseId] = useState<string>('')
+    const dispatch = useAppDispatch()
     const [selectedQuestion, setSelectedQuestion] =
         useState<QuestionDetailType>()
+    const [positionQuestion, setPositionQuestion] = useState<number>(0)
+    const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
+        useAPI.getMutation(
+            InstructorAPI.GET_QUESTIONS + '?courseId=' + courseId,
+            {
+                onError: () => {},
+                onSuccess: (response) => {
+                    console.log(response?.data)
+                    dispatch(UpdateAllQuestionState(response?.data))
+                },
+            },
+        )
     const questionsData = useAppSelector(getQuestionsInfo)
     const goToCreateQuestionsPage = () => {
+        dispatch(ClearQuestionState())
         router.push({
             pathname: router.pathname + '/create',
             query: { ...router.query },
         })
     }
-    console.log(questionsData)
+    const goToUpdateQuestionsPage = (indext: number) => {
+        dispatch(UpdateDetailQuestionState(questionsData?.[indext]))
+        router.push({
+            pathname: router.pathname + '/update',
+            query: { ...router.query },
+        })
+    }
+    const chosenQuestions = (indext: number) => {
+        setPositionQuestion(indext)
+        console.log(questionsData?.[indext])
+        dispatch(UpdateDetailQuestionState(questionsData?.[indext]))
+    }
+    useEffect(() => {
+        if (localStorage.getItem(COURSE_ID) !== null) {
+            if (localStorage.getItem(COURSE_ID) !== courseId) {
+                setCourseId(String(localStorage.getItem(COURSE_ID)))
+            } else {
+                getQuestionsList({})
+            }
+        }
+    }, [courseId])
     return (
         <div>
+            <LoadingScreen isLoading={isLoadingQuestionsList} />
             <div
                 className="ml-auto mr-auto max-w-7xl grid-cols-3 app-transition main-transition min-h-screen bg-white"
                 id="content"
@@ -34,9 +80,9 @@ export default function QuestionBankContainers() {
                 </div>
                 <div className="flex flex-col justify-between leading-relaxed text-black">
                     <div className="block">
-                        {selectedQuestion && (
-                            <QuestionCard question={selectedQuestion} />
-                        )}
+                        <QuestionCard
+                            question={questionsData?.[positionQuestion]}
+                        />
                     </div>
                     <div className="flex h-full w-full m-auto"></div>
                 </div>
@@ -49,14 +95,14 @@ export default function QuestionBankContainers() {
                                         {questionsData.map((item, index) => (
                                             <div
                                                 key={index}
-                                                className="p-0.25 rounded inline-block shadow-3xl min-h-r w-full"
+                                                className="p-0.25 rounded inline-block shadow-3xl min-h-r w-full hover:bg-gray-400"
                                             >
                                                 <div className="p-4 w-full block">
                                                     <div
                                                         className="inline-block float-left w-4/5 mt-2 align-top"
                                                         onClick={() =>
-                                                            setSelectedQuestion(
-                                                                item,
+                                                            chosenQuestions(
+                                                                index,
                                                             )
                                                         }
                                                     >
@@ -68,7 +114,7 @@ export default function QuestionBankContainers() {
                                                                     }
                                                                 </span>
                                                             </div>
-                                                            <div className="text-black w-2/5">
+                                                            <div className="text-black w-2/5 px-4">
                                                                 <span className="text-black">
                                                                     {
                                                                         item
@@ -81,6 +127,12 @@ export default function QuestionBankContainers() {
                                                             </div>
                                                             <div className="text-black w-1/5">
                                                                 <FontAwesomeIcon
+                                                                    onClick={() =>
+                                                                        goToUpdateQuestionsPage(
+                                                                            index,
+                                                                        )
+                                                                    }
+                                                                    className="hover:bg-gray-700 h-8 items-center pb-3"
                                                                     icon={
                                                                         faEdit
                                                                     }

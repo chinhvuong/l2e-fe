@@ -1,6 +1,11 @@
 import { useAppDispatch } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { FieldArray, FieldArrayRenderProps, useFormikContext } from 'formik'
+import {
+    FieldArray,
+    FieldArrayRenderProps,
+    useFormikContext,
+    ErrorMessage,
+} from 'formik'
 import { ComponentType, useEffect, useState } from 'react'
 import Label from '../label'
 
@@ -78,6 +83,13 @@ export default function MediaArray({
                                                 className="w-full outline-none"
                                                 autoComplete="off"
                                                 onChange={context.handleChange}
+                                            />
+                                        </div>
+                                        <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                            <ErrorMessage
+                                                name={String(
+                                                    arrayname + `[${indext}]`,
+                                                )}
                                             />
                                         </div>
                                         <div className="w-1/5  space-x-5 mx-[25px]  items-center justify-between">

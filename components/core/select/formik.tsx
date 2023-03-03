@@ -73,7 +73,8 @@ export default function FormikSelect({
                         String(context.values.questions?.[index].correctAnswer),
                     )}
                     onChange={(event) =>
-                        context.handleChange(event.target.name)(
+                        context.setFieldValue(
+                            String(name),
                             parseInt(event.target.value),
                         )
                     }
