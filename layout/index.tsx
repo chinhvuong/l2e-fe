@@ -3,6 +3,7 @@ import { ReactChild } from 'react'
 import { ToastContainer } from 'react-toastify'
 import Footer from './components/footer'
 import Header from './main-layout/header'
+import 'react-toastify/dist/ReactToastify.min.css'
 const Layout = ({ children }: { children: ReactChild }) => {
     const router = useRouter()
 

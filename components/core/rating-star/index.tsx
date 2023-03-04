@@ -43,7 +43,7 @@ export default function RatingStar(props: IRatingStarProps) {
                 }
             }
             return (
-                <div className="flex items-center mb-1 space-x-1">
+                <div className="flex items-center space-x-1">
                     {aStar.map((star) => star)}
                     {halfStar && (
                         <FontAwesomeIcon
@@ -66,7 +66,7 @@ export default function RatingStar(props: IRatingStarProps) {
             )}
             {ratingStar()}
             {props?.ratings && !props?.hideRating && (
-                <div className="font-light text-xs">{`(${props.ratings})`}</div>
+                <div className="font-light text-xs mt-1">{`(${props.ratings})`}</div>
             )}
         </div>
     )

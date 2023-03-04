@@ -31,17 +31,6 @@ export const getCourseOverviewInfo = (state: RootState) => {
     }
 }
 
-export const getSidebarInfo = (state: RootState) => {
-    return {
-        price: state.courseDetail.courseDetail.price,
-        thumbnail: state.courseDetail.courseDetail.thumbnail,
-        promotionalVideo: state.courseDetail.courseDetail.promotionalVideo,
-        include: state.courseDetail.courseDetail.include,
-        courseId: state.courseDetail.courseDetail.courseId,
-        _id: state.courseDetail.courseDetail._id,
-    }
-}
-
 export const getCourseName = (state: RootState) => {
     return state.courseDetail.courseDetail.name
 }

@@ -6,8 +6,7 @@ export const dataRatings: Rating[] = [
         user: 1,
         courseId: 1,
         rating: 4,
-        comment:
-            'Left mouse pointer on text frequently. Recording setup picked up heavy key strikes making listening difficult. Solved problems well as they came.',
+        comment: `This is a really good course to take if you are planning to be a web developer. Though some things aren't updated, but you can solve it anyway through the Q&A sections and through reading the documentations. I really love your "Tip from Angela" at the end of every lesson. Dr. Angela is really a good Instructor I would recommend this course.`,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
@@ -16,8 +15,7 @@ export const dataRatings: Rating[] = [
         user: 2,
         courseId: 1,
         rating: 5,
-        comment:
-            'Left mouse pointer on text frequently. Recording setup picked up heavy key strikes making listening difficult. Solved problems well as they came. Covered many functions of python and seemed knowledgeable. Left mouse pointer on text frequently. Recording setup picked up heavy key strikes making listening difficult. Solved problems well as they came. Covered many functions of python and seemed knowledgeable. Left mouse pointer on text frequently. Recording setup picked up heavy key strikes making listening difficult. Solved problems well as they came. Covered many functions of python and seemed knowledgeable. Left mouse pointer on text frequently. Recording setup picked up heavy key strikes making listening difficult. Solved problems well as they came. Covered many functions of python and seemed knowledgeable. Left mouse pointer on text frequently. Recording setup picked up heavy key strikes making listening difficult. Solved problems well as they came. Covered many functions of python and seemed knowledgeable.',
+        comment: `I am thoroughly impressed with this course. It has provided me with a comprehensive education in front-end development and I am confident in my newfound abilities. Whether you are a beginner or an experienced programmer, I highly recommend this course for anyone seeking to enhance their skills in this area.`,
         createdAt: new Date(),
         updatedAt: new Date(),
     },

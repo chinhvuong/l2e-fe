@@ -25,7 +25,7 @@ const HomePageContainer = () => {
                     </div>
                 </div>
                 <div className="flex justify-center">
-                    {data.data.map((item: CoursePreview, index: number) => (
+                    {data.data.map((item: any, index: number) => (
                         <div className="w-[300px]" key={index}>
                             <VerticalCourseCard
                                 key={item._id}

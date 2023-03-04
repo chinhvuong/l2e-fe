@@ -11,6 +11,10 @@ export interface ICurriculumProps {}
 export default function Curriculum() {
     const { data } = useCourseDetailContext()
 
+    if (!data || !data.sections) {
+        return <></>
+    }
+
     return (
         <div className="space-y-7" id="curriculum-section">
             <WhatYouWillLearn />

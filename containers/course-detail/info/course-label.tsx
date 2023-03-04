@@ -17,15 +17,6 @@ export default function CourseLabel() {
     const { data } = useCourseDetailContext()
     const isEnroll = useSelector(getEnrollStatusState)
 
-    const getCourseCategory = () => {
-        for (let i = 0; i < courseCatagories.length; i++) {
-            if (courseCatagories[i]._id === data.category) {
-                return courseCatagories[i].name
-            }
-        }
-        return 'IT'
-    }
-
     useEffect(() => {
         const handleScroll = () => {
             setScrollY(window.scrollY)
@@ -39,6 +30,10 @@ export default function CourseLabel() {
             window.removeEventListener('scroll', handleScroll)
         }
     }, [])
+
+    if (!data) {
+        return <></>
+    }
 
     return (
         <div
@@ -56,7 +51,10 @@ export default function CourseLabel() {
                             {data.isBestseller && <Label name="Bestseller" />}
                         </div> */}
                         <div className="under_xl:hidden">
-                            <Label name={getCourseCategory()} />
+                            <Label
+                                name={data.category.name}
+                                color={data.category.color}
+                            />
                         </div>
                         <RatingStar
                             id={data._id}

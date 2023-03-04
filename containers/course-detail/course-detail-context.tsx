@@ -1,12 +1,14 @@
 import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import { UseMutateFunction } from '@tanstack/react-query'
+import { dataUser } from '@/data/users'
+import { User } from '@/store/user/types'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 interface ICourseDetailContext {
     isLoading: boolean
     data: any
+    instructor: any
 }
 
 export const CourseDetailContext = createContext<ICourseDetailContext>(
@@ -17,7 +19,8 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     children,
 }) => {
     const [courseId, setCourseId] = useState('')
-    const [data, setData] = useState({})
+    const [data, setData] = useState(undefined)
+    const [instructor, setInstructor] = useState({})
     const router = useRouter()
 
     const { mutate: getCourseDetail, isLoading: isLoadingCourseDetail } =
@@ -27,6 +30,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 onError: () => {},
                 onSuccess: (response) => {
                     setData(response)
+                    setInstructor(dataUser)
                 },
             },
         )
@@ -47,6 +51,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
             value={{
                 isLoading,
                 data,
+                instructor,
             }}
         >
             {children}

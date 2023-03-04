@@ -34,6 +34,10 @@ export default function CourseContent({ sections }: ICourseContentProps) {
         )
     }
 
+    if (!sections) {
+        return <></>
+    }
+
     return (
         <div>
             <div className="font-semibold text-[26px]">Course content</div>
