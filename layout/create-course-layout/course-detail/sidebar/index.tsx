@@ -6,7 +6,7 @@ import ValidateModal, {
     IValidateContent,
 } from '@/components/core/modal/validate-modal'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
-import MintBtn from '@/containers/instructor/mint-btn'
+import MintBtn from '@/containers/instructor/components/mint-btn'
 import { useAppSelector } from '@/hooks'
 import {
     getCurriculumLecturesForm,

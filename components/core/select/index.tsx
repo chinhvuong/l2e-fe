@@ -120,19 +120,26 @@ export default function Select({
             )}
             <div onClick={() => handleOpenSelect()} ref={clickOutSideRef}>
                 <div
-                    className={`flex items-center justify-between py-[10px] rounded-[80px] border-[1px] border-black px-[25px] hover:bg-border-box ${
+                    className={`flex items-center justify-between py-[10px] rounded-[80px] border-[1px] border-black px-[25px] hover:bg-gray-300 ${
                         disabled
                             ? 'bg-slate-300 cursor-not-allowed'
                             : 'bg-white cursor-pointer'
                     }`}
                 >
-                    <div className="flex items-center space-x-2">
-                        {selectedItem}
-                    </div>
+                    <div className="flex items-center">{selectedItem}</div>
                     <FontAwesomeIcon
                         icon={faChevronDown}
                         className="text-[12px]"
                     />
+                    {/* <div className="flex space-x-2 items-center">
+                        <div
+                            className="rounded-full bg-gray-400 py-1 px-2 text-xs"
+                            onClick={() => onSelect('')}
+                        >
+                            x
+                        </div>
+                    
+                    </div> */}
                 </div>
                 <div
                     className={`rounded-[20px] border-[1px] border-black absolute z-20 mt-1 bg-white drop-shadow-lg w-full ${

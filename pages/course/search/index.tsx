@@ -1,20 +1,18 @@
-import { useRouter } from 'next/router'
+import { UserAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
-import { CourseLists } from '@/data/courses'
-import { useEffect, useState } from 'react'
-import Sidebar from '@/containers/search/sidebar'
-import MySearchCourseCard from '@/containers/search/course'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
-import { InstructorAPI } from '@/api/api-path'
 import { SortMethods } from '@/api/types'
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import MySearchCourseCard from '@/containers/search/course'
+import Sidebar from '@/containers/search/sidebar'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 const SearchPage = () => {
     const router = useRouter()
     const [sortType, setSortType] = useState<string>()
     const { data, isLoading } = useAPI.get(
-        InstructorAPI.CREATE_COURSE +
-            router.asPath.replace(router.pathname, ''),
+        UserAPI.GET_ALL_COURSES + router.asPath.replace(router.pathname, ''),
         {},
         '',
         {

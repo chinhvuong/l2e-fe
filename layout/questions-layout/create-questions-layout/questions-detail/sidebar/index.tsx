@@ -1,35 +1,9 @@
-import { InstructorAPI } from '@/api/api-path'
-import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
-import Button from '@/components/core/button'
-import ValidateModal, {
-    IValidateContent,
-} from '@/components/core/modal/validate-modal'
-import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
-import MintBtn from '@/containers/instructor/mint-btn'
-import { useAppSelector } from '@/hooks'
-import {
-    getCurriculumLecturesForm,
-    getCurriculumSectionsForm,
-} from '@/store/course/curriculum/selectors'
-import {
-    getDescriptionLength,
-    getMyCourseDetail,
-} from '@/store/course/selectors'
-import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 export interface ISidebarProps {}
 
 export default function QuestionsSidebar() {
-    const courseDetail = useAppSelector(getMyCourseDetail)
-    const descriptionLength = useAppSelector(getDescriptionLength)
-    const sections = useAppSelector(getCurriculumSectionsForm)
-    const lectures = useAppSelector(getCurriculumLecturesForm)
-
-    const { getCourseDetail } = useCreateCourseContext()
-
     const menu = ['Questions', 'Quiz']
 
     const menuTarget = ['', 'quiz']
@@ -39,10 +13,6 @@ export default function QuestionsSidebar() {
         const list = router.route.split('/')
         return list[list.length - 1]
     })
-    const [showModal, setShowModal] = useState(false)
-    const [validateCourseContent, setValidateCourseContent] = useState(
-        {} as IValidateContent,
-    )
 
     useEffect(() => {
         setCourseId(getCourseId())

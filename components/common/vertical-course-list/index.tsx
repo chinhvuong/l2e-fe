@@ -29,6 +29,7 @@ export default function VerticalCourseList(props: IVerticalCourseListProps) {
                                 <HorizontalCourseCard
                                     key={course._id}
                                     data={course}
+                                    clickMode={'view'}
                                 />
                                 <Divider />
                             </div>
@@ -38,6 +39,7 @@ export default function VerticalCourseList(props: IVerticalCourseListProps) {
                             <HorizontalCourseCard
                                 key={course._id}
                                 data={course}
+                                clickMode={'view'}
                             />
                         )
                     }

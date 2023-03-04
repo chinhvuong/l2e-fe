@@ -15,6 +15,9 @@ const HomePageContainer = () => {
     })
 
     const getCourseListUI = () => {
+        if (!data) {
+            return <></>
+        }
         return data.data.length < 5 ? (
             <>
                 <div className="flex justify-center mt-12 mb-4">
@@ -82,22 +85,6 @@ const HomePageContainer = () => {
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
             <div>{!isLoading && getCourseListUI()}</div>
-            {/* <div className="flex justify-center mt-12 mb-4">
-                <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
-                    <div className="font-extrabold text-[41px]">
-                        What to learn next?
-                    </div>
-                </div>
-            </div>
-            <CourseListSwiper
-                data={dataCourses_preview_swiper}
-                title="Students are viewing"
-            />
-            <CourseListSwiper
-                data={dataCourses_preview_swiper}
-                title="Short and sweet courses for you"
-                className="mt-8"
-            /> */}
         </div>
     )
 }

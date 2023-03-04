@@ -160,6 +160,7 @@ export type CoursePreview = {
     }
     category: Category
     ratingCount: number
+    thumbnail: string
 }
 
 export interface GetAllCoursesResponse {
