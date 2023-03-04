@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import {
     updateCourseDetail,
     updateDescriptionLength,
-    updateGetCourseDetailState,
     updateSaveCourseState,
 } from '@/store/course'
 import {
@@ -91,7 +90,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                     response?.requirements &&
                         response.requirements.length > 0 &&
                         dispatch(updateAllRequirements(response.requirements))
-                    dispatch(updateGetCourseDetailState(true))
                     dispatch(
                         updateDescriptionLength(
                             EditorState.createWithContent(

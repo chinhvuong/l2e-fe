@@ -1,3 +1,6 @@
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import { useAppSelector } from '@/hooks'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import {
     addCurriculumSection,
     deleteCurriculumSection,
@@ -8,27 +11,22 @@ import {
     getCurriculumSectionDetail,
     getCurriculumSectionsForm,
 } from '@/store/course/curriculum/selectors'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Title from '../components/title'
 import Section from './components/section'
-import { useAppSelector } from '@/hooks'
-import { getCourseDetailState } from '@/store/course/selectors'
-import LoadingScreen from '@/components/core/animate/loading-screen'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 
 export interface ICurriculumContainerProps {}
 
 export default function CurriculumContainer() {
     const courseSections = useAppSelector(getCurriculumSectionsForm)
     const courseLectures = useAppSelector(getCurriculumLecturesForm)
-    const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (courseSections.length > 0 && courseLectures.length > 0) {
             setIsLoading(false)
         }
-    }, [isNewCourseDetail, courseSections, courseLectures])
+    }, [courseSections, courseLectures])
 
     useHideFirstEnterLoadingScreen()
 

@@ -4,6 +4,8 @@ import RatingStar from '../rating-star'
 import Router from 'next/router'
 import { CoursePreview } from '@/api/dto/course.dto'
 import { COURSE_ID } from '@/constants/localStorage'
+import { useAppDispatch } from '@/hooks'
+import { resetCourseDetailStore } from '@/store/course'
 
 export interface IHorizontalCourseCardProps {
     data: CoursePreview
@@ -22,8 +24,11 @@ export default function HorizontalCourseCard({
     showDetail = true,
     showStatus = false,
 }: IHorizontalCourseCardProps) {
+    const dispatch = useAppDispatch()
+
     const handleCourseClick = () => {
         if (setClicked) {
+            dispatch(resetCourseDetailStore())
             setClicked(true)
         }
 

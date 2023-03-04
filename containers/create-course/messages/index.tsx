@@ -2,29 +2,23 @@ import RichTextEditor from '@/components/core/rich-text-editor'
 import Title from '../components/title'
 import { useState, useEffect } from 'react'
 import { useAppSelector } from '@/hooks'
-import {
-    getMyCourseDetail,
-    getCourseDetailState,
-} from '@/store/course/selectors'
+import { getMyCourseDetail } from '@/store/course/selectors'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 
 export interface IMessagesContainerProps {}
 
 export default function MessagesContainer() {
     const courseDetail = useAppSelector(getMyCourseDetail)
-    const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
     const [welcomeMessage, setWelcomeMessage] = useState<string>('')
     const [congratulationMessage, setCongratulationMessage] =
         useState<string>('')
 
     useEffect(() => {
-        if (isNewCourseDetail) {
-        }
         if (courseDetail._id !== '') {
             setIsLoading(false)
         }
-    }, [isNewCourseDetail])
+    }, [courseDetail._id])
 
     return (
         <div>

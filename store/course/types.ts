@@ -63,7 +63,6 @@ export interface CourseDetail {
 export type CourseDetailState = {
     courseDetail: CourseDetail
     reviews: Rating[]
-    isNewData: boolean
     isEnroll: boolean
     isSaved: boolean
     isLoading: boolean
