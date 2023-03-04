@@ -66,6 +66,7 @@ export type CourseDetailState = {
     isNewData: boolean
     isEnroll: boolean
     isSaved: boolean
+    isLoading: boolean
     canSaveCourse: boolean
     canCreateCourse: boolean
     descriptionLength: number

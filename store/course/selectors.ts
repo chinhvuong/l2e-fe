@@ -83,6 +83,10 @@ export const getSaveCourseState = (state: RootState) => {
     return state.courseDetail.isSaved
 }
 
+export const getLoadingState = (state: RootState) => {
+    return state.courseDetail.isLoading
+}
+
 export const getCanSaveCourseState = (state: RootState) => {
     return state.courseDetail.canSaveCourse
 }

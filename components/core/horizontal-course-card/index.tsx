@@ -45,11 +45,11 @@ export default function HorizontalCourseCard({
                     'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg'
                 }
                 alt=""
-                className="mt-1 w-[25%]"
+                className="w-[25%] min-w-[170px]"
             />
             <div className="space-y-3">
                 <div>
-                    <div className="font-semibold text-xl line-clamp-2 h-[60px]">
+                    <div className="font-semibold text-xl line-clamp-2">
                         {data.name}
                     </div>
                 </div>

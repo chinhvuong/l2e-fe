@@ -1,21 +1,77 @@
-import { LearnerAPI } from '@/api/api-path'
-import { CoursePreview, GetAllCoursesResponse } from '@/api/dto/course.dto'
+import { InstructorAPI, UserAPI } from '@/api/api-path'
+import {
+    CoursePreview,
+    GetCategoryResponse,
+    GetMintSignatureResponse,
+} from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
+import { Category } from '@/constants/interfaces'
+import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
+import { createCourse } from '@/hooks/coursedex'
+import { noop } from 'lodash'
+import Router, { useRouter } from 'next/router'
+import { useEffect, useMemo, useState } from 'react'
+import { useSigner } from 'wagmi'
+import { goerli } from 'wagmi/chains'
+import Search from './search'
+import { GetAllCoursesResponse } from '@/api/dto/course.dto'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
-import { useEffect, useMemo, useState } from 'react'
-import Search from '../instructor/components/search'
+import { useAppDispatch } from '@/hooks'
+import { updateLoadingState } from '@/store/course'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 
-export default function LearnerContainer() {
+export default function InstructorCoursesContainer() {
+    const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
+    const [courseId, setCourseId] = useState<string>('')
     const [isCourseClicked, setIsCourseClicked] = useState<boolean>(false)
     const [search, setSearch] = useState('')
     const [allMyCourses, setAllMyCourses] = useState<GetAllCoursesResponse>(
         {} as GetAllCoursesResponse,
     )
     const [sortBy, setSortBy] = useState<string>('')
+    const router = useRouter()
+    const dispatch = useAppDispatch()
+
+    const { mutate: getSignatureMint, isLoading: isLoadingGetSignatureMint } =
+        useAPI.getMutation(
+            InstructorAPI.GET_MINT_SIGNATURE + '?id=' + courseId,
+            {
+                onError: () => {},
+                onSuccess: (response) => {
+                    setRequireinfo(response)
+                },
+            },
+        )
+
+    const { mutate: getCategory, isLoading: isLoadingGetCategory } =
+        useAPI.getMutation(UserAPI.GET_CATEGORY, {
+            onError: noop,
+            onSuccess: (response: GetCategoryResponse) => {
+                const category = response.data.map(
+                    (item: Category) => item.name,
+                )
+                localStorage.setItem(CATEGORY, JSON.stringify(response.data))
+                localStorage.setItem(
+                    CATEGORY_NAME_LIST,
+                    JSON.stringify(category),
+                )
+            },
+        })
+
+    useEffect(() => {
+        getCategory({})
+    }, [])
+
+    useHideFirstEnterLoadingScreen()
+
+    const { data: signer, isLoading: isLoadingSigner } = useSigner({
+        chainId: goerli.id,
+    })
 
     const getSortParams = () => {
         switch (sortBy) {
@@ -36,7 +92,7 @@ export default function LearnerContainer() {
 
     const { mutate: getAllMyCourses, isLoading: isLoadingAllMyCourses } =
         useAPI.getMutation(
-            `${LearnerAPI.GET_ALL_MY_ENROLL_COURSES}${
+            `${InstructorAPI.GET_ALL_MY_COURSES}${
                 search !== '' ? '?query=' + search : ''
             }${
                 sortBy !== ''
@@ -51,24 +107,83 @@ export default function LearnerContainer() {
             },
         )
 
+    const changeURL = () => {
+        const newQuery: any = {}
+        if (search !== '') {
+            newQuery.query = search
+        }
+        if (sortBy !== '') {
+            newQuery.sort = getSortParams()
+        }
+        if (search === '' && sortBy === '') {
+            return
+        }
+        router.push(
+            {
+                pathname: '/instructor/courses',
+                query: newQuery,
+            },
+            undefined,
+            { shallow: true },
+        )
+    }
+
     useEffect(() => {
         getAllMyCourses({})
+        changeURL()
     }, [search, sortBy])
+
+    useEffect(() => {
+        if (isCourseClicked) {
+            dispatch(updateLoadingState(true))
+        }
+    }, [isCourseClicked])
+
+    useEffect(() => {
+        ;(async () => {
+            if (courseId) {
+                getSignatureMint({})
+                if (requireinfo) {
+                    setCourseId('')
+                    await createCourse(signer!, requireinfo)
+                }
+            }
+        })()
+    }, [requireinfo, courseId])
+
+    const goToCreateCoursePage = () => {
+        Router.push('/create-course')
+    }
 
     const handleSortChange = (value: string) => {
         setSortBy(value)
     }
 
     const isLoading = useMemo(() => {
-        return isLoadingAllMyCourses || isCourseClicked
-    }, [isLoadingAllMyCourses, isCourseClicked])
+        return (
+            isLoadingSigner ||
+            isLoadingAllMyCourses ||
+            isLoadingGetSignatureMint ||
+            isLoadingGetCategory
+        )
+    }, [
+        isLoadingSigner,
+        isLoadingAllMyCourses,
+        isLoadingGetSignatureMint,
+        isLoadingGetCategory,
+    ])
 
     return (
         <>
             <LoadingScreen isLoading={isLoading} />
             <div className="h-full mt-9">
                 <div className="flex justify-between px-14">
-                    <div className="font-semibold text-[30px]">My courses</div>
+                    <div className="font-semibold text-[30px]">Courses</div>
+                    <div className="text-white">
+                        <Button onClick={() => goToCreateCoursePage()}>
+                            Create course
+                        </Button>
+                    </div>
                 </div>
                 <div className="flex under_xl:block space-x-5 under_xl:space-x-0 px-14">
                     <Search
@@ -96,7 +211,8 @@ export default function LearnerContainer() {
                 ) : (
                     <div className="space-x-10 px-14">
                         <div>
-                            {!isLoading &&
+                            {!isLoadingSigner &&
+                                !isLoadingAllMyCourses &&
                                 allMyCourses &&
                                 allMyCourses?.data &&
                                 allMyCourses.data.map(
@@ -114,10 +230,12 @@ export default function LearnerContainer() {
                                                 <HorizontalCourseCard
                                                     key={course._id}
                                                     data={course}
-                                                    clickMode={'view'}
+                                                    clickMode={'edit'}
                                                     setClicked={
                                                         setIsCourseClicked
                                                     }
+                                                    showDetail={false}
+                                                    showStatus={true}
                                                     className="py-6"
                                                 />
                                                 {index !==

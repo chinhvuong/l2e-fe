@@ -1,8 +1,9 @@
+import LoadingScreen from '@/components/core/animate/loading-screen'
 import { CreateCourseProvider } from '@/containers/create-course/create-course-context'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import Footer from '@/layout/components/footer'
 import { updateSaveCourseState } from '@/store/course'
-import { getSaveCourseState } from '@/store/course/selectors'
+import { getLoadingState, getSaveCourseState } from '@/store/course/selectors'
 import React, { ReactChild, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -15,6 +16,7 @@ export default function CreateCourseLayout({
     children: ReactChild
 }) {
     const isSaved = useAppSelector(getSaveCourseState)
+    const isLoading = useAppSelector(getLoadingState)
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (isSaved) {
@@ -33,6 +35,7 @@ export default function CreateCourseLayout({
     return (
         <CreateCourseProvider>
             <div className="relative">
+                <LoadingScreen isLoading={isLoading} />
                 <Header />
                 <main id="main">
                     <div

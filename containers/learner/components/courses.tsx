@@ -1,70 +1,22 @@
-import { InstructorAPI, UserAPI } from '@/api/api-path'
-import {
-    CoursePreview,
-    GetCategoryResponse,
-    GetMintSignatureResponse,
-} from '@/api/dto/course.dto'
+import { LearnerAPI } from '@/api/api-path'
+import { CoursePreview, GetAllCoursesResponse } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
-import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
-import { Category } from '@/constants/interfaces'
-import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
-import { createCourse } from '@/hooks/coursedex'
-import { noop } from 'lodash'
-import Router from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
-import { useSigner } from 'wagmi'
-import { goerli } from 'wagmi/chains'
-import Search from './components/search'
-import { GetAllCoursesResponse } from '@/api/dto/course.dto'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
+import { useEffect, useMemo, useState } from 'react'
+import Search from '../../instructor/components/search'
 
-export default function InstructorContainer() {
-    const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
-    const [courseId, setCourseId] = useState<string>('')
+export default function LearnerCoursesContainer() {
     const [isCourseClicked, setIsCourseClicked] = useState<boolean>(false)
     const [search, setSearch] = useState('')
     const [allMyCourses, setAllMyCourses] = useState<GetAllCoursesResponse>(
         {} as GetAllCoursesResponse,
     )
     const [sortBy, setSortBy] = useState<string>('')
-
-    const { mutate: getSignatureMint, isLoading: isLoadingGetSignatureMint } =
-        useAPI.getMutation(
-            InstructorAPI.GET_MINT_SIGNATURE + '?id=' + courseId,
-            {
-                onError: () => {},
-                onSuccess: (response) => {
-                    setRequireinfo(response)
-                },
-            },
-        )
-
-    const { mutate: getCategory, isLoading: isLoadingGetCategory } =
-        useAPI.getMutation(UserAPI.GET_CATEGORY, {
-            onError: noop,
-            onSuccess: (response: GetCategoryResponse) => {
-                const category = response.data.map(
-                    (item: Category) => item.name,
-                )
-                localStorage.setItem(CATEGORY, JSON.stringify(response.data))
-                localStorage.setItem(
-                    CATEGORY_NAME_LIST,
-                    JSON.stringify(category),
-                )
-            },
-        })
-
-    useEffect(() => {
-        getCategory({})
-    }, [])
-
-    const { data: signer, isLoading: isLoadingSigner } = useSigner({
-        chainId: goerli.id,
-    })
 
     const getSortParams = () => {
         switch (sortBy) {
@@ -85,7 +37,7 @@ export default function InstructorContainer() {
 
     const { mutate: getAllMyCourses, isLoading: isLoadingAllMyCourses } =
         useAPI.getMutation(
-            `${InstructorAPI.GET_ALL_MY_COURSES}${
+            `${LearnerAPI.GET_ALL_MY_ENROLL_COURSES}${
                 search !== '' ? '?query=' + search : ''
             }${
                 sortBy !== ''
@@ -104,53 +56,22 @@ export default function InstructorContainer() {
         getAllMyCourses({})
     }, [search, sortBy])
 
-    useEffect(() => {
-        ;(async () => {
-            if (courseId) {
-                getSignatureMint({})
-                if (requireinfo) {
-                    setCourseId('')
-                    await createCourse(signer!, requireinfo)
-                }
-            }
-        })()
-    }, [requireinfo, courseId])
-
-    const goToCreateCoursePage = () => {
-        Router.push('/create-course')
-    }
+    useHideFirstEnterLoadingScreen()
 
     const handleSortChange = (value: string) => {
         setSortBy(value)
     }
 
     const isLoading = useMemo(() => {
-        return (
-            isLoadingSigner ||
-            isLoadingAllMyCourses ||
-            isLoadingGetSignatureMint ||
-            isLoadingGetCategory ||
-            isCourseClicked
-        )
-    }, [
-        isLoadingSigner,
-        isLoadingAllMyCourses,
-        isLoadingGetSignatureMint,
-        isLoadingGetCategory,
-        isCourseClicked,
-    ])
+        return isLoadingAllMyCourses || isCourseClicked
+    }, [isLoadingAllMyCourses, isCourseClicked])
 
     return (
         <>
             <LoadingScreen isLoading={isLoading} />
             <div className="h-full mt-9">
                 <div className="flex justify-between px-14">
-                    <div className="font-semibold text-[30px]">My courses</div>
-                    <div className="text-white">
-                        <Button onClick={() => goToCreateCoursePage()}>
-                            Create course
-                        </Button>
-                    </div>
+                    <div className="font-semibold text-[30px]">Courses</div>
                 </div>
                 <div className="flex under_xl:block space-x-5 under_xl:space-x-0 px-14">
                     <Search
@@ -178,8 +99,7 @@ export default function InstructorContainer() {
                 ) : (
                     <div className="space-x-10 px-14">
                         <div>
-                            {!isLoadingSigner &&
-                                !isLoadingAllMyCourses &&
+                            {!isLoading &&
                                 allMyCourses &&
                                 allMyCourses?.data &&
                                 allMyCourses.data.map(
@@ -197,12 +117,10 @@ export default function InstructorContainer() {
                                                 <HorizontalCourseCard
                                                     key={course._id}
                                                     data={course}
-                                                    clickMode={'edit'}
+                                                    clickMode={'view'}
                                                     setClicked={
                                                         setIsCourseClicked
                                                     }
-                                                    showDetail={false}
-                                                    showStatus={true}
                                                     className="py-6"
                                                 />
                                                 {index !==

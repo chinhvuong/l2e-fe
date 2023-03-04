@@ -7,7 +7,8 @@ import ValidateModal, {
 } from '@/components/core/modal/validate-modal'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import MintBtn from '@/containers/instructor/components/mint-btn'
-import { useAppSelector } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { updateLoadingState } from '@/store/course'
 import {
     getCurriculumLecturesForm,
     getCurriculumSectionsForm,
@@ -27,6 +28,7 @@ export default function Sidebar() {
     const descriptionLength = useAppSelector(getDescriptionLength)
     const sections = useAppSelector(getCurriculumSectionsForm)
     const lectures = useAppSelector(getCurriculumLecturesForm)
+    const dispatch = useAppDispatch()
 
     const { getCourseDetail } = useCreateCourseContext()
 
@@ -184,6 +186,11 @@ export default function Sidebar() {
         }
     }
 
+    const handleChangeTab = (index: number) => {
+        dispatch(updateLoadingState(true))
+        goToMenuTarget(index)
+    }
+
     return (
         <>
             <LoadingScreen isLoading={isLoadingRequestApprove} />
@@ -198,7 +205,7 @@ export default function Sidebar() {
                                         : 'hover:bg-divider'
                                 }`}
                                 key={index}
-                                onClick={() => goToMenuTarget(index)}
+                                onClick={() => handleChangeTab(index)}
                             >
                                 {item}
                             </div>

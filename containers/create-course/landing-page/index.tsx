@@ -27,6 +27,7 @@ import {
     getLanguageName,
 } from '@/utils'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 
 export interface ILandingPageContainerProps {}
 
@@ -81,6 +82,8 @@ export default function LandingPageContainer() {
             setIsLoading(false)
         }
     }, [isNewCourseDetail])
+
+    useHideFirstEnterLoadingScreen()
 
     const handleTitleChange = (value: string) => {
         setTitle(value)

@@ -1,34 +1,31 @@
+import { useAppDispatch } from '@/hooks'
+import { updateLoadingState } from '@/store/course'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Router from 'next/router'
 import Explore from './explore'
 import Logo from './logo'
 import Search from './search'
 import './style.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
-import Router from 'next/router'
 import Wallet from './wallet'
-import { useState } from 'react'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 
 interface IHeader {
     darkTheme: boolean
 }
 
 const Header = (props: IHeader) => {
-    const [isNavigate, setIsNavigate] = useState<boolean>(false)
-
+    const dispatch = useAppDispatch()
     const goToHomePage = () => {
-        setIsNavigate(true)
         Router.push('/')
     }
 
     const goToAboutUsPage = () => {
-        setIsNavigate(true)
+        dispatch(updateLoadingState(true))
         Router.push('/about-us')
     }
 
     return (
         <>
-            <LoadingScreen isLoading={isNavigate} />
             <div
                 className={`py-8 ${
                     props.darkTheme ? 'text-white' : 'text-black'

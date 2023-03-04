@@ -25,6 +25,7 @@ import {
 } from '@/store/course/selectors'
 import { updateCourseGoals, updateCourseRequirements } from '@/store/course'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 
 export interface IIntendedLearnersContainerProps {}
 
@@ -40,6 +41,8 @@ export default function IntendedLearnersContainer() {
             setIsLoading(false)
         }
     }, [isNewCourseDetail])
+
+    useHideFirstEnterLoadingScreen()
 
     return (
         <div>

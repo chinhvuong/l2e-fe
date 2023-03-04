@@ -1,9 +1,9 @@
-import LearnerContainer from '@/containers/learner'
+import LearnerCoursesContainer from '@/containers/learner/components/courses'
 import LearnerLayout from '@/layout/learner-layout'
 import { ReactElement } from 'react'
 
 export default function MyCourse() {
-    return <LearnerContainer />
+    return <LearnerCoursesContainer />
 }
 
 MyCourse.getLayout = function getLayout(page: ReactElement) {

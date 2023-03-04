@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
-import Button from '@/components/core/button'
-import CourseListSwiper from '@/components/common/course-list-swiper'
-import VerticalCourseCard from '@/components/core/vertical-course-card'
-import useAPI from '@/api/hooks/useAPI'
 import { UserAPI } from '@/api/api-path'
-import { CoursePreview } from '@/api/dto/course.dto'
+import useAPI from '@/api/hooks/useAPI'
+import CourseListSwiper from '@/components/common/course-list-swiper'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import Button from '@/components/core/button'
+import VerticalCourseCard from '@/components/core/vertical-course-card'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const HomePageContainer = () => {
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {

@@ -19,10 +19,8 @@ export default function Header() {
 
     const canSaveCourse = useAppSelector(getCanSaveCourseState)
 
-    console.log('canSaveCourse', canSaveCourse)
-
     const goBack = () => {
-        Router.push('/instructor')
+        Router.push('/instructor/courses')
     }
 
     const handleUpdateCourseDetail = () => {
