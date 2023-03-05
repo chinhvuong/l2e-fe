@@ -84,6 +84,7 @@ export default function CourseInfo() {
                                     isShow={showModal}
                                     setIsShow={setShowModal}
                                     url={data.promotionalVideo}
+                                    courseName={data.name}
                                 />
                             )}
                         </div>

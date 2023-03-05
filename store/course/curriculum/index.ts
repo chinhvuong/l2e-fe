@@ -175,6 +175,9 @@ export const courseCurriculumSlice = createSlice({
                 state.lectures.push(action.payload)
             }
         },
+        resetCurriculumStore() {
+            return initialState
+        },
     },
 })
 
@@ -190,6 +193,7 @@ export const {
     updateCurriculumLectureMainContent,
     updateOrderCurriculumLecture,
     deleteCurriculumLecture,
+    resetCurriculumStore,
 } = courseCurriculumSlice.actions
 
 export default courseCurriculumSlice.reducer

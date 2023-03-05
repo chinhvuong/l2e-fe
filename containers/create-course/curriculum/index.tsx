@@ -1,5 +1,4 @@
 import LoadingScreen from '@/components/core/animate/loading-screen'
-import { useAppSelector } from '@/hooks'
 import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import {
     addCurriculumSection,
@@ -7,34 +6,31 @@ import {
     updateCurriculumSectionName,
 } from '@/store/course/curriculum'
 import {
-    getCurriculumLecturesForm,
     getCurriculumSectionDetail,
     getCurriculumSectionsForm,
 } from '@/store/course/curriculum/selectors'
-import { useEffect, useState } from 'react'
 import Title from '../components/title'
+import { useCreateCourseContext } from '../create-course-context'
 import Section from './components/section'
 
 export interface ICurriculumContainerProps {}
 
 export default function CurriculumContainer() {
-    const courseSections = useAppSelector(getCurriculumSectionsForm)
-    const courseLectures = useAppSelector(getCurriculumLecturesForm)
-    const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        if (courseSections.length > 0 && courseLectures.length > 0) {
-            setIsLoading(false)
-        }
-    }, [courseSections, courseLectures])
-
+    const { isLoading, courseSections, courseLectures } =
+        useCreateCourseContext()
     useHideFirstEnterLoadingScreen()
 
     return (
         <div>
-            <LoadingScreen isLoading={isLoading} />
+            <LoadingScreen
+                isLoading={
+                    isLoading ||
+                    courseSections.length === 0 ||
+                    courseLectures.length === 0
+                }
+            />
             <Title title={'Curriculum'} />
-            {!isLoading && (
+            {courseSections.length > 0 && courseLectures.length > 0 && (
                 <div className="py-10 px-14 space-y-5">
                     <Section
                         addItem={addCurriculumSection}

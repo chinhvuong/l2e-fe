@@ -8,10 +8,18 @@ interface IVideoModalProps {
     url: string
     className?: string
     showPreview?: boolean
+    courseName?: string
 }
 
 export default function VideoModal(props: IVideoModalProps) {
-    const { isShow, setIsShow, url, className, showPreview = true } = props
+    const {
+        isShow,
+        setIsShow,
+        url,
+        className,
+        showPreview = true,
+        courseName,
+    } = props
 
     const [showModal, setShowModal] = useState(isShow)
 
@@ -40,13 +48,22 @@ export default function VideoModal(props: IVideoModalProps) {
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-neutral-800 outline-none focus:outline-none">
                                 <div className="flex items-center justify-between p-5">
                                     <div>
-                                        <div className="text-md font-semibold text-divider mb-1">
-                                            Course Preview
+                                        <div
+                                            className={`${
+                                                courseName
+                                                    ? 'text-md text-divider'
+                                                    : 'text-xl text-white'
+                                            } font-semibold mb-1`}
+                                        >
+                                            {courseName
+                                                ? 'Course Preview'
+                                                : 'Video Preview'}
                                         </div>
-                                        <div className="text-xl font-bold text-white">
-                                            Crash Course: Build a Full-Stack Web
-                                            App in a Weekend!
-                                        </div>
+                                        {courseName && (
+                                            <div className="text-xl font-bold text-white">
+                                                {courseName}
+                                            </div>
+                                        )}
                                     </div>
                                     <div
                                         className="absolute top-5 right-5 text-white cursor-pointer"

@@ -40,6 +40,7 @@ export default function Sidebar() {
                             setIsShow={setShowModal}
                             url={data.promotionalVideo}
                             showPreview={false}
+                            courseName={data.name}
                         />
                     )}
                     <div

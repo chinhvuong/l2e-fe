@@ -6,6 +6,8 @@ import { CoursePreview } from '@/api/dto/course.dto'
 import { COURSE_ID } from '@/constants/localStorage'
 import { useAppDispatch } from '@/hooks'
 import { resetCourseDetailStore } from '@/store/course'
+import { resetCurriculumStore } from '@/store/course/curriculum'
+import { resetIntendedLearnersStore } from '@/store/course/intended-learners'
 
 export interface IHorizontalCourseCardProps {
     data: CoursePreview
@@ -29,6 +31,8 @@ export default function HorizontalCourseCard({
     const handleCourseClick = () => {
         if (setClicked) {
             dispatch(resetCourseDetailStore())
+            dispatch(resetCurriculumStore())
+            dispatch(resetIntendedLearnersStore())
             setClicked(true)
         }
 

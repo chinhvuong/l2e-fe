@@ -1,5 +1,8 @@
 import { ACCESS_TOKEN } from '@/constants/localStorage'
 import { BACKEND_URL } from '@/constants/urls'
+import { useAppDispatch } from '@/hooks'
+import useLogOut from '@/hooks/useLogOut'
+import useWeb3 from '@/wallet/hooks/useWeb3'
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const axiosInstance = axios.create({

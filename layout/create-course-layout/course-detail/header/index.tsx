@@ -49,6 +49,7 @@ export default function Header() {
             <Button
                 isLoading={isLoading || !canSaveCourse}
                 onClick={() => handleUpdateCourseDetail()}
+                disabled={isLoading || !canSaveCourse}
             >
                 <div className="font-semibold">Save</div>
             </Button>

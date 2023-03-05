@@ -41,6 +41,7 @@ const UseClientQuery = (
                                 closeOnClick: true,
                                 progress: undefined,
                                 theme: 'light',
+                                toastId: 'tokenExpired',
                             })
                         }
                         if (error.response.status === 403) {
@@ -53,6 +54,7 @@ const UseClientQuery = (
                                     closeOnClick: true,
                                     progress: undefined,
                                     theme: 'light',
+                                    toastId: 'noPermission',
                                 },
                             )
                             return
