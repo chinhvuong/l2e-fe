@@ -42,9 +42,7 @@ export default function LandingPageContainer() {
     )
     const [categoryList, setCategoryList] = useState([])
     const [category, setCategory] = useState<string>('')
-    const [price, setPrice] = useState<string>(() =>
-        courseDetail.price === null ? '' : courseDetail.price.toString(),
-    )
+    const [price, setPrice] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [thumbnail, setThumbnail] = useState<string>(
         courseDetail.thumbnail ?? '/images/placeholder.jpeg',
@@ -69,11 +67,7 @@ export default function LandingPageContainer() {
             setTitle(courseDetail.name)
             setSubtitle(courseDetail.overview)
             setLanguage(getLanguageName(courseDetail.language))
-            setPrice(
-                courseDetail.price === null
-                    ? ''
-                    : courseDetail.price.toString(),
-            )
+            setPrice(courseDetail.price ? courseDetail.price.toString() : '')
             setThumbnail(courseDetail.thumbnail ?? '/images/placeholder.jpeg')
             setPromotionalVideo(
                 courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',

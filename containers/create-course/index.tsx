@@ -1,4 +1,5 @@
 import { InstructorAPI, UserAPI } from '@/api/api-path'
+import { callAPI } from '@/api/axios-client'
 import { GetCategoryResponse, SectionResponseItem } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
@@ -43,7 +44,7 @@ export default function CourseBasicCreateContainer() {
         useState<Category[]>()
     const [courseCategoryList, setCourseCategoryList] = useState<string[]>([])
     const [courseId, setCourseId] = useState<string>('')
-    const [sectionId, setSectionId] = useState('')
+    const [isLoadingUpsertLessons, setIsLoadingUpsertLessons] = useState(false)
 
     const dispatch = useAppDispatch()
 
@@ -87,36 +88,47 @@ export default function CourseBasicCreateContainer() {
                         name: item.name,
                         description: item.description,
                     })
-                    setSectionId(item._id)
-                    setTimeout(
-                        () =>
-                            upsertLessons([
-                                {
-                                    name: '',
-                                    description: '',
-                                    media: '',
-                                    mediaName: '',
-                                    mediaType: '',
-                                    quizzes: [],
-                                    sectionId: item._id,
-                                },
-                            ]),
-                        1000,
-                    )
+                    setIsLoadingUpsertLessons(true)
+                    handleUpsertLessons(item._id, [
+                        {
+                            name: '',
+                            description: '',
+                            media: '',
+                            mediaName: '',
+                            mediaType: '',
+                            quizzes: [],
+                            sectionId: item._id,
+                            mode: '',
+                            _id: 'new',
+                        },
+                    ])
                 })
             },
         })
 
-    const { mutate: upsertLessons, isLoading: isLoadingUpsertLessons } =
-        useAPI.post(InstructorAPI.UPSERT_LESSONS + sectionId, {
-            onError: () => {},
-            onSuccess: (response) => {
+    const handleUpsertLessons = async (
+        sectionId: string,
+        lectures: CurriculumLecture[],
+    ) => {
+        await callAPI(
+            'post',
+            InstructorAPI.UPSERT_LESSONS + sectionId,
+            lectures.map((item) => {
+                const el: any = { ...item }
+                delete el._id
+                el.sectionId = sectionId
+                return el
+            }),
+        )
+            .then((response) => {
                 const lessonsBasicInfo: CurriculumLecture[] = []
                 response.forEach((item: any) => {
                     lessonsBasicInfo.push(item)
                 })
-            },
-        })
+                setIsLoadingUpsertLessons(false)
+            })
+            .catch(() => setIsLoadingUpsertLessons(false))
+    }
 
     const { mutate: getCategory, isLoading: isLoadingGetCategory } =
         useAPI.getMutation(UserAPI.GET_CATEGORY, {

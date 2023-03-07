@@ -55,9 +55,9 @@ export default function CourseInfo() {
     }, [loginState, data])
 
     const getLastUpdated = () => {
-        return `Last updated ${new Date(data.updatedAt).getMonth()}/${new Date(
-            data.updatedAt,
-        ).getFullYear()}`
+        return `Last updated ${
+            new Date(data.updatedAt).getMonth() + 1
+        }/${new Date(data.updatedAt).getFullYear()}`
     }
 
     useEffect(() => {
@@ -156,7 +156,11 @@ export default function CourseInfo() {
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <FontAwesomeIcon icon={faGlobe} />
-                                    <div>{data.language}</div>
+                                    <div>
+                                        {data.language === 'en'
+                                            ? 'English'
+                                            : 'Tiếng Việt'}
+                                    </div>
                                 </div>
                             </div>
                             {/* <PriceEnrollShare

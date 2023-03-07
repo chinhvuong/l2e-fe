@@ -28,7 +28,7 @@ export default function PriceEnrollShare(props: IPriceEnrollShareProps) {
                     <div className="flex items-center space-x-4 mt-3 mb-5">
                         {isEnrolled === true ? (
                             <Button
-                                className="w-max"
+                                className="w-full flex items-center justify-center"
                                 onClick={() => alert('Coming soon')}
                             >
                                 <div className="font-medium text-[20px]">

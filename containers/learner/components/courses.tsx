@@ -7,6 +7,7 @@ import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
 import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
+import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import Search from '../../instructor/components/search'
 
@@ -17,6 +18,7 @@ export default function LearnerCoursesContainer() {
         {} as GetAllCoursesResponse,
     )
     const [sortBy, setSortBy] = useState<string>('')
+    const router = useRouter()
 
     const getSortParams = () => {
         switch (sortBy) {
@@ -52,8 +54,27 @@ export default function LearnerCoursesContainer() {
             },
         )
 
+    const changeURL = () => {
+        const newQuery: any = {}
+        if (search !== '') {
+            newQuery.query = search
+        }
+        if (sortBy !== '') {
+            newQuery.sort = getSortParams()
+        }
+        router.push(
+            {
+                pathname: '/learner/courses',
+                query: newQuery,
+            },
+            undefined,
+            { shallow: true },
+        )
+    }
+
     useEffect(() => {
         getAllMyCourses({})
+        changeURL()
     }, [search, sortBy])
 
     useHideFirstEnterLoadingScreen()
