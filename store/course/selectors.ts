@@ -31,17 +31,6 @@ export const getCourseOverviewInfo = (state: RootState) => {
     }
 }
 
-export const getSidebarInfo = (state: RootState) => {
-    return {
-        price: state.courseDetail.courseDetail.price,
-        thumbnail: state.courseDetail.courseDetail.thumbnail,
-        promotionalVideo: state.courseDetail.courseDetail.promotionalVideo,
-        include: state.courseDetail.courseDetail.include,
-        courseId: state.courseDetail.courseDetail.courseId,
-        _id: state.courseDetail.courseDetail._id,
-    }
-}
-
 export const getCourseName = (state: RootState) => {
     return state.courseDetail.courseDetail.name
 }
@@ -82,9 +71,9 @@ export const getMyCourseDetail = (state: RootState) => {
     return state.courseDetail.courseDetail
 }
 
-export const getCourseDetailState = (state: RootState) => {
-    return state.courseDetail.isNewData
-}
+// export const getCourseDetailState = (state: RootState) => {
+//     return state.courseDetail.isNewData
+// }
 
 export const getEnrollStatusState = (state: RootState) => {
     return state.courseDetail.isEnroll
@@ -92,6 +81,10 @@ export const getEnrollStatusState = (state: RootState) => {
 
 export const getSaveCourseState = (state: RootState) => {
     return state.courseDetail.isSaved
+}
+
+export const getLoadingState = (state: RootState) => {
+    return state.courseDetail.isLoading
 }
 
 export const getCanSaveCourseState = (state: RootState) => {

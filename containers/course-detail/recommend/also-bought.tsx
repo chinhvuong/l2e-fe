@@ -1,11 +1,16 @@
 import VerticalCourseList from '@/components/common/vertical-course-list'
-import Button from '@/components/core/button'
 import { dataCourses_preview_list } from '@/data/course-preview'
-import * as React from 'react'
+import { useCourseDetailContext } from '../course-detail-context'
 
 export interface IAlsoBoughtProps {}
 
 export default function AlsoBought() {
+    const { isLoading } = useCourseDetailContext()
+
+    if (isLoading) {
+        return <></>
+    }
+
     return (
         <div className="space-y-2">
             <div className="font-semibold text-[26px]">

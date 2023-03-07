@@ -54,9 +54,9 @@ const initialState: CourseDetailState = {
         ).toISOString(),
     },
     reviews: dataRatings,
-    isNewData: false,
     isEnroll: false,
     isSaved: false,
+    isLoading: false,
     canSaveCourse: true,
     canCreateCourse: true,
     descriptionLength: 0,
@@ -99,14 +99,14 @@ export const courseDetailSlice = createSlice({
         updateCourseDetail(state, action: PayloadAction<CourseDetail>) {
             state.courseDetail = { ...action.payload }
         },
-        updateGetCourseDetailState(state, action: PayloadAction<boolean>) {
-            state.isNewData = action.payload
-        },
         updateEnrollStatus(state, action: PayloadAction<boolean>) {
             state.isEnroll = action.payload
         },
         updateSaveCourseState(state, action: PayloadAction<boolean>) {
             state.isSaved = action.payload
+        },
+        updateLoadingState(state, action: PayloadAction<boolean>) {
+            state.isLoading = action.payload
         },
         updateCanSaveCourseState(state, action: PayloadAction<boolean>) {
             state.canSaveCourse = action.payload
@@ -123,6 +123,9 @@ export const courseDetailSlice = createSlice({
         updateIdState(state, action: PayloadAction<string>) {
             state.courseDetail._id = action.payload
         },
+        resetCourseDetailStore() {
+            return initialState
+        },
     },
 })
 
@@ -138,14 +141,15 @@ export const {
     updateCourseGoals,
     updateCourseRequirements,
     updateCourseDetail,
-    updateGetCourseDetailState,
     updateEnrollStatus,
     updateSaveCourseState,
+    updateLoadingState,
     updateCanSaveCourseState,
     updateCanCreateCourseState,
     updateDescriptionLength,
     updateCourseIdState,
     updateIdState,
+    resetCourseDetailStore,
 } = courseDetailSlice.actions
 
 export default courseDetailSlice.reducer

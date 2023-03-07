@@ -13,33 +13,29 @@ import {
     getWhatYouWillLearnForm,
     getWhatYouWillLearnState,
 } from '@/store/course/intended-learners/selectors'
-
 import { useState, useEffect } from 'react'
 import DragAndDropInput from './components/drag-drop-input'
 import Subtitle from '../components/subtitle'
 import Title from '../components/title'
 import { useAppSelector } from '@/hooks'
-import {
-    getMyCourseDetail,
-    getCourseDetailState,
-} from '@/store/course/selectors'
+import { getMyCourseDetail } from '@/store/course/selectors'
 import { updateCourseGoals, updateCourseRequirements } from '@/store/course'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 
 export interface IIntendedLearnersContainerProps {}
 
 export default function IntendedLearnersContainer() {
     const courseId = useAppSelector(getMyCourseDetail)._id
-    const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        if (isNewCourseDetail) {
-        }
         if (courseId !== '') {
             setIsLoading(false)
         }
-    }, [isNewCourseDetail])
+    }, [courseId])
+
+    useHideFirstEnterLoadingScreen()
 
     return (
         <div>

@@ -185,6 +185,9 @@ export const courseIntendedLearnersSlice = createSlice({
         updateIntendedLearnersState(state, action: PayloadAction<boolean>) {
             state.isUpdateIntendedLearners = action.payload
         },
+        resetIntendedLearnersStore() {
+            return initialState
+        },
     },
 })
 
@@ -207,6 +210,7 @@ export const {
     updateWhatYouWillLearnState,
     updateRequirementsState,
     updateIntendedLearnersState,
+    resetIntendedLearnersStore,
 } = courseIntendedLearnersSlice.actions
 
 export default courseIntendedLearnersSlice.reducer

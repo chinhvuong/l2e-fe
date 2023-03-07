@@ -1,6 +1,5 @@
 import React, { HTMLAttributes, ReactNode, ReactText } from 'react'
 import Loading from '../animate/loading'
-import './style.scss'
 type IButton = {
     children: ReactNode | ReactText
     textButton?: boolean
@@ -15,13 +14,20 @@ function Button({
     isLoading = false,
     ...rest
 }: IButton & HTMLAttributes<HTMLButtonElement>) {
+    const btnPrimary =
+        'bg-primary text-white enabled:hover:bg-primary-hover transition-colors'
+
+    const btnCommon = 'rounded-[80px] py-[12px] px-[30px] shadow-sm'
+
+    const btnText = 'text-black hover:text-primary'
+
     return (
         <button
             {...rest}
-            className={`${textButton ? 'btn-text' : 'btn-common'} ${
-                disabled ? 'bg-gray-600 text-white' : 'btn-primary'
-            } ${rest.className} flex items-center ${
-                isLoading ? 'cursor-not-allowed' : 'cursor-pointer'
+            className={`${btnPrimary} ${textButton ? btnText : btnCommon} ${
+                rest.className
+            } flex items-center ${
+                isLoading || disabled ? 'cursor-not-allowed' : 'cursor-pointer'
             } whitespace-nowrap	text-ellipsis overflow-hidden`}
             disabled={disabled}
         >

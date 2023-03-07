@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
-import Button from '@/components/core/button'
-import CourseListSwiper from '@/components/common/course-list-swiper'
-import VerticalCourseCard from '@/components/core/vertical-course-card'
-import useAPI from '@/api/hooks/useAPI'
 import { UserAPI } from '@/api/api-path'
-import { CoursePreview } from '@/api/dto/course.dto'
+import useAPI from '@/api/hooks/useAPI'
+import CourseListSwiper from '@/components/common/course-list-swiper'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import Button from '@/components/core/button'
+import VerticalCourseCard from '@/components/core/vertical-course-card'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const HomePageContainer = () => {
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
@@ -15,6 +13,9 @@ const HomePageContainer = () => {
     })
 
     const getCourseListUI = () => {
+        if (!data) {
+            return <></>
+        }
         return data.data.length < 5 ? (
             <>
                 <div className="flex justify-center mt-12 mb-4">
@@ -25,7 +26,7 @@ const HomePageContainer = () => {
                     </div>
                 </div>
                 <div className="flex justify-center">
-                    {data.data.map((item: CoursePreview, index: number) => (
+                    {data.data.map((item: any, index: number) => (
                         <div className="w-[300px]" key={index}>
                             <VerticalCourseCard
                                 key={item._id}
@@ -82,22 +83,6 @@ const HomePageContainer = () => {
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
             <div>{!isLoading && getCourseListUI()}</div>
-            {/* <div className="flex justify-center mt-12 mb-4">
-                <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
-                    <div className="font-extrabold text-[41px]">
-                        What to learn next?
-                    </div>
-                </div>
-            </div>
-            <CourseListSwiper
-                data={dataCourses_preview_swiper}
-                title="Students are viewing"
-            />
-            <CourseListSwiper
-                data={dataCourses_preview_swiper}
-                title="Short and sweet courses for you"
-                className="mt-8"
-            /> */}
         </div>
     )
 }

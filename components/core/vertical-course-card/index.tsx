@@ -5,45 +5,49 @@ import Router from 'next/router'
 import { CoursePreview } from '@/api/dto/course.dto'
 import { updateCourseIdState } from '@/store/course'
 import { useAppDispatch } from '@/hooks'
+import VideoPreview from '../video-preview'
 
 export interface IVerticalCourseCardProps {
-    data: CoursePreview
+    data: any
     className?: string
 }
 
-export default function VerticalCourseCard(props: IVerticalCourseCardProps) {
+export default function VerticalCourseCard({
+    data,
+    className,
+}: IVerticalCourseCardProps) {
     const dispatch = useAppDispatch()
     const viewCourseDetail = () => {
-        dispatch(updateCourseIdState(Number(props.data.courseId)))
-        Router.push(`/course/${props.data._id}`)
+        dispatch(updateCourseIdState(Number(data.courseId)))
+        Router.push(`/course/${data._id}`)
     }
     return (
         <div
-            className={`space-y-3 cursor-pointer ${props.className}`}
+            className={`space-y-3 cursor-pointer ${className}`}
             onClick={() => viewCourseDetail()}
         >
             <img
-                src="https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg"
+                src={
+                    data.thumbnail ??
+                    'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg'
+                }
                 alt=""
             />
             <div className="font-semibold text-lg line-clamp-3 h-[80px]">
-                {props.data.name}
+                {data.name}
             </div>
             <div className="font-light text-xs truncate">
-                {props.data?.author?.name ?? 'Anonymous'}
+                {data?.author?.name ?? 'Anonymous'}
             </div>
             <RatingStar
-                id={props.data._id}
-                ratingScore={props.data.rating}
-                ratings={props.data.ratingCount.toString()}
+                id={data._id}
+                ratingScore={data.rating}
+                ratings={data.ratingCount.toString()}
             />
-            <div className="font-bold">{props.data.price}</div>
+            <div className="font-bold">{data.price} USDT</div>
             <div className="flex gap-x-2">
-                {/* <Label name="Bestseller" hidden={!props.data.isBestseller} /> */}
-                <Label
-                    name={props.data.category.name}
-                    color={props.data.category.color}
-                />
+                {/* <Label name="Bestseller" hidden={!data.isBestseller} /> */}
+                <Label name={data.category.name} color={data.category.color} />
             </div>
         </div>
     )

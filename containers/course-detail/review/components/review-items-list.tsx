@@ -16,6 +16,10 @@ export default function ReviewItemsList(props: IReviewItemsListProps) {
         setReviewList(newList)
     }
 
+    if (!reviewList) {
+        return <></>
+    }
+
     return (
         <div>
             {reviewList.map((item, index) => {

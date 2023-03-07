@@ -31,7 +31,6 @@ const UseClientMutation = (
                 (error: any) => {
                     if (error.response.status === 401) {
                         logOut()
-                        console.log('Your token has been expired!')
                         toast.error('Your token has been expired!', {
                             position: 'top-center',
                             autoClose: 3000,
@@ -39,6 +38,7 @@ const UseClientMutation = (
                             closeOnClick: true,
                             progress: undefined,
                             theme: 'light',
+                            toastId: 'tokenExpired',
                         })
                     }
                     if (error.response.status === 403) {
@@ -51,6 +51,7 @@ const UseClientMutation = (
                                 closeOnClick: true,
                                 progress: undefined,
                                 theme: 'light',
+                                toastId: 'noPermission',
                             },
                         )
                         return

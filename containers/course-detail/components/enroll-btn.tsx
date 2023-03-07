@@ -2,7 +2,6 @@ import Loading from '@/components/core/animate/loading'
 import Button from '@/components/core/button'
 import { enroll } from '@/hooks/coursedex'
 import { approve } from '@/hooks/usdt'
-import { getCourseOverviewInfo } from '@/store/course/selectors'
 import { getAssetState } from '@/store/user/selectors'
 import { ethers } from 'ethers'
 import React, { HtmlHTMLAttributes, useState } from 'react'
@@ -10,12 +9,13 @@ import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { useSigner } from 'wagmi'
 import { goerli } from 'wagmi/chains'
+import { useCourseDetailContext } from '../course-detail-context'
 type Props = HtmlHTMLAttributes<HTMLButtonElement> & {}
 
 const EnrollBtn = ({ ...rest }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
     const asset = useSelector(getAssetState)
-    const data = useSelector(getCourseOverviewInfo)
+    const { data } = useCourseDetailContext()
     const { data: signer } = useSigner({
         chainId: goerli.id,
     })
@@ -59,7 +59,7 @@ const EnrollBtn = ({ ...rest }: Props) => {
             onClick={() => enrollCourse(Number(data.courseId))}
             {...rest}
         >
-            <div className="font-medium text-[20px]">Enroll</div>
+            <div className="font-medium text-[20px] pr-2">Enroll</div>
             {isLoading && <Loading className="!text-white" />}
         </Button>
     )

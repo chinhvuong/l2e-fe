@@ -1,5 +1,8 @@
-import Router from 'next/router'
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import { useAppSelector } from '@/hooks'
+import { getLoadingState } from '@/store/course/selectors'
 import { ReactChild } from 'react'
+import Sidebar from './sidebar'
 
 export interface IMyCoursesLayoutProps {}
 
@@ -8,26 +11,18 @@ export default function InstructorLayout({
 }: {
     children: ReactChild
 }) {
-    const goToHomePage = () => {
-        Router.push('/')
-    }
+    const isLoading = useAppSelector(getLoadingState)
 
     return (
         <div className="relative">
+            <LoadingScreen isLoading={isLoading} />
             <main id="main">
                 <div
                     className="flex justify-center w-full app-transition main-transition min-h-screen bg-white"
                     id="content"
                 >
                     <div className="flex justify-center w-full">
-                        <div
-                            className="bg-second w-[300px] flex justify-center pt-4"
-                            onClick={() => goToHomePage()}
-                        >
-                            <div className="cursor-pointer">
-                                <img src="/svgs/logos/logo_light.svg" alt="" />
-                            </div>
-                        </div>
+                        <Sidebar />
                         <div className="w-full h-full">{children}</div>
                     </div>
                 </div>

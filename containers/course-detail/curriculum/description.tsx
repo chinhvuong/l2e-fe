@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
-import { getDescription } from '@/store/course/selectors'
 import ShowMore from '@/components/core/show-more'
-import { useAppSelector } from '@/hooks'
 import parse from 'html-react-parser'
+import { useCourseDetailContext } from '../course-detail-context'
 
 export interface IDescriptionProps {}
 
 export default function Description() {
-    const data = useAppSelector(getDescription)
+    const { data } = useCourseDetailContext()
+    const description = data.description
 
     const [showMore, setShowMore] = useState(false)
 
     const getUIContent = () => {
-        let formattedData = data.replaceAll(
+        let formattedData = description.replaceAll(
             '<li>',
             '<li class="list-disc list-inside ml-2">',
         )
@@ -30,17 +30,17 @@ export default function Description() {
 
     useEffect(() => {
         setShowMore(true)
-    }, [data])
+    }, [description])
 
     return (
         <>
-            {data !== '' && (
+            {description && (
                 <div
                     id="description"
                     className="space-y-3 overflow-hidden relative"
                 >
                     <div className="font-semibold text-[26px]">Description</div>
-                    {data && getUIContent()}
+                    {description && getUIContent()}
                     {showMore && (
                         <ShowMore el="description" elHeightPreview={400} />
                     )}

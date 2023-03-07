@@ -1,15 +1,12 @@
-import Hyperlink from '@/containers/create-course/components/hyperlink'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 import Input from '@/components/core/input'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Select from '@/components/core/select'
 import UploadPreview from '@/components/core/upload-preview'
-import Title from '../components/title'
-import { useEffect, useState } from 'react'
+import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
+import Hyperlink from '@/containers/create-course/components/hyperlink'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import {
-    getMyCourseDetail,
-    getCourseDetailState,
-} from '@/store/course/selectors'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import {
     updateCourseCategory,
     updateCourseDescription,
@@ -20,13 +17,14 @@ import {
     updateCoursePromotionalVideo,
     updateCourseThumbnail,
 } from '@/store/course'
-import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
+import { getMyCourseDetail } from '@/store/course/selectors'
 import {
     convertToCategoryID,
     convertToCategoryName,
     getLanguageName,
 } from '@/utils'
-import LoadingScreen from '@/components/core/animate/loading-screen'
+import { useEffect, useState } from 'react'
+import Title from '../components/title'
 
 export interface ILandingPageContainerProps {}
 
@@ -35,7 +33,6 @@ export default function LandingPageContainer() {
 
     const dispatch = useAppDispatch()
     const courseDetail = useAppSelector(getMyCourseDetail)
-    const isNewCourseDetail = useAppSelector(getCourseDetailState)
     const [isLoading, setIsLoading] = useState(true)
 
     const [title, setTitle] = useState<string>(courseDetail.name)
@@ -57,13 +54,18 @@ export default function LandingPageContainer() {
     )
 
     useEffect(() => {
-        const listWithId = JSON.parse(localStorage.getItem(CATEGORY) ?? '[]')
-        const nameList = JSON.parse(
-            localStorage.getItem(CATEGORY_NAME_LIST) ?? '[]',
-        )
-        setCategoryList(nameList)
-        setCategory(convertToCategoryName(listWithId, courseDetail.category))
-        if (isNewCourseDetail) {
+        if (courseDetail._id !== '') {
+            setIsLoading(false)
+            const listWithId = JSON.parse(
+                localStorage.getItem(CATEGORY) ?? '[]',
+            )
+            const nameList = JSON.parse(
+                localStorage.getItem(CATEGORY_NAME_LIST) ?? '[]',
+            )
+            setCategoryList(nameList)
+            setCategory(
+                convertToCategoryName(listWithId, courseDetail.category),
+            )
             setTitle(courseDetail.name)
             setSubtitle(courseDetail.overview)
             setLanguage(getLanguageName(courseDetail.language))
@@ -77,10 +79,9 @@ export default function LandingPageContainer() {
                 courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',
             )
         }
-        if (courseDetail._id !== '' && isNewCourseDetail) {
-            setIsLoading(false)
-        }
-    }, [isNewCourseDetail])
+    }, [courseDetail._id])
+
+    useHideFirstEnterLoadingScreen()
 
     const handleTitleChange = (value: string) => {
         setTitle(value)
@@ -124,7 +125,7 @@ export default function LandingPageContainer() {
         <div>
             <LoadingScreen isLoading={isLoading} />
             <Title title={'Landing page'} />
-            {!isLoading && (
+            {!isLoading && courseDetail._id !== '' && (
                 <div className="py-10 px-14 space-y-5">
                     <Input
                         id="landing-page-title"

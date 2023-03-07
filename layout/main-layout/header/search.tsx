@@ -1,13 +1,15 @@
-import * as React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { callAPI } from '@/api/axios-client'
+import { CoursePreview } from '@/api/dto/course.dto'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './style.scss'
 import { CourseLists } from '@/data/courses'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { debounce } from 'lodash'
-import { CoursePreview } from '@/api/dto/course.dto'
-import Router, { useRouter } from 'next/router'
-import { callAPI } from '@/api/axios-client'
+import { useRouter } from 'next/router'
+import * as React from 'react'
+import { useCallback, useState } from 'react'
+import './style.scss'
 
 interface ISearch {
     darkTheme: boolean

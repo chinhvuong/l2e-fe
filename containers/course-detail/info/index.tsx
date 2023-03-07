@@ -49,10 +49,10 @@ export default function CourseInfo() {
                 console.log('🚀 ~ file: index.tsx:41 ~ f ~ error', error)
             }
         }
-        if (data._id) {
+        if (data && data._id) {
             f()
         }
-    }, [loginState, data._id])
+    }, [loginState, data])
 
     const getLastUpdated = () => {
         return `Last updated ${new Date(data.updatedAt).getMonth()}/${new Date(
@@ -73,97 +73,118 @@ export default function CourseInfo() {
     return (
         <div className="bg-black flex justify-center" id="overview-section">
             <div className="2xl:w-[1250px] lg:w-[700px] px-8 under_lg:px-0 py-10 flex justify-between relative">
-                <div className="w-[800px] under_lg:w-full text-white space-y-5">
-                    <div className="under_lg:px-8">
+                {data ? (
+                    <div className="w-[800px] under_lg:w-full text-white">
+                        {/* <div className="under_lg:px-8">
                         <Breadcrumb data={breadcrumb} />
-                    </div>
-                    <div className="2xl:hidden">
-                        {data.promotionalVideo && (
-                            <VideoModal
-                                isShow={showModal}
-                                setIsShow={setShowModal}
-                                url={data.promotionalVideo}
-                            />
-                        )}
-                    </div>
-                    <div className="under_lg:w-full text-white space-y-5 under_lg:px-8">
-                        <div className="font-bold text-[35px] leading-[45px]">
-                            {data.name}
-                        </div>
-                        <div className="text-[20px]">{data.overview}</div>
-                        <div className="flex items-center flex-wrap">
-                            <div className="flex items-center space-x-4 mr-4 my-2">
-                                {/* {data.isBestseller && (
-                                    <Label name="Bestseller" />
-                                )} */}
-                                {category && (
-                                    <Label
-                                        name={category.name}
-                                        color={category.color}
-                                    />
-                                )}
-                                {data.rating !== null && (
-                                    <RatingStar
-                                        id={data._id}
-                                        ratingScore={data.rating}
-                                        ratings={'0'}
-                                        hideRating
-                                        className="mt-0.5"
-                                    />
-                                )}
-                            </div>
-                            {(data.reviews !== null ||
-                                data.students !== null) && (
-                                <div className="flex items-center space-x-4 my-2">
-                                    {data.reviews !== null && (
-                                        <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                                            {`(${data.reviews} ${
-                                                data.reviews === 0
-                                                    ? 'rating'
-                                                    : 'ratings'
-                                            })`}
-                                        </div>
-                                    )}
-                                    {data.students !== null && (
-                                        <div className="text-[14px] font-light">
-                                            {`${data.students} ${
-                                                data.students === 0
-                                                    ? 'student'
-                                                    : 'students'
-                                            }`}
-                                        </div>
-                                    )}
-                                </div>
+                    </div> */}
+                        <div className="2xl:hidden">
+                            {data.promotionalVideo && (
+                                <VideoModal
+                                    isShow={showModal}
+                                    setIsShow={setShowModal}
+                                    url={data.promotionalVideo}
+                                    courseName={data.name}
+                                />
                             )}
                         </div>
-                        <div className="text-[14px] font-light">
-                            Created by{' '}
-                            <Hyperlink>
-                                {data?.author?.name ?? 'Anonymous'}
-                            </Hyperlink>
-                            {/* <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
+                        <div className="under_lg:w-full text-white space-y-5 under_lg:px-8">
+                            <div className="font-bold text-[35px] leading-[45px]">
+                                {data.name}
+                            </div>
+                            <div className="text-[20px]">{data.overview}</div>
+                            <div className="flex items-center flex-wrap">
+                                <div className="flex items-center space-x-4 mr-4 my-2">
+                                    {/* {data.isBestseller && (
+                                    <Label name="Bestseller" />
+                                )} */}
+                                    {category && (
+                                        <Label
+                                            name={category.name}
+                                            color={category.color}
+                                        />
+                                    )}
+                                    {data.rating !== null && (
+                                        <RatingStar
+                                            id={data._id}
+                                            ratingScore={data.rating}
+                                            ratings={'0'}
+                                            hideRating
+                                            className="mt-0.5"
+                                        />
+                                    )}
+                                </div>
+                                {(data.reviews !== null ||
+                                    data.students !== null) && (
+                                    <div className="flex items-center space-x-4 my-2">
+                                        {data.reviews !== null && (
+                                            <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
+                                                {`(${data.reviews} ${
+                                                    data.reviews === 0
+                                                        ? 'rating'
+                                                        : 'ratings'
+                                                })`}
+                                            </div>
+                                        )}
+                                        {data.students !== null && (
+                                            <div className="text-[14px] font-light">
+                                                {`${data.students} ${
+                                                    data.students === 0
+                                                        ? 'student'
+                                                        : 'students'
+                                                }`}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="text-[14px] font-light">
+                                Created by{' '}
+                                <Hyperlink>
+                                    {data?.author?.name ?? 'Anonymous'}
+                                </Hyperlink>
+                                {/* <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
                                 {data.owner}
                             </span> */}
-                        </div>
-                        <div className="flex text-[14px] font-light space-x-6">
-                            <div className="flex items-center space-x-2">
-                                <FontAwesomeIcon icon={faExclamationCircle} />
-                                <div>{getLastUpdated()}</div>
                             </div>
-                            <div className="flex items-center space-x-2">
-                                <FontAwesomeIcon icon={faGlobe} />
-                                <div>{data.language}</div>
+                            <div className="flex text-[14px] font-light space-x-6">
+                                <div className="flex items-center space-x-2">
+                                    <FontAwesomeIcon
+                                        icon={faExclamationCircle}
+                                    />
+                                    <div>{getLastUpdated()}</div>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <FontAwesomeIcon icon={faGlobe} />
+                                    <div>{data.language}</div>
+                                </div>
                             </div>
-                        </div>
-                        {/* <PriceEnrollShare
+                            {/* <PriceEnrollShare
                             price={data.price}
                             className="2xl:hidden"
                             _id={data._id}
                             courseId={data.courseId}
 
                         /> */}
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="w-[800px] under_lg:w-full text-white">
+                        <div className="animate-pulse flex space-x-4 w-[90%] py-6">
+                            <div className="flex-1 space-y-6">
+                                <div className="h-2 bg-slate-700 rounded w-full"></div>
+                                <div className="h-2 bg-slate-700 rounded w-2/3"></div>
+                                <div className="h-2 bg-slate-700 rounded w-1/2"></div>
+                                <div className="h-2 bg-slate-700 rounded w-1/3"></div>
+                                <div className="h-2 bg-slate-700 rounded w-1/4"></div>
+                                <div className="h-2 bg-slate-700 rounded w-2/3"></div>
+                                <div className="h-2 bg-slate-700 rounded w-1/2"></div>
+                                <div className="h-2 bg-slate-700 rounded w-2/5"></div>
+                                <div className="h-2 bg-slate-700 rounded w-1/4"></div>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <Sidebar />
             </div>
         </div>

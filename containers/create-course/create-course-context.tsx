@@ -1,11 +1,11 @@
 import { InstructorAPI } from '@/api/api-path'
+import { callAPI } from '@/api/axios-client'
 import useAPI from '@/api/hooks/useAPI'
 import { COURSE_ID } from '@/constants/localStorage'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import {
     updateCourseDetail,
     updateDescriptionLength,
-    updateGetCourseDetailState,
     updateSaveCourseState,
 } from '@/store/course'
 import {
@@ -16,7 +16,10 @@ import {
     getCurriculumLecturesForm,
     getCurriculumSectionsForm,
 } from '@/store/course/curriculum/selectors'
-import { CurriculumSection } from '@/store/course/curriculum/types'
+import {
+    CurriculumLecture,
+    CurriculumSection,
+} from '@/store/course/curriculum/types'
 import {
     updateAllRequirements,
     updateAllWhatYouWillLearn,
@@ -25,7 +28,6 @@ import { getMyCourseDetail } from '@/store/course/selectors'
 import { CourseDetail } from '@/store/course/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
-import { noop } from 'lodash'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 interface ICreateCourseContext {
@@ -35,6 +37,7 @@ interface ICreateCourseContext {
     upsertSections: UseMutateFunction<unknown, any, object, unknown>
     courseDetail: CourseDetail
     courseSections: CurriculumSection[]
+    courseLectures: CurriculumLecture[][]
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>(
@@ -49,7 +52,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const courseSections = useAppSelector(getCurriculumSectionsForm)
     const courseLectures = useAppSelector(getCurriculumLecturesForm)
     const [courseId, setCourseId] = useState('')
-    const [sectionId, setSectionId] = useState('')
+    const [isLoadingCurriculum, setIsLoadingCurriculum] = useState(false)
 
     const { mutate: updateCourse, isLoading: isLoadingUpdateCourse } =
         useAPI.put(InstructorAPI.UPDATE_COURSE + courseDetail._id, {
@@ -91,7 +94,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                     response?.requirements &&
                         response.requirements.length > 0 &&
                         dispatch(updateAllRequirements(response.requirements))
-                    dispatch(updateGetCourseDetailState(true))
                     dispatch(
                         updateDescriptionLength(
                             EditorState.createWithContent(
@@ -111,12 +113,23 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             },
         )
 
+    const handleGetLessons = async (sectionId: string) => {
+        await callAPI(
+            'get',
+            InstructorAPI.GET_LESSONS + '?sectionId=' + sectionId,
+            {},
+        ).then((response) => {
+            dispatch(updateAllCurriculumLectures([...response.data]))
+        })
+    }
+
     const { mutate: getSections, isLoading: isLoadingGetSections } =
         useAPI.getMutation(
             InstructorAPI.GET_SECTIONS + '?courseId=' + courseId,
             {
                 onError: () => {},
                 onSuccess: (response) => {
+                    setIsLoadingCurriculum(true)
                     const sectionsBasicInfo: CurriculumSection[] = []
                     response.data.forEach((item: CurriculumSection) => {
                         sectionsBasicInfo.push({
@@ -125,53 +138,41 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                             name: item.name,
                             description: item.description,
                         })
-                        setSectionId(item._id)
-                        setTimeout(getLessons, 1000)
+                        handleGetLessons(item._id)
                     })
-
                     dispatch(updateAllCurriculumSections(sectionsBasicInfo))
+                    setIsLoadingCurriculum(false)
                 },
             },
         )
+
+    const handleUpsertLessons = async (
+        sectionId: string,
+        lectures: CurriculumLecture[],
+    ) => {
+        await callAPI(
+            'post',
+            InstructorAPI.UPSERT_LESSONS + sectionId,
+            lectures.map((item) => {
+                const el: any = { ...item }
+                delete el._id
+                el.sectionId = sectionId
+                return el
+            }),
+        )
+    }
 
     const { mutate: upsertSections, isLoading: isLoadingUpsertSections } =
         useAPI.post(InstructorAPI.UPSERT_SECTIONS + courseId, {
             onError: () => {},
             onSuccess: (response) => {
-                courseLectures.forEach((item, index) => {
-                    setSectionId(response[index]._id)
-                    setTimeout(
-                        () =>
-                            upsertLessons(
-                                item.map((item) => {
-                                    const el: any = { ...item }
-                                    delete el._id
-                                    el.sectionId = response[index]._id
-                                    return el
-                                }),
-                            ),
-                        1000,
-                    )
+                setIsLoadingCurriculum(true)
+                response.forEach((section: any, index: number) => {
+                    handleUpsertLessons(section._id, courseLectures[index])
                 })
+                setIsLoadingCurriculum(false)
             },
         })
-
-    const { mutate: upsertLessons, isLoading: isLoadingUpsertLessons } =
-        useAPI.post(InstructorAPI.UPSERT_LESSONS + sectionId, {
-            onError: () => {},
-            onSuccess: () => {},
-        })
-
-    const { mutate: getLessons, isLoading: isLoadingGetLessons } =
-        useAPI.getMutation(
-            InstructorAPI.GET_LESSONS + '?sectionId=' + sectionId,
-            {
-                onSuccess(response) {
-                    dispatch(updateAllCurriculumLectures([...response.data]))
-                },
-                onError: noop,
-            },
-        )
 
     useEffect(() => {
         if (courseId !== localStorage.getItem(COURSE_ID)) {
@@ -186,17 +187,15 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             isLoadingUpdateCourse ||
             isLoadingGetCourseDetail ||
             isLoadingGetSections ||
-            isLoadingUpsertLessons ||
-            isLoadingGetLessons ||
-            isLoadingUpsertLessons
+            isLoadingUpsertSections ||
+            isLoadingCurriculum
         )
     }, [
         isLoadingUpdateCourse,
         isLoadingGetCourseDetail,
         isLoadingGetSections,
         isLoadingUpsertSections,
-        isLoadingGetLessons,
-        isLoadingUpsertLessons,
+        isLoadingCurriculum,
     ])
 
     return (
@@ -208,6 +207,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 upsertSections,
                 courseDetail,
                 courseSections,
+                courseLectures,
             }}
         >
             {children}

@@ -1,24 +1,24 @@
 import * as React from 'react'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getRequirements } from '@/store/course/selectors'
 import ShowMore from '@/components/core/show-more'
-import { useAppSelector } from '@/hooks'
+import { useCourseDetailContext } from '../course-detail-context'
 
 export interface IRequirementProps {}
 
 export default function Requirement() {
-    const data = useAppSelector(getRequirements)
+    const { data } = useCourseDetailContext()
+    const requirements = data.requirements
 
     return (
         <>
-            {!data.every((item) => item === '') && (
+            {requirements && (
                 <div
                     id="requirement"
                     className="space-y-3 overflow-hidden relative"
                 >
                     <div className="font-semibold text-[26px]">Requirement</div>
-                    {data.map((item, index) => {
+                    {requirements.map((item: string, index: number) => {
                         return (
                             <div className="flex items-start" key={index}>
                                 <FontAwesomeIcon

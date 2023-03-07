@@ -19,3 +19,17 @@ export default {
     getMutation: (url: string, { onSuccess, onError }: MutationProps) =>
         UseClientMutation(ApiMethods.get, url, { onSuccess, onError }),
 }
+
+export const useUpsertLessons = (
+    url: string,
+    sectionId: string,
+    { onSuccess, onError }: MutationProps,
+    options = {},
+) => {
+    UseClientMutation(
+        ApiMethods.post,
+        url + sectionId,
+        { onSuccess, onError },
+        options,
+    )
+}
