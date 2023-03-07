@@ -8,13 +8,15 @@ import { COURSE_ID } from '@/constants/localStorage'
 import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import { updateIdState } from '@/store/course'
+import { useAppDispatch } from '@/hooks'
 
 type Props = {
     course: CoursePreview
 }
 const MyCourseCard = ({ course }: Props) => {
     const [sendApprove, setSendApprove] = useState(false)
-
+    const dispatch = useAppDispatch()
     const handleRequestApprove = async (id: string) => {
         requestApprove({ id, notes: [] })
     }
@@ -36,6 +38,7 @@ const MyCourseCard = ({ course }: Props) => {
     const goToQuestionPage = () => {
         console.log(course._id)
         localStorage.setItem(COURSE_ID, course._id)
+        dispatch(updateIdState(course._id))
         Router.push(`instructor/${course._id}/question/`)
     }
 

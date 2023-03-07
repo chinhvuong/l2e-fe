@@ -16,7 +16,7 @@ import {
     UpdateDetailQuestionState,
     ClearQuestionState,
 } from '@/store/course/question'
-import { getCourseDetailInfo } from '@/store/course/question/selectors'
+import { getQuestionDetailInfo } from '@/store/course/question/selectors'
 
 export default function QuestionBankContainers() {
     const router = useRouter()
@@ -31,7 +31,6 @@ export default function QuestionBankContainers() {
             {
                 onError: () => {},
                 onSuccess: (response) => {
-                    console.log(response?.data)
                     dispatch(UpdateAllQuestionState(response?.data))
                 },
             },
@@ -53,7 +52,6 @@ export default function QuestionBankContainers() {
     }
     const chosenQuestions = (indext: number) => {
         setPositionQuestion(indext)
-        console.log(questionsData?.[indext])
         dispatch(UpdateDetailQuestionState(questionsData?.[indext]))
     }
     useEffect(() => {

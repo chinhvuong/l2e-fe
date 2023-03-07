@@ -32,7 +32,7 @@ export default function QuestionsSidebar() {
 
     const menu = ['Questions', 'Quiz']
 
-    const menuTarget = ['', 'quiz']
+    const menuTarget = ['question/create', 'quiz']
     const router = useRouter()
     const [courseId, setCourseId] = useState('')
     const [currentTab, setCurrentTab] = useState(() => {
@@ -57,7 +57,7 @@ export default function QuestionsSidebar() {
 
     const goToMenuTarget = (index: number) => {
         setCurrentTab(menuTarget[index])
-        Router.push(`/create-course/${courseId}/${menuTarget[index]}`)
+        Router.push(`/instructor/${courseId}/${menuTarget[index]}`)
     }
 
     return (

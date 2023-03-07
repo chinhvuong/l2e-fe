@@ -32,4 +32,5 @@ export const InstructorAPI = {
     CREATE_QUESTIONS: '/question/create-batch',
     GET_QUESTIONS: '/question/manage/get-question',
     EDIT_QUESTION: '/question',
+    CREAT_QUIZ: '/quiz',
 }

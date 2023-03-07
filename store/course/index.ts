@@ -120,6 +120,9 @@ export const courseDetailSlice = createSlice({
         updateCourseIdState(state, action: PayloadAction<number>) {
             state.courseDetail.courseId = action.payload
         },
+        updateIdState(state, action: PayloadAction<string>) {
+            state.courseDetail._id = action.payload
+        },
     },
 })
 
@@ -142,6 +145,7 @@ export const {
     updateCanCreateCourseState,
     updateDescriptionLength,
     updateCourseIdState,
+    updateIdState,
 } = courseDetailSlice.actions
 
 export default courseDetailSlice.reducer

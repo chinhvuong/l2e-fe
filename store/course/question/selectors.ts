@@ -1,5 +1,5 @@
 import { RootState } from '@/store'
 
-export const getCourseDetailInfo = (state: RootState) => {
+export const getQuestionDetailInfo = (state: RootState) => {
     return state.questionDetail
 }

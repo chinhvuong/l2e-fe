@@ -14,12 +14,14 @@ import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
 import * as yup from 'yup'
 export interface ILandingPageContainerProps {}
-import { getCourseDetailInfo } from '@/store/course/question/selectors'
-
+import { getQuestionDetailInfo } from '@/store/course/question/selectors'
+import { getMyCourseDetail } from '@/store/course/selectors'
 export default function CreateQuestionPageContainer() {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
-    const detailQuestion = useAppSelector(getCourseDetailInfo)
+    const detailQuestion = useAppSelector(getQuestionDetailInfo)
+    const detailCourse = useAppSelector(getMyCourseDetail)
+    const [isEdit, setEdit] = useState<boolean>(false)
     const schema = yup.object().shape({
         questions: yup
             .array()
@@ -73,14 +75,14 @@ export default function CreateQuestionPageContainer() {
                     question: detailQuestion.question,
                     choices: detailQuestion.choices,
                     correctAnswer: detailQuestion.correctAnswer,
-                    courseId: detailQuestion.courseId,
+                    courseId: detailCourse._id,
                     medias: detailQuestion.medias,
                 },
             ],
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            if (detailQuestion._id) {
+            if (isEdit) {
                 updateQuestion({
                     question: values.questions?.[0].question,
                     choices: values.questions?.[0].choices,
@@ -95,15 +97,18 @@ export default function CreateQuestionPageContainer() {
     })
     const dispatch = useAppDispatch()
     useEffect(() => {
-        if (localStorage.getItem(COURSE_ID) !== null) {
-            if (localStorage.getItem(COURSE_ID) !== courseId) {
+        if (router?.query?.slug !== null) {
+            if (router?.query?.slug !== courseId) {
                 setCourseId(String(localStorage.getItem(COURSE_ID)))
             }
         }
-    }, [courseId])
+        if (detailQuestion._id) {
+            setEdit(true)
+        }
+    }, [courseId, detailQuestion])
     return (
         <div>
-            {detailQuestion._id === '' ? (
+            {!isEdit ? (
                 <LoadingScreen isLoading={isLoadingCreateQuestion} />
             ) : (
                 <LoadingScreen isLoading={isLoadingUpdateQuestion} />
@@ -117,7 +122,7 @@ export default function CreateQuestionPageContainer() {
                                 {formik.values.questions.map(
                                     (question, index) => (
                                         <div key={index}>
-                                            {detailQuestion._id === '' ? (
+                                            {!isEdit ? (
                                                 <Title
                                                     title={
                                                         'Create Question ' +
@@ -152,26 +157,24 @@ export default function CreateQuestionPageContainer() {
                                                     name={`questions[${index}].correctAnswer`}
                                                     label="Correct Answer"
                                                 />
-                                                {index > 0 &&
-                                                    detailQuestion._id ===
-                                                        '' && (
-                                                        <button
-                                                            className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-red-400 w-full"
-                                                            onClick={() =>
-                                                                arrayHelpers.remove(
-                                                                    index,
-                                                                )
-                                                            }
-                                                        >
-                                                            REMOVE QUESTIONS
-                                                        </button>
-                                                    )}
+                                                {index > 0 && !isEdit && (
+                                                    <button
+                                                        className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-red-400 w-full"
+                                                        onClick={() =>
+                                                            arrayHelpers.remove(
+                                                                index,
+                                                            )
+                                                        }
+                                                    >
+                                                        REMOVE QUESTIONS
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     ),
                                 )}
                                 <div className="flex space-y-5 ">
-                                    {detailQuestion._id === '' && (
+                                    {!isEdit && (
                                         <button
                                             className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-green-400 w-full"
                                             onClick={() =>
@@ -197,9 +200,7 @@ export default function CreateQuestionPageContainer() {
                         type="submit"
                         className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-primary w-full my-6"
                     >
-                        {detailQuestion._id !== ''
-                            ? 'EDIT QUESTION'
-                            : 'CREATE QUESTIONS'}
+                        {isEdit ? 'EDIT QUESTION' : 'CREATE QUESTIONS'}
                     </button>
                 </form>
             </FormikProvider>

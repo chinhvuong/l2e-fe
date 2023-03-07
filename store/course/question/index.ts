@@ -21,11 +21,17 @@ export const questionDetailSlice = createSlice({
             action: PayloadAction<QuestionDetailType>,
         ) {
             const questionDetail: QuestionDetailType = action.payload
-            console.log(questionDetail._id)
             return questionDetail
         },
         ClearQuestionState(state) {
-            const questionDetail: QuestionDetailType = {} as QuestionDetailType
+            const questionDetail: QuestionDetailType = {
+                _id: '',
+                question: '',
+                choices: ['', '', '', ''],
+                correctAnswer: 0,
+                courseId: '',
+                medias: [''],
+            } as QuestionDetailType
             return questionDetail
         },
     },
