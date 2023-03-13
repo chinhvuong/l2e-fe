@@ -10,7 +10,11 @@ import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 import { Category } from '@/constants/interfaces'
-import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
+import {
+    CATEGORY,
+    CATEGORY_NAME_LIST,
+    COURSE_ID,
+} from '@/constants/localStorage'
 import { createCourse } from '@/hooks/coursedex'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
@@ -22,7 +26,7 @@ import { GetAllCoursesResponse } from '@/api/dto/course.dto'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
 import { useAppDispatch } from '@/hooks'
-import { updateLoadingState } from '@/store/course'
+import { updateIdState, updateLoadingState } from '@/store/course'
 import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 
 export default function InstructorCoursesContainer() {
@@ -159,6 +163,13 @@ export default function InstructorCoursesContainer() {
         setSortBy(value)
     }
 
+    const goToQuestionPage = (course: CoursePreview) => {
+        console.log(course._id)
+        localStorage.setItem(COURSE_ID, course._id)
+        dispatch(updateIdState(course._id))
+        Router.push(`${course._id}/question/`)
+    }
+
     const isLoading = useMemo(() => {
         return (
             isLoadingSigner ||
@@ -238,6 +249,14 @@ export default function InstructorCoursesContainer() {
                                                     showStatus={true}
                                                     className="py-6"
                                                 />
+                                                <Button
+                                                    className="flex gap-4 p-1 text-sm"
+                                                    onClick={() =>
+                                                        goToQuestionPage(course)
+                                                    }
+                                                >
+                                                    <span>Question Bank</span>
+                                                </Button>
                                                 {index !==
                                                     allMyCourses.data.length -
                                                         1 && <Divider />}

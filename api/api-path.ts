@@ -33,4 +33,5 @@ export const InstructorAPI = {
     GET_QUESTIONS: '/question/manage/get-question',
     EDIT_QUESTION: '/question',
     CREAT_QUIZ: '/quiz',
+    GET_QUIZZES: '/quiz/manage/get-quizzes',
 }

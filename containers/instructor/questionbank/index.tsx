@@ -17,13 +17,17 @@ import {
     ClearQuestionState,
 } from '@/store/course/question'
 import { getQuestionDetailInfo } from '@/store/course/question/selectors'
-
+import {
+    ClearQuizState,
+    UpdateCourseIdState,
+    UpdateQuizState,
+} from '@/store/quiz'
+import { QuizDetailType } from '@/store/quiz/types'
 export default function QuestionBankContainers() {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
     const dispatch = useAppDispatch()
-    const [selectedQuestion, setSelectedQuestion] =
-        useState<QuestionDetailType>()
+    const [quizlists, setQuizlists] = useState<QuizDetailType[]>([])
     const [positionQuestion, setPositionQuestion] = useState<number>(0)
     const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
         useAPI.getMutation(
@@ -32,14 +36,34 @@ export default function QuestionBankContainers() {
                 onError: () => {},
                 onSuccess: (response) => {
                     dispatch(UpdateAllQuestionState(response?.data))
+                    dispatch(UpdateCourseIdState(courseId))
+                },
+            },
+        )
+    const { mutate: getQuizsList, isLoading: isLoadingQuizzesList } =
+        useAPI.getMutation(
+            InstructorAPI.GET_QUIZZES + '?courseId=' + courseId,
+            {
+                onError: () => {},
+                onSuccess: (response) => {
+                    console.log(response)
+                    //  setQuizlists(response?.data)
                 },
             },
         )
     const questionsData = useAppSelector(getQuestionsInfo)
     const goToCreateQuestionsPage = () => {
+        dispatch(ClearQuizState())
         dispatch(ClearQuestionState())
         router.push({
             pathname: router.pathname + '/create',
+            query: { ...router.query },
+        })
+    }
+    const goToUpdateQuizPage = (indext: number) => {
+        dispatch(UpdateQuizState(quizlists?.[indext]))
+        router.push({
+            pathname: router.pathname + '/update/quiz',
             query: { ...router.query },
         })
     }
@@ -60,12 +84,15 @@ export default function QuestionBankContainers() {
                 setCourseId(String(localStorage.getItem(COURSE_ID)))
             } else {
                 getQuestionsList({})
+                getQuizsList({})
             }
         }
     }, [courseId])
     return (
         <div>
-            <LoadingScreen isLoading={isLoadingQuestionsList} />
+            <LoadingScreen
+                isLoading={isLoadingQuestionsList || isLoadingQuizzesList}
+            />
             <div
                 className="ml-auto mr-auto max-w-7xl grid-cols-3 app-transition main-transition min-h-screen bg-white"
                 id="content"
@@ -90,6 +117,7 @@ export default function QuestionBankContainers() {
                             <div className="p-0">
                                 <section className="block ">
                                     <div className="block">
+                                        <div> Question</div>
                                         {questionsData.map((item, index) => (
                                             <div
                                                 key={index}
@@ -128,6 +156,58 @@ export default function QuestionBankContainers() {
                                                                     onClick={() =>
                                                                         goToUpdateQuestionsPage(
                                                                             index,
+                                                                        )
+                                                                    }
+                                                                    className="hover:bg-gray-700 h-8 items-center pb-3"
+                                                                    icon={
+                                                                        faEdit
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <div>Quizzes</div>
+                                        {quizlists.map((quiz, indext) => (
+                                            <div
+                                                key={indext}
+                                                className="p-0.25 rounded inline-block shadow-3xl min-h-r w-full hover:bg-gray-400"
+                                            >
+                                                <div className="p-4 w-full block">
+                                                    <div className="inline-block float-left w-4/5 mt-2 align-top">
+                                                        <div className="py-0 px-2 flex">
+                                                            <div className="text-black w-2/5">
+                                                                <span className="text-black">
+                                                                    {quiz.name}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-black w-2/5 px-4 flex-col">
+                                                                {quiz.questions.map(
+                                                                    (
+                                                                        question,
+                                                                        index2,
+                                                                    ) => (
+                                                                        <div
+                                                                            key={
+                                                                                index2
+                                                                            }
+                                                                        >
+                                                                            <span className="text-black">
+                                                                                {
+                                                                                    question
+                                                                                }
+                                                                            </span>
+                                                                        </div>
+                                                                    ),
+                                                                )}
+                                                            </div>
+                                                            <div className="text-black w-1/5">
+                                                                <FontAwesomeIcon
+                                                                    onClick={() =>
+                                                                        goToUpdateQuizPage(
+                                                                            indext,
                                                                         )
                                                                     }
                                                                     className="hover:bg-gray-700 h-8 items-center pb-3"

@@ -8,7 +8,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { debounce } from 'lodash'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { useCallback, useState } from 'react'
 import './style.scss'
 
 interface ISearch {

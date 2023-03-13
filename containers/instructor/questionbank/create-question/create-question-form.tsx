@@ -82,6 +82,7 @@ export default function CreateQuestionPageContainer() {
         },
         validationSchema: schema,
         onSubmit: (values) => {
+            console.log(values.questions)
             if (isEdit) {
                 updateQuestion({
                     question: values.questions?.[0].question,
@@ -90,7 +91,6 @@ export default function CreateQuestionPageContainer() {
                     medias: values.questions?.[0].medias,
                 })
             } else {
-                dispatch(AddAllQuestionState(values.questions))
                 createQuestions(values.questions)
             }
         },

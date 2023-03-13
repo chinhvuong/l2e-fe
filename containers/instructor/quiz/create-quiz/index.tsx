@@ -13,20 +13,34 @@ import { useRouter } from 'next/router'
 import { COURSE_ID } from '@/constants/localStorage'
 import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
-import { UpdateAllQuestionState } from '@/store/questions'
-import { getQuestionsInfo } from '@/store/questions/selectors'
+import {
+    UpdateQuestionsFromQuizState,
+    UpdateQuestionsListForQuizState,
+} from '@/store/quiz'
+
 export interface ILandingPageContainerProps {}
 import * as yup from 'yup'
+import {
+    getQuizDetailInfo,
+    getQuestionsForQuiz,
+    getQuestionsIdFromQuiz,
+} from '@/store/quiz/selectors'
 export default function CreateQuizPageContainer() {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
+    const [isEdit, setEdit] = useState<boolean>(false)
     const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
         useAPI.getMutation(
             InstructorAPI.GET_QUESTIONS + '?courseId=' + courseId,
             {
                 onError: () => {},
                 onSuccess: (response) => {
-                    dispatch(UpdateAllQuestionState(response?.data))
+                    dispatch(UpdateQuestionsListForQuizState(response?.data))
+                    if (!isEdit) {
+                        dispatch(
+                            UpdateQuestionsFromQuizState([response?.data?.[0]]),
+                        )
+                    }
                 },
             },
         )
@@ -35,14 +49,30 @@ export default function CreateQuizPageContainer() {
         {
             onError: () => {},
             onSuccess: (response) => {
+                // router.push({
+                //     pathname: router.pathname.replace('quiz', 'question'),
+                //     query: { ...router.query },
+                // })
+            },
+        },
+    )
+    const detailQuiz = useAppSelector(getQuizDetailInfo)
+    const { mutate: updateQuiz, isLoading: isLoadingUpdateQuiz } = useAPI.put(
+        InstructorAPI.CREAT_QUIZ + '/' + detailQuiz._id,
+        {
+            onError: (errors) => {
+                console.log(errors)
+            },
+            onSuccess: (response) => {
                 router.push({
-                    pathname: router.pathname.replace('quiz', 'question'),
+                    pathname: router.pathname.replace('update', ''),
                     query: { ...router.query },
                 })
             },
         },
     )
-    const questionsData = useAppSelector(getQuestionsInfo)
+    const questionsData = useAppSelector(getQuestionsForQuiz)
+    const questionsId = useAppSelector(getQuestionsIdFromQuiz)
     const schema = yup.object().shape({
         questions: yup
             .array()
@@ -53,18 +83,25 @@ export default function CreateQuizPageContainer() {
     })
     const formik = useFormik({
         initialValues: {
-            questions: [questionsData[0]._id],
-            courseId: questionsData[0].courseId,
-            name: '',
+            questions: questionsId,
+            courseId: detailQuiz.courseId,
+            name: detailQuiz.name,
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            createQuiz(values)
+            console.log(values)
+            if (isEdit) {
+                updateQuiz(values)
+            } else {
+                createQuiz(values)
+            }
         },
     })
     const dispatch = useAppDispatch()
     useEffect(() => {
-        console.log(localStorage.getItem(COURSE_ID))
+        if (detailQuiz._id) {
+            setEdit(true)
+        }
         if (localStorage.getItem(COURSE_ID) !== null) {
             if (localStorage.getItem(COURSE_ID) !== courseId) {
                 setCourseId(String(localStorage.getItem(COURSE_ID)))
@@ -76,7 +113,11 @@ export default function CreateQuizPageContainer() {
     return (
         <div>
             <LoadingScreen isLoading={isLoadingQuestionsList} />
-            <LoadingScreen isLoading={isLoadingCreateQuiz} />
+            {!isEdit ? (
+                <LoadingScreen isLoading={isLoadingCreateQuiz} />
+            ) : (
+                <LoadingScreen isLoading={isLoadingUpdateQuiz} />
+            )}
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
                     <Title title={'Create Question'} />
@@ -194,7 +235,7 @@ export default function CreateQuizPageContainer() {
                                 type="submit"
                                 className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-primary w-full"
                             >
-                                Confirm Create Quiz
+                                {isEdit ? 'EDIT QUIZ' : 'CREATE QUIZ'}
                             </button>
                         </div>
                     </div>

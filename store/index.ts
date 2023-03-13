@@ -5,6 +5,8 @@ import { courseIntendedLearnersSlice } from './course/intended-learners'
 import { courseDetailSlice } from './course'
 import { questionsListDetailSlice } from './questions'
 import { questionDetailSlice } from './course/question'
+import { quizDetailSlice } from './quiz'
+
 export const store = configureStore({
     reducer: {
         courseDetail: courseDetailSlice.reducer,
@@ -13,6 +15,7 @@ export const store = configureStore({
         user: userSlice.reducer,
         questions: questionsListDetailSlice.reducer,
         questionDetail: questionDetailSlice.reducer,
+        quizDetail: quizDetailSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
