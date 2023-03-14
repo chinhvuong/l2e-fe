@@ -119,9 +119,6 @@ export default function InstructorCoursesContainer() {
         if (sortBy !== '') {
             newQuery.sort = getSortParams()
         }
-        if (search === '' && sortBy === '') {
-            return
-        }
         router.push(
             {
                 pathname: '/instructor/courses',

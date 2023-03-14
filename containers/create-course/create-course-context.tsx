@@ -128,9 +128,14 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             'get',
             InstructorAPI.GET_LESSONS + '?sectionId=' + sectionId,
             {},
-        ).then((response) => {
-            dispatch(updateAllCurriculumLectures([...response.data]))
-        })
+        )
+            .then((response) => {
+                dispatch(updateAllCurriculumLectures([...response.data]))
+                setIsLoadingCurriculum(false)
+            })
+            .catch(() => {
+                setIsLoadingCurriculum(false)
+            })
     }
 
     const { mutate: getSections, isLoading: isLoadingGetSections } =
@@ -151,7 +156,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                         handleGetLessons(item._id)
                     })
                     dispatch(updateAllCurriculumSections(sectionsBasicInfo))
-                    setIsLoadingCurriculum(false)
                 },
             },
         )
@@ -169,7 +173,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 el.sectionId = sectionId
                 return el
             }),
-        )
+        ).finally(() => setIsLoadingCurriculum(false))
     }
 
     const { mutate: upsertSections, isLoading: isLoadingUpsertSections } =
