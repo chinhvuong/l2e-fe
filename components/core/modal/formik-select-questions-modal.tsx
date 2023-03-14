@@ -1,34 +1,57 @@
 import { useFormikContext } from 'formik'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { QuestionDetailType } from '@/store/questions/types'
+import { useAppDispatch } from '@/hooks'
+import { UpdateQuestionsFromQuizState } from '@/store/quiz'
+
 export interface IQuestionsInputType {
     questions: string[]
 }
 
 export interface IQuestionsListModalProps {
-    name: string
     questionsList: QuestionDetailType[]
 }
 
 export default function QuestionsListModal(props: IQuestionsListModalProps) {
-    const { name, questionsList } = props
+    const { questionsList } = props
+    const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>([])
     const context = useFormikContext<IQuestionsInputType>()
     const [showModal, setShowModal] = useState(false)
+    const dispatch = useAppDispatch()
     function handleChange(event: ChangeEvent<HTMLInputElement>): void {
-        const { checked, name } = event.target
+        const { checked, name, value } = event.target
         if (checked) {
             context.setFieldValue('questions', [
                 ...context.values.questions,
                 name,
             ])
+            setQuestions([...chosenQuestions, questionsList?.[parseInt(value)]])
+            dispatch(
+                UpdateQuestionsFromQuizState([
+                    ...chosenQuestions,
+                    questionsList?.[parseInt(value)],
+                ]),
+            )
         } else {
             context.setFieldValue(
                 'questions',
                 context.values.questions.filter((v) => v !== name),
             )
+            setQuestions(
+                chosenQuestions.filter(
+                    (question) => question !== questionsList?.[parseInt(value)],
+                ),
+            )
+            dispatch(
+                UpdateQuestionsFromQuizState(
+                    chosenQuestions.filter(
+                        (question) =>
+                            question !== questionsList?.[parseInt(value)],
+                    ),
+                ),
+            )
         }
     }
-
     return (
         <>
             <button
@@ -37,7 +60,7 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                 type="button"
                 onClick={() => setShowModal(true)}
             >
-                Show questions list
+                Show Questions Lists
             </button>
             {showModal ? (
                 <>
@@ -64,6 +87,7 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                                                 id={question._id}
                                                 type="checkbox"
                                                 name={question._id}
+                                                value={indext}
                                                 checked={context.values.questions.includes(
                                                     question._id,
                                                 )}
@@ -74,22 +98,6 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                                             </label>
                                         </div>
                                     ))}
-                                </div>
-                                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                                    <button
-                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
-                                        type="button"
-                                        onClick={() => setShowModal(false)}
-                                    >
-                                        Close
-                                    </button>
-                                    <button
-                                        className="text-white bg-yellow-500 active:bg-yellow-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
-                                        type="button"
-                                        onClick={() => setShowModal(false)}
-                                    >
-                                        Submit
-                                    </button>
                                 </div>
                             </div>
                         </div>

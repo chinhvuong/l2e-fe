@@ -26,6 +26,8 @@ import {
     getQuestionsForQuiz,
     getQuestionsIdFromQuiz,
 } from '@/store/quiz/selectors'
+import QuestionsListModal from '@/components/core/modal/formik-select-questions-modal'
+
 export default function CreateQuizPageContainer() {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
@@ -55,6 +57,7 @@ export default function CreateQuizPageContainer() {
     )
     const detailQuiz = useAppSelector(getQuizDetailInfo)
     const questionsData = useAppSelector(getQuestionsForQuiz)
+    const questionsIds = useAppSelector(getQuestionsIdFromQuiz)
     const { mutate: updateQuiz, isLoading: isLoadingUpdateQuiz } = useAPI.put(
         InstructorAPI.CREAT_QUIZ + '/' + detailQuiz._id,
         {
@@ -72,7 +75,12 @@ export default function CreateQuizPageContainer() {
     const schema = yup.object().shape({
         questions: yup
             .array()
-            .of(yup.string().min(1, 'too short').required(''))
+            .of(
+                yup
+                    .string()
+                    .min(1, 'too short')
+                    .required('Quiz has at least one Question'),
+            )
             .required('Must have questions') // these constraints are shown if and only if inner constraints are satisfied
             .min(1, 'Quiz has at least one question'),
         name: yup.string().required('Quiz must have a name'),
@@ -80,7 +88,7 @@ export default function CreateQuizPageContainer() {
     const formik = useFormik({
         initialValues: {
             name: detailQuiz.name,
-            questions: useAppSelector(getQuestionsIdFromQuiz),
+            questions: [] || questionsIds,
         },
         validationSchema: schema,
         onSubmit: (values) => {
@@ -106,9 +114,6 @@ export default function CreateQuizPageContainer() {
             } else {
                 getQuestionsList({})
             }
-        }
-        if (formik.values.questions?.[0] === '') {
-            formik.setFieldValue('questions.[0]', questionsData?.[0]._id)
         }
     }, [courseId])
     return (
@@ -143,81 +148,22 @@ export default function CreateQuizPageContainer() {
                                 <ErrorMessage name="name" />
                             </div>
                         </div>
-                        <FieldArray
-                            name="questions"
-                            render={(questionhelper) => (
-                                <div>
-                                    {formik.values.questions?.map(
-                                        (question, indext) => (
-                                            <div
-                                                key={indext}
-                                                className="space-y-5"
-                                            >
-                                                <div>
-                                                    <div className="font-bold ml-[25px] pb-2">
-                                                        Question For Quiz
-                                                    </div>
-                                                    <div className="flex">
-                                                        <div
-                                                            className={`flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] space-x-5 w-4/5`}
-                                                        >
-                                                            <Field
-                                                                as="select"
-                                                                name={`questions.[${indext}]`}
-                                                                onChange={
-                                                                    formik.handleChange
-                                                                }
-                                                            >
-                                                                {questionsData.map(
-                                                                    (
-                                                                        question,
-                                                                        index,
-                                                                    ) => (
-                                                                        <option
-                                                                            key={
-                                                                                index
-                                                                            }
-                                                                            value={
-                                                                                question._id
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                question.question
-                                                                            }
-                                                                        </option>
-                                                                    ),
-                                                                )}
-                                                            </Field>
-                                                        </div>
-                                                        <div className="ml-[25px] text-sm mt-1 text-red-500">
-                                                            <ErrorMessage
-                                                                name={`questions[${indext}]`}
-                                                            />
-                                                        </div>
-                                                        {indext > 0 && (
-                                                            <div className="w-1/5  space-x-5 mx-[25px]  items-center justify-between">
-                                                                <button
-                                                                    className="rounded-[80px] px-[25px] border-[1px] text-white bg-red-400"
-                                                                    type="button"
-                                                                    onClick={() =>
-                                                                        questionhelper.remove(
-                                                                            indext,
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    Remove this
-                                                                    question
-                                                                </button>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ),
-                                    )}
-                                </div>
-                            )}
-                        />
+                        <QuestionsListModal questionsList={questionsData} />
+                        <div className="ml-[25px] text-sm mt-1 text-red-500">
+                            <ErrorMessage name="questions" />
+                        </div>
+                        {detailQuiz?.questions?.map((question, index) => (
+                            <div
+                                key={index}
+                                className={`flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] ${
+                                    question.question !== ''
+                                        ? 'border-black'
+                                        : 'hidden'
+                                } space-x-5`}
+                            >
+                                {question.question}
+                            </div>
+                        ))}
                         <div className="flex space-y-5 my-4">
                             <button
                                 type="submit"

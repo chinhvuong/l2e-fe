@@ -171,57 +171,6 @@ export default function QuestionBankContainers() {
                                             </div>
                                         ))}
                                         <div>Quizzes</div>
-                                        {quizlists.map((quiz, indext) => (
-                                            <div
-                                                key={indext}
-                                                className="p-0.25 rounded inline-block shadow-3xl min-h-r w-full hover:bg-gray-400"
-                                            >
-                                                <div className="p-4 w-full block">
-                                                    <div className="inline-block float-left w-4/5 mt-2 align-top">
-                                                        <div className="py-0 px-2 flex">
-                                                            <div className="text-black w-2/5">
-                                                                <span className="text-black">
-                                                                    {quiz.name}
-                                                                </span>
-                                                            </div>
-                                                            <div className="text-black w-2/5 px-4 flex-col">
-                                                                {quiz.questions.map(
-                                                                    (
-                                                                        question,
-                                                                        index2,
-                                                                    ) => (
-                                                                        <div
-                                                                            key={
-                                                                                index2
-                                                                            }
-                                                                        >
-                                                                            <span className="text-black">
-                                                                                {
-                                                                                    question
-                                                                                }
-                                                                            </span>
-                                                                        </div>
-                                                                    ),
-                                                                )}
-                                                            </div>
-                                                            <div className="text-black w-1/5">
-                                                                <FontAwesomeIcon
-                                                                    onClick={() =>
-                                                                        goToUpdateQuizPage(
-                                                                            indext,
-                                                                        )
-                                                                    }
-                                                                    className="hover:bg-gray-700 h-8 items-center pb-3"
-                                                                    icon={
-                                                                        faEdit
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
                                     </div>
                                 </section>
                             </div>
