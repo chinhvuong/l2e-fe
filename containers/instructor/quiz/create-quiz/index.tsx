@@ -16,6 +16,7 @@ import { InstructorAPI } from '@/api/api-path'
 import {
     UpdateQuestionsFromQuizState,
     UpdateQuestionsListForQuizState,
+    UpdateCourseIdState,
 } from '@/store/quiz'
 
 export interface ILandingPageContainerProps {}
@@ -29,6 +30,7 @@ export default function CreateQuizPageContainer() {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
     const [isEdit, setEdit] = useState<boolean>(false)
+    const [questionIdList, setQuestionIdList] = useState<string[]>([])
     const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
         useAPI.getMutation(
             InstructorAPI.GET_QUESTIONS + '?courseId=' + courseId,
@@ -36,11 +38,6 @@ export default function CreateQuizPageContainer() {
                 onError: () => {},
                 onSuccess: (response) => {
                     dispatch(UpdateQuestionsListForQuizState(response?.data))
-                    if (!isEdit) {
-                        dispatch(
-                            UpdateQuestionsFromQuizState([response?.data?.[0]]),
-                        )
-                    }
                 },
             },
         )
@@ -49,14 +46,15 @@ export default function CreateQuizPageContainer() {
         {
             onError: () => {},
             onSuccess: (response) => {
-                // router.push({
-                //     pathname: router.pathname.replace('quiz', 'question'),
-                //     query: { ...router.query },
-                // })
+                router.push({
+                    pathname: router.pathname.replace('quiz', 'question'),
+                    query: { ...router.query },
+                })
             },
         },
     )
     const detailQuiz = useAppSelector(getQuizDetailInfo)
+    const questionsData = useAppSelector(getQuestionsForQuiz)
     const { mutate: updateQuiz, isLoading: isLoadingUpdateQuiz } = useAPI.put(
         InstructorAPI.CREAT_QUIZ + '/' + detailQuiz._id,
         {
@@ -71,29 +69,29 @@ export default function CreateQuizPageContainer() {
             },
         },
     )
-    const questionsData = useAppSelector(getQuestionsForQuiz)
-    const questionsId = useAppSelector(getQuestionsIdFromQuiz)
     const schema = yup.object().shape({
         questions: yup
             .array()
-            .of(yup.string().min(1, 'too short'))
+            .of(yup.string().min(1, 'too short').required(''))
             .required('Must have questions') // these constraints are shown if and only if inner constraints are satisfied
             .min(1, 'Quiz has at least one question'),
         name: yup.string().required('Quiz must have a name'),
     })
     const formik = useFormik({
         initialValues: {
-            questions: questionsId,
-            courseId: detailQuiz.courseId,
             name: detailQuiz.name,
+            questions: useAppSelector(getQuestionsIdFromQuiz),
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            console.log(values)
             if (isEdit) {
                 updateQuiz(values)
             } else {
-                createQuiz(values)
+                createQuiz({
+                    questions: values.questions,
+                    name: values.name,
+                    courseId: courseId,
+                })
             }
         },
     })
@@ -109,6 +107,9 @@ export default function CreateQuizPageContainer() {
                 getQuestionsList({})
             }
         }
+        if (formik.values.questions?.[0] === '') {
+            formik.setFieldValue('questions.[0]', questionsData?.[0]._id)
+        }
     }, [courseId])
     return (
         <div>
@@ -120,7 +121,7 @@ export default function CreateQuizPageContainer() {
             )}
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
-                    <Title title={'Create Question'} />
+                    <Title title={'Create Quiz'} />
                     <div className="py-10 px-14 space-y-5">
                         <div>
                             <div className="font-bold ml-[25px] pb-2">
@@ -214,19 +215,6 @@ export default function CreateQuizPageContainer() {
                                             </div>
                                         ),
                                     )}
-                                    <div className="flex space-y-5 my-4">
-                                        <button
-                                            className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-green-400 w-full"
-                                            type="button"
-                                            onClick={() =>
-                                                questionhelper.push(
-                                                    questionsData?.[0]._id,
-                                                )
-                                            }
-                                        >
-                                            Add More Questions
-                                        </button>
-                                    </div>
                                 </div>
                             )}
                         />

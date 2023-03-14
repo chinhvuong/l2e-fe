@@ -18,9 +18,10 @@ import {
 } from '@/store/course/question'
 import { getQuestionDetailInfo } from '@/store/course/question/selectors'
 import {
-    ClearQuizState,
+    ClearQuizDetailState,
     UpdateCourseIdState,
-    UpdateQuizState,
+    UpdateQuizDetailState,
+    UpdateQuizzesState,
 } from '@/store/quiz'
 import { QuizDetailType } from '@/store/quiz/types'
 export default function QuestionBankContainers() {
@@ -40,20 +41,20 @@ export default function QuestionBankContainers() {
                 },
             },
         )
-    const { mutate: getQuizsList, isLoading: isLoadingQuizzesList } =
+    const { mutate: getQuizzesList, isLoading: isLoadingQuizzesList } =
         useAPI.getMutation(
             InstructorAPI.GET_QUIZZES + '?courseId=' + courseId,
             {
                 onError: () => {},
                 onSuccess: (response) => {
                     console.log(response)
-                    //  setQuizlists(response?.data)
+                    dispatch(UpdateQuizzesState(response?.data))
                 },
             },
         )
     const questionsData = useAppSelector(getQuestionsInfo)
     const goToCreateQuestionsPage = () => {
-        dispatch(ClearQuizState())
+        dispatch(ClearQuizDetailState())
         dispatch(ClearQuestionState())
         router.push({
             pathname: router.pathname + '/create',
@@ -61,7 +62,7 @@ export default function QuestionBankContainers() {
         })
     }
     const goToUpdateQuizPage = (indext: number) => {
-        dispatch(UpdateQuizState(quizlists?.[indext]))
+        dispatch(UpdateQuizDetailState(quizlists?.[indext]))
         router.push({
             pathname: router.pathname + '/update/quiz',
             query: { ...router.query },
@@ -84,7 +85,7 @@ export default function QuestionBankContainers() {
                 setCourseId(String(localStorage.getItem(COURSE_ID)))
             } else {
                 getQuestionsList({})
-                getQuizsList({})
+                getQuizzesList({})
             }
         }
     }, [courseId])

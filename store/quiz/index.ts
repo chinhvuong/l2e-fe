@@ -30,12 +30,38 @@ const initialState = {
             medias: [''],
         },
     ],
+    quizzes: [
+        {
+            _id: '',
+            questions: [
+                {
+                    _id: '',
+                    question: '',
+                    choices: [''],
+                    correctAnswer: 0,
+                    courseId: '',
+                    medias: [''],
+                },
+            ],
+            courseId: '',
+            name: '',
+            createdAt: '',
+            updatedAt: '',
+        },
+    ],
 }
-export const quizDetailSlice = createSlice({
-    name: 'quizDetailSlice',
+export const quizzesSlice = createSlice({
+    name: 'quizzesSlice',
     initialState,
     reducers: {
-        UpdateQuizState(state, action: PayloadAction<QuizDetailType>) {
+        UpdateQuizzesState(state, action: PayloadAction<QuizDetailType[]>) {
+            const newList: QuizDetailType[] = []
+            action.payload.forEach((item) => {
+                newList.push(item)
+            })
+            state.quizzes = newList
+        },
+        UpdateQuizDetailState(state, action: PayloadAction<QuizDetailType>) {
             const newQuiz: QuizDetailType = action.payload
             state.quizDetail = newQuiz
         },
@@ -62,7 +88,7 @@ export const quizDetailSlice = createSlice({
             })
             state.questionsList = newList
         },
-        ClearQuizState(state) {
+        ClearQuizDetailState(state) {
             const newquizDetail: QuizDetailType = {
                 _id: '',
                 questions: [
@@ -75,7 +101,7 @@ export const quizDetailSlice = createSlice({
                         medias: [''],
                     },
                 ],
-                courseId: '',
+                courseId: state.quizDetail.courseId,
                 name: '',
                 createdAt: '',
                 updatedAt: '',
@@ -86,11 +112,12 @@ export const quizDetailSlice = createSlice({
 })
 
 export const {
-    UpdateQuizState,
+    UpdateQuizzesState,
+    UpdateQuizDetailState,
     UpdateCourseIdState,
     UpdateQuestionsFromQuizState,
-    ClearQuizState,
+    ClearQuizDetailState,
     UpdateQuestionsListForQuizState,
-} = quizDetailSlice.actions
+} = quizzesSlice.actions
 
-export default quizDetailSlice.reducer
+export default quizzesSlice.reducer

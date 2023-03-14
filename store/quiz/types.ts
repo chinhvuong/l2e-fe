@@ -7,3 +7,8 @@ export interface QuizDetailType {
     createdAt: string
     updatedAt: string
 }
+
+export interface QuizSelectType {
+    label: string
+    value: string
+}
