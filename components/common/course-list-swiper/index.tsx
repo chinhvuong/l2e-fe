@@ -8,7 +8,6 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CourseInfo_Preview } from '@/constants/interfaces'
 import { CoursePreview } from '@/api/dto/course.dto'
 export interface ICourseListProps {
     title?: string

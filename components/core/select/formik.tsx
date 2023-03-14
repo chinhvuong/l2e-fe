@@ -1,8 +1,3 @@
-import useOutsideClick from '@/hooks/useOutSideClick'
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useRef, useState } from 'react'
-import Loading from '../animate/loading'
 import { useFormikContext } from 'formik'
 
 export interface ISelectProps {
@@ -31,36 +26,36 @@ export interface arrayInput {
 export default function FormikSelect({
     name,
     label,
-    selectList,
-    placeholder,
-    selected,
-    setSelected,
-    isLoading,
-    disabled,
-    validate = false,
+    // selectList,
+    // placeholder,
+    // selected,
+    // setSelected,
+    // isLoading,
+    // disabled,
+    // validate = false,
     index,
 }: ISelectProps) {
-    const [selectedItem, setSelectedItem] = useState(
-        selected === '' ? placeholder : selected,
-    )
-    const [openSelect, setOpenSelect] = useState(false)
-    const clickOutSideRef = useRef(null)
+    // const [selectedItem, setSelectedItem] = useState(
+    //     selected === '' ? placeholder : selected,
+    // )
+    // const [openSelect, setOpenSelect] = useState(false)
+    // const clickOutSideRef = useRef(null)
     const context = useFormikContext<arrayInput>()
-    const onSelect = (item: string) => {
-        setSelectedItem(item)
-        setSelected && setSelected(item)
-        setOpenSelect(false)
-    }
+    // const onSelect = (item: string) => {
+    //     setSelectedItem(item)
+    //     setSelected && setSelected(item)
+    //     setOpenSelect(false)
+    // }
 
-    const handleOpenSelect = () => {
-        if (!disabled) {
-            setOpenSelect(!openSelect)
-        }
-    }
+    // const handleOpenSelect = () => {
+    //     if (!disabled) {
+    //         setOpenSelect(!openSelect)
+    //     }
+    // }
 
-    useOutsideClick(clickOutSideRef, () => {
-        setOpenSelect(false)
-    })
+    // useOutsideClick(clickOutSideRef, () => {
+    //     setOpenSelect(false)
+    // })
     return (
         <div>
             {label && <div className="font-bold ml-[25px] pb-2">{label}</div>}

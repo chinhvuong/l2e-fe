@@ -1,8 +1,8 @@
-import { useFormikContext } from 'formik'
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import { QuestionDetailType } from '@/store/questions/types'
 import { useAppDispatch } from '@/hooks'
+import { QuestionDetailType } from '@/store/questions/types'
 import { UpdateQuestionsFromQuizState } from '@/store/quiz'
+import { useFormikContext } from 'formik'
+import { ChangeEvent, useState } from 'react'
 
 export interface IQuestionsInputType {
     questions: string[]

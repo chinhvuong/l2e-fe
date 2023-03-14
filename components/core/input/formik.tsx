@@ -1,4 +1,3 @@
-import { useAppDispatch } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { ErrorMessage, useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
@@ -34,20 +33,16 @@ export interface arrayInput {
 
 export default function FormikInput({
     widtharray,
-    id,
     name,
     label,
     charLimit,
     placeholder,
     defaultValue,
-    updateInput,
-    updateToStore,
     type,
     validate = false,
     index,
 }: IInputProps) {
-    const dispatch = useAppDispatch()
-    const [input, setInput] = useState(defaultValue ?? '')
+    const input = defaultValue ?? ''
     const [isTyped, setIsTyped] = useState(false)
     const context = useFormikContext<arrayInput>()
     useEffect(() => {

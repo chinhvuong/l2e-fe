@@ -1,13 +1,11 @@
-import { useAppDispatch } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import {
+    ErrorMessage,
     FieldArray,
     FieldArrayRenderProps,
     useFormikContext,
-    ErrorMessage,
 } from 'formik'
 import { ComponentType, useEffect, useState } from 'react'
-import Label from '../label'
 
 export interface IInputProps {
     id?: string
@@ -39,12 +37,11 @@ export interface arrayInput {
 
 export default function ChoicesArray({
     arrayname,
-    charLimit,
     defaultValue,
     index,
     label,
 }: IInputProps) {
-    const [input, setInput] = useState(defaultValue ?? '')
+    const input = defaultValue ?? ''
     const [isTyped, setIsTyped] = useState(false)
     const context = useFormikContext<arrayInput>()
     useEffect(() => {

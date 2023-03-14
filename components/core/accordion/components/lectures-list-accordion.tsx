@@ -1,12 +1,5 @@
-import {
-    faChevronDown,
-    faChevronUp,
-    faCirclePlay,
-    faCircleQuestion,
-    faFile,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlay, faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
 
 export interface ILecturesListAccordionProps {
     expand: boolean
