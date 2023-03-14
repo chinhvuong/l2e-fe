@@ -11,10 +11,7 @@ export interface IHeaderProps {}
 export default function QuestionsHeader() {
     const router = useRouter()
     const goBack = () => {
-        router.push({
-            pathname: router.pathname.replace('create', ''),
-            query: { ...router.query },
-        })
+        router.push('/instructor/courses')
     }
 
     return (

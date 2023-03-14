@@ -5,13 +5,14 @@ import LoadingScreen from '@/components/core/animate/loading-screen'
 import { COURSE_ID } from '@/constants/localStorage'
 import Router from 'next/router'
 import { useState } from 'react'
-
+import { useAppDispatch } from '@/hooks'
+import { updateIdState } from '@/store/course'
 type Props = {
     course: CoursePreview
 }
 const MyCourseCard = ({ course }: Props) => {
     const [sendApprove, setSendApprove] = useState(false)
-
+    const dispatch = useAppDispatch()
     const handleRequestApprove = async (id: string) => {
         requestApprove({ id, notes: [] })
     }
@@ -33,6 +34,7 @@ const MyCourseCard = ({ course }: Props) => {
     const goToQuestionPage = () => {
         console.log(course._id)
         localStorage.setItem(COURSE_ID, course._id)
+        dispatch(updateIdState(course._id))
         Router.push(`instructor/${course._id}/question/`)
     }
 

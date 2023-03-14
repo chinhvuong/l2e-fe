@@ -30,4 +30,8 @@ export const InstructorAPI = {
     REQUEST_APPROVE: '/course/manage/own-courses/send-approve-request',
     GET_MINT_SIGNATURE: '/course/request-mint-signature',
     CREATE_QUESTIONS: '/question/create-batch',
+    GET_QUESTIONS: '/question/manage/get-question',
+    EDIT_QUESTION: '/question',
+    CREAT_QUIZ: '/quiz',
+    GET_QUIZZES: '/quiz/manage/get-quizzes',
 }

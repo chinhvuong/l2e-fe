@@ -84,7 +84,7 @@ export default function ValidateModal(props: IValidateModalProps) {
                                                             </span>
                                                         </a>{' '}
                                                         page, you must
-                                                        <ul className="list-decimal grid gap-y-2 mt-3 mt-2 px-5">
+                                                        <ul className="list-decimal grid gap-y-2 mt-3 px-5">
                                                             {validateContent.intendedLearners.map(
                                                                 (el) => {
                                                                     return (

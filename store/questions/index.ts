@@ -22,11 +22,14 @@ const initialState = [
     },
 ]
 
-export const questionDetailSlice = createSlice({
-    name: 'questionDetailSlice',
+export const questionsListDetailSlice = createSlice({
+    name: 'questionsListDetailSlice',
     initialState,
     reducers: {
-        AddQuestionState(state, action: PayloadAction<QuestionCreateType[]>) {
+        AddAllQuestionState(
+            state,
+            action: PayloadAction<QuestionCreateType[]>,
+        ) {
             const newList: QuestionDetailType[] = state
             action.payload.forEach((item) => {
                 newList.push({
@@ -42,12 +45,12 @@ export const questionDetailSlice = createSlice({
         },
         UpdateAllQuestionState(
             state,
-            action: PayloadAction<QuestionCreateType[]>,
+            action: PayloadAction<QuestionDetailType[]>,
         ) {
             const newList: QuestionDetailType[] = []
             action.payload.forEach((item) => {
                 newList.push({
-                    _id: uuidv4(),
+                    _id: item._id,
                     question: item.question,
                     choices: item.choices,
                     correctAnswer: item.correctAnswer,
@@ -60,7 +63,7 @@ export const questionDetailSlice = createSlice({
     },
 })
 
-export const { UpdateAllQuestionState, AddQuestionState } =
-    questionDetailSlice.actions
+export const { UpdateAllQuestionState, AddAllQuestionState } =
+    questionsListDetailSlice.actions
 
-export default questionDetailSlice.reducer
+export default questionsListDetailSlice.reducer

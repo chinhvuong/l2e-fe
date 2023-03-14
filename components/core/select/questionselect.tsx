@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRef, useState } from 'react'
 import Loading from '../animate/loading'
 import { useFormikContext } from 'formik'
+import { QuestionDetailType } from '@/store/questions/types'
 
 export interface ISelectProps {
     name?: string
@@ -16,19 +17,14 @@ export interface ISelectProps {
     disabled?: boolean
     validate?: boolean
     index: number
+    questionsData: QuestionDetailType[]
 }
 
 export interface arrayInput {
-    questions?: [
-        {
-            choices?: string[]
-            medias?: string[]
-            correctAnswer: number
-        },
-    ]
+    questions?: string[]
 }
 
-export default function FormikSelect({
+export default function FormikQuestionSelect({
     name,
     label,
     selectList,
@@ -39,6 +35,7 @@ export default function FormikSelect({
     disabled,
     validate = false,
     index,
+    questionsData,
 }: ISelectProps) {
     const [selectedItem, setSelectedItem] = useState(
         selected === '' ? placeholder : selected,
@@ -69,25 +66,16 @@ export default function FormikSelect({
             >
                 <select
                     name={name}
-                    value={parseInt(
-                        String(context.values.questions?.[index].correctAnswer),
-                    )}
-                    onChange={(event) =>
-                        context.setFieldValue(
-                            String(name),
-                            parseInt(event.target.value),
-                        )
-                    }
+                    value={context.values.questions?.[index]}
+                    onChange={context.handleChange}
                     onBlur={context.handleBlur}
                     className="w-full"
                 >
-                    {context.values.questions?.[index].choices?.map(
-                        (choice, indext) => (
-                            <option key={indext} value={indext}>
-                                {choice}
-                            </option>
-                        ),
-                    )}
+                    {questionsData?.map((question, indext) => (
+                        <option key={indext} value={question._id}>
+                            {question.question}
+                        </option>
+                    ))}
                 </select>
             </div>
         </div>

@@ -23,13 +23,13 @@ export default function Sidebar(props: ISidebarProps) {
                         <div
                             className={`text-black cursor-pointer rounded-r-full py-3 px-5 flex`}
                             key={index}
-                            onChange={props.onRadioBoxChange}
                         >
                             <input
                                 className={`mr-2 flex`}
                                 type="radio"
                                 value={item}
                                 checked={props.sortType === item}
+                                onChange={props.onRadioBoxChange}
                             />
                             <div className={`flex items-center space-x-2`}>
                                 {' '}

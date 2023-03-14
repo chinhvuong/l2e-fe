@@ -3,7 +3,9 @@ import { userSlice } from './user/index'
 import { configureStore } from '@reduxjs/toolkit'
 import { courseIntendedLearnersSlice } from './course/intended-learners'
 import { courseDetailSlice } from './course'
-import { questionDetailSlice } from './question'
+import { questionsListDetailSlice } from './questions'
+import { questionDetailSlice } from './course/question'
+import { quizzesSlice } from './quiz'
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +13,9 @@ export const store = configureStore({
         intendedLearners: courseIntendedLearnersSlice.reducer,
         curriculum: courseCurriculumSlice.reducer,
         user: userSlice.reducer,
-        questions: questionDetailSlice.reducer,
+        questions: questionsListDetailSlice.reducer,
+        questionDetail: questionDetailSlice.reducer,
+        quizzes: quizzesSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
