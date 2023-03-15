@@ -3,6 +3,7 @@ export interface CourseNestedLecture {
     name: string
     description: string
     mediaType: 'video'
+    media: string
 }
 export interface CourseSectionWithLectures {
     _id: string
