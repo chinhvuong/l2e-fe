@@ -15,9 +15,6 @@ interface IHeader {
 
 const Header = (props: IHeader) => {
     const dispatch = useAppDispatch()
-    const goToHomePage = () => {
-        Router.push('/')
-    }
 
     const goToAboutUsPage = () => {
         dispatch(updateLoadingState(true))
@@ -38,10 +35,7 @@ const Header = (props: IHeader) => {
                             props.darkTheme ? 'text-white' : 'text-black'
                         }`}
                     />
-                    <Logo
-                        darkTheme={props.darkTheme}
-                        onClick={() => goToHomePage()}
-                    />
+                    <Logo darkTheme={props.darkTheme} />
                     <Search darkTheme={props.darkTheme} />
                     <Explore />
                     <div className="cursor-pointer hover:text-primary-hover under_xl:hidden">

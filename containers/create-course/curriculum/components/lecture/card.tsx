@@ -1,24 +1,23 @@
 import Input from '@/components/core/input'
-import type { Identifier, XYCoord } from 'dnd-core'
-import { FC, useState } from 'react'
-import { useRef } from 'react'
-import { useDrag, useDrop } from 'react-dnd'
-import { ItemTypes } from '../type'
-import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import { RootState } from '@/store'
 import {
     CurriculumLecture,
     DeleteLecture,
 } from '@/store/course/curriculum/types'
-import { RootState } from '@/store'
-import '@/styles/animations.scss'
-import MainContent from './main-content'
-import Resource from './resource'
-import Select, { ActionMeta, MultiValue } from 'react-select'
 import { getQuizSelect } from '@/store/quiz/selectors'
 import { QuizSelectType } from '@/store/quiz/types'
+import '@/styles/animations.scss'
+import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import type { Identifier, XYCoord } from 'dnd-core'
+import { FC, useRef, useState } from 'react'
+import { useDrag, useDrop } from 'react-dnd'
+import Select, { ActionMeta } from 'react-select'
+import { ItemTypes } from '../type'
+import MainContent from './main-content'
+import Resource from './resource'
 
 export interface CardProps {
     id: string

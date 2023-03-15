@@ -1,6 +1,3 @@
-import VerticalCourseList from '@/components/common/vertical-course-list'
-import * as React from 'react'
-
 export interface ISameAuthorCoursesProps {}
 
 export default function SameAuthorCourses() {
