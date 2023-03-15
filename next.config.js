@@ -5,7 +5,6 @@ module.exports = {
     sassOptions: {
         includePaths: ['./**/*.scss'],
     },
-    webpack5: true,
     webpack(config) {
         config.resolve.fallback = { fs: false }
         // if not work, try `config.module.rules[2]...`
