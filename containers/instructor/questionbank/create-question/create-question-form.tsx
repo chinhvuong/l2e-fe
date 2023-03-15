@@ -1,18 +1,9 @@
-import Hyperlink from '@/containers/create-course/components/hyperlink'
-import Input from '@/components/core/input'
-import RichTextEditor from '@/components/core/rich-text-editor'
-import Select from '@/components/core/select'
-import UploadPreview from '@/components/core/upload-preview'
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import {
-    getMyCourseDetail,
-    getCourseDetailState,
-} from '@/store/course/selectors'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Title from '@/containers/create-course/components/title'
 import { useFormik, FormikProvider, FieldArray } from 'formik'
-import { UpdateAllQuestionState } from '@/store/question'
+import { AddAllQuestionState } from '@/store/questions'
 import { useRouter } from 'next/router'
 import FormikInput from '@/components/core/input/formik'
 import ChoicesArray from '@/components/core/input/formikarray'
@@ -23,9 +14,14 @@ import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
 import * as yup from 'yup'
 export interface ILandingPageContainerProps {}
-
+import { getQuestionDetailInfo } from '@/store/course/question/selectors'
+import { getMyCourseDetail } from '@/store/course/selectors'
 export default function CreateQuestionPageContainer() {
     const router = useRouter()
+    const [courseId, setCourseId] = useState<string>('')
+    const detailQuestion = useAppSelector(getQuestionDetailInfo)
+    const detailCourse = useAppSelector(getMyCourseDetail)
+    const [isEdit, setEdit] = useState<boolean>(false)
     const schema = yup.object().shape({
         questions: yup
             .array()
@@ -33,8 +29,7 @@ export default function CreateQuestionPageContainer() {
                 yup.object().shape({
                     question: yup
                         .string()
-                        .min(10, 'too short')
-                        .max(60, 'too long')
+                        .min(1, 'too short')
                         .required('Required'), // these constraints take precedence
                     correctAnswer: yup.number(),
                     choices: yup
@@ -61,30 +56,63 @@ export default function CreateQuestionPageContainer() {
                 })
             },
         })
+    const { mutate: updateQuestion, isLoading: isLoadingUpdateQuestion } =
+        useAPI.put(InstructorAPI.EDIT_QUESTION + '/' + detailQuestion._id, {
+            onError: (errors) => {
+                console.log(errors)
+            },
+            onSuccess: (response) => {
+                router.push({
+                    pathname: router.pathname.replace('update', ''),
+                    query: { ...router.query },
+                })
+            },
+        })
     const formik = useFormik({
         initialValues: {
             questions: [
                 {
-                    question: '',
-                    choices: ['', '', '', ''],
-                    correctAnswer: 1,
-                    courseId: String(localStorage.getItem(COURSE_ID)),
-                    medias: [''],
+                    question: detailQuestion.question,
+                    choices: detailQuestion.choices,
+                    correctAnswer: detailQuestion.correctAnswer,
+                    courseId: detailCourse._id,
+                    medias: detailQuestion.medias,
                 },
             ],
         },
         validationSchema: schema,
         onSubmit: (values) => {
             console.log(values.questions)
-            dispatch(UpdateAllQuestionState(values.questions))
-            // createQuestions(values.questions)
+            if (isEdit) {
+                updateQuestion({
+                    question: values.questions?.[0].question,
+                    choices: values.questions?.[0].choices,
+                    correctAnswer: values.questions?.[0].correctAnswer,
+                    medias: values.questions?.[0].medias,
+                })
+            } else {
+                createQuestions(values.questions)
+            }
         },
     })
     const dispatch = useAppDispatch()
-
+    useEffect(() => {
+        if (router?.query?.slug !== null) {
+            if (router?.query?.slug !== courseId) {
+                setCourseId(String(localStorage.getItem(COURSE_ID)))
+            }
+        }
+        if (detailQuestion._id) {
+            setEdit(true)
+        }
+    }, [courseId, detailQuestion])
     return (
         <div>
-            <LoadingScreen isLoading={isLoadingCreateQuestion} />
+            {!isEdit ? (
+                <LoadingScreen isLoading={isLoadingCreateQuestion} />
+            ) : (
+                <LoadingScreen isLoading={isLoadingUpdateQuestion} />
+            )}
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
                     <FieldArray
@@ -94,19 +122,22 @@ export default function CreateQuestionPageContainer() {
                                 {formik.values.questions.map(
                                     (question, index) => (
                                         <div key={index}>
-                                            <Title
-                                                title={
-                                                    'Create Question ' +
-                                                    (index + 1)
-                                                }
-                                            />
+                                            {!isEdit ? (
+                                                <Title
+                                                    title={
+                                                        'Create Question ' +
+                                                        (index + 1)
+                                                    }
+                                                />
+                                            ) : (
+                                                <Title
+                                                    title={'Edit Question '}
+                                                />
+                                            )}
                                             <div className="py-10 px-14 space-y-5">
                                                 <FormikInput
                                                     name={`questions[${index}].question`}
-                                                    charLimit={{
-                                                        minLength: 10,
-                                                        maxLength: 60,
-                                                    }}
+                                                    index={index}
                                                     label="Question Content"
                                                     placeholder="Insert your question content."
                                                 />
@@ -126,7 +157,7 @@ export default function CreateQuestionPageContainer() {
                                                     name={`questions[${index}].correctAnswer`}
                                                     label="Correct Answer"
                                                 />
-                                                {index > 0 && (
+                                                {index > 0 && !isEdit && (
                                                     <button
                                                         className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-red-400 w-full"
                                                         onClick={() =>
@@ -143,22 +174,24 @@ export default function CreateQuestionPageContainer() {
                                     ),
                                 )}
                                 <div className="flex space-y-5 ">
-                                    <button
-                                        className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-green-400 w-full"
-                                        onClick={() =>
-                                            arrayHelpers.push({
-                                                question: '',
-                                                choices: [''],
-                                                correctAnswer: 0,
-                                                courseId: String(
-                                                    router?.query?.slug,
-                                                ),
-                                                medias: [''],
-                                            })
-                                        }
-                                    >
-                                        ADD QUESTIONS
-                                    </button>
+                                    {!isEdit && (
+                                        <button
+                                            className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-green-400 w-full"
+                                            onClick={() =>
+                                                arrayHelpers.push({
+                                                    question: '',
+                                                    choices: [''],
+                                                    correctAnswer: 0,
+                                                    courseId: String(
+                                                        router?.query?.slug,
+                                                    ),
+                                                    medias: [''],
+                                                })
+                                            }
+                                        >
+                                            ADD QUESTIONS
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -167,7 +200,7 @@ export default function CreateQuestionPageContainer() {
                         type="submit"
                         className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-primary w-full my-6"
                     >
-                        CONFIRM CREATE QUESTIONS
+                        {isEdit ? 'EDIT QUESTION' : 'CREATE QUESTIONS'}
                     </button>
                 </form>
             </FormikProvider>

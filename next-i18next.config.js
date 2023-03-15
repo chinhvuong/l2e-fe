@@ -4,10 +4,8 @@ module.exports = {
     i18n: {
         defaultLocale: 'vi',
         locales: ['en', 'vi'],
-        defaultNS: 'common',
-        localePath: path.resolve('./locales/resources'),
-        reloadOnPrerender:
-            process.env.NODE_ENV === 'development' ? true : false,
     },
+    localePath: path.resolve('./locales/resources'),
+    reloadOnPrerender: process.env.NODE_ENV === 'development' ? true : false,
 }
 console.log(path.resolve('./locales/resources'))

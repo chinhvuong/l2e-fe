@@ -1,19 +1,21 @@
 import Input from '@/components/core/input'
-import type { Identifier, XYCoord } from 'dnd-core'
-import { FC, useState } from 'react'
-import { useRef } from 'react'
-import { useDrag, useDrop } from 'react-dnd'
-import { ItemTypes } from '../type'
-import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import { RootState } from '@/store'
 import {
     CurriculumLecture,
     DeleteLecture,
 } from '@/store/course/curriculum/types'
-import { RootState } from '@/store'
+import { getQuizSelect } from '@/store/quiz/selectors'
+import { QuizSelectType } from '@/store/quiz/types'
 import '@/styles/animations.scss'
+import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import type { Identifier, XYCoord } from 'dnd-core'
+import { FC, useRef, useState } from 'react'
+import { useDrag, useDrop } from 'react-dnd'
+import Select, { ActionMeta } from 'react-select'
+import { ItemTypes } from '../type'
 import MainContent from './main-content'
 import Resource from './resource'
 
@@ -57,7 +59,7 @@ export const Card: FC<CardProps> = ({
         }) ?? []
     const lectureDetail = useAppSelector(getCardDetail(id, sectionId))
     const [expandLecture, setExpandLecture] = useState(true)
-
+    const quizSelect = useAppSelector(getQuizSelect)
     const updateLectureTitle = (value: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.name = value
@@ -67,6 +69,19 @@ export const Card: FC<CardProps> = ({
     const updateLectureDescription = (value: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.description = value
+        dispatch(updateCard(newDetail))
+    }
+
+    const updateLectureQuizzes = (
+        values: readonly QuizSelectType[],
+        actionMeta: ActionMeta<QuizSelectType>,
+    ) => {
+        const newDetail = { ...lectureDetail }
+        const newlist = [] as string[]
+        values.forEach((item) => {
+            newlist.push(item.value)
+        })
+        newDetail.quizzes = newlist
         dispatch(updateCard(newDetail))
     }
 
@@ -150,7 +165,7 @@ export const Card: FC<CardProps> = ({
             dispatch(deleteCard({ sectionId: sectionId, index: id }))
         }
     }
-
+    const [selectedOption, setSelectedOption] = useState(null)
     return (
         <div className="bg-white">
             <div
@@ -237,6 +252,19 @@ export const Card: FC<CardProps> = ({
                                 name="Description"
                                 defaultValue={lectureDetail.description}
                                 updateInput={updateLectureDescription}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="border-x border-b border-black">
+                    <div className="flex items-center space-x-5 mx-10 py-5">
+                        <div className="font-bold min-w-max">Quizzes</div>
+                        <div className="w-full bg-white rounded-[80px]">
+                            <Select
+                                options={quizSelect}
+                                defaultValue={selectedOption}
+                                isMulti
+                                onChange={updateLectureQuizzes}
                             />
                         </div>
                     </div>

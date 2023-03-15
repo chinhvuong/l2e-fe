@@ -1,6 +1,5 @@
-import { useAppDispatch } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { useFormikContext } from 'formik'
+import { ErrorMessage, useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 
 export interface IInputProps {
@@ -18,25 +17,34 @@ export interface IInputProps {
     type?: string
     validate?: boolean
     widtharray?: boolean
+    index: number
+}
+
+export interface arrayInput {
+    questions?: [
+        {
+            choices?: string[]
+            medias?: string[]
+            correctAnswer: number
+            question: string
+        },
+    ]
 }
 
 export default function FormikInput({
     widtharray,
-    id,
     name,
     label,
     charLimit,
     placeholder,
     defaultValue,
-    updateInput,
-    updateToStore,
     type,
     validate = false,
+    index,
 }: IInputProps) {
-    const dispatch = useAppDispatch()
-    const [input, setInput] = useState(defaultValue ?? '')
+    const input = defaultValue ?? ''
     const [isTyped, setIsTyped] = useState(false)
-    const context = useFormikContext<IInputProps>()
+    const context = useFormikContext<arrayInput>()
     useEffect(() => {
         if (!isTyped && input !== '') {
             setIsTyped(true)
@@ -60,7 +68,9 @@ export default function FormikInput({
                 <input
                     type={type ?? 'text'}
                     name={name}
-                    defaultValue={context.values.name}
+                    defaultValue={String(
+                        context.values.questions?.[index].question,
+                    )}
                     minLength={charLimit?.minLength}
                     maxLength={charLimit?.maxLength}
                     placeholder={placeholder}
@@ -73,12 +83,8 @@ export default function FormikInput({
                 </div>
             </div>
             {validate && (
-                <div
-                    className={`ml-[25px] text-sm mt-1 ${
-                        input === '' && isTyped ? 'text-red-500' : 'text-white'
-                    }`}
-                >
-                    Không được để trống!
+                <div className="ml-[25px] text-sm mt-1 text-red-500">
+                    <ErrorMessage name={String(name)} />
                 </div>
             )}
         </div>

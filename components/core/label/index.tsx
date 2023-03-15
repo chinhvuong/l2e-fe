@@ -1,4 +1,3 @@
-import { CourseLabel } from '@/constants/types'
 import * as React from 'react'
 
 export interface ILabelProps {

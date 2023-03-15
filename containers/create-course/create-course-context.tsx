@@ -26,10 +26,10 @@ import {
 } from '@/store/course/intended-learners'
 import { getMyCourseDetail } from '@/store/course/selectors'
 import { CourseDetail } from '@/store/course/types'
+import { UpdateQuizzesState } from '@/store/quiz'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-
 interface ICreateCourseContext {
     isLoading: boolean
     getCourseDetail: UseMutateFunction<unknown, any, object, unknown>
@@ -112,7 +112,17 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 },
             },
         )
-
+    const { mutate: getQuizzesList, isLoading: isLoadingQuizzesList } =
+        useAPI.getMutation(
+            InstructorAPI.GET_QUIZZES + '?courseId=' + courseId,
+            {
+                onError: () => {},
+                onSuccess: (response) => {
+                    console.log(response)
+                    dispatch(UpdateQuizzesState(response?.data))
+                },
+            },
+        )
     const handleGetLessons = async (sectionId: string) => {
         await callAPI(
             'get',
@@ -183,6 +193,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             setCourseId(localStorage.getItem(COURSE_ID) ?? '')
         } else if (localStorage.getItem(COURSE_ID) !== null) {
             getCourseDetail({})
+            getQuizzesList({})
         }
     }, [courseId])
 
@@ -192,7 +203,8 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             isLoadingGetCourseDetail ||
             isLoadingGetSections ||
             isLoadingUpsertSections ||
-            isLoadingCurriculum
+            isLoadingCurriculum ||
+            isLoadingQuizzesList
         )
     }, [
         isLoadingUpdateCourse,
@@ -200,6 +212,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         isLoadingGetSections,
         isLoadingUpsertSections,
         isLoadingCurriculum,
+        isLoadingQuizzesList,
     ])
 
     return (

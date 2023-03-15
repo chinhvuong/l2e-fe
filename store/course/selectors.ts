@@ -71,9 +71,9 @@ export const getMyCourseDetail = (state: RootState) => {
     return state.courseDetail.courseDetail
 }
 
-export const getCourseDetailState = (state: RootState) => {
-    return state.courseDetail.isNewData
-}
+// export const getCourseDetailState = (state: RootState) => {
+//     return state.courseDetail.isNewData
+// }
 
 export const getEnrollStatusState = (state: RootState) => {
     return state.courseDetail.isEnroll

@@ -1,8 +1,11 @@
-import { useAppDispatch } from '@/hooks'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { FieldArray, FieldArrayRenderProps, useFormikContext } from 'formik'
+import {
+    ErrorMessage,
+    FieldArray,
+    FieldArrayRenderProps,
+    useFormikContext,
+} from 'formik'
 import { ComponentType, useEffect, useState } from 'react'
-import Label from '../label'
 
 export interface IInputProps {
     id?: string
@@ -34,13 +37,11 @@ export interface arrayInput {
 
 export default function MediaArray({
     arrayname,
-    charLimit,
     defaultValue,
     index,
     label,
 }: IInputProps) {
-    const dispatch = useAppDispatch()
-    const [input, setInput] = useState(defaultValue ?? '')
+    const input = defaultValue ?? ''
     const [isTyped, setIsTyped] = useState(false)
     const context = useFormikContext<arrayInput>()
     useEffect(() => {
@@ -78,6 +79,13 @@ export default function MediaArray({
                                                 className="w-full outline-none"
                                                 autoComplete="off"
                                                 onChange={context.handleChange}
+                                            />
+                                        </div>
+                                        <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                            <ErrorMessage
+                                                name={String(
+                                                    arrayname + `[${indext}]`,
+                                                )}
                                             />
                                         </div>
                                         <div className="w-1/5  space-x-5 mx-[25px]  items-center justify-between">

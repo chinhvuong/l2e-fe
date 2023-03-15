@@ -1,11 +1,8 @@
-import * as React from 'react'
 import Label from '@/components/core/label'
-import RatingStar from '../rating-star'
-import Router from 'next/router'
-import { CoursePreview } from '@/api/dto/course.dto'
-import { updateCourseIdState } from '@/store/course'
 import { useAppDispatch } from '@/hooks'
-import VideoPreview from '../video-preview'
+import { updateCourseIdState } from '@/store/course'
+import Router from 'next/router'
+import RatingStar from '../rating-star'
 
 export interface IVerticalCourseCardProps {
     data: any

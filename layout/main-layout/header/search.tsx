@@ -2,10 +2,11 @@ import { callAPI } from '@/api/axios-client'
 import { CoursePreview } from '@/api/dto/course.dto'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import './style.scss'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { debounce } from 'lodash'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { useCallback, useState } from 'react'
 import './style.scss'
 
 interface ISearch {
@@ -19,7 +20,6 @@ export default function Search(props: ISearch) {
 
     async function fetchData(e: React.ChangeEvent<HTMLInputElement>) {
         const queryword = e.target.value
-        console.log(router)
         setSearchTerm(queryword)
         const { data } = await callAPI(
             'get',
@@ -38,6 +38,11 @@ export default function Search(props: ISearch) {
             goToSearchPageCourse()
         }
     }
+    useEffect(() => {
+        return () => {
+            debounceLoadData.cancel()
+        }
+    }, [])
     return (
         <div className="relative">
             <div

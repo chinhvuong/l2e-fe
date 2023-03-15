@@ -293,3 +293,9 @@ export interface QuestionCreateType {
     courseId: string
     medias: string[]
 }
+
+export interface QuizCreateType {
+    questions: string[]
+    courseId: string
+    name: string
+}
