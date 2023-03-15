@@ -1,10 +1,6 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Router, { useRouter } from 'next/router'
-import Button from '@/components/core/button'
-import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
-import { useAppSelector } from '@/hooks'
-import { getCanSaveCourseState } from '@/store/course/selectors'
+import { useRouter } from 'next/router'
 
 export interface IHeaderProps {}
 
