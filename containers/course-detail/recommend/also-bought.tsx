@@ -1,4 +1,3 @@
-import VerticalCourseList from '@/components/common/vertical-course-list'
 import { useCourseDetailContext } from '../course-detail-context'
 
 export interface IAlsoBoughtProps {}

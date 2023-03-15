@@ -26,10 +26,10 @@ import {
 } from '@/store/course/intended-learners'
 import { getMyCourseDetail } from '@/store/course/selectors'
 import { CourseDetail } from '@/store/course/types'
+import { UpdateQuizzesState } from '@/store/quiz'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { UpdateQuizzesState } from '@/store/quiz'
 interface ICreateCourseContext {
     isLoading: boolean
     getCourseDetail: UseMutateFunction<unknown, any, object, unknown>
@@ -203,7 +203,8 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             isLoadingGetCourseDetail ||
             isLoadingGetSections ||
             isLoadingUpsertSections ||
-            isLoadingCurriculum
+            isLoadingCurriculum ||
+            isLoadingQuizzesList
         )
     }, [
         isLoadingUpdateCourse,
@@ -211,6 +212,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         isLoadingGetSections,
         isLoadingUpsertSections,
         isLoadingCurriculum,
+        isLoadingQuizzesList,
     ])
 
     return (
