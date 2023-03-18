@@ -19,7 +19,7 @@ export default function LearnCourseLayout({
                     className="w-full app-transition main-transition h-full bg-white"
                     id="content"
                 >
-                    <div className="flex pt-[90px] space-x-7">{children}</div>
+                    <div className="flex space-x-7">{children}</div>
                 </div>
             </main>
             <Footer />

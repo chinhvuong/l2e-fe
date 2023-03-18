@@ -9,7 +9,7 @@ export default function Header() {
     const [percentage, setPercentage] = useState(50)
 
     return (
-        <div className="flex items-center justify-between bg-black h-[90px] w-full fixed top-0 z-10 px-5 text-white">
+        <div className="flex items-center justify-between bg-black h-[90px] w-full px-5 text-white">
             <div className="flex items-center">
                 <Logo darkTheme className="w-[90px]" />
                 <div className="ml-6 pl-6 border-l border-border-box text-lg font-medium">

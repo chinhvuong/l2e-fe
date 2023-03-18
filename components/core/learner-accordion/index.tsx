@@ -6,12 +6,13 @@ import LecturesListLearnerAccordion, {
 } from './components/lectures-list-learner-accordion'
 
 export interface ILearnerAccordionProps {
+    order: number
     title: string
     lectures: ILecturesListItem[]
 }
 
 export default function LearnerAccordion(props: ILearnerAccordionProps) {
-    const { title, lectures } = props
+    const { order, title, lectures } = props
     const [selfExpand, setSelfExpand] = useState(false)
 
     return (
@@ -26,7 +27,9 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                     onClick={() => setSelfExpand(!selfExpand)}
                 >
                     <div className="flex items-start under_lg:w-full">
-                        <div className="font-bold text-sm">{title}</div>
+                        <div className="font-bold text-sm">
+                            Section {order + 1}: {title}
+                        </div>
                         <FontAwesomeIcon
                             icon={faChevronUp}
                             className={`mt-1 px-2 arrow-animation text-xs ease-in ${

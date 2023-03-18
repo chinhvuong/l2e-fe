@@ -12,12 +12,12 @@ export default function Description() {
     const [showMore, setShowMore] = useState(false)
 
     const getUIContent = () => {
-        let formattedData = description.replaceAll(
-            '<li>',
+        let formattedData = description.replace(
+            /'<li>'/g,
             '<li class="list-disc list-inside ml-2">',
         )
-        formattedData = formattedData.replaceAll(
-            '<ul>',
+        formattedData = formattedData.replace(
+            /'<ul>'/g,
             '<ul class="space-y-3">',
         )
 

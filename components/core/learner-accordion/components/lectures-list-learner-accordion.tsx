@@ -6,7 +6,7 @@ import {
     faFile,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export interface ILecturesListLearnerAccordionProps {
     expand: boolean
@@ -17,7 +17,6 @@ export interface ILecturesListItem {
     media: string
     mediaType: 'video' | 'faq'
     name: string
-    length?: string
 }
 
 // Quiz UI
@@ -55,20 +54,32 @@ export default function LecturesListLearnerAccordion(
 ) {
     const { expand, lectures } = props
 
-    const getLectureUI = (data: ILecturesListItem) => {
+    const getLectureUI = (data: ILecturesListItem, index: number) => {
         if (data.mediaType === 'video') {
             return (
-                <div className="flex justify-between">
-                    <div className="flex items-start">
+                <div className="px-5 space-y-2">
+                    <div className="text-sm">
+                        {index + 1}. {data.name}
+                    </div>
+                    <div className="flex items-center space-x-2">
                         <FontAwesomeIcon
                             icon={faCirclePlay}
-                            className="pt-1 px-6"
+                            className="pb-0.5"
                         />
-                        <div className="text-hyperlink underline">
-                            {data.name}
+                        <div className="text-description text-xs">10min</div>
+                    </div>
+                    <div className="flex justify-between pt-1">
+                        <div className="flex items-center space-x-2">
+                            <FontAwesomeIcon
+                                icon={faCircleQuestion}
+                                className="pb-0.5"
+                            />
+                            <div className="text-xs">Skills Assessment</div>
+                        </div>
+                        <div className="text-description text-xs pt-0.5">
+                            10 questions
                         </div>
                     </div>
-                    <div className="text-description">{data.length}</div>
                 </div>
             )
         }
@@ -82,16 +93,21 @@ export default function LecturesListLearnerAccordion(
                         />
                         <div>{data.name}</div>
                     </div>
-                    <div className="text-description">{data.length}</div>
+                    {/* <div className="text-description">{data.length}</div> */}
                 </div>
             )
         }
     }
 
     return (
-        <div className={`border-x ${!expand && 'hidden'} py-3 pr-6 space-y-3`}>
+        <div className={`border-x ${!expand && 'hidden'}`}>
             {lectures.map((lecture, index) => (
-                <div key={index}>{getLectureUI(lecture)}</div>
+                <div
+                    key={index}
+                    className="hover:bg-gray-300 cursor-pointer py-3"
+                >
+                    {getLectureUI(lecture, index)}
+                </div>
             ))}
         </div>
     )

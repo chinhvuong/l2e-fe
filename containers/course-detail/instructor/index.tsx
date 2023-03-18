@@ -18,14 +18,15 @@ export default function Instructor() {
 
     const convertStringToHTML = () => {
         const element = document.getElementById('instructor-bio-content')
-        let displayedData = instructor.bio.replaceAll(
-            '<li>',
+        let displayedData = instructor.bio.replace(
+            /'<li>'/g,
             '<li class="list-disc list-inside ml-2">',
         )
-        displayedData = displayedData.replaceAll(
-            '<ul>',
+        displayedData = displayedData.replace(
+            /'<ul>'/g,
             '<ul class="space-y-3">',
         )
+
         if (element) {
             element.innerHTML = displayedData
         }

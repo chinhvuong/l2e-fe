@@ -17,6 +17,7 @@ export default function LearnerCourseContent({
                         <LearnerAccordion
                             title={section.name}
                             lectures={section.lessons}
+                            order={index}
                             key={index}
                         />
                     )
