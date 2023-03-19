@@ -5,7 +5,7 @@ export interface INavBarProps {
 }
 
 export default function NavBarLearner({ setCurrentTab }: INavBarProps) {
-    const menu = ['Overview', 'Instructor', 'Reviews']
+    const menu = ['Overview', 'Instructor', 'Ratings']
 
     const [currentTabName, setCurrentTabName] = useState('Overview')
 

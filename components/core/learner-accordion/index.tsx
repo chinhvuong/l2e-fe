@@ -1,4 +1,4 @@
-import { faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import LecturesListLearnerAccordion, {
@@ -38,7 +38,13 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                         />
                     </div>
                 </div>
-                <div className="text-sm">{`0/${lectures.length}`}</div>
+                <div className="flex space-x-2">
+                    <FontAwesomeIcon
+                        icon={faCheckCircle}
+                        className="text-green-500 mt-0.5"
+                    />
+                    <div className="text-sm">{`0/${lectures.length}`}</div>
+                </div>
             </div>
             <LecturesListLearnerAccordion
                 expand={selfExpand}
