@@ -34,7 +34,9 @@ export default function ReviewItemsList(props: IReviewItemsListProps) {
                 className="btn-primary-outline w-full mt-5"
                 onClick={() => updateReviewList()}
             >
-                <div className="font-medium text-[16px]">Show more reviews</div>
+                <div className="font-medium text-[16px] text-center w-full">
+                    Show more reviews
+                </div>
             </Button>
         </div>
     )

@@ -31,7 +31,7 @@ export default function LearningReviewDetail() {
         <div className="space-y-10">
             <div>
                 <div className="font-semibold text-2xl">Student feedback</div>
-                <div className="flex justify-between under_lg:flex-wrap under_lg:justify-center mt-3">
+                <div className="flex justify-center space-x-7 under_lg:flex-wrap under_lg:justify-center mt-3">
                     <div className="flex flex-col items-center sm:hidden">
                         <div className="text-primary text-[70px] font-bold leading-[95px]">
                             4.7
@@ -62,7 +62,7 @@ export default function LearningReviewDetail() {
             </div>
             <div>
                 <div className="font-semibold text-2xl">Reviews</div>
-                <div className="flex items-center justify-between under_lg:justify-center">
+                <div className="flex items-center justify-center under_lg:justify-center">
                     <div className="flex items-center space-x-4 mr-4">
                         <div className="w-[500px] lg:w-[320px] md:w-[280px] sm:w-full py-[10px] rounded-[80px] px-[20px] border-[1px] border-black">
                             <input

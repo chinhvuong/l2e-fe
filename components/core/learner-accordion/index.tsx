@@ -1,14 +1,13 @@
+import { LearningCourseLectures } from '@/containers/learn-course/learning-course-context'
 import { faCheckCircle, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import LecturesListLearnerAccordion, {
-    ILecturesListItem,
-} from './components/lectures-list-learner-accordion'
+import LecturesListLearnerAccordion from './components/lectures-list-learner-accordion'
 
 export interface ILearnerAccordionProps {
     order: number
     title: string
-    lectures: ILecturesListItem[]
+    lectures: LearningCourseLectures[]
 }
 
 export default function LearnerAccordion(props: ILearnerAccordionProps) {
@@ -26,13 +25,13 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                     className={`flex justify-between`}
                     onClick={() => setSelfExpand(!selfExpand)}
                 >
-                    <div className="flex items-start under_lg:w-full">
+                    <div className="flex items-center justify-between w-full">
                         <div className="font-bold text-sm">
                             Section {order + 1}: {title}
                         </div>
                         <FontAwesomeIcon
                             icon={faChevronUp}
-                            className={`mt-1 px-2 arrow-animation text-xs ease-in ${
+                            className={`px-2 arrow-animation text-xs ease-in ${
                                 selfExpand ? 'rotate-0' : 'rotate-180'
                             }`}
                         />

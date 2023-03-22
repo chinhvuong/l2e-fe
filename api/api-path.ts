@@ -16,6 +16,7 @@ export const LearnerAPI = {
     GET_ALL_MY_ENROLL_COURSES: '/course/my/enroll-courses',
     CHECK_ENROLL: '/course/check-enroll/',
     GET_COURSE_DETAIL: '/course/preview/',
+    GET_LEARNING_COURSE_DETAIL: '/course/learn',
 }
 
 export const InstructorAPI = {

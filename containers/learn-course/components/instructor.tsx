@@ -9,12 +9,12 @@ import { useLearningCourseContext } from '../learning-course-context'
 export interface ILearningInstructorDetailProps {}
 
 export default function LearningInstructorDetail() {
-    const { courseData } = useLearningCourseContext()
+    const { courseDetail } = useLearningCourseContext()
 
     const [showMore, setShowMore] = useState(false)
     useEffect(() => {
         setShowMore(true)
-    }, [courseData])
+    }, [courseDetail])
 
     const getUIContent = (content: string) => {
         let formattedData = content.replace(
@@ -61,13 +61,13 @@ export default function LearningInstructorDetail() {
                         />
                         <div>1,634,289 Students</div>
                     </div>
-                    {/* {courseData.courses && (
+                    {/* {courseDetail.courses && (
                         <div className="flex items-center space-x-2">
                             <FontAwesomeIcon
                                 icon={faCirclePlay}
                                 className="text-lg"
                             />
-                            <div>{`${courseData.courses.length} Courses`}</div>
+                            <div>{`${courseDetail.courses.length} Courses`}</div>
                         </div>
                     )} */}
                 </div>

@@ -1,3 +1,4 @@
+import { useLearningCourseContext } from '@/containers/learn-course/learning-course-context'
 import Logo from '@/layout/main-layout/header/logo'
 import { useState } from 'react'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
@@ -6,6 +7,7 @@ import 'react-circular-progressbar/dist/styles.css'
 export interface IHeaderProps {}
 
 export default function Header() {
+    const { courseDetail } = useLearningCourseContext()
     const [percentage, setPercentage] = useState(50)
 
     return (
@@ -13,7 +15,7 @@ export default function Header() {
             <div className="flex items-center">
                 <Logo darkTheme className="w-[90px]" />
                 <div className="ml-6 pl-6 border-l border-border-box text-lg font-medium">
-                    How to Create an Online Course: The Official Udemy Course
+                    {courseDetail?.name ?? ''}
                 </div>
             </div>
             <div className="flex items-center space-x-4">

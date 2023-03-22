@@ -1,3 +1,4 @@
+import { LearningCourseLectures } from '@/containers/learn-course/learning-course-context'
 import {
     faCheckCircle,
     faCirclePlay,
@@ -7,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export interface ILecturesListLearnerAccordionProps {
     expand: boolean
-    lectures: ILecturesListItem[]
+    lectures: LearningCourseLectures[]
 }
 
 export interface ILecturesListItem {
@@ -21,7 +22,7 @@ export default function LecturesListLearnerAccordion(
 ) {
     const { expand, lectures } = props
 
-    const getLectureUI = (data: ILecturesListItem, index: number) => {
+    const getLectureUI = (data: LearningCourseLectures, index: number) => {
         if (data.mediaType === 'video') {
             return (
                 <div className="flex px-5 space-x-3">
@@ -30,7 +31,7 @@ export default function LecturesListLearnerAccordion(
                         className="text-green-500 mt-0.5"
                     />
                     {/* <FontAwesomeIcon icon={faCircle} className="mt-0.5" /> */}
-                    <div className="space-y-2">
+                    <div className="space-y-2 w-full">
                         <div className="text-sm">
                             {index + 1}. {data.name}
                         </div>

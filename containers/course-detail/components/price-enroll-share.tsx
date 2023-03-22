@@ -5,6 +5,7 @@ import Loading from '@/components/core/animate/loading'
 import { useSelector } from 'react-redux'
 import { getEnrollStatusState } from '@/store/course/selectors'
 import EnrollBtn from './enroll-btn'
+import Router from 'next/router'
 export interface IPriceEnrollShareProps {
     price: number
     courseId?: number
@@ -29,7 +30,9 @@ export default function PriceEnrollShare(props: IPriceEnrollShareProps) {
                         {isEnrolled === true ? (
                             <Button
                                 className="w-full flex items-center justify-center"
-                                onClick={() => alert('Coming soon')}
+                                onClick={() =>
+                                    Router.push(`/learn/${props._id}`)
+                                }
                             >
                                 <div className="font-medium text-[20px]">
                                     Learn
