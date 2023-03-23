@@ -1,9 +1,15 @@
 import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import { CurriculumLecture } from '@/store/course/curriculum/types'
-import { CourseSectionWithLectures } from '@/store/course/types'
 import { useRouter } from 'next/router'
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import {
+    createContext,
+    Dispatch,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 
 export interface LearningCourseLectures {
     _id: string
@@ -16,6 +22,10 @@ export interface LearningCourseLectures {
     sectionId: string
     mode: string
     learned: boolean
+    order: number
+    updatedAt: string
+    createdAt: string
+    __v: number
 }
 
 export interface LearningCourseSections {
@@ -27,7 +37,6 @@ export interface LearningCourseSections {
     createdAt: string
     updatedAt: string
     __v: number
-    learned: boolean
     lessons: LearningCourseLectures[]
 }
 export interface LearningCourseRes {
@@ -53,13 +62,14 @@ export interface LearningCourseRes {
     __v: number
     promotionalVideo: string
     courseId: number
-    learned: boolean
     sections: LearningCourseSections[]
 }
 
 interface ILearningCourseContext {
     courseDetail: LearningCourseRes | undefined
     isLoading: boolean
+    playingVideo: string
+    setPlayingVideo: Dispatch<SetStateAction<string>>
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -70,6 +80,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     children,
 }) => {
     const [courseId, setCourseId] = useState('')
+    const [playingVideo, setPlayingVideo] = useState<string>('')
     const router = useRouter()
 
     const [courseDetail, setCourseDetail] = useState<
@@ -105,6 +116,8 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             value={{
                 courseDetail,
                 isLoading,
+                playingVideo,
+                setPlayingVideo,
             }}
         >
             {children}

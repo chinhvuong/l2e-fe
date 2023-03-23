@@ -1,5 +1,5 @@
 import LoadingScreen from '@/components/core/animate/loading-screen'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import LearningInstructorDetail from './components/instructor'
 import LearnerCourseContent from './components/learner-course-content'
@@ -9,7 +9,8 @@ import LearningReviewDetail from './components/reviews'
 import { useLearningCourseContext } from './learning-course-context'
 
 const LearningCourseContent = () => {
-    const { courseDetail, isLoading } = useLearningCourseContext()
+    const { courseDetail, isLoading, playingVideo, setPlayingVideo } =
+        useLearningCourseContext()
     const [currentTab, setCurrentTab] = useState('Overview')
 
     const getTabContent = () => {
@@ -38,17 +39,22 @@ const LearningCourseContent = () => {
     // }, [isReady])
 
     const getDefaultPlayedVideo = (): string => {
+        let result = ''
         courseDetail?.sections.forEach((section) => {
-            if (section.learned) {
-                section.lessons.forEach((lesson) => {
-                    if (lesson.learned) {
-                        return lesson.media
-                    }
-                })
-            }
+            section.lessons.forEach((lesson) => {
+                if (!lesson.learned && result === '') {
+                    result = lesson.media
+                }
+            })
         })
-        return ''
+        return result
     }
+
+    useEffect(() => {
+        if (!isLoading) {
+            setPlayingVideo(getDefaultPlayedVideo())
+        }
+    }, [isLoading])
 
     return (
         <div className="flex">
@@ -56,7 +62,7 @@ const LearningCourseContent = () => {
             <div className="w-[75vw] border-r">
                 {courseDetail ? (
                     <ReactPlayer
-                        url={getDefaultPlayedVideo()}
+                        url={playingVideo}
                         ref={playerRef}
                         playing={false}
                         controls={true}

@@ -1,7 +1,8 @@
 import { LearningCourseLectures } from '@/containers/learn-course/learning-course-context'
+import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import { faCheckCircle, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import LecturesListLearnerAccordion from './components/lectures-list-learner-accordion'
 
 export interface ILearnerAccordionProps {
@@ -14,11 +15,21 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
     const { order, title, lectures } = props
     const [selfExpand, setSelfExpand] = useState(false)
 
+    const countCompletedLessons = (): number => {
+        let count = 0
+        lectures.forEach((lecture) => {
+            if (lecture.learned) {
+                count++
+            }
+        })
+        return count
+    }
+
     return (
         <>
             <div
-                className={`px-5 bg-course-section space-y-1 ${
-                    !selfExpand ? 'border-t border-x' : 'border'
+                className={`px-5 bg-course-section space-y-2 ${
+                    !selfExpand ? 'border-t' : 'border-y'
                 } border-border-box py-4 cursor-pointer`}
             >
                 <div
@@ -37,12 +48,22 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                         />
                     </div>
                 </div>
-                <div className="flex space-x-2">
-                    <FontAwesomeIcon
-                        icon={faCheckCircle}
-                        className="text-green-500 mt-0.5"
-                    />
-                    <div className="text-sm">{`0/${lectures.length}`}</div>
+                <div className="flex space-x-2 items-center">
+                    {countCompletedLessons() === lectures.length ? (
+                        <FontAwesomeIcon
+                            icon={faCheckCircle}
+                            className="text-green-500"
+                        />
+                    ) : (
+                        <FontAwesomeIcon
+                            icon={faCircle}
+                            className="text-description"
+                        />
+                    )}
+
+                    <div className="text-xs">{`${countCompletedLessons()}/${
+                        lectures.length
+                    }`}</div>
                 </div>
             </div>
             <LecturesListLearnerAccordion
