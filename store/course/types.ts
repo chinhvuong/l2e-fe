@@ -29,6 +29,7 @@ export interface CourseDetail {
         updatedAt: string
         walletAddress: string
     }
+    finalTest?: string
     name: string
     overview: string
     description: string

@@ -2,6 +2,7 @@ import LoadingScreen from '@/components/core/animate/loading-screen'
 import Input from '@/components/core/input'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Select from '@/components/core/select'
+import Select, { ActionMeta } from 'react-select'
 import UploadPreview from '@/components/core/upload-preview'
 import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
@@ -25,6 +26,8 @@ import {
 } from '@/utils'
 import { useEffect, useState } from 'react'
 import Title from '../components/title'
+import { QuizSelectType } from '@/store/quiz/types'
+import { getQuizSelect } from '@/store/quiz/selectors'
 
 export interface ILandingPageContainerProps {}
 
@@ -34,7 +37,7 @@ export default function LandingPageContainer() {
     const dispatch = useAppDispatch()
     const courseDetail = useAppSelector(getMyCourseDetail)
     const [isLoading, setIsLoading] = useState(true)
-
+    const [finalTestId, setFinalTestId] = useState('')
     const [title, setTitle] = useState<string>(courseDetail.name)
     const [subtitle, setSubtitle] = useState<string>(courseDetail.overview)
     const [language, setLanguage] = useState<string>(
@@ -50,7 +53,8 @@ export default function LandingPageContainer() {
     const [promotionalVideo, setPromotionalVideo] = useState<string>(
         courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',
     )
-
+    const quizSelect = useAppSelector(getQuizSelect)
+    const [selectedOption, setSelectedOption] = useState(null)
     useEffect(() => {
         if (courseDetail._id !== '') {
             setIsLoading(false)
@@ -104,6 +108,7 @@ export default function LandingPageContainer() {
         setPrice(value)
         dispatch(updateCoursePrice(parseInt(value)))
     }
+    const updatefinalTest = (values: QuizSelectType) => {}
     const handleDescriptionChange = (value: string) => {
         setDescription(value)
         dispatch(updateCourseDescription(value))
@@ -162,6 +167,18 @@ export default function LandingPageContainer() {
                                 updateInput={handlePriceChange}
                                 type="number"
                             ></Input>
+                        </div>
+                    </div>
+                    <div className="border-x border-b border-black">
+                        <div className="flex items-center space-x-5 mx-10 py-5">
+                            <div className="font-bold min-w-max">Quizzes</div>
+                            <div className="w-full bg-white rounded-[80px]">
+                                <Select
+                                    options={quizSelect}
+                                    defaultValue={selectedOption}
+                                    onChange={updatefinalTest}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="space-y-5">

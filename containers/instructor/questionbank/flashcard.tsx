@@ -13,7 +13,7 @@ export default function QuestionCard({
                 className="grid grid-cols-2
                 gap-2"
             >
-                {question.choices.map((choice, index) => (
+                {question?.choices.map((choice, index) => (
                     <div
                         key={index}
                         className={`inline-block ${

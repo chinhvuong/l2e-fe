@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
-import { COURSE_ID } from '@/constants/localStorage'
+import { COURSE_ID, QUESTION_ID, QUIZ_ID } from '@/constants/localStorage'
 import { UpdateAllQuestionState } from '@/store/questions'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import {
@@ -24,6 +24,7 @@ import {
     UpdateQuizzesState,
 } from '@/store/quiz'
 import { QuizDetailType } from '@/store/quiz/types'
+import { getQuizzez } from '@/store/quiz/selectors'
 export default function QuestionBankContainers() {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
@@ -53,6 +54,7 @@ export default function QuestionBankContainers() {
             },
         )
     const questionsData = useAppSelector(getQuestionsInfo)
+    const quizzezData = useAppSelector(getQuizzez)
     const goToCreateQuestionsPage = () => {
         dispatch(ClearQuizDetailState())
         dispatch(ClearQuestionState())
@@ -69,13 +71,14 @@ export default function QuestionBankContainers() {
         })
     }
     const goToUpdateQuestionsPage = (indext: number) => {
-        dispatch(UpdateDetailQuestionState(questionsData?.[indext]))
+        chosenQuestions(indext)
         router.push({
             pathname: router.pathname + '/update',
             query: { ...router.query },
         })
     }
     const chosenQuestions = (indext: number) => {
+        localStorage.setItem(QUESTION_ID, questionsData?.[indext]?._id)
         setPositionQuestion(indext)
         dispatch(UpdateDetailQuestionState(questionsData?.[indext]))
     }
