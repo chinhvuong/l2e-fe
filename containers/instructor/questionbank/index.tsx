@@ -107,21 +107,26 @@ export default function QuestionBankContainers() {
                         Question Bank
                     </h1>
                 </div>
-                <div className="flex flex-col justify-between leading-relaxed text-black">
-                    <div className="block">
-                        <QuestionCard
-                            question={questionsData?.[positionQuestion]}
-                        />
+                {questionsData?.[positionQuestion] !== undefined && (
+                    <div className="flex flex-col justify-between leading-relaxed text-black">
+                        <div className="block">
+                            <QuestionCard
+                                question={questionsData?.[positionQuestion]}
+                            />
+                        </div>
+                        <div className="flex h-full w-full m-auto"></div>
                     </div>
-                    <div className="flex h-full w-full m-auto"></div>
-                </div>
+                )}
                 <div className="block mr-80 min-w-0">
                     <div className="block leading-relaxed">
                         <section className="block m-0">
                             <div className="p-0">
                                 <section className="block ">
                                     <div className="block">
-                                        <div> Question</div>
+                                        <div className="flex basis-full text-3xl font-semibold">
+                                            {' '}
+                                            Question
+                                        </div>
                                         {questionsData.map((item, index) => (
                                             <div
                                                 key={index}
@@ -173,7 +178,9 @@ export default function QuestionBankContainers() {
                                                 </div>
                                             </div>
                                         ))}
-                                        <div>Quizzes</div>
+                                        <div className="flex basis-full text-3xl font-semibold">
+                                            Quizzes
+                                        </div>
                                     </div>
                                 </section>
                             </div>
