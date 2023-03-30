@@ -14,6 +14,7 @@ const initialState: CourseDetailState = {
             articles: '',
             exercise: '',
         },
+        finalTest: '',
         _id: '',
         owner: '',
         author: {
@@ -123,6 +124,9 @@ export const courseDetailSlice = createSlice({
         updateIdState(state, action: PayloadAction<string>) {
             state.courseDetail._id = action.payload
         },
+        updateFinaltestState(state, action: PayloadAction<string>) {
+            state.courseDetail.finalTest = action.payload
+        },
         resetCourseDetailStore() {
             return initialState
         },
@@ -150,6 +154,7 @@ export const {
     updateCourseIdState,
     updateIdState,
     resetCourseDetailStore,
+    updateFinaltestState,
 } = courseDetailSlice.actions
 
 export default courseDetailSlice.reducer

@@ -26,6 +26,7 @@ import {
 } from '@/store/course/intended-learners'
 import { getMyCourseDetail } from '@/store/course/selectors'
 import { CourseDetail } from '@/store/course/types'
+import { UpdateAllQuestionState } from '@/store/questions'
 import { UpdateQuizzesState } from '@/store/quiz'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
@@ -120,6 +121,16 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 onSuccess: (response) => {
                     console.log(response)
                     dispatch(UpdateQuizzesState(response?.data))
+                },
+            },
+        )
+    const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
+        useAPI.getMutation(
+            InstructorAPI.GET_QUESTIONS + '?courseId=' + courseId,
+            {
+                onError: () => {},
+                onSuccess: (response) => {
+                    dispatch(UpdateAllQuestionState(response?.data))
                 },
             },
         )

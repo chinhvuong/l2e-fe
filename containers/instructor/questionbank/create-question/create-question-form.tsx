@@ -182,9 +182,7 @@ export default function CreateQuestionPageContainer() {
                                                     question: '',
                                                     choices: [''],
                                                     correctAnswer: 0,
-                                                    courseId: String(
-                                                        router?.query?.slug,
-                                                    ),
+                                                    courseId: courseId,
                                                     medias: [''],
                                                 })
                                             }

@@ -256,19 +256,21 @@ export const Card: FC<CardProps> = ({
                         </div>
                     </div>
                 </div>
-                <div className="border-x border-b border-black">
-                    <div className="flex items-center space-x-5 mx-10 py-5">
-                        <div className="font-bold min-w-max">Quizzes</div>
-                        <div className="w-full bg-white rounded-[80px]">
-                            <Select
-                                options={quizSelect}
-                                defaultValue={selectedOption}
-                                isMulti
-                                onChange={updateLectureQuizzes}
-                            />
+                {quizSelect?.length > 0 && (
+                    <div className="border-x border-b border-black">
+                        <div className="flex items-center space-x-5 mx-10 py-5">
+                            <div className="font-bold min-w-max">Quizzes</div>
+                            <div className="w-full bg-white rounded-[80px]">
+                                <Select
+                                    options={quizSelect}
+                                    defaultValue={selectedOption}
+                                    isMulti
+                                    onChange={updateLectureQuizzes}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
                 <div className="border-x border-b border-black">
                     <Resource />
                 </div>

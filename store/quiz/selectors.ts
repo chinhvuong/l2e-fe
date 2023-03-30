@@ -1,5 +1,5 @@
 import { RootState } from '@/store'
-import { QuizSelectType } from './types'
+import { QuizDetailType, QuizSelectType } from './types'
 import { QuestionDetailType } from '@/store/questions/types'
 export const getQuizDetailInfo = (state: RootState) => {
     return state.quizzes.quizDetail
@@ -25,6 +25,7 @@ export const getQuestionsForQuiz = (state: RootState) => {
     }
     return newList
 }
+
 export const getQuestionsIdFromQuiz = (state: RootState) => {
     const newList: string[] = []
     if (state.quizzes.quizDetail.questions.length !== 0) {
@@ -34,6 +35,7 @@ export const getQuestionsIdFromQuiz = (state: RootState) => {
     }
     return newList
 }
+
 export const getQuizSelect = (state: RootState) => {
     const newList: QuizSelectType[] = []
     if (state.quizzes.quizzes.length !== 0) {
@@ -42,6 +44,16 @@ export const getQuizSelect = (state: RootState) => {
                 label: item.name,
                 value: item._id,
             })
+        })
+    }
+    return newList
+}
+
+export const getQuizzez = (state: RootState) => {
+    const newList: QuizDetailType[] = []
+    if (state.quizzes.quizzes.length !== 0) {
+        state.quizzes.quizzes.forEach((item) => {
+            newList.push(item)
         })
     }
     return newList

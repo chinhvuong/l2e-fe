@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
-import { COURSE_ID } from '@/constants/localStorage'
+import { COURSE_ID, QUESTION_ID, QUIZ_ID } from '@/constants/localStorage'
 import { UpdateAllQuestionState } from '@/store/questions'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import {
@@ -24,6 +24,7 @@ import {
     UpdateQuizzesState,
 } from '@/store/quiz'
 import { QuizDetailType } from '@/store/quiz/types'
+import { getQuizzez } from '@/store/quiz/selectors'
 export default function QuestionBankContainers() {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
@@ -53,6 +54,7 @@ export default function QuestionBankContainers() {
             },
         )
     const questionsData = useAppSelector(getQuestionsInfo)
+    const quizzezData = useAppSelector(getQuizzez)
     const goToCreateQuestionsPage = () => {
         dispatch(ClearQuizDetailState())
         dispatch(ClearQuestionState())
@@ -69,13 +71,14 @@ export default function QuestionBankContainers() {
         })
     }
     const goToUpdateQuestionsPage = (indext: number) => {
-        dispatch(UpdateDetailQuestionState(questionsData?.[indext]))
+        chosenQuestions(indext)
         router.push({
             pathname: router.pathname + '/update',
             query: { ...router.query },
         })
     }
     const chosenQuestions = (indext: number) => {
+        localStorage.setItem(QUESTION_ID, questionsData?.[indext]?._id)
         setPositionQuestion(indext)
         dispatch(UpdateDetailQuestionState(questionsData?.[indext]))
     }
@@ -104,21 +107,26 @@ export default function QuestionBankContainers() {
                         Question Bank
                     </h1>
                 </div>
-                <div className="flex flex-col justify-between leading-relaxed text-black">
-                    <div className="block">
-                        <QuestionCard
-                            question={questionsData?.[positionQuestion]}
-                        />
+                {questionsData?.[positionQuestion] !== undefined && (
+                    <div className="flex flex-col justify-between leading-relaxed text-black">
+                        <div className="block">
+                            <QuestionCard
+                                question={questionsData?.[positionQuestion]}
+                            />
+                        </div>
+                        <div className="flex h-full w-full m-auto"></div>
                     </div>
-                    <div className="flex h-full w-full m-auto"></div>
-                </div>
+                )}
                 <div className="block mr-80 min-w-0">
                     <div className="block leading-relaxed">
                         <section className="block m-0">
                             <div className="p-0">
                                 <section className="block ">
                                     <div className="block">
-                                        <div> Question</div>
+                                        <div className="flex basis-full text-3xl font-semibold">
+                                            {' '}
+                                            Question
+                                        </div>
                                         {questionsData.map((item, index) => (
                                             <div
                                                 key={index}
@@ -170,7 +178,9 @@ export default function QuestionBankContainers() {
                                                 </div>
                                             </div>
                                         ))}
-                                        <div>Quizzes</div>
+                                        <div className="flex basis-full text-3xl font-semibold">
+                                            Quizzes
+                                        </div>
                                     </div>
                                 </section>
                             </div>

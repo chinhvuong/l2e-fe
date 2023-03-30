@@ -16,6 +16,7 @@ import {
     updateCoursePrice,
     updateCoursePromotionalVideo,
     updateCourseThumbnail,
+    updateFinaltestState,
 } from '@/store/course'
 import { getMyCourseDetail } from '@/store/course/selectors'
 import {
@@ -25,6 +26,9 @@ import {
 } from '@/utils'
 import { useEffect, useState } from 'react'
 import Title from '../components/title'
+import { QuizSelectType } from '@/store/quiz/types'
+import { getQuizSelect } from '@/store/quiz/selectors'
+import SingleReactSelect from '@/components/core/select/singleselect'
 
 export interface ILandingPageContainerProps {}
 
@@ -34,7 +38,6 @@ export default function LandingPageContainer() {
     const dispatch = useAppDispatch()
     const courseDetail = useAppSelector(getMyCourseDetail)
     const [isLoading, setIsLoading] = useState(true)
-
     const [title, setTitle] = useState<string>(courseDetail.name)
     const [subtitle, setSubtitle] = useState<string>(courseDetail.overview)
     const [language, setLanguage] = useState<string>(
@@ -50,7 +53,7 @@ export default function LandingPageContainer() {
     const [promotionalVideo, setPromotionalVideo] = useState<string>(
         courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',
     )
-
+    const quizSelect = useAppSelector(getQuizSelect)
     useEffect(() => {
         if (courseDetail._id !== '') {
             setIsLoading(false)
@@ -72,6 +75,9 @@ export default function LandingPageContainer() {
             setPromotionalVideo(
                 courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',
             )
+            if (courseDetail.finalTest === '' && quizSelect.length > 0) {
+                dispatch(updateFinaltestState(quizSelect[0].value))
+            }
         }
     }, [courseDetail._id])
 
@@ -104,6 +110,7 @@ export default function LandingPageContainer() {
         setPrice(value)
         dispatch(updateCoursePrice(parseInt(value)))
     }
+
     const handleDescriptionChange = (value: string) => {
         setDescription(value)
         dispatch(updateCourseDescription(value))
@@ -164,6 +171,18 @@ export default function LandingPageContainer() {
                             ></Input>
                         </div>
                     </div>
+                    {quizSelect?.length > 0 && (
+                        <div className="border-x border-b border-black">
+                            <div className="flex items-center space-x-5 mx-10 py-5">
+                                <div className="font-bold min-w-max">
+                                    Final Test
+                                </div>
+                                <div className="w-full bg-white rounded-[80px]">
+                                    <SingleReactSelect quizzes={quizSelect} />
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <div className="space-y-5">
                         <RichTextEditor
                             label="Description"
