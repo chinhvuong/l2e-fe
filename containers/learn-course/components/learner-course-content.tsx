@@ -1,15 +1,14 @@
 import LearnerAccordion from '@/components/core/learner-accordion'
-import { CourseSectionWithLectures } from '@/store/course/types'
 import '@/styles/animations.scss'
+import {
+    LearningCourseSections,
+    useLearningCourseContext,
+} from '../learning-course-context'
 
-export interface ILearnerCourseContentProps {
-    sections: CourseSectionWithLectures[]
-}
+export default function LearnerCourseContent() {
+    const { courseDetail } = useLearningCourseContext()
 
-export default function LearnerCourseContent({
-    sections,
-}: ILearnerCourseContentProps) {
-    const getLearnerCourseContentUI = () => {
+    const getLearnerCourseContentUI = (sections: LearningCourseSections[]) => {
         return (
             <div className="border-b border-border-box">
                 {sections.map((section, index) => {
@@ -26,16 +25,12 @@ export default function LearnerCourseContent({
         )
     }
 
-    if (!sections) {
-        return <></>
-    }
-
     return (
         <div>
             <div className="font-semibold text-lg my-4 ml-5">
                 Course content
             </div>
-            {sections && getLearnerCourseContentUI()}
+            {courseDetail && getLearnerCourseContentUI(courseDetail.sections)}
         </div>
     )
 }

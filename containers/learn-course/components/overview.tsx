@@ -9,12 +9,12 @@ import { useLearningCourseContext } from '../learning-course-context'
 export interface ILearningOverviewDetailProps {}
 
 export default function LearningOverviewDetail() {
-    const { courseData } = useLearningCourseContext()
+    const { courseDetail } = useLearningCourseContext()
 
     const [showMore, setShowMore] = useState(false)
     useEffect(() => {
         setShowMore(true)
-    }, [courseData])
+    }, [courseDetail])
 
     const getUIContent = (content: string) => {
         let formattedData = content.replace(
@@ -30,19 +30,24 @@ export default function LearningOverviewDetail() {
             <div className="text-justify space-y-3">{parse(formattedData)}</div>
         )
     }
+
+    if (!courseDetail) {
+        return <></>
+    }
+
     return (
         <div id="overview" className="space-y-3 overflow-hidden relative">
             <div>
                 <div className="text-2xl font-bold">About this course</div>
                 <div className="grid grid-cols-12 py-3">
-                    <div className="col-span-8">{courseData.overview}</div>
+                    <div className="col-span-8">{courseDetail.overview}</div>
                 </div>
             </div>
             <Divider className="my-5" />
             <div className="grid grid-cols-12">
                 <div className="col-span-3">What you’ll learn</div>
                 <div className="col-span-8">
-                    {courseData.goals.map((item: string, index: number) => {
+                    {courseDetail.goals.map((item: string, index: number) => {
                         return (
                             <div
                                 className="flex items-start space-x-3 mb-2"
@@ -62,7 +67,7 @@ export default function LearningOverviewDetail() {
             <div className="grid grid-cols-12">
                 <div className="col-span-3">Requirement</div>
                 <div className="col-span-8 space-y-2">
-                    {courseData.requirements.map(
+                    {courseDetail.requirements.map(
                         (item: string, index: number) => {
                             return (
                                 <div className="flex items-start" key={index}>
@@ -81,8 +86,7 @@ export default function LearningOverviewDetail() {
             <div className="grid grid-cols-12">
                 <div className="col-span-3">Description</div>
                 <div className="col-span-8">
-                    {courseData.description &&
-                        getUIContent(courseData.description)}
+                    {getUIContent(courseDetail.description)}
                 </div>
             </div>
             {showMore && <ShowMore el="overview" elHeightPreview={600} />}
