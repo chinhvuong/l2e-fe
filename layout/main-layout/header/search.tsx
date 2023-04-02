@@ -1,12 +1,15 @@
-import { callAPI } from '@/api/axios-client'
+import { UserAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
+import useAPI from '@/api/hooks/useAPI'
+import useOutsideClick from '@/hooks/useOutSideClick'
+import { updateLoadingState } from '@/store/course'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import './style.scss'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { debounce } from 'lodash'
+import { debounce, noop } from 'lodash'
 import { useRouter } from 'next/router'
 import * as React from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import './style.scss'
 
 interface ISearch {
@@ -15,38 +18,70 @@ interface ISearch {
 
 export default function Search(props: ISearch) {
     const router = useRouter()
-    const [searchTerm, setSearchTerm] = useState('')
+    const [searchTerm, setSearchTerm] = useState(router.query.query)
     const [result, setResult] = useState<CoursePreview[]>([])
 
-    async function fetchData(e: React.ChangeEvent<HTMLInputElement>) {
-        const queryword = e.target.value
-        setSearchTerm(queryword)
-        const { data } = await callAPI(
-            'get',
-            '/course?limit=5&query=' + queryword,
-            {},
-        )
-        setResult(data)
+    const [openResultSelect, setOpenResultSelect] = useState(true)
+    const clickOutSideRef = React.useRef(null)
+    const dispatch = useDispatch()
+
+    useOutsideClick(clickOutSideRef, () => {
+        setOpenResultSelect(false)
+    })
+
+    const { mutate: getSearchResults } = useAPI.getMutation(
+        UserAPI.GET_ALL_COURSES + '?limit=5&query=' + searchTerm,
+        {
+            onSuccess(response) {
+                setResult(response.data)
+            },
+            onError: noop,
+        },
+    )
+
+    const handleGetSearchResults = (queryword: string) => {
+        if (queryword !== '') {
+            console.log('queryword', queryword)
+            setOpenResultSelect(true)
+            getSearchResults({})
+        } else {
+            setOpenResultSelect(false)
+        }
     }
-    const debounceLoadData = useCallback(debounce(fetchData, 600), [])
+
+    const debounceLoadData = useCallback(
+        debounce((queryword) => handleGetSearchResults(queryword), 600),
+        [],
+    )
     const goToSearchPageCourse = () => {
-        console.log(router.basePath)
-        router.replace('/course/search?query=' + searchTerm)
+        router.push(
+            {
+                pathname: '/course/search',
+                query: { query: searchTerm },
+            },
+            undefined,
+            { shallow: true },
+        )
     }
     const handleEnterEvent = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
+            dispatch(updateLoadingState(true))
             goToSearchPageCourse()
         }
     }
     useEffect(() => {
+        if (router.query.query) {
+            setSearchTerm(router.query.query)
+        }
         return () => {
             debounceLoadData.cancel()
         }
-    }, [])
+    }, [router.query.query])
+
     return (
         <div className="relative">
             <div
-                className={`w-[400px] xl:w-[200px] under_xl:hidden py-[10px] bg-white rounded-[80px] my-[20px] pl-[20px] flex items-center text-black ${
+                className={`w-[400px] xl:w-[200px] under_xl:w-full py-[10px] bg-white rounded-[80px] pl-[20px] flex items-center text-black ${
                     !props.darkTheme && 'border-[1px] border-black'
                 }`}
             >
@@ -55,29 +90,36 @@ export default function Search(props: ISearch) {
                     onClick={() => goToSearchPageCourse()}
                 />
                 <input
-                    className="ml-[20px] w-[320px] xl:w-[120px] outline-none"
-                    onChange={debounceLoadData}
+                    className="mx-[20px] w-full outline-none"
+                    onChange={(e) => {
+                        const queryword = e.target.value
+                        setSearchTerm(queryword)
+                        debounceLoadData(queryword)
+                    }}
                     type="text"
+                    value={searchTerm}
                     onKeyDown={handleEnterEvent}
                 ></input>
             </div>
             {result.length > 0 && (
-                <div className="absolute z-10 w-[400px] xl:w-[200px]">
-                    {result.map((f) => (
+                <div
+                    className={`absolute z-10 border border-description mt-[2px] w-full ${
+                        !openResultSelect && 'hidden'
+                    }`}
+                    onClick={() => setOpenResultSelect(!openResultSelect)}
+                    ref={clickOutSideRef}
+                >
+                    {result.map((item) => (
                         <div
-                            className={`flex bg-white items-center text-black py-[10px] hover:bg-gray-400`}
-                            key={f._id}
+                            className={`flex bg-white items-center text-black space-x-[18px] px-4 py-4 hover:bg-gray-300 cursor-pointer`}
+                            key={item._id}
                         >
-                            <FontAwesomeIcon
-                                icon={faMagnifyingGlass}
-                                className="pl-[18px]"
-                            />
+                            <FontAwesomeIcon icon={faMagnifyingGlass} />
                             <a
-                                className={`flex items-center pl-[18px] font-bold`}
-                                href={'course/' + f._id}
+                                className={`flex items-center font-bold line-clamp-2`}
+                                href={'course/' + item._id}
                             >
-                                {' '}
-                                {f.name}
+                                {item.name}
                             </a>
                         </div>
                     ))}
