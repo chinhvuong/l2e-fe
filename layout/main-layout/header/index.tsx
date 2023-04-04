@@ -29,12 +29,6 @@ const Header = (props: IHeader) => {
                 } ${props.darkTheme ? 'bg-second' : 'bg-white'}`}
             >
                 <div className="px-14 flex flex-wrap justify-around items-center 2xl:justify-center 2xl:space-x-[35px] xl:space-x-[15px] under_xl:justify-between">
-                    <FontAwesomeIcon
-                        icon={faBars}
-                        className={`hidden text-[25px] under_xl:block lg:mr-[100px] md:mr-[100px] sm:mr-[0px] cursor-pointer ${
-                            props.darkTheme ? 'text-white' : 'text-black'
-                        }`}
-                    />
                     <Logo darkTheme={props.darkTheme} />
                     <Search darkTheme={props.darkTheme} />
                     <Explore />
@@ -47,12 +41,6 @@ const Header = (props: IHeader) => {
                     >
                         About Us
                     </div>
-                    <FontAwesomeIcon
-                        icon={faBars}
-                        className={`hidden text-[25px] under_lg:block under_lg:mr-[0px] md:ml-[100px] ${
-                            !props.darkTheme ? 'text-white' : 'text-black'
-                        }`}
-                    />
                     <Wallet darkTheme={props.darkTheme} />
                 </div>
             </div>

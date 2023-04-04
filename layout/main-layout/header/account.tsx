@@ -39,10 +39,10 @@ const Account = (props: any) => {
         dispatch(updateLoginState(false))
     }
     return (
-        <div className="flex items-center justify-between sm:hidden lg:w-[150px] under_lg:hidden">
+        <div className="flex items-center justify-between lg:w-[150px]">
             <FontAwesomeIcon
                 icon={faBell}
-                className={`text-[25px] cursor-pointer ${
+                className={`text-[25px] cursor-pointer under_lg:hidden ${
                     !props.darkTheme ? 'text-black' : 'text-white'
                 }`}
             />
@@ -50,7 +50,7 @@ const Account = (props: any) => {
                 <img
                     src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
                     alt=""
-                    className="rounded-full h-[35px] w-[35px] mx-[35px] cursor-pointer"
+                    className="rounded-full h-[35px] w-[35px] under_lg:mx-0 mx-[35px] cursor-pointer"
                     onMouseEnter={() => setHoverUser(true)}
                     onMouseLeave={() => setHoverUser(false)}
                 />
@@ -74,6 +74,20 @@ const Account = (props: any) => {
                                 className="w-[16px]"
                             />
                             <div>Profile</div>
+                        </div>
+                        <div className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer hidden under_lg:flex">
+                            <FontAwesomeIcon
+                                icon={faBell}
+                                className="w-[16px]"
+                            />
+                            <div>Notification</div>
+                        </div>
+                        <div className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer hidden under_lg:flex">
+                            <FontAwesomeIcon
+                                icon={faWallet}
+                                className="w-[16px]"
+                            />
+                            <div>Wallet</div>
                         </div>
                         <div
                             className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
@@ -120,7 +134,7 @@ const Account = (props: any) => {
             </div>
             <FontAwesomeIcon
                 icon={faWallet}
-                className={`text-[25px] cursor-pointer ${
+                className={`text-[25px] cursor-pointer under_lg:hidden ${
                     !props.darkTheme ? 'text-black' : 'text-white'
                 }`}
             />
