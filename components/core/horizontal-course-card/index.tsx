@@ -5,7 +5,7 @@ import Router from 'next/router'
 import { CoursePreview } from '@/api/dto/course.dto'
 import { COURSE_ID } from '@/constants/localStorage'
 import { useAppDispatch } from '@/hooks'
-import { resetCourseDetailStore } from '@/store/course'
+import { resetCourseDetailStore, updateIdState } from '@/store/course'
 import { resetCurriculumStore } from '@/store/course/curriculum'
 import { resetIntendedLearnersStore } from '@/store/course/intended-learners'
 
@@ -43,65 +43,87 @@ export default function HorizontalCourseCard({
             Router.push(`/update-course/${data._id}/landing-page`)
         }
     }
+
+    const goToQuestionPage = (course: CoursePreview) => {
+        console.log(course._id)
+        localStorage.setItem(COURSE_ID, course._id)
+        dispatch(updateIdState(course._id))
+        Router.push(`${course._id}/question/`)
+    }
+
     return (
-        <div
-            className={`flex items-start space-x-5 cursor-pointer hover:bg-gray-300 ${className}`}
-            onClick={() => handleCourseClick()}
-        >
-            <img
-                src={
-                    data.thumbnail ??
-                    'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg'
-                }
-                alt=""
-                className="w-[25%] min-w-[170px]"
-            />
-            <div className="space-y-3">
-                <div>
-                    <div className="font-semibold text-xl line-clamp-2">
-                        {data.name}
-                    </div>
-                </div>
-                {showDetail && (
-                    <>
-                        <RatingStar
-                            id={data._id}
-                            ratingScore={data.rating}
-                            ratings={data.ratingCount.toString()}
-                        />
-                        <div className="font-bold text-xl">
-                            {data.price} USDT
+        <div className={`flex cursor-pointer hover:bg-gray-300 ${className}`}>
+            <div
+                className="flex w-full space-x-5"
+                onClick={() => handleCourseClick()}
+            >
+                <img
+                    src={
+                        data.thumbnail ??
+                        'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg'
+                    }
+                    alt=""
+                    className="w-[25%] min-w-[170px]"
+                />
+                <div className="space-y-3">
+                    <div>
+                        <div className="font-semibold text-xl line-clamp-2">
+                            {data.name}
                         </div>
-                    </>
-                )}
-                <div className="flex space-x-3">
-                    {showStatus && (
+                    </div>
+                    {showDetail && (
                         <>
-                            <Label
-                                name={
-                                    data.approved ? 'Approved' : 'Not Approved'
-                                }
-                                color={data.approved ? '#22C55E' : '#E11D48'}
+                            <RatingStar
+                                id={data._id}
+                                ratingScore={data.rating}
+                                ratings={data.ratingCount.toString()}
                             />
-                            <Label
-                                name={
-                                    data.approved && data.courseId
-                                        ? 'Minted'
-                                        : 'Not Minted'
-                                }
-                                color={
-                                    data.approved && data.courseId
-                                        ? '#22C55E'
-                                        : '#E11D48'
-                                }
-                            />
+                            <div className="font-bold text-xl">
+                                {data.price} USDT
+                            </div>
                         </>
                     )}
-                    <Label
-                        name={data.category.name}
-                        color={data.category.color}
-                    />
+                    <div className="flex space-x-3">
+                        {showStatus && (
+                            <>
+                                <Label
+                                    name={
+                                        data.approved
+                                            ? 'Approved'
+                                            : 'Not Approved'
+                                    }
+                                    color={
+                                        data.approved ? '#22C55E' : '#E11D48'
+                                    }
+                                />
+                                <Label
+                                    name={
+                                        data.approved && data.courseId
+                                            ? 'Minted'
+                                            : 'Not Minted'
+                                    }
+                                    color={
+                                        data.approved && data.courseId
+                                            ? '#22C55E'
+                                            : '#E11D48'
+                                    }
+                                />
+                            </>
+                        )}
+                        <Label
+                            name={data.category.name}
+                            color={data.category.color}
+                        />
+                    </div>
                 </div>
+            </div>
+            <div className="flex items-center pr-5">
+                <img
+                    src="/svgs/question.svg"
+                    alt=""
+                    className="w-10 cursor-pointer"
+                    onClick={() => goToQuestionPage(data)}
+                />
             </div>
         </div>
     )

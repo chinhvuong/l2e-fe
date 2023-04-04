@@ -3,7 +3,10 @@ import { updateLoadingState } from '@/store/course'
 import { updateLoginState } from '@/store/user'
 import useWeb3 from '@/wallet/hooks/useWeb3'
 import {
-    // faBars,
+    faCalendar,
+    faCalendarCheck,
+} from '@fortawesome/free-regular-svg-icons'
+import {
     faBell,
     faChalkboardTeacher,
     faGear,
@@ -12,6 +15,7 @@ import {
     faUser,
     faWallet,
 } from '@fortawesome/free-solid-svg-icons'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router from 'next/router'
 import { useState } from 'react'
@@ -19,6 +23,7 @@ import { useState } from 'react'
 const Account = (props: any) => {
     const [hoverUser, setHoverUser] = useState(false)
     const [hoverUserActions, setHoverUserActions] = useState(false)
+    const [isDailyAttendance, setIsDailyAttendance] = useState(false)
     const { disconnect } = useWeb3()
 
     const dispatch = useAppDispatch()
@@ -38,19 +43,41 @@ const Account = (props: any) => {
         localStorage.clear()
         dispatch(updateLoginState(false))
     }
+
     return (
-        <div className="flex items-center justify-between lg:w-[150px]">
+        <div className="relative flex items-center justify-between lg:w-[150px] space-x-10">
             <FontAwesomeIcon
                 icon={faBell}
                 className={`text-[25px] cursor-pointer under_lg:hidden ${
                     !props.darkTheme ? 'text-black' : 'text-white'
                 }`}
             />
+            <FontAwesomeIcon
+                icon={faWallet}
+                className={`text-[25px] under_2xl:mx-7 cursor-pointer under_lg:hidden ${
+                    !props.darkTheme ? 'text-black' : 'text-white'
+                }`}
+            />
+            {isDailyAttendance ? (
+                <FontAwesomeIcon
+                    icon={faCalendarCheck}
+                    className={`text-[25px] mb-0.5 under_2xl:mx-7 cursor-pointer under_lg:hidden ${
+                        !props.darkTheme ? 'text-black' : 'text-white'
+                    }`}
+                />
+            ) : (
+                <FontAwesomeIcon
+                    icon={faCalendar}
+                    className={`text-[25px] mb-0.5 under_2xl:mx-7 cursor-pointer under_lg:hidden ${
+                        !props.darkTheme ? 'text-black' : 'text-white'
+                    }`}
+                />
+            )}
             <div className="relative">
                 <img
                     src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
                     alt=""
-                    className="rounded-full h-[35px] w-[35px] under_lg:mx-0 mx-[35px] cursor-pointer"
+                    className="rounded-full h-[35px] w-[35px] under_lg:mx-0 cursor-pointer"
                     onMouseEnter={() => setHoverUser(true)}
                     onMouseLeave={() => setHoverUser(false)}
                 />
@@ -132,12 +159,6 @@ const Account = (props: any) => {
                     </div>
                 </div>
             </div>
-            <FontAwesomeIcon
-                icon={faWallet}
-                className={`text-[25px] cursor-pointer under_lg:hidden ${
-                    !props.darkTheme ? 'text-black' : 'text-white'
-                }`}
-            />
         </div>
     )
 }

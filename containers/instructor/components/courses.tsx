@@ -160,13 +160,6 @@ export default function InstructorCoursesContainer() {
         setSortBy(value)
     }
 
-    const goToQuestionPage = (course: CoursePreview) => {
-        console.log(course._id)
-        localStorage.setItem(COURSE_ID, course._id)
-        dispatch(updateIdState(course._id))
-        Router.push(`${course._id}/question/`)
-    }
-
     const isLoading = useMemo(() => {
         return (
             isLoadingSigner ||
@@ -246,14 +239,7 @@ export default function InstructorCoursesContainer() {
                                                     showStatus={true}
                                                     className="py-6"
                                                 />
-                                                <Button
-                                                    className="flex gap-4 p-1 text-sm"
-                                                    onClick={() =>
-                                                        goToQuestionPage(course)
-                                                    }
-                                                >
-                                                    <span>Question Bank</span>
-                                                </Button>
+
                                                 {index !==
                                                     allMyCourses.data.length -
                                                         1 && <Divider />}

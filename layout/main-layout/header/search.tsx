@@ -79,9 +79,9 @@ export default function Search(props: ISearch) {
     }, [router.query.query])
 
     return (
-        <div className="relative">
+        <div className="relative flex-grow">
             <div
-                className={`w-[400px] xl:w-[200px] under_xl:w-full py-[10px] bg-white rounded-[80px] pl-[20px] flex items-center text-black ${
+                className={`py-[10px] bg-white rounded-[80px] pl-[20px] flex items-center text-black ${
                     !props.darkTheme && 'border-[1px] border-black'
                 }`}
             >
