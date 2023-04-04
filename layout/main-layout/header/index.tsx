@@ -28,13 +28,10 @@ const Header = (props: IHeader) => {
                     props.darkTheme ? 'text-white' : 'text-black'
                 } ${props.darkTheme ? 'bg-second' : 'bg-white'}`}
             >
-                <div className="px-14 flex flex-wrap justify-around items-center 2xl:justify-center 2xl:space-x-[35px] xl:space-x-[15px] under_xl:justify-between">
+                <div className="px-14 flex flex-wrap items-center space-x-10 under_2xl:space-x-7">
                     <Logo darkTheme={props.darkTheme} />
                     <Search darkTheme={props.darkTheme} />
                     <Explore />
-                    <div className="cursor-pointer hover:text-primary-hover under_xl:hidden">
-                        Careers
-                    </div>
                     <div
                         className="cursor-pointer hover:text-primary-hover under_xl:hidden"
                         onClick={() => goToAboutUsPage()}
@@ -44,6 +41,9 @@ const Header = (props: IHeader) => {
                     <Wallet darkTheme={props.darkTheme} />
                 </div>
             </div>
+            {/* <div className="absolute top-0 z-50 w-full h-full bg-white">
+                123123123123123
+            </div> */}
         </>
     )
 }
