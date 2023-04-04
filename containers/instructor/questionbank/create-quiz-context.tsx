@@ -31,9 +31,9 @@ interface ICreateQuestionBankContext {
 export const CreateQuestionBankContext =
     createContext<ICreateQuestionBankContext>({} as ICreateQuestionBankContext)
 
-export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
-    children,
-}) => {
+export const CreateQuestionBankProvider: React.FC<
+    React.PropsWithChildren<{}>
+> = ({ children }) => {
     const dispatch = useAppDispatch()
     const questionListsDetail = useAppSelector(getQuestionsInfo)
     const quizzezDetail = useAppSelector(getQuizzez)
@@ -88,7 +88,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             {
                 onError: () => {},
                 onSuccess: (response) => {
-                    console.log(response)
                     dispatch(UpdateQuizzesState(response?.data))
                 },
             },
@@ -99,7 +98,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             if (quizId !== localStorage.getItem(QUIZ_ID)) {
                 setQuizId(localStorage.getItem(QUIZ_ID) ?? '')
             }
-            if (questionId !== localStorage.get(QUESTION_ID)) {
+            if (questionId !== localStorage.getItem(QUESTION_ID)) {
                 setQuestionId(localStorage.getItem(QUESTION_ID) ?? '')
             }
         } else {
@@ -114,7 +113,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 }
             }
         }
-    }, [courseId])
+    }, [courseId, questionId, quizId])
 
     const isLoading = useMemo(() => {
         return (

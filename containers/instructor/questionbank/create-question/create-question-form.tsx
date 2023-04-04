@@ -9,18 +9,20 @@ import FormikInput from '@/components/core/input/formik'
 import ChoicesArray from '@/components/core/input/formikarray'
 import FormikSelect from '@/components/core/select/formik'
 import MediaArray from '@/components/core/input/mediaformik'
-import { COURSE_ID } from '@/constants/localStorage'
+import { COURSE_ID, QUESTION_ID } from '@/constants/localStorage'
 import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
 import * as yup from 'yup'
 export interface ILandingPageContainerProps {}
 import { getQuestionDetailInfo } from '@/store/course/question/selectors'
 import { getMyCourseDetail } from '@/store/course/selectors'
+import { useCreateQuestionBankContext } from '../create-quiz-context'
+import { QuestionDetailType } from '@/store/questions/types'
+import { QuestionCreateType } from '@/api/dto/course.dto'
 export default function CreateQuestionPageContainer() {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
-    const detailQuestion = useAppSelector(getQuestionDetailInfo)
-    const detailCourse = useAppSelector(getMyCourseDetail)
+    const { questionDetail } = useCreateQuestionBankContext()
     const [isEdit, setEdit] = useState<boolean>(false)
     const schema = yup.object().shape({
         questions: yup
@@ -57,7 +59,7 @@ export default function CreateQuestionPageContainer() {
             },
         })
     const { mutate: updateQuestion, isLoading: isLoadingUpdateQuestion } =
-        useAPI.put(InstructorAPI.EDIT_QUESTION + '/' + detailQuestion._id, {
+        useAPI.put(InstructorAPI.EDIT_QUESTION + '/' + questionDetail._id, {
             onError: (errors) => {
                 console.log(errors)
             },
@@ -72,11 +74,10 @@ export default function CreateQuestionPageContainer() {
         initialValues: {
             questions: [
                 {
-                    question: detailQuestion.question,
-                    choices: detailQuestion.choices,
-                    correctAnswer: detailQuestion.correctAnswer,
-                    courseId: detailCourse._id,
-                    medias: detailQuestion.medias,
+                    question: questionDetail.question,
+                    choices: questionDetail.choices,
+                    correctAnswer: questionDetail.correctAnswer,
+                    medias: questionDetail.medias,
                 },
             ],
         },
@@ -91,7 +92,17 @@ export default function CreateQuestionPageContainer() {
                     medias: values.questions?.[0].medias,
                 })
             } else {
-                createQuestions(values.questions)
+                const listQuestions: QuestionCreateType[] = []
+                values.questions.forEach((question) => {
+                    listQuestions.push({
+                        question: question.question,
+                        choices: question.choices,
+                        correctAnswer: question.correctAnswer,
+                        medias: question.medias,
+                        courseId: courseId,
+                    })
+                })
+                createQuestions(listQuestions)
             }
         },
     })
@@ -102,10 +113,10 @@ export default function CreateQuestionPageContainer() {
                 setCourseId(String(localStorage.getItem(COURSE_ID)))
             }
         }
-        if (detailQuestion._id) {
+        if (questionDetail._id) {
             setEdit(true)
         }
-    }, [courseId, detailQuestion])
+    }, [courseId, questionDetail])
     return (
         <div>
             {!isEdit ? (
@@ -180,9 +191,8 @@ export default function CreateQuestionPageContainer() {
                                             onClick={() =>
                                                 arrayHelpers.push({
                                                     question: '',
-                                                    choices: [''],
+                                                    choices: ['', '', '', ''],
                                                     correctAnswer: 0,
-                                                    courseId: courseId,
                                                     medias: [''],
                                                 })
                                             }

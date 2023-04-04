@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import { useAppSelector } from '@/hooks'
 import { getLoadingState } from '@/store/course/selectors'
+import { CreateQuestionBankProvider } from '@/containers/instructor/questionbank/create-quiz-context'
 const Layout = ({ children }: { children: ReactChild }) => {
     const router = useRouter()
     const isLoading = useAppSelector(getLoadingState)
@@ -17,20 +18,22 @@ const Layout = ({ children }: { children: ReactChild }) => {
             : false
 
     return (
-        <div className="relative">
-            <LoadingScreen isLoading={isLoading} />
-            <Header darkTheme={darkTheme} />
-            <main id="main">
-                <div
-                    className="w-full app-transition main-transition h-full bg-white"
-                    id="content"
-                >
-                    <ToastContainer />
-                    {children}
-                </div>
-            </main>
-            <Footer />
-        </div>
+        <CreateQuestionBankProvider>
+            <div className="relative">
+                <LoadingScreen isLoading={isLoading} />
+                <Header darkTheme={darkTheme} />
+                <main id="main">
+                    <div
+                        className="w-full app-transition main-transition h-full bg-white"
+                        id="content"
+                    >
+                        <ToastContainer />
+                        {children}
+                    </div>
+                </main>
+                <Footer />
+            </div>
+        </CreateQuestionBankProvider>
     )
 }
 

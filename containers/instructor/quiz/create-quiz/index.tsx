@@ -27,8 +27,16 @@ import {
     getQuestionsIdFromQuiz,
 } from '@/store/quiz/selectors'
 import QuestionsListModal from '@/components/core/modal/formik-select-questions-modal'
+import { useCreateQuestionBankContext } from '../../questionbank/create-quiz-context'
 
 export default function CreateQuizPageContainer() {
+    const {
+        isLoading,
+        questionListsDetail,
+        quizzezDetail,
+        questionDetail,
+        quizDetail,
+    } = useCreateQuestionBankContext()
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
     const [isEdit, setEdit] = useState<boolean>(false)
@@ -56,7 +64,6 @@ export default function CreateQuizPageContainer() {
         },
     )
     const detailQuiz = useAppSelector(getQuizDetailInfo)
-    const questionsData = useAppSelector(getQuestionsForQuiz)
     const questionsIds = useAppSelector(getQuestionsIdFromQuiz)
     const { mutate: updateQuiz, isLoading: isLoadingUpdateQuiz } = useAPI.put(
         InstructorAPI.CREAT_QUIZ + '/' + detailQuiz._id,
@@ -148,7 +155,9 @@ export default function CreateQuizPageContainer() {
                                 <ErrorMessage name="name" />
                             </div>
                         </div>
-                        <QuestionsListModal questionsList={questionsData} />
+                        <QuestionsListModal
+                            questionsList={questionListsDetail}
+                        />
                         <div className="ml-[25px] text-sm mt-1 text-red-500">
                             <ErrorMessage name="questions" />
                         </div>

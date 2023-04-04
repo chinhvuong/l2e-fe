@@ -24,18 +24,16 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
         const { checked, name, value } = event.target
         if (checked) {
             setQuestions([...chosenQuestions, questionsList?.[parseInt(value)]])
-            if (props.updateQuiz) {
-                context.setFieldValue('questions', [
-                    ...context.values.questions,
-                    name,
-                ])
-                dispatch(
-                    UpdateQuestionsFromQuizState([
-                        ...chosenQuestions,
-                        questionsList?.[parseInt(value)],
-                    ]),
-                )
-            }
+            context.setFieldValue('questions', [
+                ...context.values.questions,
+                name,
+            ])
+            dispatch(
+                UpdateQuestionsFromQuizState([
+                    ...chosenQuestions,
+                    questionsList?.[parseInt(value)],
+                ]),
+            )
         } else {
             context.setFieldValue(
                 'questions',
