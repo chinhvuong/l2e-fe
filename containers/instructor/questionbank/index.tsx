@@ -26,6 +26,7 @@ import {
 import { QuizDetailType } from '@/store/quiz/types'
 import { getQuizzez } from '@/store/quiz/selectors'
 import { useCreateQuestionBankContext } from './create-quiz-context'
+import CreateQuestionPageContainer from './create-question/create-question-form'
 export default function QuestionBankContainers() {
     const {
         isLoading,
@@ -47,30 +48,19 @@ export default function QuestionBankContainers() {
             query: { ...router.query },
         })
     }
-    const goToUpdateQuizPage = (indext: number) => {
-        dispatch(UpdateQuizDetailState(quizlists?.[indext]))
-        router.push({
-            pathname: router.pathname + '/update/quiz',
-            query: {
-                ...router.query,
-                questionId: questionListsDetail?.[indext]._id,
-            },
-        })
-    }
-    const goToUpdateQuestionsPage = (indext: number) => {
+    const [showModal, setShowModal] = useState(false)
+    const openUpdateQuestionsPage = (indext: number) => {
         chosenQuestions(indext)
-        router.push({
-            pathname: router.pathname + '/update',
-            query: {
-                ...router.query,
-                questionId: questionListsDetail?.[indext]._id,
-            },
-        })
+        setShowModal(true)
     }
     const chosenQuestions = (indext: number) => {
         localStorage.setItem(QUESTION_ID, questionListsDetail?.[indext]?._id)
         setPositionQuestion(indext)
         dispatch(UpdateDetailQuestionState(questionListsDetail?.[indext]))
+    }
+    const openCreateQuestionsModal = () => {
+        dispatch(ClearQuestionState())
+        setShowModal(true)
     }
     return (
         <div>
@@ -144,7 +134,7 @@ export default function QuestionBankContainers() {
                                                                 <div className="text-black w-1/5">
                                                                     <FontAwesomeIcon
                                                                         onClick={() =>
-                                                                            goToUpdateQuestionsPage(
+                                                                            openUpdateQuestionsPage(
                                                                                 index,
                                                                             )
                                                                         }
@@ -169,14 +159,21 @@ export default function QuestionBankContainers() {
                         </section>
                     </div>
                 </div>
-                <div className="text-white justify-center flex flex-row">
-                    <Button
-                        className="flex items-center gap-4 p-1 text-sm"
-                        onClick={() => goToCreateQuestionsPage()}
-                    >
-                        <span>Create Question</span>
-                    </Button>
+                <div className="flex my-5 w-full">
+                    <div className="w-1/3"></div>
+                    {!showModal && (
+                        <Button
+                            className="flex items-center gap-4 p-1 text-sm w-1/5 h-1/3"
+                            onClick={() => openCreateQuestionsModal()}
+                        >
+                            <span>Create Question</span>
+                        </Button>
+                    )}
                 </div>
+                <CreateQuestionPageContainer
+                    showModal={showModal}
+                    OpenModal={setShowModal}
+                />
             </div>
         </div>
     )

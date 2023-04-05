@@ -1,28 +1,30 @@
-import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@/hooks'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Title from '@/containers/create-course/components/title'
 import { useFormik, FormikProvider, FieldArray } from 'formik'
-import { AddAllQuestionState } from '@/store/questions'
 import { useRouter } from 'next/router'
 import FormikInput from '@/components/core/input/formik'
 import ChoicesArray from '@/components/core/input/formikarray'
-import FormikSelect from '@/components/core/select/formik'
 import MediaArray from '@/components/core/input/mediaformik'
 import { COURSE_ID, QUESTION_ID } from '@/constants/localStorage'
 import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
 import * as yup from 'yup'
 export interface ILandingPageContainerProps {}
-import { getQuestionDetailInfo } from '@/store/course/question/selectors'
-import { getMyCourseDetail } from '@/store/course/selectors'
 import { useCreateQuestionBankContext } from '../create-quiz-context'
-import { QuestionDetailType } from '@/store/questions/types'
 import { QuestionCreateType } from '@/api/dto/course.dto'
-export default function CreateQuestionPageContainer() {
+import Button from '@/components/core/button'
+interface QuestionModal {
+    showModal: boolean
+    OpenModal: Dispatch<SetStateAction<boolean>>
+}
+export default function CreateQuestionPageModal({
+    showModal,
+    OpenModal,
+}: QuestionModal) {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
-    const { questionDetail } = useCreateQuestionBankContext()
+    const { questionDetail, getQuestionsList } = useCreateQuestionBankContext()
     const [isEdit, setEdit] = useState<boolean>(false)
     const schema = yup.object().shape({
         questions: yup
@@ -52,22 +54,18 @@ export default function CreateQuestionPageContainer() {
         useAPI.post(InstructorAPI.CREATE_QUESTIONS, {
             onError: () => {},
             onSuccess: (response) => {
-                router.push({
-                    pathname: router.pathname.replace('create', ''),
-                    query: { ...router.query },
-                })
+                getQuestionsList({})
+                OpenModal(false)
+                formik.resetForm()
             },
         })
     const { mutate: updateQuestion, isLoading: isLoadingUpdateQuestion } =
         useAPI.put(InstructorAPI.EDIT_QUESTION + '/' + questionDetail._id, {
-            onError: (errors) => {
-                console.log(errors)
-            },
+            onError: (errors) => {},
             onSuccess: (response) => {
-                router.push({
-                    pathname: router.pathname.replace('update', ''),
-                    query: { ...router.query },
-                })
+                getQuestionsList({})
+                OpenModal(false)
+                formik.resetForm()
             },
         })
     const formik = useFormik({
@@ -105,8 +103,8 @@ export default function CreateQuestionPageContainer() {
                 createQuestions(listQuestions)
             }
         },
+        enableReinitialize: true,
     })
-    const dispatch = useAppDispatch()
     useEffect(() => {
         if (router?.query?.slug !== null) {
             if (router?.query?.slug !== courseId) {
@@ -115,103 +113,136 @@ export default function CreateQuestionPageContainer() {
         }
         if (questionDetail._id) {
             setEdit(true)
+        } else {
+            setEdit(false)
         }
     }, [courseId, questionDetail])
     return (
-        <div>
-            {!isEdit ? (
-                <LoadingScreen isLoading={isLoadingCreateQuestion} />
-            ) : (
-                <LoadingScreen isLoading={isLoadingUpdateQuestion} />
-            )}
-            <FormikProvider value={formik}>
-                <form onSubmit={formik.handleSubmit}>
-                    <FieldArray
-                        name="questions"
-                        render={(arrayHelpers) => (
-                            <div>
-                                {formik.values.questions.map(
-                                    (question, index) => (
-                                        <div key={index}>
-                                            {!isEdit ? (
-                                                <Title
-                                                    title={
-                                                        'Create Question ' +
-                                                        (index + 1)
-                                                    }
-                                                />
-                                            ) : (
-                                                <Title
-                                                    title={'Edit Question '}
-                                                />
+        <>
+            <div className="flex w-full">
+                <div className="inset-10 z-50 w-full h-full bg-white border shadow-xl">
+                    {showModal && (
+                        <button
+                            className="bg-transparent border-0 text-black float-right"
+                            onClick={() => OpenModal(false)}
+                        >
+                            <span className="text-black opacity-7 h-6 w-6 text-xl block  py-0 ">
+                                X
+                            </span>
+                        </button>
+                    )}
+                </div>
+            </div>
+            {showModal ? (
+                <>
+                    <div className="inset-10 z-50 w-full h-full bg-white border shadow-xl focus:outline-none">
+                        {!isEdit ? (
+                            <LoadingScreen
+                                isLoading={isLoadingCreateQuestion}
+                            />
+                        ) : (
+                            <LoadingScreen
+                                isLoading={isLoadingUpdateQuestion}
+                            />
+                        )}
+                        <FormikProvider value={formik}>
+                            <form onSubmit={formik.handleSubmit}>
+                                <FieldArray
+                                    name="questions"
+                                    render={(arrayHelpers) => (
+                                        <div>
+                                            {formik.values.questions.map(
+                                                (question, index) => (
+                                                    <div key={index}>
+                                                        {!isEdit ? (
+                                                            <Title
+                                                                title={
+                                                                    'Create Question ' +
+                                                                    (index + 1)
+                                                                }
+                                                            />
+                                                        ) : (
+                                                            <Title
+                                                                title={
+                                                                    'Edit Question '
+                                                                }
+                                                            />
+                                                        )}
+                                                        <div className="py-10 px-14 space-y-5">
+                                                            <FormikInput
+                                                                name={`questions[${index}].question`}
+                                                                index={index}
+                                                                label="Question Content"
+                                                                placeholder="Insert your question content."
+                                                            />
+                                                            <ChoicesArray
+                                                                arrayname={`questions[${index}].choices`}
+                                                                index={index}
+                                                                label="Choices Content"
+                                                                correctAnswername={`questions[${index}].correctAnswer`}
+                                                            />
+                                                            <MediaArray
+                                                                arrayname={`questions[${index}].medias`}
+                                                                index={index}
+                                                                name="medias"
+                                                                label="Medias Content"
+                                                            />
+                                                            {index > 0 &&
+                                                                !isEdit && (
+                                                                    <button
+                                                                        className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-red-400 w-full"
+                                                                        onClick={() =>
+                                                                            arrayHelpers.remove(
+                                                                                index,
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        REMOVE
+                                                                        QUESTIONS
+                                                                    </button>
+                                                                )}
+                                                        </div>
+                                                    </div>
+                                                ),
                                             )}
-                                            <div className="py-10 px-14 space-y-5">
-                                                <FormikInput
-                                                    name={`questions[${index}].question`}
-                                                    index={index}
-                                                    label="Question Content"
-                                                    placeholder="Insert your question content."
-                                                />
-                                                <ChoicesArray
-                                                    arrayname={`questions[${index}].choices`}
-                                                    index={index}
-                                                    label="Choices Content"
-                                                />
-                                                <MediaArray
-                                                    arrayname={`questions[${index}].medias`}
-                                                    index={index}
-                                                    name="medias"
-                                                    label="Medias Content"
-                                                />
-                                                <FormikSelect
-                                                    index={index}
-                                                    name={`questions[${index}].correctAnswer`}
-                                                    label="Correct Answer"
-                                                />
-                                                {index > 0 && !isEdit && (
+                                            <div className="flex space-y-5 ">
+                                                {!isEdit && (
                                                     <button
-                                                        className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-red-400 w-full"
+                                                        className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-green-400 w-full"
                                                         onClick={() =>
-                                                            arrayHelpers.remove(
-                                                                index,
-                                                            )
+                                                            arrayHelpers.push({
+                                                                question: '',
+                                                                choices: [
+                                                                    '',
+                                                                    '',
+                                                                    '',
+                                                                    '',
+                                                                ],
+                                                                correctAnswer: 0,
+                                                                medias: [''],
+                                                            })
                                                         }
                                                     >
-                                                        REMOVE QUESTIONS
+                                                        ADD QUESTIONS
                                                     </button>
                                                 )}
                                             </div>
                                         </div>
-                                    ),
-                                )}
-                                <div className="flex space-y-5 ">
-                                    {!isEdit && (
-                                        <button
-                                            className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-green-400 w-full"
-                                            onClick={() =>
-                                                arrayHelpers.push({
-                                                    question: '',
-                                                    choices: ['', '', '', ''],
-                                                    correctAnswer: 0,
-                                                    medias: [''],
-                                                })
-                                            }
-                                        >
-                                            ADD QUESTIONS
-                                        </button>
                                     )}
-                                </div>
-                            </div>
-                        )}
-                    />
-                    <button
-                        type="submit"
-                        className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-primary w-full my-6"
-                    >
-                        {isEdit ? 'EDIT QUESTION' : 'CREATE QUESTIONS'}
-                    </button>
-                </form>
-            </FormikProvider>
-        </div>
+                                />
+                                <button
+                                    type="submit"
+                                    className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-primary w-full my-6"
+                                >
+                                    {isEdit
+                                        ? 'EDIT QUESTION'
+                                        : 'CREATE QUESTIONS'}
+                                </button>
+                            </form>
+                        </FormikProvider>
+                    </div>
+                </>
+            ) : null}
+        </>
     )
 }
