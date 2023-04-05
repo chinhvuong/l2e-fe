@@ -4,15 +4,15 @@ import { COURSE_ID, QUESTION_ID, QUIZ_ID } from '@/constants/localStorage'
 import { QuestionDetailType } from '@/store/questions/types'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { QuizDetailType } from '@/store/quiz/types'
-import {
-    UpdateCourseIdState,
-    UpdateQuizDetailState,
-    UpdateQuizzesState,
-} from '@/store/quiz'
+import { UpdateQuizDetailState, UpdateQuizzesState } from '@/store/quiz'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { getQuestionsInfo } from '@/store/questions/selectors'
-import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
+import {
+    getQuestionsIdFromQuiz,
+    getQuizDetailInfo,
+    getQuizzez,
+} from '@/store/quiz/selectors'
 import { UpdateAllQuestionState } from '@/store/questions'
 import { getQuestionDetailInfo } from '@/store/course/question/selectors'
 import { UpdateDetailQuestionState } from '@/store/course/question'
@@ -26,19 +26,21 @@ interface ICreateQuestionBankContext {
     quizzezDetail: QuizDetailType[]
     quizDetail: QuizDetailType
     questionDetail: QuestionDetailType
+    questionIdsFromQuiz: string[]
 }
 
 export const CreateQuestionBankContext =
     createContext<ICreateQuestionBankContext>({} as ICreateQuestionBankContext)
 
-export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
-    children,
-}) => {
+export const CreateQuestionBankProvider: React.FC<
+    React.PropsWithChildren<{}>
+> = ({ children }) => {
     const dispatch = useAppDispatch()
     const questionListsDetail = useAppSelector(getQuestionsInfo)
     const quizzezDetail = useAppSelector(getQuizzez)
     const quizDetail = useAppSelector(getQuizDetailInfo)
     const questionDetail = useAppSelector(getQuestionDetailInfo)
+    const questionIdsFromQuiz = useAppSelector(getQuestionsIdFromQuiz)
     const [courseId, setCourseId] = useState('')
     const [quizId, setQuizId] = useState('')
     const [questionId, setQuestionId] = useState('')
@@ -78,7 +80,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 onError: () => {},
                 onSuccess: (response) => {
                     dispatch(UpdateAllQuestionState(response?.data))
-                    dispatch(UpdateCourseIdState(courseId))
                 },
             },
         )
@@ -88,7 +89,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             {
                 onError: () => {},
                 onSuccess: (response) => {
-                    console.log(response)
                     dispatch(UpdateQuizzesState(response?.data))
                 },
             },
@@ -99,7 +99,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             if (quizId !== localStorage.getItem(QUIZ_ID)) {
                 setQuizId(localStorage.getItem(QUIZ_ID) ?? '')
             }
-            if (questionId !== localStorage.get(QUESTION_ID)) {
+            if (questionId !== localStorage.getItem(QUESTION_ID)) {
                 setQuestionId(localStorage.getItem(QUESTION_ID) ?? '')
             }
         } else {
@@ -114,7 +114,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 }
             }
         }
-    }, [courseId])
+    }, [courseId, questionId, quizId])
 
     const isLoading = useMemo(() => {
         return (
@@ -142,6 +142,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 quizzezDetail,
                 quizDetail,
                 questionDetail,
+                questionIdsFromQuiz,
             }}
         >
             {children}

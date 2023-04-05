@@ -119,18 +119,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             {
                 onError: () => {},
                 onSuccess: (response) => {
-                    console.log(response)
                     dispatch(UpdateQuizzesState(response?.data))
-                },
-            },
-        )
-    const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
-        useAPI.getMutation(
-            InstructorAPI.GET_QUESTIONS + '?courseId=' + courseId,
-            {
-                onError: () => {},
-                onSuccess: (response) => {
-                    dispatch(UpdateAllQuestionState(response?.data))
                 },
             },
         )

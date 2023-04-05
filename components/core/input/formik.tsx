@@ -51,10 +51,6 @@ export default function FormikInput({
         }
     }, [input])
 
-    const getInputCharLeft = () => {
-        return charLimit?.maxLength ? charLimit?.maxLength - input.length : 0
-    }
-
     return (
         <div>
             {label && <div className="font-bold ml-[25px] pb-2">{label}</div>}
@@ -66,21 +62,13 @@ export default function FormikInput({
                 } space-x-5 ${widtharray ? 'w-4/5' : 'w-full'}`}
             >
                 <input
-                    type={type ?? 'text'}
+                    type="text"
                     name={name}
-                    defaultValue={String(
-                        context.values.questions?.[index].question,
-                    )}
-                    minLength={charLimit?.minLength}
-                    maxLength={charLimit?.maxLength}
-                    placeholder={placeholder}
+                    value={context.values.questions?.[index].question}
                     className="w-full outline-none"
                     autoComplete="off"
                     onChange={context.handleChange}
                 />
-                <div className={`${!charLimit?.maxLength && 'hidden'}`}>
-                    {getInputCharLeft()}
-                </div>
             </div>
             {validate && (
                 <div className="ml-[25px] text-sm mt-1 text-red-500">

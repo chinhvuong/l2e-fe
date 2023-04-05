@@ -24,6 +24,7 @@ export interface IInputProps {
     arrayname: string
     fieldtype?: string | ComponentType<void | FieldArrayRenderProps> | undefined
     index: number
+    correctAnswername: string
 }
 
 export interface arrayInput {
@@ -31,6 +32,7 @@ export interface arrayInput {
         {
             choices?: string[]
             medias?: string[]
+            correctAnswer?: number
         },
     ]
 }
@@ -40,6 +42,7 @@ export default function ChoicesArray({
     defaultValue,
     index,
     label,
+    correctAnswername,
 }: IInputProps) {
     const input = defaultValue ?? ''
     const [isTyped, setIsTyped] = useState(false)
@@ -49,7 +52,6 @@ export default function ChoicesArray({
             setIsTyped(true)
         }
     }, [input])
-
     return (
         <FieldArray
             name={arrayname}
@@ -88,7 +90,31 @@ export default function ChoicesArray({
                                                 )}
                                             />
                                         </div>
-                                        <div className="w-1/5  space-x-5 mx-[25px]  items-center justify-between">
+                                        <div className="w-1/10  space-x-5 mx-[25px]  items-center justify-between">
+                                            <input
+                                                type="radio"
+                                                name={correctAnswername}
+                                                value={indext}
+                                                className="w-full outline-none"
+                                                autoComplete="off"
+                                                onChange={(event) =>
+                                                    context.setFieldValue(
+                                                        String(
+                                                            correctAnswername,
+                                                        ),
+                                                        parseInt(
+                                                            indext.toString(),
+                                                        ),
+                                                    )
+                                                }
+                                                checked={
+                                                    context.values.questions?.[
+                                                        index
+                                                    ].correctAnswer === indext
+                                                }
+                                            />
+                                        </div>
+                                        <div className="w-1/10  space-x-5 mx-[25px]  items-center justify-between">
                                             {indext > 3 && (
                                                 <button
                                                     className="rounded-[80px] px-[25px] border-[1px] text-white bg-red-400"
