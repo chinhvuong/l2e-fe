@@ -4,15 +4,15 @@ import { COURSE_ID, QUESTION_ID, QUIZ_ID } from '@/constants/localStorage'
 import { QuestionDetailType } from '@/store/questions/types'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { QuizDetailType } from '@/store/quiz/types'
-import {
-    UpdateCourseIdState,
-    UpdateQuizDetailState,
-    UpdateQuizzesState,
-} from '@/store/quiz'
+import { UpdateQuizDetailState, UpdateQuizzesState } from '@/store/quiz'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { getQuestionsInfo } from '@/store/questions/selectors'
-import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
+import {
+    getQuestionsIdFromQuiz,
+    getQuizDetailInfo,
+    getQuizzez,
+} from '@/store/quiz/selectors'
 import { UpdateAllQuestionState } from '@/store/questions'
 import { getQuestionDetailInfo } from '@/store/course/question/selectors'
 import { UpdateDetailQuestionState } from '@/store/course/question'
@@ -26,6 +26,7 @@ interface ICreateQuestionBankContext {
     quizzezDetail: QuizDetailType[]
     quizDetail: QuizDetailType
     questionDetail: QuestionDetailType
+    questionIdsFromQuiz: string[]
 }
 
 export const CreateQuestionBankContext =
@@ -39,6 +40,7 @@ export const CreateQuestionBankProvider: React.FC<
     const quizzezDetail = useAppSelector(getQuizzez)
     const quizDetail = useAppSelector(getQuizDetailInfo)
     const questionDetail = useAppSelector(getQuestionDetailInfo)
+    const questionIdsFromQuiz = useAppSelector(getQuestionsIdFromQuiz)
     const [courseId, setCourseId] = useState('')
     const [quizId, setQuizId] = useState('')
     const [questionId, setQuestionId] = useState('')
@@ -78,7 +80,6 @@ export const CreateQuestionBankProvider: React.FC<
                 onError: () => {},
                 onSuccess: (response) => {
                     dispatch(UpdateAllQuestionState(response?.data))
-                    dispatch(UpdateCourseIdState(courseId))
                 },
             },
         )
@@ -141,6 +142,7 @@ export const CreateQuestionBankProvider: React.FC<
                 quizzezDetail,
                 quizDetail,
                 questionDetail,
+                questionIdsFromQuiz,
             }}
         >
             {children}

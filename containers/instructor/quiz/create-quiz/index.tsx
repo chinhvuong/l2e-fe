@@ -22,8 +22,13 @@ interface QuizModal {
     OpenModal: Dispatch<SetStateAction<boolean>>
 }
 export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
-    const { isLoading, questionListsDetail, quizDetail, getQuizzesList } =
-        useCreateQuestionBankContext()
+    const {
+        isLoading,
+        questionListsDetail,
+        quizDetail,
+        getQuizzesList,
+        questionIdsFromQuiz,
+    } = useCreateQuestionBankContext()
     const [courseId, setCourseId] = useState<string>('')
     const [isEdit, setEdit] = useState<boolean>(false)
     const { mutate: createQuiz, isLoading: isLoadingCreateQuiz } = useAPI.post(
@@ -37,7 +42,6 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
             },
         },
     )
-    const questionsIds = useAppSelector(getQuestionsIdFromQuiz)
     const { mutate: updateQuiz, isLoading: isLoadingUpdateQuiz } = useAPI.put(
         InstructorAPI.CREAT_QUIZ + '/' + quizDetail._id,
         {
@@ -67,7 +71,7 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
     const formik = useFormik({
         initialValues: {
             name: quizDetail.name,
-            questions: [] || questionsIds,
+            questions: questionIdsFromQuiz,
         },
         enableReinitialize: true,
         validationSchema: schema,

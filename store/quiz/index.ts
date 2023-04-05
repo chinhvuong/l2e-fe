@@ -65,9 +65,6 @@ export const quizzesSlice = createSlice({
             const newQuiz: QuizDetailType = action.payload
             state.quizDetail = newQuiz
         },
-        UpdateCourseIdState(state, action: PayloadAction<string>) {
-            state.quizDetail.courseId = action.payload
-        },
         UpdateQuestionsFromQuizState(
             state,
             action: PayloadAction<QuestionDetailType[]>,
@@ -114,7 +111,6 @@ export const quizzesSlice = createSlice({
 export const {
     UpdateQuizzesState,
     UpdateQuizDetailState,
-    UpdateCourseIdState,
     UpdateQuestionsFromQuizState,
     ClearQuizDetailState,
     UpdateQuestionsListForQuizState,

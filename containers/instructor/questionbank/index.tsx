@@ -19,7 +19,6 @@ import {
 import { getQuestionDetailInfo } from '@/store/course/question/selectors'
 import {
     ClearQuizDetailState,
-    UpdateCourseIdState,
     UpdateQuizDetailState,
     UpdateQuizzesState,
 } from '@/store/quiz'
@@ -42,14 +41,7 @@ export default function QuestionBankContainers() {
     const dispatch = useAppDispatch()
     const [quizlists, setQuizlists] = useState<QuizDetailType[]>([])
     const [positionQuestion, setPositionQuestion] = useState<number>(0)
-    const goToCreateQuestionsPage = () => {
-        dispatch(ClearQuizDetailState())
-        dispatch(ClearQuestionState())
-        router.push({
-            pathname: router.pathname + '/create',
-            query: { ...router.query },
-        })
-    }
+    const [positionQuiz, setPositionQuiz] = useState<number>(0)
     const [showModal, setShowModal] = useState(false)
     const [showQuizModal, setShowQuizModal] = useState(false)
     const openUpdateQuestionsPage = (indext: number) => {
@@ -60,6 +52,15 @@ export default function QuestionBankContainers() {
         localStorage.setItem(QUESTION_ID, questionListsDetail?.[indext]?._id)
         setPositionQuestion(indext)
         dispatch(UpdateDetailQuestionState(questionListsDetail?.[indext]))
+    }
+    const chosenQuiz = (indext: number) => {
+        localStorage.setItem(QUIZ_ID, quizzezDetail?.[indext]?._id)
+        setPositionQuiz(indext)
+        dispatch(UpdateQuizDetailState(quizzezDetail?.[indext]))
+    }
+    const openUpdateQuizPage = (indext: number) => {
+        chosenQuiz(indext)
+        setShowQuizModal(true)
     }
     const openCreateQuestionsModal = () => {
         dispatch(ClearQuestionState())
@@ -160,6 +161,43 @@ export default function QuestionBankContainers() {
                                         <div className="flex basis-full text-3xl font-semibold">
                                             Quizzes
                                         </div>
+                                        {quizzezDetail?.map((item, index) => (
+                                            <div
+                                                key={index}
+                                                className="p-0.25 rounded inline-block shadow-3xl min-h-r w-full hover:bg-gray-400"
+                                            >
+                                                <div className="p-4 w-full block">
+                                                    <div
+                                                        className="inline-block float-left w-4/5 mt-2 align-top"
+                                                        onClick={() =>
+                                                            chosenQuiz(index)
+                                                        }
+                                                    >
+                                                        <div className="py-0 px-2 flex">
+                                                            <div className="text-black w-2/5">
+                                                                <span className="text-black">
+                                                                    {item.name}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-black w-2/5 px-4"></div>
+                                                            <div className="text-black w-1/5">
+                                                                <FontAwesomeIcon
+                                                                    onClick={() =>
+                                                                        openUpdateQuizPage(
+                                                                            index,
+                                                                        )
+                                                                    }
+                                                                    className="hover:bg-gray-700 h-8 items-center pb-3"
+                                                                    icon={
+                                                                        faEdit
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </section>
                             </div>
