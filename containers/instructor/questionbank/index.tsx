@@ -26,7 +26,9 @@ import {
 import { QuizDetailType } from '@/store/quiz/types'
 import { getQuizzez } from '@/store/quiz/selectors'
 import { useCreateQuestionBankContext } from './create-quiz-context'
-import CreateQuestionPageContainer from './create-question/create-question-form'
+import CreateQuestionModal from './create-question/create-question-form'
+import CreateQuizModal from '../quiz/create-quiz'
+
 export default function QuestionBankContainers() {
     const {
         isLoading,
@@ -49,6 +51,7 @@ export default function QuestionBankContainers() {
         })
     }
     const [showModal, setShowModal] = useState(false)
+    const [showQuizModal, setShowQuizModal] = useState(false)
     const openUpdateQuestionsPage = (indext: number) => {
         chosenQuestions(indext)
         setShowModal(true)
@@ -61,6 +64,10 @@ export default function QuestionBankContainers() {
     const openCreateQuestionsModal = () => {
         dispatch(ClearQuestionState())
         setShowModal(true)
+    }
+    const openCreateQuizModal = () => {
+        dispatch(ClearQuizDetailState())
+        setShowQuizModal(true)
     }
     return (
         <div>
@@ -166,13 +173,28 @@ export default function QuestionBankContainers() {
                             className="flex items-center gap-4 p-1 text-sm w-1/5 h-1/3"
                             onClick={() => openCreateQuestionsModal()}
                         >
-                            <span>Create Question</span>
+                            <span>Create Questions</span>
                         </Button>
                     )}
                 </div>
-                <CreateQuestionPageContainer
+                <CreateQuestionModal
                     showModal={showModal}
                     OpenModal={setShowModal}
+                />
+                <div className="flex my-5 w-full">
+                    <div className="w-1/3"></div>
+                    {!showModal && (
+                        <Button
+                            className="flex items-center gap-4 p-1 text-sm w-1/5 h-1/3"
+                            onClick={() => openCreateQuizModal()}
+                        >
+                            <span>Create Quiz</span>
+                        </Button>
+                    )}
+                </div>
+                <CreateQuizModal
+                    showModal={showQuizModal}
+                    OpenModal={setShowQuizModal}
                 />
             </div>
         </div>

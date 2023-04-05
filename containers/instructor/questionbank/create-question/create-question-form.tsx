@@ -18,7 +18,7 @@ interface QuestionModal {
     showModal: boolean
     OpenModal: Dispatch<SetStateAction<boolean>>
 }
-export default function CreateQuestionPageModal({
+export default function CreateQuestionModal({
     showModal,
     OpenModal,
 }: QuestionModal) {
