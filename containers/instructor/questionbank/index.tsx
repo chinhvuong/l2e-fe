@@ -14,63 +14,51 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import CreateQuizModal from '../quiz/create-quiz'
 import CreateQuestionModal from './create-question/create-question-form'
-import { useCreateQuestionBankContext } from './create-quiz-context'
 import QuestionCard from './flashcard'
 import QuestionModal from '@/components/core/modal/question-modal'
 import { QuestionDetailType } from '@/store/questions/types'
+import { faDeleteLeft, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 
 export default function QuestionBankContainers() {
-    const {
-        isLoading,
-        questionListsDetail,
-        quizzezDetail,
-        questionDetail,
-        quizDetail,
-    } = useCreateQuestionBankContext()
-    const router = useRouter()
-    const [courseId, setCourseId] = useState<string>('')
+    const { questionListsDetail, deleteQuestion } = useCreateCourseContext()
+    const [isLoading, setIsLoading] = useState(true)
     const dispatch = useAppDispatch()
-    const [quizlists, setQuizlists] = useState<QuizDetailType[]>([])
     const [positionQuestion, setPositionQuestion] = useState<number>(0)
-    const [positionQuiz, setPositionQuiz] = useState<number>(0)
     const [showModal, setShowModal] = useState(false)
     const [showViewQuestionModal, setShowViewQuestionModal] = useState(false)
     const [selectedQuestion, setSelectedQuestion] =
         useState<QuestionDetailType>({} as QuestionDetailType)
-    const [showQuizModal, setShowQuizModal] = useState(false)
     const openUpdateQuestionsPage = (indext: number) => {
         chosenQuestions(indext)
         setShowModal(true)
+    }
+    const deleteQuestionAction = (indext: number) => {
+        localStorage.setItem(QUESTION_ID, questionListsDetail?.[indext]?._id)
+        deleteQuestion({})
+        localStorage.removeItem(QUESTION_ID)
     }
     const chosenQuestions = (indext: number) => {
         localStorage.setItem(QUESTION_ID, questionListsDetail?.[indext]?._id)
         setPositionQuestion(indext)
         dispatch(UpdateDetailQuestionState(questionListsDetail?.[indext]))
     }
-    const chosenQuiz = (indext: number) => {
-        localStorage.setItem(QUIZ_ID, quizzezDetail?.[indext]?._id)
-        setPositionQuiz(indext)
-        dispatch(UpdateQuizDetailState(quizzezDetail?.[indext]))
-    }
-    const openUpdateQuizPage = (indext: number) => {
-        chosenQuiz(indext)
-        setShowQuizModal(true)
-    }
+
     const openCreateQuestionsModal = () => {
         dispatch(ClearQuestionState())
         setShowModal(true)
-    }
-    const openCreateQuizModal = () => {
-        dispatch(ClearQuizDetailState())
-        setShowQuizModal(true)
     }
 
     useEffect(() => {
         if (Object.keys(selectedQuestion).length !== 0) {
             setShowViewQuestionModal(true)
         }
-    }, [selectedQuestion])
-
+        if (questionListsDetail?.[0]?._id !== '') {
+            setIsLoading(false)
+        }
+    }, [selectedQuestion, questionListsDetail])
+    useHideFirstEnterLoadingScreen()
     return (
         <div>
             <LoadingScreen isLoading={isLoading} />
@@ -129,44 +117,17 @@ export default function QuestionBankContainers() {
                                         className="cursor-pointer h-6 items-center text-black"
                                         icon={faEdit}
                                     />
+                                    <FontAwesomeIcon
+                                        onClick={() =>
+                                            deleteQuestionAction(index)
+                                        }
+                                        className="cursor-pointer h-6 items-center text-black"
+                                        icon={faTrash}
+                                    />
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <div className="flex basis-full text-3xl font-semibold">
-                        Quizzes
-                    </div>
-                    {quizzezDetail?.map((item, index) => (
-                        <div
-                            key={index}
-                            className="p-0.25 rounded inline-block shadow-3xl min-h-r w-full hover:bg-gray-400"
-                        >
-                            <div className="p-4 w-full block">
-                                <div
-                                    className="inline-block float-left w-4/5 mt-2 align-top"
-                                    onClick={() => chosenQuiz(index)}
-                                >
-                                    <div className="py-0 px-2 flex">
-                                        <div className="text-black w-2/5">
-                                            <span className="text-black">
-                                                {item.name}
-                                            </span>
-                                        </div>
-                                        <div className="text-black w-2/5 px-4"></div>
-                                        <div className="text-black w-1/5">
-                                            <FontAwesomeIcon
-                                                onClick={() =>
-                                                    openUpdateQuizPage(index)
-                                                }
-                                                className="hover:bg-gray-700 h-8 items-center pb-3"
-                                                icon={faEdit}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
                 </div>
                 {!showModal && (
                     <Button
@@ -176,22 +137,12 @@ export default function QuestionBankContainers() {
                         <span>Create Questions</span>
                     </Button>
                 )}
-                <CreateQuestionModal
-                    showModal={showModal}
-                    OpenModal={setShowModal}
-                />
-                {!showModal && (
-                    <Button
-                        className="flex items-center gap-4 p-1 text-sm w-1/5 h-1/3"
-                        onClick={() => openCreateQuizModal()}
-                    >
-                        <span>Create Quiz</span>
-                    </Button>
+                {showModal && (
+                    <CreateQuestionModal
+                        showModal={showModal}
+                        OpenModal={setShowModal}
+                    />
                 )}
-                <CreateQuizModal
-                    showModal={showQuizModal}
-                    OpenModal={setShowQuizModal}
-                />
             </div>
         </div>
     )

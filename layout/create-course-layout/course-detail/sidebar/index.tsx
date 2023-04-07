@@ -32,9 +32,21 @@ export default function Sidebar() {
 
     const { getCourseDetail } = useCreateCourseContext()
 
-    const menu = ['Landing page', 'Intended learners', 'Curriculum']
+    const menu = [
+        'Landing page',
+        'Intended learners',
+        'Curriculum',
+        'Question',
+        'Quiz',
+    ]
 
-    const menuTarget = ['landing-page', 'intended-learners', 'curriculum']
+    const menuTarget = [
+        'landing-page',
+        'intended-learners',
+        'curriculum',
+        'question',
+        'quiz',
+    ]
     const router = useRouter()
     const [courseId, setCourseId] = useState('')
     const [currentTab, setCurrentTab] = useState(() => {

@@ -1,7 +1,7 @@
 import { InstructorAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
 import useAPI from '@/api/hooks/useAPI'
-import { COURSE_ID } from '@/constants/localStorage'
+import { COURSE_ID, QUESTION_ID, QUIZ_ID } from '@/constants/localStorage'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import {
     updateCourseDetail,
@@ -24,10 +24,19 @@ import {
     updateAllRequirements,
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
+import { getQuestionDetailInfo } from '@/store/course/question/selectors'
 import { getMyCourseDetail } from '@/store/course/selectors'
 import { CourseDetail } from '@/store/course/types'
 import { UpdateAllQuestionState } from '@/store/questions'
+import { getQuestionsInfo } from '@/store/questions/selectors'
+import { QuestionDetailType } from '@/store/questions/types'
 import { UpdateQuizzesState } from '@/store/quiz'
+import {
+    getQuestionsIdFromQuiz,
+    getQuizDetailInfo,
+    getQuizzez,
+} from '@/store/quiz/selectors'
+import { QuizDetailType } from '@/store/quiz/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
@@ -36,9 +45,18 @@ interface ICreateCourseContext {
     getCourseDetail: UseMutateFunction<unknown, any, object, unknown>
     updateCourse: UseMutateFunction<unknown, any, object, unknown>
     upsertSections: UseMutateFunction<unknown, any, object, unknown>
+    getQuestionsList: UseMutateFunction<unknown, any, object, unknown>
+    getQuizzesList: UseMutateFunction<unknown, any, object, unknown>
+    deleteQuestion: UseMutateFunction<unknown, any, object, unknown>
+    deleteQuiz: UseMutateFunction<unknown, any, object, unknown>
     courseDetail: CourseDetail
     courseSections: CurriculumSection[]
     courseLectures: CurriculumLecture[][]
+    questionListsDetail: QuestionDetailType[]
+    quizzezDetail: QuizDetailType[]
+    quizDetail: QuizDetailType
+    questionDetail: QuestionDetailType
+    questionIdsFromQuiz: string[]
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>(
@@ -54,7 +72,13 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const courseLectures = useAppSelector(getCurriculumLecturesForm)
     const [courseId, setCourseId] = useState('')
     const [isLoadingCurriculum, setIsLoadingCurriculum] = useState(false)
-
+    const questionListsDetail = useAppSelector(getQuestionsInfo)
+    const quizzezDetail = useAppSelector(getQuizzez)
+    const quizDetail = useAppSelector(getQuizDetailInfo)
+    const questionDetail = useAppSelector(getQuestionDetailInfo)
+    const questionIdsFromQuiz = useAppSelector(getQuestionsIdFromQuiz)
+    const [quizId, setQuizId] = useState('')
+    const [questionId, setQuestionId] = useState('')
     const { mutate: updateCourse, isLoading: isLoadingUpdateCourse } =
         useAPI.put(InstructorAPI.UPDATE_COURSE + courseDetail._id, {
             onError: () => {},
@@ -123,6 +147,30 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 },
             },
         )
+    const { mutate: deleteQuiz, isLoading: isLoadingDeleteQuiz } =
+        useAPI.delete(InstructorAPI.DELETE_QUIZ + quizId, {
+            onError: () => {},
+            onSuccess: (response) => {
+                getQuizzesList({})
+            },
+        })
+    const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
+        useAPI.getMutation(
+            InstructorAPI.GET_QUESTIONS + '?courseId=' + courseId,
+            {
+                onError: () => {},
+                onSuccess: (response) => {
+                    dispatch(UpdateAllQuestionState(response?.data))
+                },
+            },
+        )
+    const { mutate: deleteQuestion, isLoading: isLoadingDeleteQuestion } =
+        useAPI.delete(InstructorAPI.DELETE_QUESTION + questionId, {
+            onError: () => {},
+            onSuccess: (response) => {
+                getQuestionsList({})
+            },
+        })
     const handleGetLessons = async (sectionId: string) => {
         await callAPI(
             'get',
@@ -191,11 +239,20 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     useEffect(() => {
         if (courseId !== localStorage.getItem(COURSE_ID)) {
             setCourseId(localStorage.getItem(COURSE_ID) ?? '')
-        } else if (localStorage.getItem(COURSE_ID) !== null) {
-            getCourseDetail({})
-            getQuizzesList({})
+            if (quizId !== localStorage.getItem(QUIZ_ID)) {
+                setQuizId(localStorage.getItem(QUIZ_ID) ?? '')
+            }
+            if (questionId !== localStorage.getItem(QUESTION_ID)) {
+                setQuestionId(localStorage.getItem(QUESTION_ID) ?? '')
+            }
+        } else {
+            if (localStorage.getItem(COURSE_ID) !== null) {
+                getCourseDetail({})
+                getQuestionsList({})
+                getQuizzesList({})
+            }
         }
-    }, [courseId])
+    }, [courseId, questionId, quizId])
 
     const isLoading = useMemo(() => {
         return (
@@ -222,9 +279,18 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 getCourseDetail,
                 updateCourse,
                 upsertSections,
+                getQuizzesList,
+                getQuestionsList,
+                deleteQuestion,
+                deleteQuiz,
                 courseDetail,
                 courseSections,
                 courseLectures,
+                questionListsDetail,
+                quizzezDetail,
+                quizDetail,
+                questionDetail,
+                questionIdsFromQuiz,
             }}
         >
             {children}

@@ -35,4 +35,6 @@ export const InstructorAPI = {
     EDIT_QUESTION: '/question',
     CREAT_QUIZ: '/quiz',
     GET_QUIZZES: '/quiz/manage/get-quizzes',
+    DELETE_QUIZ: '/quiz/manage/',
+    DELETE_QUESTION: '/question/manage/',
 }
