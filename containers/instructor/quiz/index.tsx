@@ -17,13 +17,27 @@ import { QuestionDetailType } from '@/store/questions/types'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import useAPI from '@/api/hooks/useAPI'
+import { InstructorAPI } from '@/api/api-path'
 
 export default function QuizCointainer() {
-    const { quizzezDetail, deleteQuiz } = useCreateCourseContext()
+    const { quizzezDetail, getQuizzesList } = useCreateCourseContext()
     const [isLoading, setIsLoading] = useState(true)
     const dispatch = useAppDispatch()
     const [positionQuiz, setPositionQuiz] = useState<number>(0)
     const [showQuizModal, setShowQuizModal] = useState(false)
+    const [quizId, setQuizId] = useState('')
+    const [isDelete, setIsDelete] = useState(false)
+    const { mutate: deleteQuiz, isLoading: isLoadingDeleteQuiz } =
+        useAPI.delete(InstructorAPI.DELETE_QUIZ + quizId, {
+            onError: () => {},
+            onSuccess: (response) => {
+                getQuizzesList({})
+                setQuizId('')
+                setIsDelete(false)
+                localStorage.removeItem(QUIZ_ID)
+            },
+        })
     const chosenQuiz = (indext: number) => {
         localStorage.setItem(QUIZ_ID, quizzezDetail?.[indext]?._id)
         setPositionQuiz(indext)
@@ -31,7 +45,7 @@ export default function QuizCointainer() {
     }
     const deleteQuizAction = (indext: number) => {
         localStorage.setItem(QUIZ_ID, quizzezDetail?.[indext]?._id)
-        deleteQuiz({})
+        setIsDelete(true)
     }
     const openUpdateQuizPage = (indext: number) => {
         chosenQuiz(indext)
@@ -45,11 +59,18 @@ export default function QuizCointainer() {
         if (quizzezDetail?.[0]?._id !== '') {
             setIsLoading(false)
         }
-    }, [quizzezDetail])
+        if (quizId !== localStorage.getItem(QUIZ_ID)) {
+            setQuizId(localStorage.getItem(QUIZ_ID) ?? '')
+        } else {
+            if (isDelete) {
+                deleteQuiz({})
+            }
+        }
+    }, [quizzezDetail, quizId, isDelete])
     useHideFirstEnterLoadingScreen()
     return (
         <div>
-            <LoadingScreen isLoading={isLoading} />
+            <LoadingScreen isLoading={isLoading || isLoadingDeleteQuiz} />
             <div
                 className="ml-auto mr-auto max-w-7xl grid-cols-3 app-transition main-transition min-h-screen bg-white"
                 id="content"

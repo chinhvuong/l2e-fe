@@ -20,9 +20,11 @@ import { QuestionDetailType } from '@/store/questions/types'
 import { faDeleteLeft, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
+import useAPI from '@/api/hooks/useAPI'
+import { InstructorAPI } from '@/api/api-path'
 
 export default function QuestionBankContainers() {
-    const { questionListsDetail, deleteQuestion } = useCreateCourseContext()
+    const { questionListsDetail, getQuestionsList } = useCreateCourseContext()
     const [isLoading, setIsLoading] = useState(true)
     const dispatch = useAppDispatch()
     const [positionQuestion, setPositionQuestion] = useState<number>(0)
@@ -30,14 +32,25 @@ export default function QuestionBankContainers() {
     const [showViewQuestionModal, setShowViewQuestionModal] = useState(false)
     const [selectedQuestion, setSelectedQuestion] =
         useState<QuestionDetailType>({} as QuestionDetailType)
+    const [questionId, setQuestionId] = useState('')
+    const [isDelete, setDelete] = useState(false)
     const openUpdateQuestionsPage = (indext: number) => {
         chosenQuestions(indext)
         setShowModal(true)
     }
+    const { mutate: deleteQuestion, isLoading: isLoadingDeleteQuestion } =
+        useAPI.delete(InstructorAPI.DELETE_QUESTION + questionId, {
+            onError: () => {},
+            onSuccess: (response) => {
+                getQuestionsList({})
+                setDelete(false)
+                setQuestionId('')
+                localStorage.removeItem(QUESTION_ID)
+            },
+        })
     const deleteQuestionAction = (indext: number) => {
         localStorage.setItem(QUESTION_ID, questionListsDetail?.[indext]?._id)
-        deleteQuestion({})
-        localStorage.removeItem(QUESTION_ID)
+        setDelete(true)
     }
     const chosenQuestions = (indext: number) => {
         localStorage.setItem(QUESTION_ID, questionListsDetail?.[indext]?._id)
@@ -57,11 +70,18 @@ export default function QuestionBankContainers() {
         if (questionListsDetail?.[0]?._id !== '') {
             setIsLoading(false)
         }
-    }, [selectedQuestion, questionListsDetail])
+        if (questionId !== localStorage.getItem(QUESTION_ID)) {
+            setQuestionId(localStorage.getItem(QUESTION_ID) ?? '')
+        } else {
+            if (isDelete) {
+                deleteQuestion({})
+            }
+        }
+    }, [selectedQuestion, questionListsDetail, questionId, isDelete])
     useHideFirstEnterLoadingScreen()
     return (
         <div>
-            <LoadingScreen isLoading={isLoading} />
+            <LoadingScreen isLoading={isLoading || isLoadingDeleteQuestion} />
             <QuestionModal
                 isShow={showViewQuestionModal}
                 setIsShow={setShowViewQuestionModal}

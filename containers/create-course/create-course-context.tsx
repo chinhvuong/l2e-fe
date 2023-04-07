@@ -47,8 +47,6 @@ interface ICreateCourseContext {
     upsertSections: UseMutateFunction<unknown, any, object, unknown>
     getQuestionsList: UseMutateFunction<unknown, any, object, unknown>
     getQuizzesList: UseMutateFunction<unknown, any, object, unknown>
-    deleteQuestion: UseMutateFunction<unknown, any, object, unknown>
-    deleteQuiz: UseMutateFunction<unknown, any, object, unknown>
     courseDetail: CourseDetail
     courseSections: CurriculumSection[]
     courseLectures: CurriculumLecture[][]
@@ -77,8 +75,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const quizDetail = useAppSelector(getQuizDetailInfo)
     const questionDetail = useAppSelector(getQuestionDetailInfo)
     const questionIdsFromQuiz = useAppSelector(getQuestionsIdFromQuiz)
-    const [quizId, setQuizId] = useState('')
-    const [questionId, setQuestionId] = useState('')
     const { mutate: updateCourse, isLoading: isLoadingUpdateCourse } =
         useAPI.put(InstructorAPI.UPDATE_COURSE + courseDetail._id, {
             onError: () => {},
@@ -147,13 +143,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 },
             },
         )
-    const { mutate: deleteQuiz, isLoading: isLoadingDeleteQuiz } =
-        useAPI.delete(InstructorAPI.DELETE_QUIZ + quizId, {
-            onError: () => {},
-            onSuccess: (response) => {
-                getQuizzesList({})
-            },
-        })
     const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
         useAPI.getMutation(
             InstructorAPI.GET_QUESTIONS + '?courseId=' + courseId,
@@ -164,13 +153,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 },
             },
         )
-    const { mutate: deleteQuestion, isLoading: isLoadingDeleteQuestion } =
-        useAPI.delete(InstructorAPI.DELETE_QUESTION + questionId, {
-            onError: () => {},
-            onSuccess: (response) => {
-                getQuestionsList({})
-            },
-        })
     const handleGetLessons = async (sectionId: string) => {
         await callAPI(
             'get',
@@ -239,12 +221,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     useEffect(() => {
         if (courseId !== localStorage.getItem(COURSE_ID)) {
             setCourseId(localStorage.getItem(COURSE_ID) ?? '')
-            if (quizId !== localStorage.getItem(QUIZ_ID)) {
-                setQuizId(localStorage.getItem(QUIZ_ID) ?? '')
-            }
-            if (questionId !== localStorage.getItem(QUESTION_ID)) {
-                setQuestionId(localStorage.getItem(QUESTION_ID) ?? '')
-            }
         } else {
             if (localStorage.getItem(COURSE_ID) !== null) {
                 getCourseDetail({})
@@ -252,7 +228,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 getQuizzesList({})
             }
         }
-    }, [courseId, questionId, quizId])
+    }, [courseId])
 
     const isLoading = useMemo(() => {
         return (
@@ -281,8 +257,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 upsertSections,
                 getQuizzesList,
                 getQuestionsList,
-                deleteQuestion,
-                deleteQuiz,
                 courseDetail,
                 courseSections,
                 courseLectures,
