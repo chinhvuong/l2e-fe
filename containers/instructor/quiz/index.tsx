@@ -1,24 +1,18 @@
+import { InstructorAPI } from '@/api/api-path'
+import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
-import { QUESTION_ID, QUIZ_ID } from '@/constants/localStorage'
+import { QUIZ_ID } from '@/constants/localStorage'
+import Title from '@/containers/create-course/components/title'
+import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import { useAppDispatch } from '@/hooks'
-import {
-    ClearQuestionState,
-    UpdateDetailQuestionState,
-} from '@/store/course/question'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { ClearQuizDetailState, UpdateQuizDetailState } from '@/store/quiz'
-import { QuizDetailType } from '@/store/quiz/types'
-import { faEye, faEdit } from '@fortawesome/free-regular-svg-icons'
+import { faEdit, faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import CreateQuizModal from '../quiz/create-quiz'
-import { QuestionDetailType } from '@/store/questions/types'
-import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import useAPI from '@/api/hooks/useAPI'
-import { InstructorAPI } from '@/api/api-path'
 
 export default function QuizCointainer() {
     const { quizzezDetail, getQuizzesList } = useCreateCourseContext()
@@ -71,72 +65,46 @@ export default function QuizCointainer() {
     return (
         <div>
             <LoadingScreen isLoading={isLoading || isLoadingDeleteQuiz} />
-            <div
-                className="ml-auto mr-auto max-w-7xl grid-cols-3 app-transition main-transition min-h-screen bg-white"
-                id="content"
-            >
-                <div className="flex flex-row justify-between">
-                    <h1 className="flex basis-full text-3xl font-semibold">
-                        Question Bank
-                    </h1>
-                </div>
-                <div className="block mr-80 min-w-0 leading-relaxed w-full">
-                    <div className="flex basis-full text-3xl font-semibold">
-                        Quizzes
-                    </div>
-                    {quizzezDetail?.map((item, index) => (
-                        <div
-                            key={index}
-                            className="p-0.25 rounded inline-block shadow-3xl min-h-r w-full hover:bg-gray-400"
-                        >
-                            <div className="p-4 w-full block">
-                                <div
-                                    className="inline-block float-left w-4/5 mt-2 align-top"
-                                    onClick={() => chosenQuiz(index)}
-                                >
-                                    <div className="py-0 px-2 flex">
-                                        <div className="text-black w-2/5">
-                                            <span className="text-black">
-                                                {item.name}
-                                            </span>
-                                        </div>
-                                        <div className="text-black w-2/5 px-4"></div>
-                                        <div className="text-black w-1/5">
-                                            <FontAwesomeIcon
-                                                onClick={() =>
-                                                    openUpdateQuizPage(index)
-                                                }
-                                                className="hover:bg-gray-700 h-8 items-center pb-3"
-                                                icon={faEdit}
-                                            />
-                                            <FontAwesomeIcon
-                                                onClick={() =>
-                                                    deleteQuizAction(index)
-                                                }
-                                                className="cursor-pointer h-6 items-center text-black"
-                                                icon={faTrash}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+            {showQuizModal && (
+                <CreateQuizModal
+                    showModal={showQuizModal}
+                    OpenModal={setShowQuizModal}
+                />
+            )}
+            <Title title={'Quizzes'}>
                 {!showQuizModal && (
                     <Button
-                        className="flex items-center gap-4 p-1 text-sm w-1/5 h-1/3"
+                        className="btn-primary"
                         onClick={() => openCreateQuizModal()}
                     >
-                        <span>Create Quiz</span>
+                        <div className="font-medium text-sm">Create Quiz</div>
                     </Button>
                 )}
-                {showQuizModal && (
-                    <CreateQuizModal
-                        showModal={showQuizModal}
-                        OpenModal={setShowQuizModal}
-                    />
-                )}
+            </Title>
+            <div className="grid grid-cols-1 divide-y divide-gray-300">
+                {quizzezDetail?.map((item, index) => (
+                    <div
+                        key={index}
+                        className="flex justify-between items-center hover:bg-gray-300 px-10 py-3 cursor-pointer"
+                        onClick={() => chosenQuiz(index)}
+                    >
+                        <div className="text-black line-clamp-2">
+                            {item.name}
+                        </div>
+                        <div className="flex items-center space-x-5">
+                            <FontAwesomeIcon
+                                onClick={() => openUpdateQuizPage(index)}
+                                className="cursor-pointer h-6 items-center text-black"
+                                icon={faEdit}
+                            />
+                            <FontAwesomeIcon
+                                onClick={() => deleteQuizAction(index)}
+                                className="cursor-pointer h-6 items-center text-black"
+                                icon={faTrashCan}
+                            />
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     )

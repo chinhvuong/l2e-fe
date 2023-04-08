@@ -48,6 +48,8 @@ const EnrollBtn = ({ ...rest }: Props) => {
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
                 progress: undefined,
                 theme: 'light',
             })

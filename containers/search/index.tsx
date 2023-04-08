@@ -162,7 +162,6 @@ const SearchPageContainer = () => {
                                                         setClicked={
                                                             setIsCourseClicked
                                                         }
-                                                        className="py-6"
                                                     />
                                                     {index !==
                                                         allMyCourses.data

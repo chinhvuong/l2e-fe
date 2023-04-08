@@ -21,11 +21,11 @@ export default function VerticalCourseList(props: IVerticalCourseListProps) {
                     </div>
                 </div>
             </div>
-            <div className="space-y-5">
+            <div>
                 {props.data.map((course, index) => {
                     if (index !== props.data.length - 1) {
                         return (
-                            <div key={course._id} className="space-y-6">
+                            <div key={course._id}>
                                 <HorizontalCourseCard
                                     key={course._id}
                                     data={course}

@@ -58,39 +58,6 @@ export default function WalletLogic() {
         dispatch(updateAssetState(asset))
     }, [balance, approve])
 
-    // useEffect(() => {
-    //     if (address && isConnected && !loginState) {
-    //         signMessage({
-    //             message: String(SIGN_MESSAGE),
-    //         })
-    //         // dispatch(updateLoginState(true))/
-    //     } else {
-    //         if (!isConnected && loginState) {
-    //             dispatch(updateLoginState(false))
-    //         }
-    //     }
-    // }, [loginState, address])
-
-    // useEffect(() => {
-    //     if (isSuccess) {
-    //         login({
-    //             walletAddress: String(address),
-    //             signature: String(data),
-    //         })
-    //     }
-    // }, [isSuccess])
-
-    // useEffect(() => {
-    //     if (address) {
-    //         (async () => {
-    //             dispatch(updateAssetState({
-    //                 approve: Number(approve),
-    //                 balance: Number(balance),
-    //             }))
-    //         })()
-
-    //     }
-    // }, [address])
     const loginState = useSelector(getLoginState)
 
     const signMessage = useSignMessage({
@@ -100,7 +67,6 @@ export default function WalletLogic() {
                 walletAddress: address,
                 signature: String(data),
             })
-            dispatch(updateLoginState(true))
         },
     })
 
