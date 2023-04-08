@@ -16,7 +16,7 @@ import { InstructorAPI } from '@/api/api-path'
 import * as yup from 'yup'
 import { getQuestionsIdFromQuiz } from '@/store/quiz/selectors'
 import QuestionsListModal from '@/components/core/modal/formik-select-questions-modal'
-import { useCreateQuestionBankContext } from '../../questionbank/create-quiz-context'
+import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 interface QuizModal {
     showModal: boolean
     OpenModal: Dispatch<SetStateAction<boolean>>
@@ -28,7 +28,7 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
         quizDetail,
         getQuizzesList,
         questionIdsFromQuiz,
-    } = useCreateQuestionBankContext()
+    } = useCreateCourseContext()
     const [courseId, setCourseId] = useState<string>('')
     const [isEdit, setEdit] = useState<boolean>(false)
     const { mutate: createQuiz, isLoading: isLoadingCreateQuiz } = useAPI.post(
@@ -77,7 +77,11 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
         validationSchema: schema,
         onSubmit: (values) => {
             if (isEdit) {
-                updateQuiz(values)
+                updateQuiz({
+                    questions: values.questions,
+                    name: values.name,
+                    courseId: courseId,
+                })
             } else {
                 createQuiz({
                     questions: values.questions,
@@ -87,7 +91,6 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
             }
         },
     })
-    const dispatch = useAppDispatch()
     useEffect(() => {
         if (localStorage.getItem(COURSE_ID) !== null) {
             if (localStorage.getItem(COURSE_ID) !== courseId) {
@@ -99,7 +102,7 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
         } else {
             setEdit(false)
         }
-    }, [courseId])
+    }, [courseId, quizDetail])
     return (
         <>
             <div className="flex w-full">
@@ -121,9 +124,7 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
                     <div className="inset-10 z-50 w-full h-full bg-white border shadow-xl focus:outline-none">
                         <LoadingScreen
                             isLoading={
-                                isLoading ||
-                                isLoadingCreateQuiz ||
-                                isLoadingUpdateQuiz
+                                isLoadingCreateQuiz || isLoadingUpdateQuiz
                             }
                         />
                         <FormikProvider value={formik}>
@@ -152,6 +153,7 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
                                     </div>
                                     <QuestionsListModal
                                         questionsList={questionListsDetail}
+                                        isEdit={isEdit}
                                     />
                                     <div className="ml-[25px] text-sm mt-1 text-red-500">
                                         <ErrorMessage name="questions" />

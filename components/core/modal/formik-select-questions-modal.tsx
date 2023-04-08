@@ -1,8 +1,9 @@
-import { useAppDispatch } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { QuestionDetailType } from '@/store/questions/types'
 import { UpdateQuestionsFromQuizState } from '@/store/quiz'
+import { getQuizDetailInfo } from '@/store/quiz/selectors'
 import { useFormikContext } from 'formik'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 export interface IQuestionsInputType {
     questions: string[]
@@ -12,16 +13,20 @@ export interface IQuestionsListModalProps {
     questionsList: QuestionDetailType[]
     updateQuiz?: boolean
     updateCourse?: boolean
+    isEdit?: boolean
 }
 
 export default function QuestionsListModal(props: IQuestionsListModalProps) {
-    const { questionsList } = props
-    const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>([])
+    const { questionsList, isEdit } = props
     const context = useFormikContext<IQuestionsInputType>()
+    const quizDetail = useAppSelector(getQuizDetailInfo)
+    const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>([])
     const [showModal, setShowModal] = useState(false)
     const dispatch = useAppDispatch()
     function handleChange(event: ChangeEvent<HTMLInputElement>): void {
         const { checked, name, value } = event.target
+        console.log(checked)
+        console.log(chosenQuestions)
         if (checked) {
             setQuestions([...chosenQuestions, questionsList?.[parseInt(value)]])
             context.setFieldValue('questions', [
@@ -41,19 +46,27 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
             )
             setQuestions(
                 chosenQuestions.filter(
-                    (question) => question !== questionsList?.[parseInt(value)],
+                    (question) =>
+                        question._id !== questionsList?.[parseInt(value)]._id,
                 ),
             )
             dispatch(
                 UpdateQuestionsFromQuizState(
                     chosenQuestions.filter(
                         (question) =>
-                            question !== questionsList?.[parseInt(value)],
+                            question._id !==
+                            questionsList?.[parseInt(value)]._id,
                     ),
                 ),
             )
         }
     }
+    console.log(context.values.questions)
+    useEffect(() => {
+        if (isEdit) {
+            setQuestions(quizDetail.questions)
+        }
+    }, [isEdit, quizDetail])
     return (
         <>
             <button
@@ -87,7 +100,7 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                                         <div key={question._id}>
                                             <input
                                                 className="m-1 p-2"
-                                                id={question._id}
+                                                id={String(indext)}
                                                 type="checkbox"
                                                 name={question._id}
                                                 value={indext}

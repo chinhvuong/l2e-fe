@@ -11,9 +11,9 @@ import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
 import * as yup from 'yup'
 export interface ILandingPageContainerProps {}
-import { useCreateQuestionBankContext } from '../create-quiz-context'
 import { QuestionCreateType } from '@/api/dto/course.dto'
 import Button from '@/components/core/button'
+import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 interface QuestionModal {
     showModal: boolean
     OpenModal: Dispatch<SetStateAction<boolean>>
@@ -24,8 +24,9 @@ export default function CreateQuestionModal({
 }: QuestionModal) {
     const router = useRouter()
     const [courseId, setCourseId] = useState<string>('')
-    const { questionDetail, getQuestionsList } = useCreateQuestionBankContext()
+    const { questionDetail, getQuestionsList } = useCreateCourseContext()
     const [isEdit, setEdit] = useState<boolean>(false)
+    const [questionId, setQuestionId] = useState<string>('')
     const schema = yup.object().shape({
         questions: yup
             .array()
@@ -60,7 +61,7 @@ export default function CreateQuestionModal({
             },
         })
     const { mutate: updateQuestion, isLoading: isLoadingUpdateQuestion } =
-        useAPI.put(InstructorAPI.EDIT_QUESTION + '/' + questionDetail._id, {
+        useAPI.put(InstructorAPI.EDIT_QUESTION + '/' + questionId, {
             onError: (errors) => {},
             onSuccess: (response) => {
                 getQuestionsList({})
@@ -111,7 +112,7 @@ export default function CreateQuestionModal({
                 setCourseId(String(localStorage.getItem(COURSE_ID)))
             }
         }
-        if (questionDetail._id) {
+        if (questionDetail._id !== '') {
             setEdit(true)
         } else {
             setEdit(false)
