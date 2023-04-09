@@ -6,7 +6,7 @@ import {
     DeleteLecture,
 } from '@/store/course/curriculum/types'
 import { getQuizSelect } from '@/store/quiz/selectors'
-import { QuizSelectType } from '@/store/quiz/types'
+import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
 import '@/styles/animations.scss'
 import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,6 +18,7 @@ import Select, { ActionMeta } from 'react-select'
 import { ItemTypes } from '../type'
 import MainContent from './main-content'
 import Resource from './resource'
+import { getCurriculumLectureQuizzezDetail } from '@/store/course/curriculum/selectors'
 
 export interface CardProps {
     id: string
@@ -58,8 +59,12 @@ export const Card: FC<CardProps> = ({
             }
         }) ?? []
     const lectureDetail = useAppSelector(getCardDetail(id, sectionId))
+    console.log(lectureDetail)
     const [expandLecture, setExpandLecture] = useState(true)
     const quizSelect = useAppSelector(getQuizSelect)
+    const quizSelected = useAppSelector(
+        getCurriculumLectureQuizzezDetail(id, sectionId),
+    )
     const updateLectureTitle = (value: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.name = value
@@ -77,9 +82,16 @@ export const Card: FC<CardProps> = ({
         actionMeta: ActionMeta<QuizSelectType>,
     ) => {
         const newDetail = { ...lectureDetail }
-        const newlist = [] as string[]
+        const newlist = [] as QuizDetailType[]
         values.forEach((item) => {
-            newlist.push(item.value)
+            newlist.push({
+                _id: item.value,
+                questions: [],
+                courseId: '',
+                name: item.label,
+                createdAt: '',
+                updatedAt: '',
+            })
         })
         newDetail.quizzes = newlist
         dispatch(updateCard(newDetail))
@@ -263,7 +275,7 @@ export const Card: FC<CardProps> = ({
                             <div className="w-full bg-white rounded-[80px]">
                                 <Select
                                     options={quizSelect}
-                                    defaultValue={selectedOption}
+                                    defaultValue={quizSelected}
                                     isMulti
                                     onChange={updateLectureQuizzes}
                                 />

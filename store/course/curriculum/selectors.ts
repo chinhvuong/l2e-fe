@@ -1,5 +1,6 @@
 import { RootState } from '@/store'
 import { CurriculumLecture } from './types'
+import { QuizSelectType } from '@/store/quiz/types'
 
 export const getCurriculumSectionsForm = (state: RootState) => {
     return state.curriculum.sections
@@ -75,4 +76,23 @@ export const getCurriculumLectureDetail =
                 mode: '',
             }
         )
+    }
+export const getCurriculumLectureQuizzezDetail =
+    (id: string, sectionId: string) => (state: RootState) => {
+        const quizzezDetail: QuizSelectType[] = []
+        let lectureDetail: CurriculumLecture = {} as CurriculumLecture
+        state.curriculum.lectures.forEach((item) => {
+            if (item[0].sectionId === sectionId) {
+                lectureDetail = item.find(
+                    (el) => el._id === id,
+                ) as CurriculumLecture
+            }
+        })
+        lectureDetail.quizzes.forEach((item) => {
+            quizzezDetail.push({
+                label: item.name,
+                value: item._id,
+            })
+        })
+        return quizzezDetail
     }
