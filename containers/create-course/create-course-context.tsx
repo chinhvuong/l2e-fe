@@ -25,7 +25,10 @@ import {
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
 import { getQuestionDetailInfo } from '@/store/course/question/selectors'
-import { getMyCourseDetail } from '@/store/course/selectors'
+import {
+    getFinalTestSelection,
+    getMyCourseDetail,
+} from '@/store/course/selectors'
 import { CourseDetail } from '@/store/course/types'
 import { UpdateAllQuestionState } from '@/store/questions'
 import { getQuestionsInfo } from '@/store/questions/selectors'
@@ -36,7 +39,7 @@ import {
     getQuizDetailInfo,
     getQuizzez,
 } from '@/store/quiz/selectors'
-import { QuizDetailType } from '@/store/quiz/types'
+import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
@@ -55,6 +58,7 @@ interface ICreateCourseContext {
     quizDetail: QuizDetailType
     questionDetail: QuestionDetailType
     questionIdsFromQuiz: string[]
+    chosenFinalTest: QuizSelectType
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>(
@@ -66,6 +70,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
     const dispatch = useAppDispatch()
     const courseDetail = useAppSelector(getMyCourseDetail)
+    const chosenFinalTest = useAppSelector(getFinalTestSelection)
     const courseSections = useAppSelector(getCurriculumSectionsForm)
     const courseLectures = useAppSelector(getCurriculumLecturesForm)
     const [courseId, setCourseId] = useState('')
@@ -265,6 +270,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 quizDetail,
                 questionDetail,
                 questionIdsFromQuiz,
+                chosenFinalTest,
             }}
         >
             {children}

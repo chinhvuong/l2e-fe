@@ -1,4 +1,5 @@
 import { RootState } from '@/store'
+import { QuizSelectType } from '../quiz/types'
 
 export const getCourseLabelInfo = (state: RootState) => {
     return {
@@ -101,4 +102,11 @@ export const getCourseSectionsWithNestedLectures = (state: RootState) => {
 
 export const getDescriptionLength = (state: RootState) => {
     return state.courseDetail.descriptionLength
+}
+
+export const getFinalTestSelection = (state: RootState) => {
+    return {
+        label: state.courseDetail.courseDetail.finalTest?.name,
+        value: state.courseDetail.courseDetail.finalTest?._id,
+    } as QuizSelectType
 }

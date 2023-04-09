@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { CourseDetail, CourseDetailState } from './types'
 import { dataRatings } from '@/data/ratings'
+import { QuizDetailType } from '../quiz/types'
 
 const initialState: CourseDetailState = {
     courseDetail: {
@@ -14,7 +15,23 @@ const initialState: CourseDetailState = {
             articles: '',
             exercise: '',
         },
-        finalTest: '',
+        finalTest: {
+            _id: '',
+            questions: [
+                {
+                    _id: '',
+                    question: '',
+                    choices: [''],
+                    correctAnswer: 0,
+                    courseId: '',
+                    medias: [''],
+                },
+            ],
+            courseId: '',
+            name: '',
+            createdAt: '',
+            updatedAt: '',
+        },
         _id: '',
         owner: '',
         author: {
@@ -124,7 +141,7 @@ export const courseDetailSlice = createSlice({
         updateIdState(state, action: PayloadAction<string>) {
             state.courseDetail._id = action.payload
         },
-        updateFinaltestState(state, action: PayloadAction<string>) {
+        updateFinaltestState(state, action: PayloadAction<QuizDetailType>) {
             state.courseDetail.finalTest = action.payload
         },
         resetCourseDetailStore() {

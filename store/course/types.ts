@@ -1,4 +1,5 @@
 import { Rating } from '@/constants/interfaces'
+import { QuizDetailType } from '../quiz/types'
 export interface CourseNestedLecture {
     name: string
     description: string
@@ -29,7 +30,7 @@ export interface CourseDetail {
         updatedAt: string
         walletAddress: string
     }
-    finalTest?: string
+    finalTest?: QuizDetailType
     name: string
     overview: string
     description: string
