@@ -86,23 +86,7 @@ export const quizzesSlice = createSlice({
             state.questionsList = newList
         },
         ClearQuizDetailState(state) {
-            const newquizDetail: QuizDetailType = {
-                _id: '',
-                questions: [
-                    {
-                        _id: '',
-                        question: '',
-                        choices: [''],
-                        correctAnswer: 0,
-                        courseId: '',
-                        medias: [''],
-                    },
-                ],
-                courseId: state.quizDetail.courseId,
-                name: '',
-                createdAt: '',
-                updatedAt: '',
-            } as QuizDetailType
+            const newquizDetail: QuizDetailType = {} as QuizDetailType
             state.quizDetail = newquizDetail
         },
     },

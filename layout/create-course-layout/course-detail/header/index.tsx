@@ -4,7 +4,10 @@ import Router from 'next/router'
 import Button from '@/components/core/button'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import { useAppSelector } from '@/hooks'
-import { getCanSaveCourseState } from '@/store/course/selectors'
+import {
+    getCanSaveCourseState,
+    getFinalTestSelection,
+} from '@/store/course/selectors'
 
 export interface IHeaderProps {}
 
@@ -15,16 +18,42 @@ export default function Header() {
         updateCourse,
         upsertSections,
         isLoading,
+        chosenFinalTest,
     } = useCreateCourseContext()
 
     const canSaveCourse = useAppSelector(getCanSaveCourseState)
-
     const goBack = () => {
         Router.push('/instructor/courses')
     }
 
     const handleUpdateCourseDetail = () => {
-        updateCourse(courseDetail)
+        updateCourse({
+            include: courseDetail.include,
+            finalTest: chosenFinalTest.value,
+            _id: courseDetail._id,
+            owner: courseDetail.owner,
+            author: courseDetail.author,
+            name: courseDetail.name,
+            overview: courseDetail.overview,
+            description: courseDetail.description,
+            price: courseDetail.price,
+            rating: courseDetail.rating,
+            reviews: courseDetail.reviews,
+            language: courseDetail.language,
+            approved: courseDetail.approved,
+            requirements: courseDetail.requirements,
+            goals: courseDetail.goals,
+            thumbnail: courseDetail.thumbnail,
+            promotionalVideo: courseDetail.promotionalVideo,
+            category: courseDetail.category,
+            createdAt: courseDetail.createdAt,
+            updatedAt: courseDetail.updatedAt,
+            __v: courseDetail.__v,
+            students: courseDetail.students,
+            courseId: courseDetail.courseId,
+            sections: courseDetail.sections,
+            lastApproveRequestAt: courseDetail.lastApproveRequestAt,
+        })
         upsertSections(
             courseSections.map((item) => {
                 const el: any = { ...item }

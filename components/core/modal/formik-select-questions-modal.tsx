@@ -6,7 +6,7 @@ import { useFormikContext } from 'formik'
 import { ChangeEvent, useEffect, useState } from 'react'
 
 export interface IQuestionsInputType {
-    questions: string[]
+    questions: QuestionDetailType[]
 }
 
 export interface IQuestionsListModalProps {
@@ -23,6 +23,7 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
     const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>([])
     const [showModal, setShowModal] = useState(false)
     const dispatch = useAppDispatch()
+    console.log(context.values.questions)
     function handleChange(event: ChangeEvent<HTMLInputElement>): void {
         const { checked, name, value } = event.target
         console.log(checked)
@@ -31,32 +32,17 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
             setQuestions([...chosenQuestions, questionsList?.[parseInt(value)]])
             context.setFieldValue('questions', [
                 ...context.values.questions,
-                name,
+                questionsList?.[parseInt(value)],
             ])
-            dispatch(
-                UpdateQuestionsFromQuizState([
-                    ...chosenQuestions,
-                    questionsList?.[parseInt(value)],
-                ]),
-            )
         } else {
             context.setFieldValue(
                 'questions',
-                context.values.questions.filter((v) => v !== name),
+                context.values.questions.filter((v) => v._id !== name),
             )
             setQuestions(
                 chosenQuestions.filter(
                     (question) =>
                         question._id !== questionsList?.[parseInt(value)]._id,
-                ),
-            )
-            dispatch(
-                UpdateQuestionsFromQuizState(
-                    chosenQuestions.filter(
-                        (question) =>
-                            question._id !==
-                            questionsList?.[parseInt(value)]._id,
-                    ),
                 ),
             )
         }
@@ -104,8 +90,8 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                                                 type="checkbox"
                                                 name={question._id}
                                                 value={indext}
-                                                checked={context.values.questions.includes(
-                                                    question._id,
+                                                checked={context.values?.questions?.includes(
+                                                    question,
                                                 )}
                                                 onChange={handleChange}
                                             />

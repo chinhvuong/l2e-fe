@@ -1,3 +1,5 @@
+import { QuizDetailType } from '@/store/quiz/types'
+
 export type CourseCurriculumState = {
     sections: CurriculumSection[]
     lectures: CurriculumLecture[][]
@@ -17,7 +19,7 @@ export type CurriculumLecture = {
     media: string
     mediaName: string
     mediaType: string
-    quizzes: string[]
+    quizzes: QuizDetailType[]
     sectionId: string
     mode: string
 }

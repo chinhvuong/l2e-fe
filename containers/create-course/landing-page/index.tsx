@@ -18,7 +18,10 @@ import {
     updateCourseThumbnail,
     updateFinaltestState,
 } from '@/store/course'
-import { getMyCourseDetail } from '@/store/course/selectors'
+import {
+    getFinalTestSelection,
+    getMyCourseDetail,
+} from '@/store/course/selectors'
 import {
     convertToCategoryID,
     convertToCategoryName,
@@ -34,7 +37,7 @@ export interface ILandingPageContainerProps {}
 
 export default function LandingPageContainer() {
     const languageList = { en: 'English', vi: 'Vietnamese' }
-
+    const chosenFinalTest = useAppSelector(getFinalTestSelection)
     const dispatch = useAppDispatch()
     const courseDetail = useAppSelector(getMyCourseDetail)
     const [isLoading, setIsLoading] = useState(true)
@@ -54,6 +57,8 @@ export default function LandingPageContainer() {
         courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',
     )
     const quizSelect = useAppSelector(getQuizSelect)
+
+    console.log(chosenFinalTest)
     useEffect(() => {
         if (courseDetail._id !== '') {
             setIsLoading(false)
@@ -75,9 +80,6 @@ export default function LandingPageContainer() {
             setPromotionalVideo(
                 courseDetail.promotionalVideo ?? '/images/placeholder.jpeg',
             )
-            if (courseDetail.finalTest === '' && quizSelect.length > 0) {
-                dispatch(updateFinaltestState(quizSelect[0].value))
-            }
         }
     }, [courseDetail._id])
 
@@ -178,7 +180,10 @@ export default function LandingPageContainer() {
                                     Final Test
                                 </div>
                                 <div className="w-full bg-white rounded-[80px]">
-                                    <SingleReactSelect quizzes={quizSelect} />
+                                    <SingleReactSelect
+                                        quizzes={quizSelect}
+                                        selectedQuiz={chosenFinalTest}
+                                    />
                                 </div>
                             </div>
                         </div>

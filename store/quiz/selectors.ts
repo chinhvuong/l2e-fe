@@ -26,14 +26,6 @@ export const getQuestionsForQuiz = (state: RootState) => {
     return newList
 }
 
-export const getQuestionsIdFromQuiz = (state: RootState) => {
-    const newList: string[] = []
-    state.quizzes.quizDetail.questions?.forEach((item) => {
-        newList.push(item._id)
-    })
-    return newList
-}
-
 export const getQuizSelect = (state: RootState) => {
     const newList: QuizSelectType[] = []
     if (state.quizzes.quizzes.length !== 0) {

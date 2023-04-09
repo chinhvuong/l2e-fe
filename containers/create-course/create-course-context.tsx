@@ -25,18 +25,17 @@ import {
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
 import { getQuestionDetailInfo } from '@/store/course/question/selectors'
-import { getMyCourseDetail } from '@/store/course/selectors'
+import {
+    getFinalTestSelection,
+    getMyCourseDetail,
+} from '@/store/course/selectors'
 import { CourseDetail } from '@/store/course/types'
 import { UpdateAllQuestionState } from '@/store/questions'
 import { getQuestionsInfo } from '@/store/questions/selectors'
 import { QuestionDetailType } from '@/store/questions/types'
 import { UpdateQuizzesState } from '@/store/quiz'
-import {
-    getQuestionsIdFromQuiz,
-    getQuizDetailInfo,
-    getQuizzez,
-} from '@/store/quiz/selectors'
-import { QuizDetailType } from '@/store/quiz/types'
+import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
+import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
@@ -54,7 +53,7 @@ interface ICreateCourseContext {
     quizzezDetail: QuizDetailType[]
     quizDetail: QuizDetailType
     questionDetail: QuestionDetailType
-    questionIdsFromQuiz: string[]
+    chosenFinalTest: QuizSelectType
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>(
@@ -66,6 +65,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
     const dispatch = useAppDispatch()
     const courseDetail = useAppSelector(getMyCourseDetail)
+    const chosenFinalTest = useAppSelector(getFinalTestSelection)
     const courseSections = useAppSelector(getCurriculumSectionsForm)
     const courseLectures = useAppSelector(getCurriculumLecturesForm)
     const [courseId, setCourseId] = useState('')
@@ -74,7 +74,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const quizzezDetail = useAppSelector(getQuizzez)
     const quizDetail = useAppSelector(getQuizDetailInfo)
     const questionDetail = useAppSelector(getQuestionDetailInfo)
-    const questionIdsFromQuiz = useAppSelector(getQuestionsIdFromQuiz)
+
     const { mutate: updateCourse, isLoading: isLoadingUpdateCourse } =
         useAPI.put(InstructorAPI.UPDATE_COURSE + courseDetail._id, {
             onError: () => {},
@@ -264,7 +264,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 quizzezDetail,
                 quizDetail,
                 questionDetail,
-                questionIdsFromQuiz,
+                chosenFinalTest,
             }}
         >
             {children}

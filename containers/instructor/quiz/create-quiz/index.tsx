@@ -14,21 +14,16 @@ import { COURSE_ID } from '@/constants/localStorage'
 import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
 import * as yup from 'yup'
-import { getQuestionsIdFromQuiz } from '@/store/quiz/selectors'
 import QuestionsListModal from '@/components/core/modal/formik-select-questions-modal'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
+
 interface QuizModal {
     showModal: boolean
     OpenModal: Dispatch<SetStateAction<boolean>>
 }
 export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
-    const {
-        isLoading,
-        questionListsDetail,
-        quizDetail,
-        getQuizzesList,
-        questionIdsFromQuiz,
-    } = useCreateCourseContext()
+    const { isLoading, questionListsDetail, quizDetail, getQuizzesList } =
+        useCreateCourseContext()
     const [courseId, setCourseId] = useState<string>('')
     const [isEdit, setEdit] = useState<boolean>(false)
     const { mutate: createQuiz, isLoading: isLoadingCreateQuiz } = useAPI.post(
@@ -59,32 +54,51 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
         questions: yup
             .array()
             .of(
-                yup
-                    .string()
-                    .min(1, 'too short')
-                    .required('Quiz has at least one Question'),
+                yup.object().shape({
+                    _id: yup.string().min(1, 'too short').required('Required'),
+                    question: yup
+                        .string()
+                        .min(1, 'too short')
+                        .required('Required'), // these constraints take precedence
+                    correctAnswer: yup.number(),
+                    choices: yup
+                        .array()
+                        .of(
+                            yup
+                                .string()
+                                .min(1, 'too short')
+                                .max(100, 'too long'),
+                        )
+                        .required('Required'),
+                }),
             )
-            .required('Must have questions') // these constraints are shown if and only if inner constraints are satisfied
-            .min(1, 'Quiz has at least one question'),
+            .required('Quiz must have questions') // these constraints are shown if and only if inner constraints are satisfied
+            .min(1, 'Quiz have at least 1 question'),
         name: yup.string().required('Quiz must have a name'),
     })
     const formik = useFormik({
         initialValues: {
             name: quizDetail.name,
-            questions: questionIdsFromQuiz,
+            questions: quizDetail.questions || [],
         },
         enableReinitialize: true,
         validationSchema: schema,
         onSubmit: (values) => {
+            const questionsIds: string[] = []
+            values.questions.forEach((question) => {
+                if (question._id) {
+                    questionsIds.push(question._id)
+                }
+            })
             if (isEdit) {
                 updateQuiz({
-                    questions: values.questions,
+                    questions: questionsIds,
                     name: values.name,
                     courseId: courseId,
                 })
             } else {
                 createQuiz({
-                    questions: values.questions,
+                    questions: questionsIds,
                     name: values.name,
                     courseId: courseId,
                 })
@@ -158,7 +172,7 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
                                     <div className="ml-[25px] text-sm mt-1 text-red-500">
                                         <ErrorMessage name="questions" />
                                     </div>
-                                    {quizDetail?.questions?.map(
+                                    {formik?.values.questions?.map(
                                         (question, index) => (
                                             <div
                                                 key={index}
