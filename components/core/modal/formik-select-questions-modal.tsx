@@ -34,12 +34,6 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                 ...context.values.questions,
                 questionsList?.[parseInt(value)],
             ])
-            // dispatch(
-            //     UpdateQuestionsFromQuizState([
-            //         ...chosenQuestions,
-            //         questionsList?.[parseInt(value)],
-            //     ]),
-            // )
         } else {
             context.setFieldValue(
                 'questions',
@@ -51,15 +45,6 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                         question._id !== questionsList?.[parseInt(value)]._id,
                 ),
             )
-            // dispatch(
-            //     UpdateQuestionsFromQuizState(
-            //         chosenQuestions.filter(
-            //             (question) =>
-            //                 question._id !==
-            //                 questionsList?.[parseInt(value)]._id,
-            //         ),
-            //     ),
-            // )
         }
     }
     console.log(context.values.questions)
