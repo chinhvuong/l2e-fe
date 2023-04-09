@@ -21,11 +21,13 @@ export default function CreateCourseLayout({
     useEffect(() => {
         if (isSaved) {
             dispatch(updateSaveCourseState(false))
-            toast.success('Cập nhật khóa học thành công!', {
+            toast.success('Update course detail successfully!', {
                 position: 'top-center',
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
                 progress: undefined,
                 theme: 'light',
             })

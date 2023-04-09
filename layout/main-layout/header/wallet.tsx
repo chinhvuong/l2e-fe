@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
-import './style.scss'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { ConnectWalletButton } from '@/wallet/ui'
 import { getLoginState } from '@/store/user/selectors'
+import { ConnectWalletButton } from '@/wallet/ui'
 import Account from './account'
+import './style.scss'
+import { useEffect } from 'react'
 import { ACCESS_TOKEN } from '@/constants/localStorage'
 import { updateLoginState } from '@/store/user'
 

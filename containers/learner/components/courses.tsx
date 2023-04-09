@@ -142,7 +142,6 @@ export default function LearnerCoursesContainer() {
                                                     setClicked={
                                                         setIsCourseClicked
                                                     }
-                                                    className="py-6"
                                                 />
                                                 {index !==
                                                     allMyCourses.data.length -

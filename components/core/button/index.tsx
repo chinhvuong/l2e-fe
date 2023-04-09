@@ -5,6 +5,7 @@ type IButton = {
     textButton?: boolean
     disabled?: boolean
     isLoading?: boolean
+    outline?: boolean
 }
 
 function Button({
@@ -12,10 +13,14 @@ function Button({
     textButton,
     disabled,
     isLoading = false,
+    outline = false,
     ...rest
 }: IButton & HTMLAttributes<HTMLButtonElement>) {
     const btnPrimary =
         'bg-primary text-white enabled:hover:bg-primary-hover transition-colors'
+
+    const btnPrimaryOutline =
+        'bg-white border border-primary text-primary enabled:hover:bg-primary-hover enabled:hover:text-white enabled:hover:border-primary-hover transition-colors'
 
     const btnCommon = 'rounded-[80px] py-[12px] px-[30px] shadow-sm'
 
@@ -24,9 +29,9 @@ function Button({
     return (
         <button
             {...rest}
-            className={`${btnPrimary} ${textButton ? btnText : btnCommon} ${
-                rest.className
-            } flex items-center ${
+            className={`${outline ? btnPrimaryOutline : btnPrimary} ${
+                textButton ? btnText : btnCommon
+            } ${rest.className} flex items-center ${
                 isLoading || disabled ? 'cursor-not-allowed' : 'cursor-pointer'
             } whitespace-nowrap	text-ellipsis overflow-hidden`}
             disabled={disabled}

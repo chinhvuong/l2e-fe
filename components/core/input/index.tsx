@@ -21,6 +21,8 @@ export interface IInputProps {
     updateInput?: Function
     type?: string
     validate?: boolean
+    min?: string
+    max?: string
 }
 
 export default function Input({
@@ -32,12 +34,15 @@ export default function Input({
     defaultValue,
     updateInput,
     updateToStore,
-    type,
+    type = 'text',
     validate = false,
+    min,
+    max,
 }: IInputProps) {
     const dispatch = useAppDispatch()
     const [input, setInput] = useState(defaultValue ?? '')
     const [isTyped, setIsTyped] = useState(false)
+    const [prevVal, setPrevVal] = useState<string>('')
 
     useEffect(() => {
         if (!isTyped && input !== '') {
@@ -47,7 +52,26 @@ export default function Input({
     }, [input])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInput(e.target.value)
+        if (type === 'number') {
+            const regex = /^[0-9]{0,50}(\.[0-9]{0,2})?$/
+            let value = e.target.value
+
+            const removeLeadingZeros = /^0+(?=\d)/
+            value = value.replace(removeLeadingZeros, '')
+
+            if (value === '.') {
+                value = '0'
+            }
+            if (!regex.test(value)) {
+                value = prevVal
+            }
+            setPrevVal(value)
+            setInput(value)
+
+            console.log('number', value)
+        } else {
+            setInput(e.target.value)
+        }
         updateInput && updateInput(e.target.value)
     }
 
@@ -85,7 +109,7 @@ export default function Input({
                 } space-x-5`}
             >
                 <input
-                    type={type ?? 'text'}
+                    type={'text'}
                     name="name"
                     value={input}
                     minLength={charLimit?.minLength}
@@ -94,6 +118,8 @@ export default function Input({
                     className="w-full outline-none"
                     onChange={handleInputChange}
                     autoComplete="off"
+                    min={min}
+                    max={max}
                 />
                 <div className={`${!charLimit?.maxLength && 'hidden'}`}>
                     {getInputCharLeft()}
@@ -105,7 +131,7 @@ export default function Input({
                         input === '' && isTyped ? 'text-red-500' : 'text-white'
                     }`}
                 >
-                    Không được để trống!
+                    This field is required!
                 </div>
             )}
         </div>

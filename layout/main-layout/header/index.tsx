@@ -28,16 +28,16 @@ const Header = (props: IHeader) => {
                     props.darkTheme ? 'text-white' : 'text-black'
                 } ${props.darkTheme ? 'bg-second' : 'bg-white'}`}
             >
-                <div className="px-14 flex flex-wrap items-center space-x-10 under_2xl:space-x-7">
+                <div className="px-14 flex flex-wrap items-center space-x-10">
                     <Logo darkTheme={props.darkTheme} />
                     <Search darkTheme={props.darkTheme} />
-                    <Explore />
+                    {/* <Explore />
                     <div
                         className="cursor-pointer hover:text-primary-hover under_xl:hidden"
                         onClick={() => goToAboutUsPage()}
                     >
                         About Us
-                    </div>
+                    </div> */}
                     <Wallet darkTheme={props.darkTheme} />
                 </div>
             </div>

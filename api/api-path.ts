@@ -10,6 +10,8 @@ export const FileAPI = {
 export const UserAPI = {
     GET_ALL_COURSES: '/course',
     GET_CATEGORY: '/category',
+    CLAIM_TODAY_REWARD: '/reward/claim-today-reward',
+    GET_MY_BALANCE: '/balance/my-balance',
 }
 
 export const LearnerAPI = {

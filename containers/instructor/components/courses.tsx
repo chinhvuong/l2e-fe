@@ -237,7 +237,6 @@ export default function InstructorCoursesContainer() {
                                                     }
                                                     showDetail={false}
                                                     showStatus={true}
-                                                    className="py-6"
                                                 />
 
                                                 {index !==
