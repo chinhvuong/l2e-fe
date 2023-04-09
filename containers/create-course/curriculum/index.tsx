@@ -19,7 +19,6 @@ export default function CurriculumContainer() {
     const { isLoading, courseSections, courseLectures } =
         useCreateCourseContext()
     useHideFirstEnterLoadingScreen()
-    console.log(courseLectures.length)
     return (
         <div>
             <LoadingScreen

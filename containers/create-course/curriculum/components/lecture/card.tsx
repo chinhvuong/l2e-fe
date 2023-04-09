@@ -59,7 +59,6 @@ export const Card: FC<CardProps> = ({
             }
         }) ?? []
     const lectureDetail = useAppSelector(getCardDetail(id, sectionId))
-    console.log(lectureDetail)
     const [expandLecture, setExpandLecture] = useState(true)
     const quizSelect = useAppSelector(getQuizSelect)
     const quizSelected = useAppSelector(
