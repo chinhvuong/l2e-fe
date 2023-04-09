@@ -75,6 +75,7 @@ export default function Sidebar() {
     }
 
     const validateCourse = () => {
+        console.log(courseDetail.finalTest)
         const validateCourse = {
             landingPage: [] as string[],
             intendedLearners: [] as string[],
@@ -90,6 +91,9 @@ export default function Sidebar() {
             validateCourse.landingPage.push(
                 'Have a price for your course and not free',
             )
+        }
+        if (!courseDetail.finalTest) {
+            validateCourse.landingPage.push('Have a final test')
         }
         if (descriptionLength < 200) {
             validateCourse.landingPage.push(
@@ -134,6 +138,11 @@ export default function Sidebar() {
             lecture.map((el) => {
                 if (el.name === '') {
                     validateCourse.curriculum.push("Fill all lectures's titles")
+                }
+                if (el.quizzes.length <= 0) {
+                    validateCourse.curriculum.push(
+                        'Each lecture must have at least one quiz',
+                    )
                 }
             })
         })
