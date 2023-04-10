@@ -43,7 +43,7 @@ export default function QuestionModal(props: IQuestionModalProps) {
                                                 (choice, index) => (
                                                     <div
                                                         key={index}
-                                                        className={`flex justify-between items-center rounded-[80px] py-3 px-6 border-2 font-medium ${
+                                                        className={`flex justify-between items-center rounded-[80px] cursor-pointer py-3 px-6 border-2 font-medium ${
                                                             index ===
                                                             question?.correctAnswer
                                                                 ? `bg-green-400 bg-opacity-10 text-green-400 border-green-400`

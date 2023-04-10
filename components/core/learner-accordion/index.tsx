@@ -9,10 +9,18 @@ export interface ILearnerAccordionProps {
     order: number
     title: string
     lectures: LearningCourseLectures[]
+    isLearning: boolean
+    learningLectureIndex?: number
 }
 
 export default function LearnerAccordion(props: ILearnerAccordionProps) {
-    const { order, title, lectures } = props
+    const {
+        order,
+        title,
+        lectures,
+        isLearning,
+        learningLectureIndex = 0,
+    } = props
     const [selfExpand, setSelfExpand] = useState(false)
 
     const countCompletedLessons = (): number => {
@@ -30,6 +38,10 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
             <div
                 className={`px-5 bg-course-section space-y-2 ${
                     !selfExpand ? 'border-t' : 'border-y'
+                } ${
+                    isLearning && order <= learningLectureIndex
+                        ? 'bg-white'
+                        : 'bg-slate-400'
                 } border-border-box py-4 cursor-pointer`}
             >
                 <div
@@ -69,6 +81,9 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
             <LecturesListLearnerAccordion
                 expand={selfExpand}
                 lectures={lectures}
+                isLearning={isLearning}
+                learningLectureIndex={learningLectureIndex}
+                sectionIndex={order}
             />
         </>
     )

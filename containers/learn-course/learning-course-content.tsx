@@ -1,5 +1,6 @@
 import LoadingScreen from '@/components/core/animate/loading-screen'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import PlayQuizModal from '@/components/core/modal/play-quiz-modal'
+import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import LearningInstructorDetail from './components/instructor'
 import LearnerCourseContent from './components/learner-course-content'
@@ -7,11 +8,23 @@ import NavBarLearner from './components/nav-bar'
 import LearningOverviewDetail from './components/overview'
 import LearningReviewDetail from './components/reviews'
 import { useLearningCourseContext } from './learning-course-context'
+import {
+    PlayQuizRes,
+    QuestionDetailType,
+    QuestionInPlayQuiz,
+} from '@/store/questions/types'
+import useAPI from '@/api/hooks/useAPI'
+import { LearnerAPI } from '@/api/api-path'
+import { noop } from 'lodash'
 
 const LearningCourseContent = () => {
-    const { courseDetail, isLoading, playingVideo, setPlayingVideo } =
+    const { courseDetail, isLoading, playingVideo, currentPosition } =
         useLearningCourseContext()
     const [currentTab, setCurrentTab] = useState('Overview')
+    const [showPlayQuizModal, setShowPlayQuizModal] = useState(false)
+    const [currentQuiz, setCurrentQuiz] = useState<PlayQuizRes>(
+        {} as PlayQuizRes,
+    )
 
     const getTabContent = () => {
         switch (currentTab) {
@@ -38,27 +51,32 @@ const LearningCourseContent = () => {
     //     }
     // }, [isReady])
 
-    const getDefaultPlayedVideo = (): string => {
-        let result = ''
-        courseDetail?.sections.forEach((section) => {
-            section.lessons.forEach((lesson) => {
-                if (!lesson.learned && result === '') {
-                    result = lesson.media
-                }
-            })
+    const { mutate: getQuizDetail, isLoading: isLoadingGetQuizDetail } =
+        useAPI.post(LearnerAPI.GET_QUIZ_DETAIL, {
+            onError: noop,
+            onSuccess(response) {
+                setCurrentQuiz(response)
+                setShowPlayQuizModal(true)
+            },
         })
-        return result
-    }
 
     useEffect(() => {
-        if (!isLoading) {
-            setPlayingVideo(getDefaultPlayedVideo())
-        }
-    }, [isLoading])
+        courseDetail &&
+            getQuizDetail({
+                id: courseDetail?.sections[currentPosition[0]].lessons[
+                    currentPosition[1]
+                ].quizzes[0]._id,
+            })
+    }, [currentPosition])
 
     return (
         <div className="flex">
-            <LoadingScreen isLoading={isLoading} />
+            <PlayQuizModal
+                isShow={showPlayQuizModal}
+                setIsShow={setShowPlayQuizModal}
+                quiz={currentQuiz}
+            />
+            <LoadingScreen isLoading={isLoading || isLoadingGetQuizDetail} />
             <div className="w-[75vw] border-r">
                 {courseDetail ? (
                     <ReactPlayer
@@ -69,6 +87,9 @@ const LearningCourseContent = () => {
                         volume={1}
                         width="100%"
                         height="65vh"
+                        onEnded={() => {
+                            setShowPlayQuizModal(true)
+                        }}
                         // onReady={onReady}
                     />
                 ) : (

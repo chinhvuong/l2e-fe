@@ -19,6 +19,8 @@ export const LearnerAPI = {
     CHECK_ENROLL: '/course/check-enroll/',
     GET_COURSE_DETAIL: '/course/preview/',
     GET_LEARNING_COURSE_DETAIL: '/course/learn',
+    GET_QUIZ_DETAIL: 'game/play-quiz',
+    SUBMIT_QUIZ_ANSWER: '/game/submit-quiz',
 }
 
 export const InstructorAPI = {

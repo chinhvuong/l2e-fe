@@ -1,5 +1,6 @@
 import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
+import { QuestionDetailType } from '@/store/questions/types'
 import { useRouter } from 'next/router'
 import {
     createContext,
@@ -11,6 +12,16 @@ import {
     useState,
 } from 'react'
 
+export interface LectureQuiz {
+    _id: string
+    questions: string[]
+    courseId: string
+    name: string
+    createdAt: string
+    updatedAt: string
+    __v: number
+}
+
 export interface LearningCourseLectures {
     _id: string
     name: string
@@ -18,7 +29,7 @@ export interface LearningCourseLectures {
     media: string
     mediaName: string
     mediaType: string
-    quizzes: string[]
+    quizzes: LectureQuiz[]
     sectionId: string
     mode: string
     learned: boolean
@@ -69,7 +80,8 @@ interface ILearningCourseContext {
     courseDetail: LearningCourseRes | undefined
     isLoading: boolean
     playingVideo: string
-    setPlayingVideo: Dispatch<SetStateAction<string>>
+    handleChangeLecture: (pos: number[]) => void
+    currentPosition: number[]
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -87,6 +99,8 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         LearningCourseRes | undefined
     >(undefined)
 
+    const [currentPosition, setCurrentPosition] = useState<number[]>([0, 0])
+
     const {
         mutate: getLearningCourseDetail,
         isLoading: isLoadingLearningCourseDetail,
@@ -100,6 +114,35 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         },
     )
 
+    const getDefaultPlayedVideo = (): string => {
+        let result = ''
+        courseDetail?.sections.forEach((section, sectionIndex) => {
+            section.lessons.forEach((lesson, lessonIndex) => {
+                if (!lesson.learned && result === '') {
+                    result = lesson.media
+                    setCurrentPosition([sectionIndex, lessonIndex])
+                }
+            })
+        })
+        return result
+    }
+
+    const handleChangeLecture = (pos: number[]) => {
+        setCurrentPosition(pos)
+        courseDetail &&
+            setPlayingVideo(courseDetail.sections[pos[0]].lessons[pos[1]].media)
+    }
+
+    const isLoading = useMemo(() => {
+        return isLoadingLearningCourseDetail
+    }, [isLoadingLearningCourseDetail])
+
+    useEffect(() => {
+        if (!isLoading) {
+            setPlayingVideo(getDefaultPlayedVideo())
+        }
+    }, [isLoading])
+
     useEffect(() => {
         if (typeof router.query.slug === 'string') {
             setCourseId(router.query.slug)
@@ -107,17 +150,14 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         }
     }, [router.query.slug])
 
-    const isLoading = useMemo(() => {
-        return isLoadingLearningCourseDetail
-    }, [isLoadingLearningCourseDetail])
-
     return (
         <LearningCourseContext.Provider
             value={{
                 courseDetail,
                 isLoading,
                 playingVideo,
-                setPlayingVideo,
+                handleChangeLecture,
+                currentPosition,
             }}
         >
             {children}

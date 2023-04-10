@@ -5,7 +5,6 @@ import {
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import {
     faCheckCircle,
-    faCirclePlay,
     faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,6 +12,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 export interface ILecturesListLearnerAccordionProps {
     expand: boolean
     lectures: LearningCourseLectures[]
+    isLearning: boolean
+    learningLectureIndex: number
+    sectionIndex: number
 }
 
 export interface ILecturesListItem {
@@ -24,8 +26,9 @@ export interface ILecturesListItem {
 export default function LecturesListLearnerAccordion(
     props: ILecturesListLearnerAccordionProps,
 ) {
-    const { expand, lectures } = props
-    const { setPlayingVideo } = useLearningCourseContext()
+    const { expand, lectures, isLearning, learningLectureIndex, sectionIndex } =
+        props
+    const { handleChangeLecture } = useLearningCourseContext()
 
     const getLectureUI = (data: LearningCourseLectures, index: number) => {
         if (data.mediaType === 'video') {
@@ -62,11 +65,8 @@ export default function LecturesListLearnerAccordion(
                                     className="pb-0.5"
                                 />
                                 <div className="text-description text-xs">
-                                    Skills Assessment
+                                    {data.quizzes[0].name}
                                 </div>
-                            </div>
-                            <div className="text-description text-xs">
-                                10 questions
                             </div>
                         </div>
                     </div>
@@ -75,13 +75,24 @@ export default function LecturesListLearnerAccordion(
         }
     }
 
+    const handleLectureClick = (index: number) => {
+        if (isLearning && index <= learningLectureIndex) {
+            handleChangeLecture([sectionIndex, index])
+        }
+        handleChangeLecture([sectionIndex, index])
+    }
+
     return (
         <div className={`${!expand && 'hidden'}`}>
             {lectures.map((lecture, index) => (
                 <div
                     key={index}
-                    className="hover:bg-gray-300 cursor-pointer py-3"
-                    onClick={() => setPlayingVideo(lecture.media)}
+                    className={`hover:bg-primary-hover ${
+                        isLearning && index <= learningLectureIndex
+                            ? 'cursor-pointer'
+                            : 'cursor-not-allowed bg-gray-300'
+                    } py-3`}
+                    onClick={() => handleLectureClick(index)}
                 >
                     {getLectureUI(lecture, index)}
                 </div>

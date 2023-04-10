@@ -67,8 +67,7 @@ const Account = (props: any) => {
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
             onError: noop,
             onSuccess: (response) => {
-                // setMyAccountBalance(response.balance)
-                setMyAccountBalance(3)
+                setMyAccountBalance(response.balance)
             },
         })
 
