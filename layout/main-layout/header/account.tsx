@@ -3,10 +3,10 @@ import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import Input from '@/components/core/input'
-import { useAppDispatch } from '@/hooks'
-import useOutsideClick from '@/hooks/useOutSideClick'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { updateLoadingState } from '@/store/course'
-import { updateLoginState } from '@/store/user'
+import { updateLoginState, updateUserBalance } from '@/store/user'
+import { getUserBalanceState } from '@/store/user/selectors'
 import useWeb3 from '@/wallet/hooks/useWeb3'
 import {
     faBell,
@@ -22,19 +22,19 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
 import Router from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const Account = (props: any) => {
     const [hoverUser, setHoverUser] = useState(false)
     const [hoverUserActions, setHoverUserActions] = useState(false)
     const [hoverWallet, setHoverWallet] = useState(false)
     const [hoverWalletActions, setHoverWalletActions] = useState(false)
-    const [isOpenWalletModal, setIsOpenWalletModal] = useState(false)
-    const [myAccountBalance, setMyAccountBalance] = useState(0)
     const [isValidWalletInput, setIsValidWalletInput] = useState(true)
     const [walletInputErrorMessage, setWalletInputErrorMessage] = useState('')
     const [input, setInput] = useState('')
     const { disconnect } = useWeb3()
+
+    const myAccountBalance = useAppSelector(getUserBalanceState)
 
     const dispatch = useAppDispatch()
 
@@ -54,20 +54,11 @@ const Account = (props: any) => {
         dispatch(updateLoginState(false))
     }
 
-    // const { mutate: claimDailyReward, isLoading: isLoadingClaimDailyReward } = useAPI.post(
-    //     UserAPI.CLAIM_TODAY_REWARD,
-    //     {
-    //         onError: noop,
-    //         onSuccess: (response) => {
-    //         },
-    //     },
-    // )
-
     const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
             onError: noop,
             onSuccess: (response) => {
-                setMyAccountBalance(response.balance)
+                dispatch(updateUserBalance(response.balance))
             },
         })
 
@@ -120,7 +111,6 @@ const Account = (props: any) => {
                         {myAccountBalance} ABC
                     </div>
                     <div
-                        onClick={() => setIsOpenWalletModal(true)}
                         className={`w-[270px] absolute z-30 right-0 ${
                             !(hoverWallet || hoverWalletActions) && 'hidden'
                         }`}
@@ -150,11 +140,11 @@ const Account = (props: any) => {
                                     {walletInputErrorMessage}
                                 </div>
                             )}
-                            <Button className="btn-primary mt-3 w-full">
-                                <div
-                                    className="font-medium w-full text-center"
-                                    onClick={() => handleClaimToken()}
-                                >
+                            <Button
+                                className="btn-primary mt-3 w-full"
+                                onClick={() => handleClaimToken()}
+                            >
+                                <div className="font-medium w-full text-center">
                                     Claim token
                                 </div>
                             </Button>

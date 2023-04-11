@@ -120,14 +120,14 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                                                 choice}
                                                                         </span>
                                                                         {/* {index ===
-                                                                        question?.correctAnswer && (
-                                                                        <FontAwesomeIcon
-                                                                            icon={
-                                                                                faCircleCheck
-                                                                            }
-                                                                            className="text-[20px] text-green-400 ml-2"
-                                                                        />
-                                                                    )} */}
+																		question?.correctAnswer && (
+																		<FontAwesomeIcon
+																			icon={
+																				faCircleCheck
+																			}
+																			className="text-[20px] text-green-400 ml-2"
+																		/>
+																	)} */}
                                                                     </div>
                                                                 ),
                                                             )}
@@ -137,11 +137,11 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                             },
                                         )}
                                     </div>
-                                    <Button className="btn-primary mt-10 w-full">
-                                        <div
-                                            className="font-medium w-full text-center"
-                                            onClick={() => handleSubmitQuiz()}
-                                        >
+                                    <Button
+                                        className="btn-primary mt-10 w-full"
+                                        onClick={() => handleSubmitQuiz()}
+                                    >
+                                        <div className="font-medium w-full text-center">
                                             Submit
                                         </div>
                                     </Button>

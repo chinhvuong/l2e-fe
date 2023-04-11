@@ -7,9 +7,9 @@ const initialState: UserState = {
     isLogin: false,
     asset: {
         approve: 0,
-        balance: 0
-    }
-
+        balance: 0,
+    },
+    balance: 0,
 }
 
 export const userSlice = createSlice({
@@ -19,8 +19,13 @@ export const userSlice = createSlice({
         updateLoginState(state, action: PayloadAction<boolean>) {
             state.isLogin = action.payload
         },
-
-        updateAssetState(state, action: PayloadAction<{ approve?: number, balance?: number }>) {
+        updateUserBalance(state, action: PayloadAction<number>) {
+            state.balance = action.payload
+        },
+        updateAssetState(
+            state,
+            action: PayloadAction<{ approve?: number; balance?: number }>,
+        ) {
             const newS = { ...state.asset }
             if (action.payload?.approve !== undefined) {
                 newS.approve = action.payload.approve
@@ -30,10 +35,10 @@ export const userSlice = createSlice({
             }
             state.asset = newS
         },
-
     },
 })
 
-export const { updateLoginState, updateAssetState } = userSlice.actions
+export const { updateLoginState, updateUserBalance, updateAssetState } =
+    userSlice.actions
 
 export default userSlice.reducer

@@ -1,5 +1,9 @@
+import { LearnerAPI } from '@/api/api-path'
+import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import PlayQuizModal from '@/components/core/modal/play-quiz-modal'
+import { PlayQuizRes } from '@/store/questions/types'
+import { noop } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import LearningInstructorDetail from './components/instructor'
@@ -8,14 +12,6 @@ import NavBarLearner from './components/nav-bar'
 import LearningOverviewDetail from './components/overview'
 import LearningReviewDetail from './components/reviews'
 import { useLearningCourseContext } from './learning-course-context'
-import {
-    PlayQuizRes,
-    QuestionDetailType,
-    QuestionInPlayQuiz,
-} from '@/store/questions/types'
-import useAPI from '@/api/hooks/useAPI'
-import { LearnerAPI } from '@/api/api-path'
-import { noop } from 'lodash'
 
 const LearningCourseContent = () => {
     const { courseDetail, isLoading, playingVideo, currentPosition } =
@@ -70,14 +66,14 @@ const LearningCourseContent = () => {
     }, [currentPosition])
 
     return (
-        <div className="flex">
-            <PlayQuizModal
+        <div className="flex w-full">
+            {/* <PlayQuizModal
                 isShow={showPlayQuizModal}
                 setIsShow={setShowPlayQuizModal}
                 quiz={currentQuiz}
-            />
+            /> */}
             <LoadingScreen isLoading={isLoading || isLoadingGetQuizDetail} />
-            <div className="w-[75vw] border-r">
+            <div className="w-3/4 border-r">
                 {courseDetail ? (
                     <ReactPlayer
                         url={playingVideo}
@@ -112,7 +108,7 @@ const LearningCourseContent = () => {
                 <NavBarLearner setCurrentTab={setCurrentTab} />
                 <div className="px-12 mt-8">{getTabContent()}</div>
             </div>
-            <div className="w-[25vw]">
+            <div className="w-1/4">
                 <LearnerCourseContent />
             </div>
         </div>

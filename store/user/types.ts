@@ -13,9 +13,10 @@ export interface User {
 
 export interface UserState {
     user: User
-    isLogin: boolean,
+    isLogin: boolean
     asset: {
-        approve: number,
+        approve: number
         balance: number
     }
+    balance: number
 }

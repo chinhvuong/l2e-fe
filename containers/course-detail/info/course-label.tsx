@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import EnrollBtn from '../components/enroll-btn'
 import { useCourseDetailContext } from '../course-detail-context'
+import Router from 'next/router'
 
 export interface ICourseLabelProps {}
 
@@ -77,7 +78,10 @@ export default function CourseLabel() {
                         {data.price} USDT
                     </div>
                     {isEnroll ? (
-                        <Button className="btn-primary under_lg:w-full">
+                        <Button
+                            className="btn-primary under_lg:w-full"
+                            onClick={() => Router.push(`/learn/${data._id}`)}
+                        >
                             <div className="font-medium text-[20px]">Learn</div>
                         </Button>
                     ) : (

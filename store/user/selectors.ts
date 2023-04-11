@@ -8,7 +8,10 @@ export const getLoginState = (state: RootState) => {
     return state.user.isLogin
 }
 
-
 export const getAssetState = (state: RootState) => {
     return state.user.asset
+}
+
+export const getUserBalanceState = (state: RootState) => {
+    return state.user.balance
 }

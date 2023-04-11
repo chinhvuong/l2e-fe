@@ -3,14 +3,42 @@ import useAPI from '@/api/hooks/useAPI'
 import CourseListSwiper from '@/components/common/course-list-swiper'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
+import WelcomeBackModal from '@/components/core/modal/welcome-back-modal'
 import VerticalCourseCard from '@/components/core/vertical-course-card'
+import { useAppDispatch } from '@/hooks'
+import { updateUserBalance } from '@/store/user'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
+import { useEffect, useState } from 'react'
 
 const HomePageContainer = () => {
+    const dispatch = useAppDispatch()
+    const [showWelcomeBackModal, setShowWelcomeBackModal] =
+        useState<boolean>(false)
+
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
     })
+
+    const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
+        useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
+            onError: noop,
+            onSuccess: (response) => {
+                dispatch(updateUserBalance(response.balance))
+            },
+        })
+
+    const { mutate: claimDailyReward, isLoading: isLoadingClaimDailyReward } =
+        useAPI.post(UserAPI.CLAIM_TODAY_REWARD, {
+            onError: noop,
+            onSuccess: (response) => {
+                if (response.success) {
+                    setShowWelcomeBackModal(true)
+                    getMyBalance({})
+                }
+            },
+        })
 
     const getCourseListUI = () => {
         if (!data) {
@@ -46,9 +74,23 @@ const HomePageContainer = () => {
         )
     }
 
+    useEffect(() => {
+        claimDailyReward({})
+    }, [])
+
     return (
         <div>
-            <LoadingScreen isLoading={isLoading} />
+            <LoadingScreen
+                isLoading={
+                    isLoading ||
+                    isLoadingClaimDailyReward ||
+                    isLoadingGetMyBalance
+                }
+            />
+            <WelcomeBackModal
+                isShow={showWelcomeBackModal}
+                setIsShow={setShowWelcomeBackModal}
+            />
             <div className="bg-second h-[550px] flex justify-center items-center text-white space-x-10 px-14">
                 <div className="w-[540px] space-y-7">
                     <div className="leading-snug font-bold text-5xl xl:text-4xl lg:text-3xl md:text-2xl sm:text-3xl">
