@@ -5,8 +5,9 @@ import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import WelcomeBackModal from '@/components/core/modal/welcome-back-modal'
 import VerticalCourseCard from '@/components/core/vertical-course-card'
-import { useAppDispatch } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { updateUserBalance } from '@/store/user'
+import { getLoginState } from '@/store/user/selectors'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
@@ -16,7 +17,6 @@ const HomePageContainer = () => {
     const dispatch = useAppDispatch()
     const [showWelcomeBackModal, setShowWelcomeBackModal] =
         useState<boolean>(false)
-
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
     })

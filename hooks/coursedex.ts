@@ -29,6 +29,7 @@ export const createCourse = async (
 
     // Collect token contract
 }
+
 export const enroll = async (
     signer: ethers.Signer | null,
     amount: string,
@@ -39,4 +40,22 @@ export const enroll = async (
     console.log(courseId)
     const tx = await courseDex.enrollCourse(courseId)
     await tx.wait()
+}
+
+export const claimReward = async (
+    signer: ethers.Signer | null,
+    object: GetMintSignatureResponse,
+): Promise<void> => {
+    const coursedex: ethers.Contract = getContract(signer)
+    // Return claimed status
+    const tx = await coursedex.claimReward(
+        object.price,
+        object.nonce,
+        object.v,
+        object.r,
+        object.s,
+    )
+    await tx.wait()
+    await tx.wait()
+    // Collect token contract
 }

@@ -12,6 +12,7 @@ export const UserAPI = {
     GET_CATEGORY: '/category',
     CLAIM_TODAY_REWARD: '/reward/claim-today-reward',
     GET_MY_BALANCE: '/balance/my-balance',
+    CLAIM_TOKEN: '/reward/claim-reward-token-signature',
 }
 
 export const LearnerAPI = {
