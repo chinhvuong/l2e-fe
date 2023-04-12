@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import './style.scss'
 import { SIGN_MESSAGE } from '@/constants'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import {
-    updateAssetState,
-    updateClaimDailyState,
-    updateLoginState,
-    updateTokenBalance,
-} from '@/store/user'
+import { useAppDispatch } from '@/hooks'
+import { updateAssetState, updateLoginState } from '@/store/user'
 import { useAccount, useContractRead, useSignMessage } from 'wagmi'
 import { getLoginState } from '@/store/user/selectors'
 import { usdtAbi } from '@/abi/usdt'
 import { useSelector } from 'react-redux'
 import { verifyMessage } from 'ethers/lib/utils'
 import useAPI from '@/api/hooks/useAPI'
-import { AuthAPI, UserAPI } from '@/api/api-path'
+import { AuthAPI } from '@/api/api-path'
 import { noop } from 'lodash'
 import { AuthResponse } from '@/api/dto/auth.dto'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/localStorage'
