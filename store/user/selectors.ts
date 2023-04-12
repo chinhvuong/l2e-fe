@@ -12,6 +12,10 @@ export const getAssetState = (state: RootState) => {
     return state.user.asset
 }
 
-export const getUserBalanceState = (state: RootState) => {
-    return state.user.balance
+export const getTokenBalanceState = (state: RootState) => {
+    return state.user.asset.tokenBallance
+}
+
+export const getClaimState = (state: RootState) => {
+    return state.user.isClaimDaily
 }

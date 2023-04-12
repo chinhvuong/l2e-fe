@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../button'
+import { useAppDispatch } from '@/hooks'
+import { updateClaimDailyState } from '@/store/user'
 
 interface IWelcomeBackModalProps {
     isShow: boolean
-    setIsShow: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function WelcomeBackModal(props: IWelcomeBackModalProps) {
-    const { isShow, setIsShow } = props
-
+    const { isShow } = props
+    const dispatch = useAppDispatch()
     const [showModal, setShowModal] = useState(isShow)
 
     useEffect(() => {
@@ -17,7 +18,7 @@ export default function WelcomeBackModal(props: IWelcomeBackModalProps) {
 
     const handleShowModal = (value: boolean) => {
         setShowModal(value)
-        setIsShow(value)
+        dispatch(updateClaimDailyState(value))
     }
 
     return (

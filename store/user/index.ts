@@ -8,8 +8,9 @@ const initialState: UserState = {
     asset: {
         approve: 0,
         balance: 0,
+        tokenBallance: 0,
     },
-    balance: 0,
+    isClaimDaily: false,
 }
 
 export const userSlice = createSlice({
@@ -19,8 +20,8 @@ export const userSlice = createSlice({
         updateLoginState(state, action: PayloadAction<boolean>) {
             state.isLogin = action.payload
         },
-        updateUserBalance(state, action: PayloadAction<number>) {
-            state.balance = action.payload
+        updateTokenBalance(state, action: PayloadAction<number>) {
+            state.asset.tokenBallance = action.payload
         },
         updateAssetState(
             state,
@@ -35,10 +36,17 @@ export const userSlice = createSlice({
             }
             state.asset = newS
         },
+        updateClaimDailyState(state, action: PayloadAction<boolean>) {
+            state.isClaimDaily = action.payload
+        },
     },
 })
 
-export const { updateLoginState, updateUserBalance, updateAssetState } =
-    userSlice.actions
+export const {
+    updateLoginState,
+    updateTokenBalance,
+    updateAssetState,
+    updateClaimDailyState,
+} = userSlice.actions
 
 export default userSlice.reducer

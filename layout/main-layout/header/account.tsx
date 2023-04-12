@@ -9,8 +9,12 @@ import Input from '@/components/core/input'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { claimReward } from '@/hooks/coursedex'
 import { updateLoadingState } from '@/store/course'
-import { updateLoginState, updateUserBalance } from '@/store/user'
-import { getUserBalanceState } from '@/store/user/selectors'
+import {
+    updateClaimDailyState,
+    updateLoginState,
+    updateTokenBalance,
+} from '@/store/user'
+import { getTokenBalanceState } from '@/store/user/selectors'
 import { goerli } from '@/wallet/chains'
 import useWeb3 from '@/wallet/hooks/useWeb3'
 import {
@@ -45,7 +49,7 @@ const Account = (props: any) => {
         chainId: goerli.id,
     })
     const [disabled, setDisabled] = useState(false)
-    const myAccountBalance = useAppSelector(getUserBalanceState)
+    const myAccountBalance = useAppSelector(getTokenBalanceState)
 
     const dispatch = useAppDispatch()
 
@@ -69,10 +73,17 @@ const Account = (props: any) => {
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
             onError: noop,
             onSuccess: (response) => {
-                dispatch(updateUserBalance(response.balance))
+                dispatch(updateTokenBalance(response.balance))
             },
         })
-
+    const { mutate: claimDailyReward, isLoading: isLoadingClaimDailyReward } =
+        useAPI.post(UserAPI.CLAIM_TODAY_REWARD, {
+            onError: noop,
+            onSuccess: (response) => {
+                dispatch(updateClaimDailyState(response.success))
+                getMyBalance({})
+            },
+        })
     const validateInput = (value: string): boolean => {
         if (value === '') {
             setWalletInputErrorMessage('This field is required!')
@@ -109,7 +120,7 @@ const Account = (props: any) => {
     }
 
     useEffect(() => {
-        getMyBalance({})
+        claimDailyReward({})
     }, [])
 
     return (
