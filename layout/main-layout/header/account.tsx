@@ -1,12 +1,21 @@
 import { UserAPI } from '@/api/api-path'
+import { callAPI } from '@/api/axios-client'
+import { GetMintSignatureResponse } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
+import Loading from '@/components/core/animate/loading'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import Input from '@/components/core/input'
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import { claimReward } from '@/hooks/coursedex'
 import { updateLoadingState } from '@/store/course'
-import { updateLoginState, updateUserBalance } from '@/store/user'
-import { getUserBalanceState } from '@/store/user/selectors'
+import {
+    updateClaimDailyState,
+    updateLoginState,
+    updateTokenBalance,
+} from '@/store/user'
+import { getTokenBalanceState } from '@/store/user/selectors'
+import { goerli } from '@/wallet/chains'
 import useWeb3 from '@/wallet/hooks/useWeb3'
 import {
     faBell,
@@ -20,9 +29,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ethers } from 'ethers'
 import { noop } from 'lodash'
 import Router from 'next/router'
 import { useEffect, useState } from 'react'
+import { useSigner } from 'wagmi'
 
 const Account = (props: any) => {
     const [hoverUser, setHoverUser] = useState(false)
@@ -32,9 +43,13 @@ const Account = (props: any) => {
     const [isValidWalletInput, setIsValidWalletInput] = useState(true)
     const [walletInputErrorMessage, setWalletInputErrorMessage] = useState('')
     const [input, setInput] = useState('')
+    const [isLoadingClaimtoken, setIsLoadingClaimtoken] = useState(false)
     const { disconnect } = useWeb3()
-
-    const myAccountBalance = useAppSelector(getUserBalanceState)
+    const { data: signer } = useSigner({
+        chainId: goerli.id,
+    })
+    const [disabled, setDisabled] = useState(false)
+    const myAccountBalance = useAppSelector(getTokenBalanceState)
 
     const dispatch = useAppDispatch()
 
@@ -58,10 +73,17 @@ const Account = (props: any) => {
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
             onError: noop,
             onSuccess: (response) => {
-                dispatch(updateUserBalance(response.balance))
+                dispatch(updateTokenBalance(response.balance))
             },
         })
-
+    const { mutate: claimDailyReward, isLoading: isLoadingClaimDailyReward } =
+        useAPI.post(UserAPI.CLAIM_TODAY_REWARD, {
+            onError: noop,
+            onSuccess: (response) => {
+                dispatch(updateClaimDailyState(response.success))
+                getMyBalance({})
+            },
+        })
     const validateInput = (value: string): boolean => {
         if (value === '') {
             setWalletInputErrorMessage('This field is required!')
@@ -78,14 +100,27 @@ const Account = (props: any) => {
         }
     }
 
-    const handleClaimToken = () => {
+    const handleClaimToken = async () => {
         if (validateInput(input)) {
-            console.log('Claim Token')
+            try {
+                setDisabled(true)
+                setIsLoadingClaimtoken(true)
+                const payload = await callAPI('post', UserAPI.CLAIM_TOKEN, {
+                    amount: parseInt(input),
+                })
+                await claimReward(signer as ethers.Signer, payload)
+                setIsLoadingClaimtoken(false)
+                getMyBalance({})
+                setDisabled(false)
+            } catch (error) {
+                setDisabled(false)
+                setIsLoadingClaimtoken(false)
+            }
         }
     }
 
     useEffect(() => {
-        getMyBalance({})
+        claimDailyReward({})
     }, [])
 
     return (
@@ -142,11 +177,15 @@ const Account = (props: any) => {
                             )}
                             <Button
                                 className="btn-primary mt-3 w-full"
+                                disabled={disabled}
                                 onClick={() => handleClaimToken()}
                             >
                                 <div className="font-medium w-full text-center">
                                     Claim token
                                 </div>
+                                {isLoadingClaimtoken && (
+                                    <Loading className="!text-white" />
+                                )}
                             </Button>
                         </div>
                     </div>

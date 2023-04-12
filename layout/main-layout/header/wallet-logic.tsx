@@ -15,7 +15,6 @@ import { AuthResponse } from '@/api/dto/auth.dto'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/localStorage'
 export default function WalletLogic() {
     const [address, setAddress] = useState<string | undefined>(undefined)
-
     const { data: balance, refetch: refetchBalance } = useContractRead({
         address: process.env.NEXT_PUBLIC_USDT_CONTRACT,
         abi: usdtAbi,
