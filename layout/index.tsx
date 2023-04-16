@@ -10,7 +10,6 @@ import { getLoadingState } from '@/store/course/selectors'
 const Layout = ({ children }: { children: ReactChild }) => {
     const router = useRouter()
     const isLoading = useAppSelector(getLoadingState)
-
     const darkTheme =
         router.pathname === '/about-us' || router.pathname === '/'
             ? true

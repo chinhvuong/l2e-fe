@@ -1,5 +1,5 @@
 export interface User {
-    _id: number
+    _id: string
     walletAddress: string
     createdAt: Date
     updatedAt: Date
@@ -7,8 +7,9 @@ export interface User {
     title: string
     bio: string
     rating: number
-    courses: number[]
+    courses?: number[]
     avatar: string
+    nonce: number
 }
 
 export interface UserState {
