@@ -32,7 +32,19 @@ const UseClientQuery = (
                         resolve(data)
                     },
                     (error: any) => {
-                        if (error.response.status === 401) {
+                        if (!error?.response?.status) {
+                            toast.error('Something went wrong!', {
+                                position: 'top-center',
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnFocusLoss: false,
+                                pauseOnHover: false,
+                                progress: undefined,
+                                theme: 'light',
+                                toastId: 'unknownError',
+                            })
+                        } else if (error.response.status === 401) {
                             logOut()
                             toast.error('Your token has been expired!', {
                                 position: 'top-center',
@@ -45,8 +57,7 @@ const UseClientQuery = (
                                 theme: 'light',
                                 toastId: 'tokenExpired',
                             })
-                        }
-                        if (error.response.status === 403) {
+                        } else if (error.response.status === 403) {
                             toast.error(
                                 'Your account does not have permission to access that resource.',
                                 {
@@ -63,7 +74,7 @@ const UseClientQuery = (
                             )
                             return
                         }
-                        reject(error.response.data)
+                        reject(error)
                     },
                 )
             }),

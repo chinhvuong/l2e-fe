@@ -8,7 +8,7 @@ const initialState: UserState = {
     asset: {
         approve: 0,
         balance: 0,
-        tokenBallance: 0,
+        tokenBalance: 0,
     },
     isClaimDaily: false,
 }
@@ -24,7 +24,7 @@ export const userSlice = createSlice({
             state.user = action.payload
         },
         updateTokenBalance(state, action: PayloadAction<number>) {
-            state.asset.tokenBallance = action.payload
+            state.asset.tokenBalance = action.payload
         },
         updateAssetState(
             state,

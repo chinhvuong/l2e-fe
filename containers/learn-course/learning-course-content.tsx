@@ -12,15 +12,21 @@ import NavBarLearner from './components/nav-bar'
 import LearningOverviewDetail from './components/overview'
 import LearningReviewDetail from './components/reviews'
 import { useLearningCourseContext } from './learning-course-context'
+import CorrectQuizAnswerModal from '@/components/core/modal/correct-quiz-answer-modal'
 
 const LearningCourseContent = () => {
-    const { courseDetail, isLoading, playingVideo, currentPosition } =
-        useLearningCourseContext()
+    const {
+        courseDetail,
+        isLoading,
+        playingVideo,
+        currentQuiz,
+        isCurrentLessonLearned,
+        showPlayQuizModal,
+        setShowPlayQuizModal,
+        isPerfectScore,
+        setIsPerfectScore,
+    } = useLearningCourseContext()
     const [currentTab, setCurrentTab] = useState('Overview')
-    const [showPlayQuizModal, setShowPlayQuizModal] = useState(false)
-    const [currentQuiz, setCurrentQuiz] = useState<PlayQuizRes>(
-        {} as PlayQuizRes,
-    )
 
     const getTabContent = () => {
         switch (currentTab) {
@@ -47,32 +53,21 @@ const LearningCourseContent = () => {
     //     }
     // }, [isReady])
 
-    const { mutate: getQuizDetail, isLoading: isLoadingGetQuizDetail } =
-        useAPI.post(LearnerAPI.GET_QUIZ_DETAIL, {
-            onError: noop,
-            onSuccess(response) {
-                setCurrentQuiz(response)
-                setShowPlayQuizModal(true)
-            },
-        })
-
-    useEffect(() => {
-        courseDetail &&
-            getQuizDetail({
-                id: courseDetail?.sections[currentPosition[0]].lessons[
-                    currentPosition[1]
-                ].quizzes[0]._id,
-            })
-    }, [currentPosition])
-
     return (
         <div className="flex w-full">
-            {/* <PlayQuizModal
-                isShow={showPlayQuizModal}
-                setIsShow={setShowPlayQuizModal}
-                quiz={currentQuiz}
-            /> */}
-            <LoadingScreen isLoading={isLoading || isLoadingGetQuizDetail} />
+            {showPlayQuizModal && currentQuiz && (
+                <PlayQuizModal
+                    isShow={showPlayQuizModal}
+                    setIsShow={setShowPlayQuizModal}
+                    quiz={currentQuiz}
+                    isCurrentLessonLearned={isCurrentLessonLearned}
+                />
+            )}
+            <CorrectQuizAnswerModal
+                isShow={isPerfectScore}
+                setIsShow={setIsPerfectScore}
+            />
+            <LoadingScreen isLoading={isLoading} />
             <div className="w-3/4 border-r">
                 {courseDetail ? (
                     <ReactPlayer
@@ -84,7 +79,8 @@ const LearningCourseContent = () => {
                         width="100%"
                         height="65vh"
                         onEnded={() => {
-                            setShowPlayQuizModal(true)
+                            !isCurrentLessonLearned &&
+                                setShowPlayQuizModal(true)
                         }}
                         // onReady={onReady}
                     />

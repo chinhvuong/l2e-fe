@@ -13,7 +13,7 @@ export const getAssetState = (state: RootState) => {
 }
 
 export const getTokenBalanceState = (state: RootState) => {
-    return state.user.asset.tokenBallance
+    return state.user.asset.tokenBalance
 }
 
 export const getClaimState = (state: RootState) => {
