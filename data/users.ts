@@ -1,7 +1,7 @@
 import { User } from '@/store/user/types'
 
 export const dataUser: User = {
-    _id: 1,
+    _id: '64366f625ac318df990790fb',
     walletAddress: '1',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -11,4 +11,5 @@ export const dataUser: User = {
     rating: 4.7,
     courses: [1, 2, 3, 4, 5],
     avatar: 'https://img-c.udemycdn.com/user/200_H/31334738_a13c_3.jpg',
+    nonce: 0,
 }

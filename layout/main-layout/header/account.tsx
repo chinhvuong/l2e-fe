@@ -63,6 +63,10 @@ const Account = (props: any) => {
         Router.push('/instructor/courses')
     }
 
+    const goToProfilePage = () => {
+        Router.push('/profile')
+    }
+
     const logOut = async () => {
         await disconnect()
         localStorage.clear()
@@ -217,7 +221,7 @@ const Account = (props: any) => {
                         >
                             <div
                                 className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 rounded-t-[20px] cursor-pointer"
-                                // onClick={() => onSelectRating(item)}
+                                onClick={() => goToProfilePage()}
                             >
                                 <FontAwesomeIcon
                                     icon={faUser}
