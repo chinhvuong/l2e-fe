@@ -11,6 +11,7 @@ export interface QuestionInPlayQuiz {
     _id: string
     question: string
     choices: string[]
+    correctAnswer?: number
 }
 
 export interface PlayQuizRes {

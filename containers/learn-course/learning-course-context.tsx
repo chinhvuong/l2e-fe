@@ -1,11 +1,11 @@
-import { LearnerAPI } from '@/api/api-path'
+import { LearnerAPI, UserAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import { QuestionDetailType } from '@/store/questions/types'
+import { noop } from 'lodash'
 import { useRouter } from 'next/router'
 import {
-    createContext,
     Dispatch,
     SetStateAction,
+    createContext,
     useContext,
     useEffect,
     useMemo,
@@ -58,6 +58,7 @@ export interface LearningCourseRes {
     name: string
     overview: string
     description: string
+    finalTest: LectureQuiz
     price: number
     rating: number
     reviews: number
@@ -81,7 +82,14 @@ interface ILearningCourseContext {
     isLoading: boolean
     playingVideo: string
     handleChangeLecture: (pos: number[]) => void
-    currentPosition: number[]
+    myAccountBalance: number
+    currentQuiz: LectureQuiz | undefined
+    isCurrentLessonLearned: boolean
+    showPlayQuizModal: boolean
+    setShowPlayQuizModal: Dispatch<SetStateAction<boolean>>
+    isPerfectScore: boolean
+    setIsPerfectScore: Dispatch<SetStateAction<boolean>>
+    handlePerfectScore: (isOpen: boolean) => void
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -93,13 +101,32 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
     const [courseId, setCourseId] = useState('')
     const [playingVideo, setPlayingVideo] = useState<string>('')
+    const [myAccountBalance, setMyAccountBalance] = useState(0)
+    const [showPlayQuizModal, setShowPlayQuizModal] = useState(false)
+
     const router = useRouter()
 
     const [courseDetail, setCourseDetail] = useState<
         LearningCourseRes | undefined
     >(undefined)
 
-    const [currentPosition, setCurrentPosition] = useState<number[]>([0, 0])
+    // const [currentPosition, setCurrentPosition] = useState<number[]>([0, 0])
+    const [currentQuiz, setCurrentQuiz] = useState<LectureQuiz | undefined>(
+        undefined,
+    )
+    const [isCurrentLessonLearned, setIsCurrentLessonLearned] =
+        useState<boolean>(false)
+
+    const [isPerfectScore, setIsPerfectScore] = useState(false)
+
+    const handlePerfectScore = (isOpen: boolean) => {
+        if (isOpen) {
+            setIsPerfectScore(true)
+            getMyBalance({})
+        } else {
+            setIsPerfectScore(false)
+        }
+    }
 
     const {
         mutate: getLearningCourseDetail,
@@ -114,13 +141,31 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         },
     )
 
+    const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
+        useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
+            onError: noop,
+            onSuccess: (response) => {
+                setMyAccountBalance(response.balance)
+            },
+        })
+
     const getDefaultPlayedVideo = (): string => {
         let result = ''
         courseDetail?.sections.forEach((section, sectionIndex) => {
             section.lessons.forEach((lesson, lessonIndex) => {
                 if (!lesson.learned && result === '') {
                     result = lesson.media
-                    setCurrentPosition([sectionIndex, lessonIndex])
+                    // setCurrentPosition([sectionIndex, lessonIndex])
+                    setCurrentQuiz(
+                        courseDetail?.sections[sectionIndex].lessons[
+                            lessonIndex
+                        ].quizzes[0],
+                    )
+                    setIsCurrentLessonLearned(
+                        courseDetail?.sections[sectionIndex].lessons[
+                            lessonIndex
+                        ].learned,
+                    )
                 }
             })
         })
@@ -128,14 +173,20 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
 
     const handleChangeLecture = (pos: number[]) => {
-        setCurrentPosition(pos)
+        // setCurrentPosition(pos)
+        setCurrentQuiz(
+            courseDetail?.sections[pos[0]].lessons[pos[1]].quizzes[0],
+        )
+        setIsCurrentLessonLearned(
+            courseDetail?.sections[pos[0]].lessons[pos[1]].learned ?? false,
+        )
         courseDetail &&
             setPlayingVideo(courseDetail.sections[pos[0]].lessons[pos[1]].media)
     }
 
     const isLoading = useMemo(() => {
-        return isLoadingLearningCourseDetail
-    }, [isLoadingLearningCourseDetail])
+        return isLoadingLearningCourseDetail || isLoadingGetMyBalance
+    }, [isLoadingLearningCourseDetail, isLoadingGetMyBalance])
 
     useEffect(() => {
         if (!isLoading) {
@@ -147,6 +198,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         if (typeof router.query.slug === 'string') {
             setCourseId(router.query.slug)
             setTimeout(getLearningCourseDetail, 1000)
+            getMyBalance({})
         }
     }, [router.query.slug])
 
@@ -157,7 +209,14 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 isLoading,
                 playingVideo,
                 handleChangeLecture,
-                currentPosition,
+                myAccountBalance,
+                currentQuiz,
+                isCurrentLessonLearned,
+                showPlayQuizModal,
+                setShowPlayQuizModal,
+                isPerfectScore,
+                setIsPerfectScore,
+                handlePerfectScore,
             }}
         >
             {children}

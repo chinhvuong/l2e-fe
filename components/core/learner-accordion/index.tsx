@@ -42,12 +42,10 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                     isLearning && order <= learningLectureIndex
                         ? 'bg-white'
                         : 'bg-slate-400'
-                } border-border-box py-4 cursor-pointer`}
+                } border-border-box py-4 shadow-md cursor-pointer`}
+                onClick={() => setSelfExpand(!selfExpand)}
             >
-                <div
-                    className={`flex justify-between`}
-                    onClick={() => setSelfExpand(!selfExpand)}
-                >
+                <div className={`flex justify-between`}>
                     <div className="flex items-center justify-between w-full">
                         <div className="font-bold text-sm">
                             Section {order + 1}: {title}

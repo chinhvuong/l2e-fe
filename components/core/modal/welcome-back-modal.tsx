@@ -34,7 +34,7 @@ export default function WelcomeBackModal(props: IWelcomeBackModalProps) {
                                         alt=""
                                     />
                                     <div className="absolute z-50 top-44 w-full">
-                                        <div className="text-center text-3xl font-bold pr-3">
+                                        <div className="text-center text-2xl font-bold pr-3">
                                             Welcome back!
                                         </div>
                                         <div className="text-center text-md pr-3 pt-3">

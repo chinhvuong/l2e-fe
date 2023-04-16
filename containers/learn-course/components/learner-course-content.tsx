@@ -4,9 +4,13 @@ import {
     LearningCourseSections,
     useLearningCourseContext,
 } from '../learning-course-context'
+import Button from '@/components/core/button'
+import { useState } from 'react'
+import PlayFinalQuizModal from '@/components/core/modal/play-final-quiz-modal'
 
 export default function LearnerCourseContent() {
     const { courseDetail } = useLearningCourseContext()
+    const [showFinalQuizModal, setShowPlayFinalQuizModal] = useState(false)
 
     const getDefaultLearningPosition = (): number[] => {
         courseDetail?.sections.forEach((section, sectionIndex) => {
@@ -35,12 +39,29 @@ export default function LearnerCourseContent() {
                         />
                     )
                 })}
+                <div className="flex justify-center mt-5">
+                    <Button
+                        className="btn-primary"
+                        onClick={() => setShowPlayFinalQuizModal(true)}
+                    >
+                        <div className="font-medium text-center">
+                            Take the Final Test
+                        </div>
+                    </Button>
+                </div>
             </div>
         )
     }
 
     return (
         <div>
+            {courseDetail?.finalTest && (
+                <PlayFinalQuizModal
+                    isShow={showFinalQuizModal}
+                    setIsShow={setShowPlayFinalQuizModal}
+                    quiz={courseDetail.finalTest}
+                />
+            )}
             <div className="font-semibold text-lg my-4 ml-5">
                 Course content
             </div>

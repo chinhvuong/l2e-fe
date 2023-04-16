@@ -6,22 +6,25 @@ import { LearnerAPI } from '@/api/api-path'
 import { noop } from 'lodash'
 import LoadingScreen from '../animate/loading-screen'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import {
+    faCircleCheck,
+    faCircleExclamation,
+    faCircleXmark,
+} from '@fortawesome/free-solid-svg-icons'
 import {
     LectureQuiz,
     useLearningCourseContext,
 } from '@/containers/learn-course/learning-course-context'
 import './style.scss'
 
-interface IPlayQuizModalProps {
+interface IPlayFinalQuizModalProps {
     isShow: boolean
     setIsShow: (state: boolean) => void
     quiz: LectureQuiz
-    isCurrentLessonLearned: boolean
 }
 
-export default function PlayQuizModal(props: IPlayQuizModalProps) {
-    const { isShow, setIsShow, quiz, isCurrentLessonLearned } = props
+export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
+    const { isShow, setIsShow, quiz } = props
     const { handlePerfectScore, isPerfectScore } = useLearningCourseContext()
     const answerPrefix = ['A. ', 'B. ', 'C. ', 'D. ']
 
@@ -196,15 +199,44 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                     }`}
                                 >
                                     <div className="text-xl font-bold px-6 pb-5">
-                                        Quiz: {quiz.name}
+                                        Final Test
                                     </div>
                                     {!isStart ? (
-                                        <>
-                                            <div className="text-lg font-medium px-6 pb-5">
-                                                {isCurrentLessonLearned
-                                                    ? 'Try your best to complete this quiz with perfect score!'
-                                                    : `Completed this quiz before moving to the
-                                        next lesson!`}
+                                        <div className="px-6 w-[470px]">
+                                            <div className="text-lg font-medium pb-5">
+                                                {`You've completed all the lessons in this course! Take the final test to claim your certificate!`}
+                                            </div>
+                                            <div>
+                                                <ul className="list-disc grid gap-y-2">
+                                                    <div className="flex">
+                                                        <FontAwesomeIcon
+                                                            icon={
+                                                                faCircleExclamation
+                                                            }
+                                                            className="text-[20px] text-red-500 mr-2"
+                                                        />
+                                                        <span>Warning:</span>
+                                                    </div>
+                                                    <li>
+                                                        You can only take this
+                                                        test once.
+                                                    </li>
+                                                    <li>
+                                                        The system will not show
+                                                        the answers of this test
+                                                        after you submit it.
+                                                    </li>
+                                                    <li>
+                                                        Please check the
+                                                        internet connection
+                                                        carefully. If it is
+                                                        interrupted, you will
+                                                        fail the test and you
+                                                        will not claim the
+                                                        certificate of this
+                                                        course.
+                                                    </li>
+                                                </ul>
                                             </div>
                                             <div className="flex justify-center">
                                                 <Button
@@ -218,7 +250,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                     </div>
                                                 </Button>
                                             </div>
-                                        </>
+                                        </div>
                                     ) : (
                                         <>
                                             <div className="flex justify-center w-full font-bold text-2xl pb-5">

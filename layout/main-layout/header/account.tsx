@@ -133,10 +133,10 @@ const Account = (props: any) => {
                     !props.darkTheme ? 'text-black' : 'text-white'
                 }`}
             /> */}
-                <div className="flex">
+                <div className="flex cursor-pointer">
                     <FontAwesomeIcon
                         icon={faWallet}
-                        className={`text-[25px] cursor-pointer under_lg:hidden ${
+                        className={`text-[25px] under_lg:hidden ${
                             !props.darkTheme ? 'text-black' : 'text-white'
                         }`}
                         onMouseEnter={() => setHoverWallet(true)}

@@ -17,7 +17,7 @@ export interface UserState {
     asset: {
         approve: number
         balance: number
-        tokenBallance: number
+        tokenBalance: number
     }
     isClaimDaily: boolean
 }

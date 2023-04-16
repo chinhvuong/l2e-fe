@@ -13,7 +13,7 @@ export default function CourseDetailContent() {
 
     return (
         <>
-            <LoadingScreen isLoading={isLoading || !data} />
+            <LoadingScreen isLoading={isLoading} />
             <CourseLabel />
             <NavBar />
             <CourseInfo />
