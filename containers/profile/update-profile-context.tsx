@@ -1,54 +1,13 @@
-import { InstructorAPI, UserAPI } from '@/api/api-path'
-import { callAPI } from '@/api/axios-client'
+import { UserAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import {
-    COURSE_ID,
-    QUESTION_ID,
-    QUIZ_ID,
-    USER_ID,
-} from '@/constants/localStorage'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { updateCertifications } from '@/store/certification'
 import { getCertifications } from '@/store/certification/selectors'
 import { Certificate } from '@/store/certification/types'
-import {
-    updateCourseDetail,
-    updateDescriptionLength,
-    updateSaveCourseState,
-} from '@/store/course'
-import {
-    updateAllCurriculumLectures,
-    updateAllCurriculumSections,
-} from '@/store/course/curriculum'
-import {
-    getCurriculumLecturesForm,
-    getCurriculumSectionsForm,
-} from '@/store/course/curriculum/selectors'
-import {
-    CurriculumLecture,
-    CurriculumSection,
-} from '@/store/course/curriculum/types'
-import {
-    updateAllRequirements,
-    updateAllWhatYouWillLearn,
-} from '@/store/course/intended-learners'
-import { getQuestionDetailInfo } from '@/store/course/question/selectors'
-import {
-    getFinalTestSelection,
-    getMyCourseDetail,
-} from '@/store/course/selectors'
-import { CourseDetail } from '@/store/course/types'
-import { UpdateAllQuestionState } from '@/store/questions'
-import { getQuestionsInfo } from '@/store/questions/selectors'
-import { QuestionDetailType } from '@/store/questions/types'
-import { UpdateQuizzesState } from '@/store/quiz'
-import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
-import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
 import { updateUserInfo } from '@/store/user'
 import { getInstructorInfo } from '@/store/user/selectors'
 import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
-import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import { noop } from 'lodash'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 interface IUpdateProfileContext {

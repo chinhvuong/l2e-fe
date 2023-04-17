@@ -229,14 +229,14 @@ const Account = (props: any) => {
                                 />
                                 <div>Profile</div>
                             </div>
-                            <div className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer hidden under_lg:flex">
+                            <div className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer under_lg:flex">
                                 <FontAwesomeIcon
                                     icon={faBell}
                                     className="w-[16px]"
                                 />
                                 <div>Notification</div>
                             </div>
-                            <div className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer hidden under_lg:flex">
+                            <div className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer under_lg:flex">
                                 <FontAwesomeIcon
                                     icon={faWallet}
                                     className="w-[16px]"

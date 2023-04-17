@@ -13,6 +13,7 @@ export const UserAPI = {
     CLAIM_TODAY_REWARD: '/reward/claim-today-reward',
     GET_MY_BALANCE: '/balance/my-balance',
     CLAIM_TOKEN: '/reward/claim-reward-token-signature',
+    CLAIM_CERTIFICATE: '/certificate/claim-certificate-signature',
     GET_LIST_CERTIFICATION: '/certificate',
     GET_USER_INFO: '/user/me',
 }
