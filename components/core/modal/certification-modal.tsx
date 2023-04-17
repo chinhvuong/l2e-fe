@@ -7,6 +7,7 @@ import { callAPI } from '@/api/axios-client'
 import { UserAPI } from '@/api/api-path'
 import { claimCertificate } from '@/hooks/coursedex'
 import { ethers } from 'ethers'
+import Loading from '../animate/loading'
 
 interface ICertificateModalProps {
     isShow: boolean
@@ -66,10 +67,14 @@ export default function CertificateModal(props: ICertificateModalProps) {
                                                 onClick={() =>
                                                     handleClaimCertificate()
                                                 }
+                                                disabled={isdisabled}
                                             >
-                                                <div className="font-medium">
+                                                <div className="font-medium w-full text-center">
                                                     Mint Certificate
                                                 </div>
+                                                {isLoadingMintCertificate && (
+                                                    <Loading className="!text-white" />
+                                                )}
                                             </Button>
                                         ) : (
                                             <div>
