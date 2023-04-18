@@ -48,9 +48,7 @@ export default function ReviewItem(props: IReviewItemProps) {
                     <div className="font-bold mt-1">{props.data.user}</div>
                     <div className="flex items-center space-x-5">
                         <RatingStar id={'1'} ratingScore={4} hideScore />
-                        <div className="text-description mb-1">
-                            {getTimeAgo()}
-                        </div>
+                        <div className="text-description">{getTimeAgo()}</div>
                     </div>
                 </div>
             </div>

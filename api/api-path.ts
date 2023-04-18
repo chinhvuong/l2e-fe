@@ -24,8 +24,8 @@ export const LearnerAPI = {
     GET_LEARNING_COURSE_DETAIL: '/course/learn',
     GET_QUIZ_DETAIL: '/game/play-quiz',
     SUBMIT_QUIZ_ANSWER: '/game/submit-quiz',
-    GET_FINAL_TEST_DETAIL: '/game/play-final-quiz',
-    SUBMIT_FINAL_TEST_ANSWER: '/game/submit-final-quiz',
+    GET_FINAL_TEST_DETAIL: '/game/play-final-test',
+    SUBMIT_FINAL_TEST_ANSWER: '/game/submit-final-test',
 }
 
 export const InstructorAPI = {

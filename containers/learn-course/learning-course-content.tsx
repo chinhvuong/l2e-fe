@@ -1,10 +1,7 @@
-import { LearnerAPI } from '@/api/api-path'
-import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import CorrectQuizAnswerModal from '@/components/core/modal/correct-quiz-answer-modal'
 import PlayQuizModal from '@/components/core/modal/play-quiz-modal'
-import { PlayQuizRes } from '@/store/questions/types'
-import { noop } from 'lodash'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import LearningInstructorDetail from './components/instructor'
 import LearnerCourseContent from './components/learner-course-content'
@@ -12,7 +9,6 @@ import NavBarLearner from './components/nav-bar'
 import LearningOverviewDetail from './components/overview'
 import LearningReviewDetail from './components/reviews'
 import { useLearningCourseContext } from './learning-course-context'
-import CorrectQuizAnswerModal from '@/components/core/modal/correct-quiz-answer-modal'
 
 const LearningCourseContent = () => {
     const {
