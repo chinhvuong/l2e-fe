@@ -64,6 +64,18 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
             if (distance < 0) {
                 clearInterval(countdown)
                 setTimer("Time's up!")
+                currentQuiz &&
+                    submitQuizAnswer({
+                        gameId: currentQuiz.gameId,
+                        answers: currentQuiz.questions.map(
+                            (question, index) => {
+                                return {
+                                    questionId: question._id,
+                                    answer: answers[index],
+                                }
+                            },
+                        ),
+                    })
             }
         }, 1000)
         return countdown

@@ -88,7 +88,7 @@ export const getCurriculumLectureQuizzezDetail =
                 ) as CurriculumLecture
             }
         })
-        lectureDetail.quizzes.forEach((item) => {
+        lectureDetail?.quizzes.forEach((item) => {
             quizzezDetail.push({
                 label: item.name,
                 value: item._id,

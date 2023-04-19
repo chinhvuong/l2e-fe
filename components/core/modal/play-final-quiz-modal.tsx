@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from 'react'
 import LoadingScreen from '../animate/loading-screen'
 import Button from '../button'
 import './style.scss'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 
 interface IPlayFinalTestModalProps {
     isShow: boolean
@@ -37,6 +38,9 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
     const [finalTest, setFinalTest] = useState<PlayQuizRes | undefined>(
         undefined,
     )
+    const [totalQuestions, setTotalQuestions] = useState(0)
+    const [percentage, setPercentage] = useState(0)
+    const [text, setText] = useState('')
 
     const countdownTimer = (expiredAt: string) => {
         const countdownDate = new Date(
@@ -64,6 +68,17 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
             if (distance < 0) {
                 clearInterval(countdown)
                 setTimer("Time's up!")
+                console.log('finalTest', finalTest)
+                finalTest &&
+                    submitFinalTestAnswer({
+                        gameId: finalTest.gameId,
+                        answers: finalTest.questions.map((question, index) => {
+                            return {
+                                questionId: question._id,
+                                answer: answers[index],
+                            }
+                        }),
+                    })
             }
         }, 1000)
         return countdown
@@ -78,6 +93,7 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
         onError: noop,
         onSuccess(response) {
             setFinalTest(response)
+            setTotalQuestions(response.questions.length)
             setIsStart(true)
             setTimerId(countdownTimer(response.expiredAt))
         },
@@ -105,6 +121,8 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
         onError: noop,
         onSuccess(response) {
             setIsFinish(true)
+            setPercentage(response.win_rate * 100)
+            setText(`${response.win_rate * totalQuestions}/${totalQuestions}`)
         },
     })
 
@@ -237,9 +255,52 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                         </div>
                                     ) : (
                                         <>
-                                            <div className="flex justify-center w-full font-bold text-2xl pb-5">
-                                                {!isFinish && timer}
-                                            </div>
+                                            {!isFinish ? (
+                                                <div className="flex justify-center w-full font-bold text-2xl pb-5">
+                                                    {timer}
+                                                </div>
+                                            ) : (
+                                                <div className="px-10 pb-3">
+                                                    <CircularProgressbar
+                                                        value={percentage}
+                                                        text={text}
+                                                        className="h-[80px]"
+                                                        styles={buildStyles({
+                                                            pathColor:
+                                                                percentage > 60
+                                                                    ? '#07DA63'
+                                                                    : '#F48C06',
+                                                            trailColor:
+                                                                '#4d4c4c',
+                                                            textColor:
+                                                                '#000000',
+                                                        })}
+                                                    />
+                                                    <div className="mt-5 font-medium">
+                                                        {percentage > 60
+                                                            ? `Congratulation! You
+                                                        passed the final test!
+                                                        Claim your certificate
+                                                        now.`
+                                                            : `Sorry, you failed the final test...`}
+                                                    </div>
+                                                    {percentage > 60 && (
+                                                        <div className="flex justify-center">
+                                                            <Button
+                                                                className=" btn-primary mt-6"
+                                                                // onClick={() =>
+                                                                //     claim cerfiticate
+                                                                // }
+                                                            >
+                                                                <div className="font-medium text-center">
+                                                                    Claim
+                                                                    certificate
+                                                                </div>
+                                                            </Button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                             {!isFinish && (
                                                 <>
                                                     <div
