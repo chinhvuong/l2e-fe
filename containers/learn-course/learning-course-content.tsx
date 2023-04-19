@@ -9,6 +9,7 @@ import NavBarLearner from './components/nav-bar'
 import LearningOverviewDetail from './components/overview'
 import LearningReviewDetail from './components/reviews'
 import { useLearningCourseContext } from './learning-course-context'
+import LearningCommentsDetail from './components/comments'
 
 const LearningCourseContent = () => {
     const {
@@ -32,6 +33,8 @@ const LearningCourseContent = () => {
                 return <LearningInstructorDetail />
             case 'Ratings':
                 return <LearningReviewDetail />
+            case 'Comments':
+                return <LearningCommentsDetail />
             default:
                 return <></>
         }
