@@ -1,34 +1,23 @@
+import Button from '@/components/core/button'
 import LearnerAccordion from '@/components/core/learner-accordion'
+import PlayFinalTestModal from '@/components/core/modal/play-final-quiz-modal'
 import '@/styles/animations.scss'
+import { useState } from 'react'
 import {
-    LearningCourseSections,
+    LearningCourseRes,
     useLearningCourseContext,
 } from '../learning-course-context'
-import Button from '@/components/core/button'
-import { useState } from 'react'
-import PlayFinalQuizModal from '@/components/core/modal/play-final-quiz-modal'
 
 export default function LearnerCourseContent() {
-    const { courseDetail } = useLearningCourseContext()
-    const [showFinalQuizModal, setShowPlayFinalQuizModal] = useState(false)
+    const { courseDetail, currentPosition } = useLearningCourseContext()
+    const [showFinalTestModal, setShowPlayFinalTestModal] = useState(false)
 
-    const getDefaultLearningPosition = (): number[] => {
-        courseDetail?.sections.forEach((section, sectionIndex) => {
-            section.lessons.forEach((lesson, lessonIndex) => {
-                if (!lesson.learned) {
-                    return [sectionIndex, lessonIndex]
-                }
-            })
-        })
-        return [0, 0]
-    }
-
-    const getLearnerCourseContentUI = (sections: LearningCourseSections[]) => {
-        const learningPos = getDefaultLearningPosition()
+    const getLearnerCourseContentUI = (course: LearningCourseRes) => {
+        const learningPos = currentPosition
 
         return (
             <div className="border-b border-border-box">
-                {sections.map((section, index) => {
+                {course.sections.map((section, index) => {
                     return (
                         <LearnerAccordion
                             title={section.name}
@@ -39,10 +28,11 @@ export default function LearnerCourseContent() {
                         />
                     )
                 })}
-                <div className="flex justify-center mt-5">
+                <div className="flex justify-center py-5 border-t">
                     <Button
-                        className="btn-primary"
-                        onClick={() => setShowPlayFinalQuizModal(true)}
+                        className="btn-primary bg-gray-400"
+                        disabled={learningPos[2] === 1 && course.finalTest.play}
+                        onClick={() => setShowPlayFinalTestModal(true)}
                     >
                         <div className="font-medium text-center">
                             Take the Final Test
@@ -56,16 +46,16 @@ export default function LearnerCourseContent() {
     return (
         <div>
             {courseDetail?.finalTest && (
-                <PlayFinalQuizModal
-                    isShow={showFinalQuizModal}
-                    setIsShow={setShowPlayFinalQuizModal}
+                <PlayFinalTestModal
+                    isShow={showFinalTestModal}
+                    setIsShow={setShowPlayFinalTestModal}
                     quiz={courseDetail.finalTest}
                 />
             )}
             <div className="font-semibold text-lg my-4 ml-5">
                 Course content
             </div>
-            {courseDetail && getLearnerCourseContentUI(courseDetail.sections)}
+            {courseDetail && getLearnerCourseContentUI(courseDetail)}
         </div>
     )
 }

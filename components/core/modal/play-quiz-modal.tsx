@@ -22,7 +22,8 @@ interface IPlayQuizModalProps {
 
 export default function PlayQuizModal(props: IPlayQuizModalProps) {
     const { isShow, setIsShow, quiz, isCurrentLessonLearned } = props
-    const { handlePerfectScore, isPerfectScore } = useLearningCourseContext()
+    const { handlePerfectScore, isPerfectScore, getLearningCourseDetail } =
+        useLearningCourseContext()
     const answerPrefix = ['A. ', 'B. ', 'C. ', 'D. ']
 
     const [showModal, setShowModal] = useState(isShow)
@@ -63,6 +64,18 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
             if (distance < 0) {
                 clearInterval(countdown)
                 setTimer("Time's up!")
+                currentQuiz &&
+                    submitQuizAnswer({
+                        gameId: currentQuiz.gameId,
+                        answers: currentQuiz.questions.map(
+                            (question, index) => {
+                                return {
+                                    questionId: question._id,
+                                    answer: answers[index],
+                                }
+                            },
+                        ),
+                    })
             }
         }, 1000)
         return countdown
@@ -170,6 +183,13 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                 )
             )
         }
+    }
+
+    const handleCloseModal = () => {
+        if (isFinish) {
+            getLearningCourseDetail({})
+        }
+        handleShowModal(false)
     }
 
     return (
@@ -345,7 +365,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                 </div>
                                 <div
                                     className="absolute top-5 right-5 cursor-pointer"
-                                    onClick={() => handleShowModal(false)}
+                                    onClick={() => handleCloseModal()}
                                 >
                                     ✕
                                 </div>

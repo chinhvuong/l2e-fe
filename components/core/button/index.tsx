@@ -31,9 +31,9 @@ function Button({
             {...rest}
             className={`${outline ? btnPrimaryOutline : btnPrimary} ${
                 textButton ? btnText : btnCommon
-            } ${rest.className} flex items-center ${
+            } flex items-center ${
                 isLoading || disabled ? 'cursor-not-allowed' : 'cursor-pointer'
-            } whitespace-nowrap	text-ellipsis overflow-hidden`}
+            } whitespace-nowrap	text-ellipsis overflow-hidden ${rest.className}`}
             disabled={disabled}
         >
             {children}

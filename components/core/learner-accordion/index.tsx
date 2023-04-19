@@ -1,8 +1,11 @@
-import { LearningCourseLectures } from '@/containers/learn-course/learning-course-context'
+import {
+    LearningCourseLectures,
+    useLearningCourseContext,
+} from '@/containers/learn-course/learning-course-context'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import { faCheckCircle, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import LecturesListLearnerAccordion from './components/lectures-list-learner-accordion'
 
 export interface ILearnerAccordionProps {
@@ -10,28 +13,39 @@ export interface ILearnerAccordionProps {
     title: string
     lectures: LearningCourseLectures[]
     isLearning: boolean
-    learningLectureIndex?: number
 }
 
 export default function LearnerAccordion(props: ILearnerAccordionProps) {
-    const {
-        order,
-        title,
-        lectures,
-        isLearning,
-        learningLectureIndex = 0,
-    } = props
+    const { order, title, lectures, isLearning } = props
     const [selfExpand, setSelfExpand] = useState(false)
+    const [learningLectureIndex, setLearningLectureIndex] = useState(0)
+    const { currentPosition } = useLearningCourseContext()
 
-    const countCompletedLessons = (): number => {
+    const countCompletedLessons = useMemo((): number => {
         let count = 0
-        lectures.forEach((lecture) => {
+        let isSetLearningLectureIndex = false
+        lectures.forEach((lecture, index) => {
             if (lecture.learned) {
                 count++
             }
+            if (!lecture.learned && !isSetLearningLectureIndex) {
+                setLearningLectureIndex(index)
+                isSetLearningLectureIndex = true
+            }
         })
+        if (lectures.length === count) {
+            setLearningLectureIndex(lectures.length - 1)
+        }
         return count
-    }
+    }, [lectures])
+
+    useEffect(() => {
+        if (currentPosition[0] === order) {
+            setSelfExpand(true)
+        } else {
+            setSelfExpand(false)
+        }
+    }, [currentPosition])
 
     return (
         <>
@@ -39,9 +53,7 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                 className={`px-5 bg-course-section space-y-2 ${
                     !selfExpand ? 'border-t' : 'border-y'
                 } ${
-                    isLearning && order <= learningLectureIndex
-                        ? 'bg-white'
-                        : 'bg-slate-400'
+                    order <= learningLectureIndex ? 'bg-white' : 'bg-slate-400'
                 } border-border-box py-4 shadow-md cursor-pointer`}
                 onClick={() => setSelfExpand(!selfExpand)}
             >
@@ -59,7 +71,7 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                     </div>
                 </div>
                 <div className="flex space-x-2 items-center">
-                    {countCompletedLessons() === lectures.length ? (
+                    {countCompletedLessons === lectures.length ? (
                         <FontAwesomeIcon
                             icon={faCheckCircle}
                             className="text-green-500"
@@ -71,9 +83,7 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                         />
                     )}
 
-                    <div className="text-xs">{`${countCompletedLessons()}/${
-                        lectures.length
-                    }`}</div>
+                    <div className="text-xs">{`${countCompletedLessons}/${lectures.length}`}</div>
                 </div>
             </div>
             <LecturesListLearnerAccordion

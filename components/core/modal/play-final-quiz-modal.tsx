@@ -1,31 +1,32 @@
-import { PlayQuizRes, QuestionInPlayQuiz } from '@/store/questions/types'
-import React, { RefObject, useEffect, useRef, useState } from 'react'
-import Button from '../button'
-import useAPI from '@/api/hooks/useAPI'
 import { LearnerAPI } from '@/api/api-path'
-import { noop } from 'lodash'
-import LoadingScreen from '../animate/loading-screen'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import useAPI from '@/api/hooks/useAPI'
+import {
+    LectureQuiz,
+    useLearningCourseContext,
+} from '@/containers/learn-course/learning-course-context'
+import { PlayQuizRes } from '@/store/questions/types'
 import {
     faCircleCheck,
     faCircleExclamation,
     faCircleXmark,
 } from '@fortawesome/free-solid-svg-icons'
-import {
-    LectureQuiz,
-    useLearningCourseContext,
-} from '@/containers/learn-course/learning-course-context'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
+import { useEffect, useRef, useState } from 'react'
+import LoadingScreen from '../animate/loading-screen'
+import Button from '../button'
 import './style.scss'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 
-interface IPlayFinalQuizModalProps {
+interface IPlayFinalTestModalProps {
     isShow: boolean
     setIsShow: (state: boolean) => void
     quiz: LectureQuiz
 }
 
-export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
+export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
     const { isShow, setIsShow, quiz } = props
-    const { handlePerfectScore, isPerfectScore } = useLearningCourseContext()
+    const { isPerfectScore } = useLearningCourseContext()
     const answerPrefix = ['A. ', 'B. ', 'C. ', 'D. ']
 
     const [showModal, setShowModal] = useState(isShow)
@@ -34,11 +35,12 @@ export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
     const [isStart, setIsStart] = useState<boolean>(false)
     const [isFinish, setIsFinish] = useState<boolean>(false)
     const [timerId, setTimerId] = useState<NodeJS.Timeout>()
-    const [currentQuiz, setCurrentQuiz] = useState<PlayQuizRes | undefined>(
+    const [finalTest, setFinalTest] = useState<PlayQuizRes | undefined>(
         undefined,
     )
-    const [numberOfCorrectAnswer, setNumberOfCorrectAnswer] = useState(0)
     const [totalQuestions, setTotalQuestions] = useState(0)
+    const [percentage, setPercentage] = useState(0)
+    const [text, setText] = useState('')
 
     const countdownTimer = (expiredAt: string) => {
         const countdownDate = new Date(
@@ -66,6 +68,17 @@ export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
             if (distance < 0) {
                 clearInterval(countdown)
                 setTimer("Time's up!")
+                console.log('finalTest', finalTest)
+                finalTest &&
+                    submitFinalTestAnswer({
+                        gameId: finalTest.gameId,
+                        answers: finalTest.questions.map((question, index) => {
+                            return {
+                                questionId: question._id,
+                                answer: answers[index],
+                            }
+                        }),
+                    })
             }
         }, 1000)
         return countdown
@@ -73,16 +86,18 @@ export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
 
     const modalContent = useRef<HTMLDivElement>(null)
 
-    const { mutate: getQuizDetail, isLoading: isLoadingGetQuizDetail } =
-        useAPI.post(LearnerAPI.GET_QUIZ_DETAIL, {
-            onError: noop,
-            onSuccess(response) {
-                setCurrentQuiz(response)
-                setTotalQuestions(response.questions.length)
-                setIsStart(true)
-                setTimerId(countdownTimer(response.expiredAt))
-            },
-        })
+    const {
+        mutate: getFinalTestDetail,
+        isLoading: isLoadingGetFinalTestDetail,
+    } = useAPI.post(LearnerAPI.GET_FINAL_TEST_DETAIL, {
+        onError: noop,
+        onSuccess(response) {
+            setFinalTest(response)
+            setTotalQuestions(response.questions.length)
+            setIsStart(true)
+            setTimerId(countdownTimer(response.expiredAt))
+        },
+    })
 
     useEffect(() => {
         return () => {
@@ -99,44 +114,23 @@ export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
         setIsShow(value)
     }
 
-    const countNumberOfCorrectAnswer = (
-        quizAnswer: QuestionInPlayQuiz[],
-    ): boolean => {
-        let count = 0
-        answers.forEach((answer, index) => {
-            if (answer === quizAnswer[index].correctAnswer) {
-                count++
-            }
-        })
-        setNumberOfCorrectAnswer(count)
-        if (count === totalQuestions) {
-            handlePerfectScore(true)
-            return true
-        }
-        return false
-    }
+    const {
+        mutate: submitFinalTestAnswer,
+        isLoading: isLoadingSubmitFinalTestAnswer,
+    } = useAPI.put(LearnerAPI.SUBMIT_FINAL_TEST_ANSWER, {
+        onError: noop,
+        onSuccess(response) {
+            setIsFinish(true)
+            setPercentage(response.win_rate * 100)
+            setText(`${response.win_rate * totalQuestions}/${totalQuestions}`)
+        },
+    })
 
-    const { mutate: submitQuizAnswer, isLoading: isLoadingSubmitQuizAnswer } =
-        useAPI.put(LearnerAPI.SUBMIT_QUIZ_ANSWER, {
-            onError: noop,
-            onSuccess(response) {
-                if (!countNumberOfCorrectAnswer(response.questions)) {
-                    setIsFinish(true)
-                    setCurrentQuiz(response)
-                } else {
-                    setTimeout(() => {
-                        setIsFinish(true)
-                        setCurrentQuiz(response)
-                    }, 1000)
-                }
-            },
-        })
-
-    const handleSubmitQuiz = () => {
-        currentQuiz &&
-            submitQuizAnswer({
-                gameId: currentQuiz.gameId,
-                answers: currentQuiz.questions.map((question, index) => {
+    const handleSubmitFinalTest = () => {
+        finalTest &&
+            submitFinalTestAnswer({
+                gameId: finalTest.gameId,
+                answers: finalTest.questions.map((question, index) => {
                     return {
                         questionId: question._id,
                         answer: answers[index],
@@ -145,9 +139,9 @@ export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
             })
     }
 
-    const handleStartPlayingQuiz = () => {
-        getQuizDetail({
-            id: quiz._id,
+    const handleStartPlayingFinalTest = () => {
+        getFinalTestDetail({
+            id: quiz.courseId,
         })
     }
 
@@ -181,7 +175,8 @@ export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
                 <>
                     <LoadingScreen
                         isLoading={
-                            isLoadingSubmitQuizAnswer || isLoadingGetQuizDetail
+                            isLoadingSubmitFinalTestAnswer ||
+                            isLoadingGetFinalTestDetail
                         }
                     />
                     <div
@@ -236,13 +231,20 @@ export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
                                                         certificate of this
                                                         course.
                                                     </li>
+                                                    <li>
+                                                        You will only pass the
+                                                        final test and claim the
+                                                        certificate if you
+                                                        answer correctly over
+                                                        60% of total questions.
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <div className="flex justify-center">
                                                 <Button
                                                     className="btn-primary mt-5"
                                                     onClick={() =>
-                                                        handleStartPlayingQuiz()
+                                                        handleStartPlayingFinalTest()
                                                     }
                                                 >
                                                     <div className="font-medium text-center px-10">
@@ -253,124 +255,167 @@ export default function PlayFinalQuizModal(props: IPlayFinalQuizModalProps) {
                                         </div>
                                     ) : (
                                         <>
-                                            <div className="flex justify-center w-full font-bold text-2xl pb-5">
-                                                {!isFinish
-                                                    ? timer
-                                                    : `${numberOfCorrectAnswer}/${totalQuestions}`}
-                                            </div>
-                                            <div
-                                                className={`space-y-5 max-w-3xl max-h-80 ${
-                                                    isOverflowY() &&
-                                                    'overflow-y-scroll scrollbar pr-5'
-                                                }`}
-                                                ref={modalContent}
-                                            >
-                                                {currentQuiz &&
-                                                    currentQuiz.questions.map(
-                                                        (
-                                                            question,
-                                                            questionIndex,
-                                                        ) => {
-                                                            return (
-                                                                <div
-                                                                    key={
-                                                                        questionIndex
-                                                                    }
-                                                                >
-                                                                    <div className="pl-6">
-                                                                        <h1 className="font-semibold text-lg mb-3">
-                                                                            {
-                                                                                question?.question
-                                                                            }
-                                                                        </h1>
-                                                                    </div>
-                                                                    <div className="grid grid-cols-2 gap-5 w-full">
-                                                                        {question?.choices.map(
-                                                                            (
-                                                                                choice,
-                                                                                choiceIndex,
-                                                                            ) => (
-                                                                                <div
-                                                                                    key={
-                                                                                        choiceIndex
-                                                                                    }
-                                                                                    className={`flex justify-between items-center rounded-[80px] cursor-pointer ${
-                                                                                        !question?.correctAnswer &&
-                                                                                        'hover:bg-primary-hover hover:border-primary-hover hover:text-white'
-                                                                                    } py-3 px-6 border-2 font-medium ${
-                                                                                        answers[
-                                                                                            questionIndex
-                                                                                        ] ===
-                                                                                        choiceIndex
-                                                                                            ? 'bg-primary border-primary text-white'
-                                                                                            : 'bg-white'
-                                                                                    } ${
-                                                                                        choiceIndex ===
-                                                                                        question?.correctAnswer
-                                                                                            ? `bg-green-400 bg-opacity-10 text-green-400 border-green-400`
-                                                                                            : answers[
-                                                                                                  questionIndex
-                                                                                              ] ===
-                                                                                                  choiceIndex &&
-                                                                                              question?.correctAnswer &&
-                                                                                              `bg-red-400 bg-opacity-10 text-red-400 border-red-400`
-                                                                                    }`}
-                                                                                    onClick={() =>
-                                                                                        handleCheckAnswer(
-                                                                                            questionIndex,
-                                                                                            choiceIndex,
-                                                                                            !question?.correctAnswer,
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    <span>
-                                                                                        {answerPrefix[
-                                                                                            choiceIndex
-                                                                                        ] +
-                                                                                            choice}
-                                                                                    </span>
-                                                                                    {choiceIndex ===
-                                                                                    question?.correctAnswer ? (
-                                                                                        <FontAwesomeIcon
-                                                                                            icon={
-                                                                                                faCircleCheck
-                                                                                            }
-                                                                                            className="text-[20px] text-green-400 ml-2"
-                                                                                        />
-                                                                                    ) : (
-                                                                                        answers[
-                                                                                            questionIndex
-                                                                                        ] ===
-                                                                                            choiceIndex &&
-                                                                                        question?.correctAnswer && (
-                                                                                            <FontAwesomeIcon
-                                                                                                icon={
-                                                                                                    faCircleXmark
-                                                                                                }
-                                                                                                className="text-[20px] text-red-400 ml-2"
-                                                                                            />
-                                                                                        )
-                                                                                    )}
-                                                                                </div>
-                                                                            ),
-                                                                        )}
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        },
-                                                    )}
-                                            </div>
-                                            {!isFinish && (
-                                                <Button
-                                                    className="btn-primary mt-10 w-full"
-                                                    onClick={() =>
-                                                        handleSubmitQuiz()
-                                                    }
-                                                >
-                                                    <div className="font-medium w-full text-center">
-                                                        Submit
+                                            {!isFinish ? (
+                                                <div className="flex justify-center w-full font-bold text-2xl pb-5">
+                                                    {timer}
+                                                </div>
+                                            ) : (
+                                                <div className="px-10 pb-3">
+                                                    <CircularProgressbar
+                                                        value={percentage}
+                                                        text={text}
+                                                        className="h-[80px]"
+                                                        styles={buildStyles({
+                                                            pathColor:
+                                                                percentage > 60
+                                                                    ? '#07DA63'
+                                                                    : '#F48C06',
+                                                            trailColor:
+                                                                '#4d4c4c',
+                                                            textColor:
+                                                                '#000000',
+                                                        })}
+                                                    />
+                                                    <div className="mt-5 font-medium">
+                                                        {percentage > 60
+                                                            ? `Congratulation! You
+                                                        passed the final test!
+                                                        Claim your certificate
+                                                        now.`
+                                                            : `Sorry, you failed the final test...`}
                                                     </div>
-                                                </Button>
+                                                    {percentage > 60 && (
+                                                        <div className="flex justify-center">
+                                                            <Button
+                                                                className=" btn-primary mt-6"
+                                                                // onClick={() =>
+                                                                //     claim cerfiticate
+                                                                // }
+                                                            >
+                                                                <div className="font-medium text-center">
+                                                                    Claim
+                                                                    certificate
+                                                                </div>
+                                                            </Button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+                                            {!isFinish && (
+                                                <>
+                                                    <div
+                                                        className={`space-y-5 max-w-3xl max-h-80 ${
+                                                            isOverflowY() &&
+                                                            'overflow-y-scroll scrollbar pr-5'
+                                                        }`}
+                                                        ref={modalContent}
+                                                    >
+                                                        {finalTest &&
+                                                            finalTest.questions.map(
+                                                                (
+                                                                    question,
+                                                                    questionIndex,
+                                                                ) => {
+                                                                    return (
+                                                                        <div
+                                                                            key={
+                                                                                questionIndex
+                                                                            }
+                                                                        >
+                                                                            <div className="pl-6">
+                                                                                <h1 className="font-semibold text-lg mb-3">
+                                                                                    {
+                                                                                        question?.question
+                                                                                    }
+                                                                                </h1>
+                                                                            </div>
+                                                                            <div className="grid grid-cols-2 gap-5 w-full">
+                                                                                {question?.choices.map(
+                                                                                    (
+                                                                                        choice,
+                                                                                        choiceIndex,
+                                                                                    ) => (
+                                                                                        <div
+                                                                                            key={
+                                                                                                choiceIndex
+                                                                                            }
+                                                                                            className={`flex justify-between items-center rounded-[80px] cursor-pointer ${
+                                                                                                !question?.correctAnswer &&
+                                                                                                'hover:bg-primary-hover hover:border-primary-hover hover:text-white'
+                                                                                            } py-3 px-6 border-2 font-medium ${
+                                                                                                answers[
+                                                                                                    questionIndex
+                                                                                                ] ===
+                                                                                                choiceIndex
+                                                                                                    ? 'bg-primary border-primary text-white'
+                                                                                                    : 'bg-white'
+                                                                                            } ${
+                                                                                                choiceIndex ===
+                                                                                                question?.correctAnswer
+                                                                                                    ? `bg-green-400 bg-opacity-10 text-green-400 border-green-400`
+                                                                                                    : answers[
+                                                                                                          questionIndex
+                                                                                                      ] ===
+                                                                                                          choiceIndex &&
+                                                                                                      question?.correctAnswer &&
+                                                                                                      `bg-red-400 bg-opacity-10 text-red-400 border-red-400`
+                                                                                            }`}
+                                                                                            onClick={() =>
+                                                                                                handleCheckAnswer(
+                                                                                                    questionIndex,
+                                                                                                    choiceIndex,
+                                                                                                    !question?.correctAnswer,
+                                                                                                )
+                                                                                            }
+                                                                                        >
+                                                                                            <span>
+                                                                                                {answerPrefix[
+                                                                                                    choiceIndex
+                                                                                                ] +
+                                                                                                    choice}
+                                                                                            </span>
+                                                                                            {choiceIndex ===
+                                                                                            question?.correctAnswer ? (
+                                                                                                <FontAwesomeIcon
+                                                                                                    icon={
+                                                                                                        faCircleCheck
+                                                                                                    }
+                                                                                                    className="text-[20px] text-green-400 ml-2"
+                                                                                                />
+                                                                                            ) : (
+                                                                                                answers[
+                                                                                                    questionIndex
+                                                                                                ] ===
+                                                                                                    choiceIndex &&
+                                                                                                question?.correctAnswer && (
+                                                                                                    <FontAwesomeIcon
+                                                                                                        icon={
+                                                                                                            faCircleXmark
+                                                                                                        }
+                                                                                                        className="text-[20px] text-red-400 ml-2"
+                                                                                                    />
+                                                                                                )
+                                                                                            )}
+                                                                                        </div>
+                                                                                    ),
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                },
+                                                            )}
+                                                    </div>
+                                                    <Button
+                                                        className="btn-primary mt-10 w-full"
+                                                        onClick={() =>
+                                                            handleSubmitFinalTest()
+                                                        }
+                                                    >
+                                                        <div className="font-medium w-full text-center">
+                                                            Submit
+                                                        </div>
+                                                    </Button>
+                                                </>
                                             )}
                                         </>
                                     )}
