@@ -83,6 +83,7 @@ interface ILearningCourseContext {
     courseDetail: LearningCourseRes | undefined
     isLoading: boolean
     playingVideo: string
+    currentLearningId: string
     handleChangeLecture: (pos: number[]) => void
     myAccountBalance: number
     currentQuiz: LectureQuiz | undefined
@@ -107,7 +108,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const [playingVideo, setPlayingVideo] = useState<string>('')
     const [myAccountBalance, setMyAccountBalance] = useState(0)
     const [showPlayQuizModal, setShowPlayQuizModal] = useState(false)
-
+    const [currentLearningId, setLearningId] = useState<string>('')
     const router = useRouter()
 
     const [courseDetail, setCourseDetail] = useState<
@@ -156,6 +157,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     const getDefaultPlayedVideo = (data: LearningCourseRes): void => {
         if (data) {
+            let id = ''
             let media = ''
             data.sections.forEach((section, sectionIndex) => {
                 section.lessons.forEach((lesson, lessonIndex) => {
@@ -163,13 +165,16 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                     if (!lesson.learned) {
                         setCurrentPosition([sectionIndex, lessonIndex, 0])
                         setPlayingVideo(lesson.media)
+                        setLearningId(lesson._id)
                         return
                     }
                     media = lesson.media
+                    id = lesson._id
                 })
             })
             setIsCurrentLessonLearned(true)
             setPlayingVideo(media)
+            setLearningId(id)
             const numberOfSections = data.sections.length
             setCurrentPosition([
                 numberOfSections - 1,
@@ -178,6 +183,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             ])
         } else {
             setPlayingVideo('')
+            setLearningId('')
         }
     }
 
@@ -191,6 +197,8 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         )
         courseDetail &&
             setPlayingVideo(courseDetail.sections[pos[0]].lessons[pos[1]].media)
+        courseDetail &&
+            setLearningId(courseDetail.sections[pos[0]].lessons[pos[1]]._id)
     }
 
     const isLoading = useMemo(() => {
@@ -217,6 +225,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 courseDetail,
                 isLoading,
                 playingVideo,
+                currentLearningId,
                 handleChangeLecture,
                 myAccountBalance,
                 currentQuiz,

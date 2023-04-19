@@ -27,6 +27,7 @@ export const LearnerAPI = {
     SUBMIT_QUIZ_ANSWER: '/game/submit-quiz',
     GET_FINAL_TEST_DETAIL: '/game/play-final-test',
     SUBMIT_FINAL_TEST_ANSWER: '/game/submit-final-test',
+    COMMENT: '/comment',
 }
 
 export const InstructorAPI = {
