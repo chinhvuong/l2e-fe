@@ -20,14 +20,10 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
     const { questionsList, isEdit } = props
     const context = useFormikContext<IQuestionsInputType>()
     const quizDetail = useAppSelector(getQuizDetailInfo)
-    const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>([])
     const [showModal, setShowModal] = useState(false)
-    const dispatch = useAppDispatch()
-    console.log(context.values.questions)
+    const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>([])
     function handleChange(event: ChangeEvent<HTMLInputElement>): void {
         const { checked, name, value } = event.target
-        console.log(checked)
-        console.log(chosenQuestions)
         if (checked) {
             setQuestions([...chosenQuestions, questionsList?.[parseInt(value)]])
             context.setFieldValue('questions', [
@@ -47,7 +43,17 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
             )
         }
     }
-    console.log(context.values.questions)
+    function checkQuestion(question: QuestionDetailType) {
+        if (
+            context.values.questions.filter(
+                (object) => object._id === question._id,
+            ).length > 0
+        ) {
+            return true
+        } else {
+            return false
+        }
+    }
     useEffect(() => {
         if (isEdit) {
             setQuestions(quizDetail.questions)
@@ -90,7 +96,7 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                                                 type="checkbox"
                                                 name={question._id}
                                                 value={indext}
-                                                checked={context.values?.questions?.includes(
+                                                checked={checkQuestion(
                                                     question,
                                                 )}
                                                 onChange={handleChange}

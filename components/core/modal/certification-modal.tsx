@@ -40,7 +40,6 @@ export default function CertificateModal(props: ICertificateModalProps) {
             })
             await claimCertificate(signer as ethers.Signer, payload)
             setIsLoadingMintCertificate(false)
-            setIsDisabled(true)
         } catch (error) {
             setIsDisabled(false)
             setIsLoadingMintCertificate(false)
@@ -62,7 +61,7 @@ export default function CertificateModal(props: ICertificateModalProps) {
                                         className="w-f p-1 m-1"
                                     />
                                     <div className="flex space-x-5 mt-7">
-                                        {certificate.status === 'OFF_CHAIN' ? (
+                                        {certificate.status === 'MINTING' ? (
                                             <Button
                                                 onClick={() =>
                                                     handleClaimCertificate()

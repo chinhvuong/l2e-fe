@@ -1,8 +1,11 @@
 import { LearnerAPI, UserAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { UpdateCommentsState } from '@/store/comment'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { noop } from 'lodash'
 import { useRouter } from 'next/router'
+import { Comment } from '@/store/comment/types'
 import {
     Dispatch,
     SetStateAction,
@@ -12,6 +15,8 @@ import {
     useMemo,
     useState,
 } from 'react'
+import { getComments } from '@/store/comment/selectors'
+import { LESSON_ID } from '@/constants/localStorage'
 
 export interface LectureQuiz {
     _id: string
@@ -83,7 +88,6 @@ interface ILearningCourseContext {
     courseDetail: LearningCourseRes | undefined
     isLoading: boolean
     playingVideo: string
-    currentLearningId: string
     handleChangeLecture: (pos: number[]) => void
     myAccountBalance: number
     currentQuiz: LectureQuiz | undefined
@@ -95,6 +99,7 @@ interface ILearningCourseContext {
     handlePerfectScore: (isOpen: boolean) => void
     currentPosition: number[]
     getLearningCourseDetail: UseMutateFunction<unknown, any, object, unknown>
+    parentComment: Comment[]
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -104,11 +109,11 @@ export const LearningCourseContext = createContext<ILearningCourseContext>(
 export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     children,
 }) => {
+    const parentComment = useAppSelector(getComments)
     const [courseId, setCourseId] = useState('')
     const [playingVideo, setPlayingVideo] = useState<string>('')
     const [myAccountBalance, setMyAccountBalance] = useState(0)
     const [showPlayQuizModal, setShowPlayQuizModal] = useState(false)
-    const [currentLearningId, setLearningId] = useState<string>('')
     const router = useRouter()
 
     const [courseDetail, setCourseDetail] = useState<
@@ -157,36 +162,56 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     const getDefaultPlayedVideo = (data: LearningCourseRes): void => {
         if (data) {
-            let id = ''
             let media = ''
-            data.sections.forEach((section, sectionIndex) => {
-                section.lessons.forEach((lesson, lessonIndex) => {
-                    setCurrentQuiz(lesson.quizzes[0])
-                    if (!lesson.learned) {
-                        setCurrentPosition([sectionIndex, lessonIndex, 0])
-                        setPlayingVideo(lesson.media)
-                        setLearningId(lesson._id)
-                        return
+            let finishLesson = true
+            let id = ''
+            let sectionIndex = 0
+            let lessonIndex = 0
+            for (var i = 0, subSection; (subSection = data.sections[i]); i++) {
+                for (
+                    var y = 0, subLession;
+                    (subLession = subSection.lessons[y]);
+                    y++
+                ) {
+                    media = subLession.media
+                    lessonIndex = y
+                    sectionIndex = i
+                    id = subLession._id
+                    if (!subLession.learned) {
+                        console.log('hello')
+                        finishLesson = false
+                        break
                     }
-                    media = lesson.media
-                    id = lesson._id
-                })
-            })
+                }
+            }
+            // data.sections.forEach((section, sectionIndex) => {
+            //     section.lessons.forEach((lesson, lessonIndex) => {
+            //         setCurrentQuiz(lesson.quizzes[0])
+            //         if (!lesson.learned) {
+            //             setCurrentPosition([sectionIndex, lessonIndex, 0])
+            //             setPlayingVideo(lesson.media)
+            //             return
+            //         }
+            //         media = lesson.media
+            //     })
+            // })
             setIsCurrentLessonLearned(true)
             setPlayingVideo(media)
-            setLearningId(id)
-            const numberOfSections = data.sections.length
-            setCurrentPosition([
-                numberOfSections - 1,
-                data.sections[numberOfSections - 1].lessons.length - 1,
-                1,
-            ])
+            localStorage.setItem(LESSON_ID, id)
+            if (finishLesson) {
+                const numberOfSections = data.sections.length
+                setCurrentPosition([
+                    numberOfSections - 1,
+                    data.sections[numberOfSections - 1].lessons.length - 1,
+                    1,
+                ])
+            } else {
+                setCurrentPosition([sectionIndex, lessonIndex, 0])
+            }
         } else {
             setPlayingVideo('')
-            setLearningId('')
         }
     }
-
     const handleChangeLecture = (pos: number[]) => {
         setCurrentPosition(pos)
         setCurrentQuiz(
@@ -198,7 +223,10 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         courseDetail &&
             setPlayingVideo(courseDetail.sections[pos[0]].lessons[pos[1]].media)
         courseDetail &&
-            setLearningId(courseDetail.sections[pos[0]].lessons[pos[1]]._id)
+            localStorage.setItem(
+                LESSON_ID,
+                courseDetail.sections[pos[0]].lessons[pos[1]]._id,
+            )
     }
 
     const isLoading = useMemo(() => {
@@ -225,7 +253,6 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 courseDetail,
                 isLoading,
                 playingVideo,
-                currentLearningId,
                 handleChangeLecture,
                 myAccountBalance,
                 currentQuiz,
@@ -237,6 +264,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 handlePerfectScore,
                 currentPosition,
                 getLearningCourseDetail,
+                parentComment,
             }}
         >
             {children}
