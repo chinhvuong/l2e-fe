@@ -1,6 +1,13 @@
 import { Certificate } from '@/store/certification/types'
 import React, { useEffect, useState } from 'react'
 import Button from '../button'
+import { useSigner } from 'wagmi'
+import { goerli } from '@/wallet/chains'
+import { callAPI } from '@/api/axios-client'
+import { UserAPI } from '@/api/api-path'
+import { claimCertificate } from '@/hooks/coursedex'
+import { ethers } from 'ethers'
+import Loading from '../animate/loading'
 
 interface ICertificateModalProps {
     isShow: boolean
@@ -9,15 +16,34 @@ interface ICertificateModalProps {
 }
 
 export default function CertificateModal(props: ICertificateModalProps) {
+    const { data: signer } = useSigner({
+        chainId: goerli.id,
+    })
     const { isShow, setIsShow, certificate } = props
     const [showModal, setShowModal] = useState(isShow)
+    const [isdisabled, setIsDisabled] = useState(false)
+    const [isLoadingMintCertificate, setIsLoadingMintCertificate] =
+        useState(false)
     useEffect(() => {
-        console.log(isShow)
         setShowModal(isShow)
     }, [isShow])
     const handleShowModal = (value: boolean) => {
         setShowModal(value)
         setIsShow(value)
+    }
+    const handleClaimCertificate = async () => {
+        try {
+            setIsDisabled(true)
+            setIsLoadingMintCertificate(true)
+            const payload = await callAPI('post', UserAPI.CLAIM_CERTIFICATE, {
+                courseId: certificate.courseId,
+            })
+            await claimCertificate(signer as ethers.Signer, payload)
+            setIsLoadingMintCertificate(false)
+        } catch (error) {
+            setIsDisabled(false)
+            setIsLoadingMintCertificate(false)
+        }
     }
     return (
         <>
@@ -35,21 +61,19 @@ export default function CertificateModal(props: ICertificateModalProps) {
                                         className="w-f p-1 m-1"
                                     />
                                     <div className="flex space-x-5 mt-7">
-                                        <Button
-                                            outline
-                                            onClick={() =>
-                                                handleShowModal(false)
-                                            }
-                                        >
-                                            <div className="font-medium">
-                                                Cancel Mint Certification
-                                            </div>
-                                        </Button>
-                                        {certificate.status === 'OFF_CHAIN' ? (
-                                            <Button>
-                                                <div className="font-medium">
+                                        {certificate.status === 'MINTING' ? (
+                                            <Button
+                                                onClick={() =>
+                                                    handleClaimCertificate()
+                                                }
+                                                disabled={isdisabled}
+                                            >
+                                                <div className="font-medium w-full text-center">
                                                     Mint Certificate
                                                 </div>
+                                                {isLoadingMintCertificate && (
+                                                    <Loading className="!text-white" />
+                                                )}
                                             </Button>
                                         ) : (
                                             <div>

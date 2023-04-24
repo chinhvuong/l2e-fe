@@ -274,8 +274,8 @@ export interface GetMintSignatureResponse {
     s: string
     nonce: number
 }
-export interface GetMintSignatureResponse {
-    price: string
+export interface GetMintCertificateSignatureResponse {
+    courseId: number
     v: number
     r: string
     s: string
