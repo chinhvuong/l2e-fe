@@ -8,16 +8,14 @@ import CommentForm from '@/containers/course-detail/comment/components/comment-f
 import { Comment } from '@/store/comment/types'
 import { LESSON_ID } from '@/constants/localStorage'
 import { UpdateCommentsState } from '@/store/comment'
-import { useAppDispatch } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { getComments } from '@/store/comment/selectors'
 
 export interface ILearningCommentsDetailProps {}
 
 export default function LearningCommentsDetail() {
     const dispatch = useAppDispatch()
-    const {
-        parentComment,
-        // getLearningCommentParent
-    } = useLearningCourseContext()
+    const parentComment = useAppSelector(getComments)
     const [lessonId, setLessonId] = useState('')
     const {
         mutate: getLearningCommentParent,
@@ -61,7 +59,6 @@ export default function LearningCommentsDetail() {
             </div>
             {parentComment.length > 0 && (
                 <CommentItemsList
-                    data={parentComment}
                     leaningId={lessonId}
                     getLearningCommentParent={getLearningCommentParent}
                     addComment={addComment}

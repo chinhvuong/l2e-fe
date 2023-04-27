@@ -99,7 +99,9 @@ interface ILearningCourseContext {
     handlePerfectScore: (isOpen: boolean) => void
     currentPosition: number[]
     getLearningCourseDetail: UseMutateFunction<unknown, any, object, unknown>
-    parentComment: Comment[]
+    getRatingCourseDetail: UseMutateFunction<unknown, any, object, unknown>
+    createRatingDetail: UseMutateFunction<unknown, any, object, unknown>
+    courseId: string
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -151,6 +153,22 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             },
         },
     )
+
+    const {
+        mutate: getRatingCourseDetail,
+        isLoading: isLoadingRatingCourseDetail,
+    } = useAPI.getMutation(LearnerAPI.RATING + '?course=' + courseId, {
+        onError: () => {},
+        onSuccess: (response) => {},
+    })
+
+    const { mutate: createRatingDetail, isLoading: isLoadingCreateRating } =
+        useAPI.post(LearnerAPI.CREATE_RATING, {
+            onError: () => {},
+            onSuccess: (response) => {
+                getRatingCourseDetail({})
+            },
+        })
 
     const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
@@ -230,8 +248,18 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
 
     const isLoading = useMemo(() => {
-        return isLoadingLearningCourseDetail || isLoadingGetMyBalance
-    }, [isLoadingLearningCourseDetail, isLoadingGetMyBalance])
+        return (
+            isLoadingLearningCourseDetail ||
+            isLoadingGetMyBalance ||
+            isLoadingRatingCourseDetail ||
+            isLoadingCreateRating
+        )
+    }, [
+        isLoadingLearningCourseDetail,
+        isLoadingGetMyBalance,
+        isLoadingRatingCourseDetail,
+        isLoadingCreateRating,
+    ])
 
     // useEffect(() => {
     //     if (!isLoading) {
@@ -264,7 +292,9 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 handlePerfectScore,
                 currentPosition,
                 getLearningCourseDetail,
-                parentComment,
+                getRatingCourseDetail,
+                createRatingDetail,
+                courseId,
             }}
         >
             {children}

@@ -16,9 +16,9 @@ export interface ILearningReviewDetailProps {}
 export default function LearningReviewDetail() {
     const [selectedRating, setSelectedRating] = useState('All')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
+    const [ratingCount, setRatingCount] = useState(0)
     const clickOutSideRef = useRef(null)
     const ratingsValue = ['All', '5', '4', '3', '2', '1']
-
     const onSelectRating = (item: string) => {
         setSelectedRating(item)
         setOpenRatingSelect(false)

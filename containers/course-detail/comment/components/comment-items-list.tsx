@@ -5,23 +5,24 @@ import { useState } from 'react'
 import CommentItem from './comment-item'
 import { Comment } from '@/store/comment/types'
 import { UseMutateFunction } from '@tanstack/react-query'
+import { useAppSelector } from '@/hooks'
+import { getComments } from '@/store/comment/selectors'
 export interface ICommentItemsListProps {
-    data: Comment[]
     leaningId: string
     getLearningCommentParent: UseMutateFunction<unknown, any, object, unknown>
     addComment: UseMutateFunction<unknown, any, object, unknown>
 }
 
 export default function CommentItemsList(props: ICommentItemsListProps) {
-    const [commentList, setCommentList] = useState(props.data)
-
+    const parentComment = useAppSelector(getComments)
+    const [commentList, setCommentList] = useState(parentComment)
     const updateCommentList = () => {
-        const newList = [...commentList, ...props.data]
+        const newList = [...commentList, ...parentComment]
         setCommentList(newList)
     }
     const getReplies = (commentId: string) => {
         const repliesComment: Comment[] = []
-        commentList.forEach((comment: Comment) => {
+        parentComment.forEach((comment: Comment) => {
             if (comment._id === commentId) {
                 comment.replies.forEach((reply: Comment) => {
                     repliesComment.push(reply)
@@ -35,22 +36,23 @@ export default function CommentItemsList(props: ICommentItemsListProps) {
     }
     return (
         <div>
-            {props.data.map((item, index) => {
-                return (
-                    <div className="space-y-6" key={index}>
-                        <CommentItem
-                            data={item}
-                            replies={getReplies(item._id)}
-                            getLearningCommentParent={
-                                props.getLearningCommentParent
-                            }
-                            leaningId={props.leaningId}
-                            addComment={props.addComment}
-                        />
-                        {index !== commentList.length - 1 && <Divider />}
-                    </div>
-                )
-            })}
+            {parentComment.length > 0 &&
+                parentComment.map((item, index) => {
+                    return (
+                        <div className="space-y-6" key={index}>
+                            <CommentItem
+                                data={item}
+                                replies={getReplies(item._id)}
+                                getLearningCommentParent={
+                                    props.getLearningCommentParent
+                                }
+                                leaningId={props.leaningId}
+                                addComment={props.addComment}
+                            />
+                            {index !== commentList.length - 1 && <Divider />}
+                        </div>
+                    )
+                })}
             <Button
                 className="btn-primary-outline w-full mt-5"
                 onClick={() => updateCommentList()}

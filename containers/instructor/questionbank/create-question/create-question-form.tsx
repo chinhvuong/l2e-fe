@@ -61,7 +61,7 @@ export default function CreateQuestionModal({
             },
         })
     const { mutate: updateQuestion, isLoading: isLoadingUpdateQuestion } =
-        useAPI.put(InstructorAPI.EDIT_QUESTION + '/' + questionId, {
+        useAPI.put(InstructorAPI.EDIT_QUESTION + '/' + questionDetail._id, {
             onError: (errors) => {},
             onSuccess: (response) => {
                 getQuestionsList({})
