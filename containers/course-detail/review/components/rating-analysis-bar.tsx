@@ -17,8 +17,10 @@ export default function RatingAnalysisBar(props: IRatingAnalysisBarProps) {
                     style={{ width: `${props.percent}%` }}
                 ></div>
             </div>
-            <RatingStar id={id} ratingScore={props.star} hideScore />
-            <div className="text-hyperlink underline font-semibold">{`${props.percent}%`}</div>
+            <div className="mb-1">
+                <RatingStar id={id} ratingScore={props.star} hideScore />
+            </div>
+            <div className="text-hyperlink font-semibold">{`${props.percent}%`}</div>
         </div>
     )
 }

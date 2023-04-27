@@ -147,7 +147,9 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             onError: () => {},
             onSuccess: (response) => {
                 setCourseDetail(response)
-                getDefaultPlayedVideo(response)
+                if (playingVideo === '') {
+                    getDefaultPlayedVideo(response)
+                }
             },
         },
     )
@@ -162,58 +164,40 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     const getDefaultPlayedVideo = (data: LearningCourseRes): void => {
         if (data) {
-            let media = ''
-            let finishLesson = true
-            let id = ''
-            let sectionIndex = 0
-            let lessonIndex = 0
-            for (var i = 0, subSection; (subSection = data.sections[i]); i++) {
-                for (
-                    var y = 0, subLession;
-                    (subLession = subSection.lessons[y]);
-                    y++
-                ) {
-                    media = subLession.media
-                    lessonIndex = y
-                    sectionIndex = i
-                    id = subLession._id
-                    if (!subLession.learned) {
-                        console.log('hello')
-                        finishLesson = false
-                        break
+            let lessonId = ''
+            let isFinishLearning = true
+            data.sections.forEach((section, sectionIndex) => {
+                section.lessons.forEach((lesson, lessonIndex) => {
+                    if (!lesson.learned && isFinishLearning) {
+                        setCurrentQuiz(lesson.quizzes[0])
+                        setCurrentPosition([sectionIndex, lessonIndex, 0])
+                        lessonId = lesson._id
+                        setPlayingVideo(lesson.media)
+                        isFinishLearning = false
                     }
-                }
+                })
+            })
+            if (isFinishLearning) {
+                const lastSectionIndex = data.sections.length - 1
+                const lastLessonIndex =
+                    data.sections[lastSectionIndex].lessons.length - 1
+                setCurrentPosition([lastSectionIndex, lastLessonIndex, 1])
+                setIsCurrentLessonLearned(
+                    data.sections[lastSectionIndex].lessons[lastLessonIndex]
+                        .learned,
+                )
+                setPlayingVideo(
+                    data.sections[lastSectionIndex].lessons[lastLessonIndex]
+                        .media,
+                )
             }
-            // data.sections.forEach((section, sectionIndex) => {
-            //     section.lessons.forEach((lesson, lessonIndex) => {
-            //         setCurrentQuiz(lesson.quizzes[0])
-            //         if (!lesson.learned) {
-            //             setCurrentPosition([sectionIndex, lessonIndex, 0])
-            //             setPlayingVideo(lesson.media)
-            //             return
-            //         }
-            //         media = lesson.media
-            //     })
-            // })
-            setIsCurrentLessonLearned(true)
-            setPlayingVideo(media)
-            localStorage.setItem(LESSON_ID, id)
-            if (finishLesson) {
-                const numberOfSections = data.sections.length
-                setCurrentPosition([
-                    numberOfSections - 1,
-                    data.sections[numberOfSections - 1].lessons.length - 1,
-                    1,
-                ])
-            } else {
-                setCurrentPosition([sectionIndex, lessonIndex, 0])
-            }
+            localStorage.setItem(LESSON_ID, lessonId)
         } else {
             setPlayingVideo('')
         }
     }
     const handleChangeLecture = (pos: number[]) => {
-        setCurrentPosition(pos)
+        setCurrentPosition([...pos, currentPosition[2]])
         setCurrentQuiz(
             courseDetail?.sections[pos[0]].lessons[pos[1]].quizzes[0],
         )
@@ -232,12 +216,6 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const isLoading = useMemo(() => {
         return isLoadingLearningCourseDetail || isLoadingGetMyBalance
     }, [isLoadingLearningCourseDetail, isLoadingGetMyBalance])
-
-    // useEffect(() => {
-    //     if (!isLoading) {
-    //         setPlayingVideo(getDefaultPlayedVideo())
-    //     }
-    // }, [isLoading])
 
     useEffect(() => {
         if (typeof router.query.slug === 'string') {

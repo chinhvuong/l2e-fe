@@ -48,11 +48,13 @@ export default function LecturesListLearnerAccordion(
                         currentPosition[1] === index &&
                         'text-white bg-primary'
                     } ${
-                        lecture.learned
+                        lecture.learned || (sectionIndex === 0 && index === 0)
                             ? 'cursor-pointer'
                             : 'cursor-not-allowed bg-gray-300'
                     } py-3`}
-                    onClick={() => handleLectureClick(index)}
+                    onClick={() => {
+                        lecture.learned && handleLectureClick(index)
+                    }}
                 >
                     <div className="flex px-5 space-x-3">
                         {lecture.learned ? (

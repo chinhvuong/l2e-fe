@@ -53,7 +53,9 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                 className={`px-5 bg-course-section space-y-2 ${
                     !selfExpand ? 'border-t' : 'border-y'
                 } ${
-                    order <= learningLectureIndex ? 'bg-white' : 'bg-slate-400'
+                    countCompletedLessons === lectures.length
+                        ? 'bg-white'
+                        : 'bg-slate-400'
                 } border-border-box py-4 shadow-md cursor-pointer`}
                 onClick={() => setSelfExpand(!selfExpand)}
             >

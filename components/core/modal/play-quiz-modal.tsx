@@ -131,10 +131,12 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
             onError: noop,
             onSuccess(response) {
                 if (!countNumberOfCorrectAnswer(response.questions)) {
+                    clearInterval(timerId)
                     setIsFinish(true)
                     setCurrentQuiz(response)
                 } else {
                     setTimeout(() => {
+                        clearInterval(timerId)
                         setIsFinish(true)
                         setCurrentQuiz(response)
                     }, 1000)
@@ -191,6 +193,8 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
         }
         handleShowModal(false)
     }
+
+    console.log('answers', answers)
 
     return (
         <>
@@ -265,7 +269,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                                         questionIndex
                                                                     }
                                                                 >
-                                                                    <div className="pl-6">
+                                                                    <div className="px-6">
                                                                         <h1 className="font-semibold text-lg mb-3">
                                                                             {
                                                                                 question?.question
@@ -284,26 +288,29 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                                                     }
                                                                                     className={`flex justify-between items-center rounded-[80px] cursor-pointer ${
                                                                                         !question?.correctAnswer &&
+                                                                                        !isFinish &&
                                                                                         'hover:bg-primary-hover hover:border-primary-hover hover:text-white'
                                                                                     } py-3 px-6 border-2 font-medium ${
                                                                                         answers[
                                                                                             questionIndex
                                                                                         ] ===
-                                                                                        choiceIndex
+                                                                                            choiceIndex &&
+                                                                                        !isFinish
                                                                                             ? 'bg-primary border-primary text-white'
                                                                                             : 'bg-white'
                                                                                     } ${
-                                                                                        choiceIndex ===
+                                                                                        isFinish &&
+                                                                                        (choiceIndex ===
                                                                                         question?.correctAnswer
                                                                                             ? `bg-green-400 bg-opacity-10 text-green-400 border-green-400`
                                                                                             : answers[
                                                                                                   questionIndex
                                                                                               ] ===
                                                                                                   choiceIndex &&
-                                                                                              question?.correctAnswer &&
-                                                                                              `bg-red-400 bg-opacity-10 text-red-400 border-red-400`
+                                                                                              `bg-red-400 bg-opacity-10 text-red-400 border-red-400`)
                                                                                     }`}
                                                                                     onClick={() =>
+                                                                                        !isFinish &&
                                                                                         handleCheckAnswer(
                                                                                             questionIndex,
                                                                                             choiceIndex,
@@ -317,28 +324,28 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                                                         ] +
                                                                                             choice}
                                                                                     </span>
-                                                                                    {choiceIndex ===
-                                                                                    question?.correctAnswer ? (
-                                                                                        <FontAwesomeIcon
-                                                                                            icon={
-                                                                                                faCircleCheck
-                                                                                            }
-                                                                                            className="text-[20px] text-green-400 ml-2"
-                                                                                        />
-                                                                                    ) : (
-                                                                                        answers[
-                                                                                            questionIndex
-                                                                                        ] ===
-                                                                                            choiceIndex &&
-                                                                                        question?.correctAnswer && (
+                                                                                    {isFinish &&
+                                                                                        (choiceIndex ===
+                                                                                        question?.correctAnswer ? (
                                                                                             <FontAwesomeIcon
                                                                                                 icon={
-                                                                                                    faCircleXmark
+                                                                                                    faCircleCheck
                                                                                                 }
-                                                                                                className="text-[20px] text-red-400 ml-2"
+                                                                                                className="text-[20px] text-green-400 ml-2"
                                                                                             />
-                                                                                        )
-                                                                                    )}
+                                                                                        ) : (
+                                                                                            answers[
+                                                                                                questionIndex
+                                                                                            ] ===
+                                                                                                choiceIndex && (
+                                                                                                <FontAwesomeIcon
+                                                                                                    icon={
+                                                                                                        faCircleXmark
+                                                                                                    }
+                                                                                                    className="text-[20px] text-red-400 ml-2"
+                                                                                                />
+                                                                                            )
+                                                                                        ))}
                                                                                 </div>
                                                                             ),
                                                                         )}

@@ -78,7 +78,6 @@ export default function VideoModal(props: IVideoModalProps) {
                                         playing={true}
                                         controls={true}
                                         volume={1}
-                                        width="50vw"
                                         height="50vh"
                                         onReady={() => console.log('ready now')}
                                     />

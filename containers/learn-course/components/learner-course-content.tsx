@@ -30,7 +30,7 @@ export default function LearnerCourseContent() {
                 })}
                 <div className="flex justify-center py-5 border-t">
                     <Button
-                        className="btn-primary bg-gray-400"
+                        className="btn-primary"
                         disabled={learningPos[2] === 1 && course.finalTest.play}
                         onClick={() => setShowPlayFinalTestModal(true)}
                     >
