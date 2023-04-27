@@ -10,6 +10,7 @@ import { dataRatings } from '@/data/ratings'
 import ReviewItemsList from '@/containers/course-detail/review/components/review-items-list'
 import RatingAnalysisBar from '@/containers/course-detail/review/components/rating-analysis-bar'
 import RatingStar from '@/components/core/rating-star'
+import RatingBar from '@/components/core/rating-star/rating-bar'
 
 export interface ILearningReviewDetailProps {}
 
@@ -29,6 +30,7 @@ export default function LearningReviewDetail() {
     })
     return (
         <div className="space-y-10">
+            <RatingBar />
             <div>
                 <div className="font-semibold text-2xl">Student feedback</div>
                 <div className="flex justify-center space-x-7 under_lg:flex-wrap under_lg:justify-center mt-3">
