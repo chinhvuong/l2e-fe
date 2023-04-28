@@ -13,11 +13,15 @@ export interface ICommentItemsListProps {
 }
 
 export default function CommentItemsList(props: ICommentItemsListProps) {
-    const [commentList, setCommentList] = useState(props.data)
+    const [numberOfShowedComments, setNumberOfShowedComments] = useState(3)
+    const [commentList, setCommentList] = useState(
+        props.data.slice(0, numberOfShowedComments),
+    )
 
     const updateCommentList = () => {
-        const newList = [...commentList, ...props.data]
-        setCommentList(newList)
+        const newTotal = numberOfShowedComments + 3
+        setNumberOfShowedComments(newTotal)
+        setCommentList(props.data.slice(0, newTotal))
     }
     const getReplies = (commentId: string) => {
         const repliesComment: Comment[] = []
@@ -35,7 +39,7 @@ export default function CommentItemsList(props: ICommentItemsListProps) {
     }
     return (
         <div>
-            {props.data.map((item, index) => {
+            {commentList.map((item, index) => {
                 return (
                     <div className="space-y-6" key={index}>
                         <CommentItem
@@ -51,14 +55,16 @@ export default function CommentItemsList(props: ICommentItemsListProps) {
                     </div>
                 )
             })}
-            <Button
-                className="btn-primary-outline w-full mt-5"
-                onClick={() => updateCommentList()}
-            >
-                <div className="font-medium text-[16px] text-center w-full">
-                    Show more comments
-                </div>
-            </Button>
+            {props.data.length > numberOfShowedComments && (
+                <Button
+                    className="btn-primary-outline w-full mt-5"
+                    onClick={() => updateCommentList()}
+                >
+                    <div className="font-medium text-[16px] text-center w-full">
+                        Show more comments
+                    </div>
+                </Button>
+            )}
         </div>
     )
 }

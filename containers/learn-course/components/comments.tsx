@@ -55,8 +55,7 @@ export default function LearningCommentsDetail() {
             <div className="flex justify-center space-x-7 under_lg:flex-wrap under_lg:justify-center mt-3">
                 <CommentForm
                     handleSubmit={createParentComment}
-                    submitLabel="Create Comment"
-                    hasCancelButton={false}
+                    // hasCancelButton={false}
                 />
             </div>
             {parentComment.length > 0 && (

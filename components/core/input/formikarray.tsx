@@ -94,12 +94,9 @@ export default function ChoicesArray({
                                                     index
                                                 ].choices?.[indext]
                                             }
-                                            className="w-full outline-none"
+                                            className="w-full outline-none resize-none"
                                             autoComplete="off"
                                             onChange={context.handleChange}
-                                            style={{
-                                                resize: 'none',
-                                            }}
                                         />
                                     </div>
                                 </div>

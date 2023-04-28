@@ -100,6 +100,8 @@ interface ILearningCourseContext {
     currentPosition: number[]
     getLearningCourseDetail: UseMutateFunction<unknown, any, object, unknown>
     parentComment: Comment[]
+    currentTab: string
+    setCurrentTab: Dispatch<SetStateAction<string>>
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -114,6 +116,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const [playingVideo, setPlayingVideo] = useState<string>('')
     const [myAccountBalance, setMyAccountBalance] = useState(0)
     const [showPlayQuizModal, setShowPlayQuizModal] = useState(false)
+    const [currentTab, setCurrentTab] = useState('Overview')
     const router = useRouter()
 
     const [courseDetail, setCourseDetail] = useState<
@@ -181,15 +184,13 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 const lastSectionIndex = data.sections.length - 1
                 const lastLessonIndex =
                     data.sections[lastSectionIndex].lessons.length - 1
+                const lastLessonOfLastSection =
+                    data.sections[lastSectionIndex].lessons[lastLessonIndex]
+                setCurrentQuiz(lastLessonOfLastSection.quizzes[0])
                 setCurrentPosition([lastSectionIndex, lastLessonIndex, 1])
-                setIsCurrentLessonLearned(
-                    data.sections[lastSectionIndex].lessons[lastLessonIndex]
-                        .learned,
-                )
-                setPlayingVideo(
-                    data.sections[lastSectionIndex].lessons[lastLessonIndex]
-                        .media,
-                )
+                setIsCurrentLessonLearned(lastLessonOfLastSection.learned)
+                lessonId = lastLessonOfLastSection._id
+                setPlayingVideo(lastLessonOfLastSection.media)
             }
             localStorage.setItem(LESSON_ID, lessonId)
         } else {
@@ -198,19 +199,14 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
     const handleChangeLecture = (pos: number[]) => {
         setCurrentPosition([...pos, currentPosition[2]])
-        setCurrentQuiz(
-            courseDetail?.sections[pos[0]].lessons[pos[1]].quizzes[0],
-        )
-        setIsCurrentLessonLearned(
-            courseDetail?.sections[pos[0]].lessons[pos[1]].learned ?? false,
-        )
-        courseDetail &&
-            setPlayingVideo(courseDetail.sections[pos[0]].lessons[pos[1]].media)
-        courseDetail &&
-            localStorage.setItem(
-                LESSON_ID,
-                courseDetail.sections[pos[0]].lessons[pos[1]]._id,
-            )
+        const newLecture = courseDetail?.sections[pos[0]].lessons[pos[1]]
+        if (newLecture) {
+            setCurrentQuiz(newLecture.quizzes[0])
+            setIsCurrentLessonLearned(newLecture.learned ?? false)
+            setPlayingVideo(newLecture.media)
+            localStorage.setItem(LESSON_ID, newLecture._id)
+        }
+        setCurrentTab('Overview')
     }
 
     const isLoading = useMemo(() => {
@@ -243,6 +239,8 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 currentPosition,
                 getLearningCourseDetail,
                 parentComment,
+                currentTab,
+                setCurrentTab,
             }}
         >
             {children}
