@@ -10,7 +10,6 @@ export interface IRatingStarProps {
     hideScore?: boolean
     hideRating?: boolean
     className?: string
-    setRating?: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function RatingStar(props: IRatingStarProps) {

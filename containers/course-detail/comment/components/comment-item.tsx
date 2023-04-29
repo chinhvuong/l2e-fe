@@ -18,7 +18,9 @@ export interface ICommentItemProps {
 
 export default function CommentItem(props: ICommentItemProps) {
     const { address } = useAccount()
-    const isUser = address === props.data.user.walletAddress
+    const isUser =
+        String(address).toLowerCase() ===
+        props.data.user.walletAddress.toLowerCase()
     const [isEdit, setEdit] = useState(false)
     const [canReply, setReply] = useState(false)
     const { mutate: updateComment, isLoading: isLoadingUpdateComment } =
@@ -45,7 +47,7 @@ export default function CommentItem(props: ICommentItemProps) {
             lesson: props.leaningId,
             content: text,
         })
-        setEdit(false)
+        setReply(false)
     }
     const DeleteComment = () => {
         deleteComment({})

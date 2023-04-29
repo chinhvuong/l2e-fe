@@ -35,7 +35,7 @@ export default function UserInfoDetail() {
         <div id="instructor-section">
             <div className="flex">
                 <div className="font-semibold text-[22px] mt-3 text-hyperlink underline cursor-pointer">
-                    {userInfo?.name}
+                    {userInfo?.name ?? dataUser.name}
                 </div>
                 <FontAwesomeIcon
                     className="items-end"
@@ -45,17 +45,32 @@ export default function UserInfoDetail() {
                     }}
                 />
             </div>
-            <div className="text-description mt-1">{userInfo?.title}</div>
+            <div className="text-description mt-1">
+                {userInfo?.title ?? dataUser.title}
+            </div>
             <div className="flex items-center my-4">
-                <img
-                    src={`${userInfo?.avatar}`}
-                    alt=""
-                    className="rounded-[50%] w-[120px]"
-                />
+                {userInfo.avatar !== null ? (
+                    <img
+                        src={`${userInfo?.avatar}`}
+                        alt=""
+                        className="rounded-[50%] w-[120px]"
+                    />
+                ) : (
+                    <img
+                        src={`${dataUser?.avatar}`}
+                        alt=""
+                        className="rounded-[50%] w-[120px]"
+                    />
+                )}
+
                 <div className="flex flex-col space-y-2 ml-7 mr-4">
                     <div className="flex items-center space-x-2">
                         <FontAwesomeIcon icon={faStar} />
-                        <div>{`${userInfo?.rating} Instructor Rating`}</div>
+                        {userInfo.rating > 0 ? (
+                            <div>{`${userInfo?.rating} Instructor Rating`}</div>
+                        ) : (
+                            <div>{`${dataUser?.rating} Instructor Rating`}</div>
+                        )}
                     </div>
                     <div className="flex items-center space-x-2">
                         <FontAwesomeIcon
