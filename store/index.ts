@@ -8,6 +8,7 @@ import { questionDetailSlice } from './course/question'
 import { quizzesSlice } from './quiz'
 import { certificateSlice } from './certification'
 import { commentSlice } from './comment'
+import { ratingSlice } from './rating'
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
         quizzes: quizzesSlice.reducer,
         certificates: certificateSlice.reducer,
         comments: commentSlice.reducer,
+        ratings: ratingSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

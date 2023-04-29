@@ -11,15 +11,20 @@ import ReviewItemsList from '@/containers/course-detail/review/components/review
 import RatingAnalysisBar from '@/containers/course-detail/review/components/rating-analysis-bar'
 import RatingStar from '@/components/core/rating-star'
 import RatingBar from '@/components/core/rating-star/rating-bar'
+import CommentForm from '@/containers/course-detail/comment/components/comment-form'
+import { useLearningCourseContext } from '../learning-course-context'
+import { toast } from 'react-toastify'
 
 export interface ILearningReviewDetailProps {}
 
 export default function LearningReviewDetail() {
+    const { courseId, createRatingDetail, canRating } =
+        useLearningCourseContext()
     const [selectedRating, setSelectedRating] = useState('All')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
+    const [ratingCount, setRatingCount] = useState(0)
     const clickOutSideRef = useRef(null)
     const ratingsValue = ['All', '5', '4', '3', '2', '1']
-
     const onSelectRating = (item: string) => {
         setSelectedRating(item)
         setOpenRatingSelect(false)
@@ -28,9 +33,40 @@ export default function LearningReviewDetail() {
     useOutsideClick(clickOutSideRef, () => {
         setOpenRatingSelect(false)
     })
+    function validateRating(item: string) {
+        if (ratingCount === 0 || item.length === 0) {
+            return false
+        } else {
+            return true
+        }
+    }
+    function createRating(content: string) {
+        if (validateRating(content)) {
+            createRatingDetail({
+                course: courseId,
+                rating: ratingCount,
+                content: content,
+            })
+        } else {
+            toast.error('You must rating and give reviews !')
+        }
+    }
     return (
         <div className="space-y-10">
-            <RatingBar />
+            {canRating && (
+                <div>
+                    <div>Your Rating: </div>
+                    <RatingBar
+                        selectedRatingPoint={ratingCount}
+                        setRating={setRatingCount}
+                    />
+                    <CommentForm
+                        handleSubmit={createRating}
+                        submitLabel="Create Rating"
+                        hasCancelButton={false}
+                    />
+                </div>
+            )}
             <div>
                 <div className="font-semibold text-2xl">Student feedback</div>
                 <div className="flex justify-center space-x-7 under_lg:flex-wrap under_lg:justify-center mt-3">
@@ -131,7 +167,7 @@ export default function LearningReviewDetail() {
                         </div>
                     </div>
                 </div>
-                <ReviewItemsList data={dataRatings} />
+                <ReviewItemsList />
             </div>
         </div>
     )

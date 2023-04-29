@@ -8,17 +8,16 @@ import CommentForm from '@/containers/course-detail/comment/components/comment-f
 import { Comment } from '@/store/comment/types'
 import { LESSON_ID } from '@/constants/localStorage'
 import { UpdateCommentsState } from '@/store/comment'
-import { useAppDispatch } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { getComments } from '@/store/comment/selectors'
 
 export interface ILearningCommentsDetailProps {}
 
 export default function LearningCommentsDetail() {
     const dispatch = useAppDispatch()
-    const {
-        parentComment,
-        // getLearningCommentParent
-    } = useLearningCourseContext()
+    const parentComment = useAppSelector(getComments)
     const [lessonId, setLessonId] = useState('')
+    const [canfetchApi, setCanFetchApi] = useState(false)
     const {
         mutate: getLearningCommentParent,
         isLoading: isLoadingLearningCommentParent,
@@ -44,12 +43,12 @@ export default function LearningCommentsDetail() {
     useEffect(() => {
         if (lessonId !== localStorage.getItem(LESSON_ID)) {
             setLessonId(localStorage.getItem(LESSON_ID) ?? '')
+            setCanFetchApi(false)
         } else {
-            if (localStorage.getItem(LESSON_ID) !== undefined) {
-                getLearningCommentParent({})
-            }
+            setCanFetchApi(true)
+            getLearningCommentParent({})
         }
-    }, [lessonId, localStorage.getItem(LESSON_ID)])
+    }, [lessonId, localStorage.getItem(LESSON_ID), canfetchApi])
     return (
         <div className="space-y-10">
             <div className="flex justify-center space-x-7 under_lg:flex-wrap under_lg:justify-center mt-3">
@@ -58,14 +57,11 @@ export default function LearningCommentsDetail() {
                     // hasCancelButton={false}
                 />
             </div>
-            {parentComment.length > 0 && (
-                <CommentItemsList
-                    data={parentComment}
-                    leaningId={lessonId}
-                    getLearningCommentParent={getLearningCommentParent}
-                    addComment={addComment}
-                />
-            )}
+            <CommentItemsList
+                leaningId={lessonId}
+                addComment={addComment}
+                getLearningCommentParent={getLearningCommentParent}
+            />
         </div>
     )
 }

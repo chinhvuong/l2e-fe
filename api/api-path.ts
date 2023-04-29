@@ -28,6 +28,8 @@ export const LearnerAPI = {
     GET_FINAL_TEST_DETAIL: '/game/play-final-test',
     SUBMIT_FINAL_TEST_ANSWER: '/game/submit-final-test',
     COMMENT: '/comment',
+    RATING: '/rating',
+    CREATE_RATING: '/rating/create',
 }
 
 export const InstructorAPI = {

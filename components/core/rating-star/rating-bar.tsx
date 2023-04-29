@@ -3,15 +3,17 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 
-export interface IRatingBarProps {}
+export interface IRatingBarProps {
+    selectedRatingPoint: number
+    setRating: React.Dispatch<React.SetStateAction<number>>
+}
 
 export default function RatingBar(props: IRatingBarProps) {
-    const [selectedRatingPoint, setSelectedRatingPoint] = useState(0)
     const [draftRatingPoint, setDraftRatingPoint] = useState(0)
     const totalStars = [1, 2, 3, 4, 5]
 
     const handleSetSelectedRatingPoint = (value: number): void => {
-        setSelectedRatingPoint(value)
+        props.setRating(value)
         setDraftRatingPoint(value)
     }
 
@@ -28,7 +30,7 @@ export default function RatingBar(props: IRatingBarProps) {
                         onClick={() => handleSetSelectedRatingPoint(item)}
                         onMouseEnter={() => handleSetDraftRatingPoint(item)}
                         onMouseLeave={() =>
-                            setDraftRatingPoint(selectedRatingPoint)
+                            setDraftRatingPoint(props.selectedRatingPoint)
                         }
                         className="px-1"
                     >

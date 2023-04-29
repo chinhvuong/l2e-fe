@@ -3,16 +3,15 @@ import Divider from '@/components/core/divider'
 import { Rating } from '@/constants/interfaces'
 import { useState } from 'react'
 import ReviewItem from './review-item'
+import { useLearningCourseContext } from '@/containers/learn-course/learning-course-context'
 
-export interface IReviewItemsListProps {
-    data: Rating[]
-}
+export interface IReviewItemsListProps {}
 
 export default function ReviewItemsList(props: IReviewItemsListProps) {
-    const [reviewList, setReviewList] = useState(props.data)
-
+    const { ratings, getRatingCourseDetail } = useLearningCourseContext()
+    const [reviewList, setReviewList] = useState(ratings)
     const updateReviewList = () => {
-        const newList = [...reviewList, ...props.data]
+        const newList = [...reviewList, ...ratings]
         setReviewList(newList)
     }
 
@@ -22,10 +21,13 @@ export default function ReviewItemsList(props: IReviewItemsListProps) {
 
     return (
         <div>
-            {reviewList.map((item, index) => {
+            {ratings.map((item, index) => {
                 return (
                     <div className="space-y-6" key={index}>
-                        <ReviewItem data={item} />
+                        <ReviewItem
+                            data={item}
+                            getRatingCourseDetail={getRatingCourseDetail}
+                        />
                         {index !== reviewList.length - 1 && <Divider />}
                     </div>
                 )

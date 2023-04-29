@@ -17,6 +17,10 @@ import {
 } from 'react'
 import { getComments } from '@/store/comment/selectors'
 import { LESSON_ID } from '@/constants/localStorage'
+import { UpdateRatingsState } from '@/store/rating'
+import { getRatings } from '@/store/rating/selectors'
+import { Rating } from '@/store/rating/types'
+import { useAccount } from 'wagmi'
 
 export interface LectureQuiz {
     _id: string
@@ -99,7 +103,12 @@ interface ILearningCourseContext {
     handlePerfectScore: (isOpen: boolean) => void
     currentPosition: number[]
     getLearningCourseDetail: UseMutateFunction<unknown, any, object, unknown>
-    parentComment: Comment[]
+    getRatingCourseDetail: UseMutateFunction<unknown, any, object, unknown>
+    createRatingDetail: UseMutateFunction<unknown, any, object, unknown>
+    courseId: string
+    ratings: Rating[]
+    canRating: boolean
+    setCanRating: React.Dispatch<React.SetStateAction<boolean>>
     currentTab: string
     setCurrentTab: Dispatch<SetStateAction<string>>
 }
@@ -111,7 +120,10 @@ export const LearningCourseContext = createContext<ILearningCourseContext>(
 export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     children,
 }) => {
-    const parentComment = useAppSelector(getComments)
+    const { address } = useAccount()
+    const [canRating, setCanRating] = useState(true)
+    const ratings = useAppSelector(getRatings)
+    const dispatch = useAppDispatch()
     const [courseId, setCourseId] = useState('')
     const [playingVideo, setPlayingVideo] = useState<string>('')
     const [myAccountBalance, setMyAccountBalance] = useState(0)
@@ -140,7 +152,18 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             setIsPerfectScore(false)
         }
     }
-
+    const validateRating = (ratings: Rating[]) => {
+        if (canRating) {
+            ratings.forEach((rating) => {
+                if (
+                    rating.user.walletAddress.toLowerCase() ===
+                    String(address).toLowerCase()
+                ) {
+                    setCanRating(false)
+                }
+            })
+        }
+    }
     const {
         mutate: getLearningCourseDetail,
         isLoading: isLoadingLearningCourseDetail,
@@ -156,6 +179,25 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             },
         },
     )
+
+    const {
+        mutate: getRatingCourseDetail,
+        isLoading: isLoadingRatingCourseDetail,
+    } = useAPI.getMutation(LearnerAPI.RATING + '?course=' + courseId, {
+        onError: () => {},
+        onSuccess: (response) => {
+            dispatch(UpdateRatingsState(response.data))
+            validateRating(response.data)
+        },
+    })
+
+    const { mutate: createRatingDetail, isLoading: isLoadingCreateRating } =
+        useAPI.post(LearnerAPI.CREATE_RATING, {
+            onError: () => {},
+            onSuccess: (response) => {
+                getRatingCourseDetail({})
+            },
+        })
 
     const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
@@ -213,10 +255,17 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         return isLoadingLearningCourseDetail || isLoadingGetMyBalance
     }, [isLoadingLearningCourseDetail, isLoadingGetMyBalance])
 
+    // useEffect(() => {
+    //     if (!isLoading) {
+    //         setPlayingVideo(getDefaultPlayedVideo())
+    //     }
+    // }, [isLoading])
+
     useEffect(() => {
         if (typeof router.query.slug === 'string') {
             setCourseId(router.query.slug)
             setTimeout(getLearningCourseDetail, 1000)
+            setTimeout(getRatingCourseDetail, 1000)
             getMyBalance({})
         }
     }, [router.query.slug])
@@ -224,6 +273,9 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     return (
         <LearningCourseContext.Provider
             value={{
+                ratings,
+                canRating,
+                setCanRating,
                 courseDetail,
                 isLoading,
                 playingVideo,
@@ -238,7 +290,9 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 handlePerfectScore,
                 currentPosition,
                 getLearningCourseDetail,
-                parentComment,
+                getRatingCourseDetail,
+                createRatingDetail,
+                courseId,
                 currentTab,
                 setCurrentTab,
             }}
