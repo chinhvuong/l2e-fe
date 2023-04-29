@@ -1,18 +1,26 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export interface INavBarProps {
+    currentTab: string
     setCurrentTab: Dispatch<SetStateAction<string>>
 }
 
-export default function NavBarLearner({ setCurrentTab }: INavBarProps) {
+export default function NavBarLearner({
+    currentTab,
+    setCurrentTab,
+}: INavBarProps) {
     const menu = ['Overview', 'Instructor', 'Ratings', 'Comments']
 
-    const [currentTabName, setCurrentTabName] = useState('Overview')
+    const [currentTabName, setCurrentTabName] = useState(currentTab)
 
     const handleChangeTab = (tab: string) => {
         setCurrentTabName(tab)
         setCurrentTab(tab)
     }
+
+    useEffect(() => {
+        setCurrentTabName(currentTab)
+    }, [currentTab])
 
     return (
         <div

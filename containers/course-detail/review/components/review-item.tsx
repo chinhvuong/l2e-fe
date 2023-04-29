@@ -11,6 +11,7 @@ import CommentForm from '../../comment/components/comment-form'
 import RatingBar from '@/components/core/rating-star/rating-bar'
 import { UseMutateFunction } from '@tanstack/react-query'
 import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
+import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 
 export interface IReviewItemProps {
     data: Rating
@@ -21,6 +22,8 @@ export default function ReviewItem(props: IReviewItemProps) {
     const { setCanRating } = useLearningCourseContext()
     const { address } = useAccount()
     const [show, isShow] = useState(false)
+    const [showDeleteRatingConfirmModal, setShowDeleteRatingConfirmModal] =
+        useState(false)
     const { mutate: updateRating, isLoading: isLoadingUpdateComment } =
         useAPI.put(LearnerAPI.RATING + '/' + props.data._id, {
             onError: () => {},
@@ -73,7 +76,8 @@ export default function ReviewItem(props: IReviewItemProps) {
             return 'recently'
         }
     }
-    const DeleteRating = () => {
+    const handleDeleteRating = () => {
+        setShowDeleteRatingConfirmModal(false)
         deleteRating({})
     }
     const EditRating = (text: string) => {
@@ -82,6 +86,11 @@ export default function ReviewItem(props: IReviewItemProps) {
     }
     return (
         <div>
+            <DeleteConfirmModal
+                isShow={showDeleteRatingConfirmModal}
+                setIsShow={setShowDeleteRatingConfirmModal}
+                deleteAction={handleDeleteRating}
+            />
             <div className="flex items-center my-4 space-x-5 sm:space-x-0">
                 <img
                     src="/images/avatar.jpg"
@@ -114,19 +123,21 @@ export default function ReviewItem(props: IReviewItemProps) {
                             setRating={setRatingCount}
                         />
                         <CommentForm
-                            submitLabel="Update"
-                            hasCancelButton
+                            // submitLabel="Update"
+                            // hasCancelButton
                             initialText={props.data.content}
                             handleSubmit={EditRating}
-                            handleCancel={() => {
-                                setEdit(false)
-                            }}
+                            // handleCancel={() => {
+                            // setEdit(false)
+                            // }}
                         />
                     </div>
                 )}
                 {isUser && (
                     <button
-                        className="text-black hover:text-primary p-2"
+                        className={`hover:text-primary-hover-hover pr-6 ${
+                            isEdit ? 'text-primary' : 'text-black'
+                        }`}
                         onClick={() => setEdit(true)}
                     >
                         <div className="font-semibold text-center text-sm mt-3">
@@ -137,7 +148,7 @@ export default function ReviewItem(props: IReviewItemProps) {
                 {isUser && (
                     <button
                         className="text-black hover:text-primary p-2"
-                        onClick={() => DeleteRating()}
+                        onClick={() => setShowDeleteRatingConfirmModal(true)}
                     >
                         <div className="font-semibold text-center text-sm mt-3">
                             Delete

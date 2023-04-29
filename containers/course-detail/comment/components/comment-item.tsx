@@ -7,6 +7,7 @@ import useAPI from '@/api/hooks/useAPI'
 import { LearnerAPI } from '@/api/api-path'
 import { UseMutateFunction } from '@tanstack/react-query'
 import Divider from '@/components/core/divider'
+import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 
 export interface ICommentItemProps {
     data: Comment
@@ -21,8 +22,11 @@ export default function CommentItem(props: ICommentItemProps) {
     const isUser =
         String(address).toLowerCase() ===
         props.data.user.walletAddress.toLowerCase()
-    const [isEdit, setEdit] = useState(false)
-    const [canReply, setReply] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
+    const [canReply, setCanReply] = useState(false)
+    const [showDeleteCommentConfirmModal, setShowDeleteCommentConfirmModal] =
+        useState(false)
+
     const { mutate: updateComment, isLoading: isLoadingUpdateComment } =
         useAPI.put(LearnerAPI.COMMENT + '/' + props.data._id, {
             onError: () => {},
@@ -39,7 +43,7 @@ export default function CommentItem(props: ICommentItemProps) {
         })
     const EditComment = (text: string) => {
         updateComment({ content: text })
-        setEdit(false)
+        setIsEdit(false)
     }
     const ReplyComment = (text: string) => {
         props.addComment({
@@ -47,11 +51,9 @@ export default function CommentItem(props: ICommentItemProps) {
             lesson: props.leaningId,
             content: text,
         })
-        setReply(false)
+        setCanReply(false)
     }
-    const DeleteComment = () => {
-        deleteComment({})
-    }
+
     const getTimeAgo = () => {
         const yearAgo =
             new Date().getFullYear() -
@@ -84,88 +86,119 @@ export default function CommentItem(props: ICommentItemProps) {
         }
     }
 
+    const handleDeleteComment = () => {
+        setShowDeleteCommentConfirmModal(false)
+        deleteComment({})
+    }
+
     return (
-        <div>
-            <div className="flex items-center my-4 space-x-5 sm:space-x-0">
-                <img
-                    src="/images/avatar.jpg"
-                    alt=""
-                    className="rounded-[50%] w-[60px] sm:hidden"
-                />
-                <div className="space-y-2">
-                    <div className="font-bold mt-1">{props.data.user.name}</div>
-                    <div className="text-description">{getTimeAgo()}</div>
+        <>
+            <DeleteConfirmModal
+                isShow={showDeleteCommentConfirmModal}
+                setIsShow={setShowDeleteCommentConfirmModal}
+                deleteAction={handleDeleteComment}
+            />
+            <div className="mt-6">
+                <div className="flex items-center space-x-5 sm:space-x-0">
+                    <img
+                        src="/images/avatar.jpg"
+                        alt=""
+                        className="rounded-[50%] w-[60px] sm:hidden"
+                    />
+                    <div className="space-y-1">
+                        <div className="font-bold text-lg mt-1">
+                            {props.data.user.name}
+                        </div>
+                        <div className="text-description text-xs">
+                            {getTimeAgo()}
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className="space-y-3 relative ml-[80px] sm:ml-0">
-                {!isEdit ? (
-                    <div className="text-justify">{props.data.content}</div>
-                ) : (
-                    <CommentForm
-                        submitLabel="Update"
-                        hasCancelButton
-                        initialText={props.data.content}
-                        handleSubmit={EditComment}
-                        handleCancel={() => {
-                            setEdit(false)
-                        }}
-                    />
-                )}
-                {props.data.level === 1 && (
-                    <button
-                        className="text-black hover:text-primary"
-                        onClick={() => setReply(true)}
-                    >
-                        <div className="font-semibold text-center text-sm mt-3">
-                            Reply
+                <div className="my-4  sm:ml-0">
+                    <div className="ml-20">
+                        {!isEdit && !isLoadingUpdateComment ? (
+                            <div className="text-justify">
+                                {props.data.content}
+                            </div>
+                        ) : (
+                            <CommentForm
+                                // hasCancelButton
+                                initialText={props.data.content}
+                                handleSubmit={EditComment}
+                                // handleCancel={() => {
+                                //     setIsEdit(false)
+                                // }}
+                            />
+                        )}
+                        {props.data.level === 1 && (
+                            <button
+                                className={`hover:text-primary-hover-hover pr-6 ${
+                                    canReply ? 'text-primary' : 'text-black'
+                                }`}
+                                onClick={() => setCanReply(!canReply)}
+                            >
+                                <div className="font-semibold text-center text-sm mt-3">
+                                    Reply
+                                </div>
+                            </button>
+                        )}
+                        {isUser && (
+                            <button
+                                className={`hover:text-primary-hover-hover pr-6 ${
+                                    isEdit ? 'text-primary' : 'text-black'
+                                }`}
+                                onClick={() => setIsEdit(!isEdit)}
+                            >
+                                <div className="font-semibold text-center text-sm mt-3">
+                                    Edit
+                                </div>
+                            </button>
+                        )}
+                        {isUser && (
+                            <button
+                                className="text-black hover:text-primary-hover"
+                                onClick={() =>
+                                    setShowDeleteCommentConfirmModal(true)
+                                }
+                            >
+                                <div className="font-semibold text-center text-sm mt-3">
+                                    Delete
+                                </div>
+                            </button>
+                        )}
+                    </div>
+                    {canReply && (
+                        <div className="flex items-center space-x-5 sm:space-x-0 mt-5 ml-10">
+                            <img
+                                src="/images/avatar.jpg"
+                                alt=""
+                                className="rounded-[50%] w-[60px] sm:hidden"
+                            />
+                            <CommentForm
+                                // hasCancelButton
+                                handleSubmit={ReplyComment}
+                                // handleCancel={() => {
+                                //     setCanReply(false)
+                                // }}
+                            />
                         </div>
-                    </button>
-                )}
-                {isUser && (
-                    <button
-                        className="text-black hover:text-primary p-2"
-                        onClick={() => setEdit(true)}
-                    >
-                        <div className="font-semibold text-center text-sm mt-3">
-                            Edit
-                        </div>
-                    </button>
-                )}
-                {canReply && (
-                    <CommentForm
-                        submitLabel="Reply"
-                        hasCancelButton
-                        handleSubmit={ReplyComment}
-                        handleCancel={() => {
-                            setReply(false)
-                        }}
-                    />
-                )}
-                {isUser && (
-                    <button
-                        className="text-black hover:text-primary p-2"
-                        onClick={() => DeleteComment()}
-                    >
-                        <div className="font-semibold text-center text-sm mt-3">
-                            Delete
-                        </div>
-                    </button>
-                )}
-            </div>
-            {props.replies.map((reply, index) => (
-                <div key={index} className="space-y-6 pl-10">
-                    <CommentItem
-                        data={reply}
-                        replies={[]}
-                        getLearningCommentParent={
-                            props.getLearningCommentParent
-                        }
-                        leaningId={props.leaningId}
-                        addComment={props.addComment}
-                    />
-                    {index !== props.replies.length - 1 && <Divider />}
+                    )}
                 </div>
-            ))}
-        </div>
+                {props.replies.map((reply, index) => (
+                    <div key={index} className="space-y-6 pl-10">
+                        <CommentItem
+                            data={reply}
+                            replies={[]}
+                            getLearningCommentParent={
+                                props.getLearningCommentParent
+                            }
+                            leaningId={props.leaningId}
+                            addComment={props.addComment}
+                        />
+                        {index !== props.replies.length - 1 && <Divider />}
+                    </div>
+                ))}
+            </div>
+        </>
     )
 }

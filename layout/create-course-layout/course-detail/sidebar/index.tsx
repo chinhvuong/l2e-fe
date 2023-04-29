@@ -19,7 +19,7 @@ import {
 } from '@/store/course/selectors'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export interface ISidebarProps {}
 
@@ -186,7 +186,7 @@ export default function Sidebar() {
         }
     }
 
-    const canRequestApprove = () => {
+    const canRequestApprove = useMemo(() => {
         if (courseDetail.lastApproveRequestAt === null) {
             return true
         } else {
@@ -203,7 +203,7 @@ export default function Sidebar() {
             }
             return false
         }
-    }
+    }, [courseDetail])
 
     const handleChangeTab = (index: number) => {
         dispatch(updateLoadingState(true))
@@ -249,7 +249,7 @@ export default function Sidebar() {
                             </Button>
                         )}
                     </>
-                ) : canRequestApprove() ? (
+                ) : canRequestApprove ? (
                     <Button
                         onClick={() => handleShowValidateModal(!showModal)}
                         className="mt-10"

@@ -1,24 +1,28 @@
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
 import { Rating } from '@/constants/interfaces'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommentItem from './comment-item'
 import { Comment } from '@/store/comment/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { useAppSelector } from '@/hooks'
 import { getComments } from '@/store/comment/selectors'
+import useAPI from '@/api/hooks/useAPI'
 export interface ICommentItemsListProps {
     leaningId: string
-    getLearningCommentParent: UseMutateFunction<unknown, any, object, unknown>
     addComment: UseMutateFunction<unknown, any, object, unknown>
+    getLearningCommentParent: UseMutateFunction<unknown, any, object, unknown>
 }
 
 export default function CommentItemsList(props: ICommentItemsListProps) {
     const parentComment = useAppSelector(getComments)
-    const [commentList, setCommentList] = useState(parentComment)
+    const [numberOfShowedComments, setNumberOfShowedComments] = useState(3)
+    const [commentList, setCommentList] = useState(
+        parentComment.slice(0, numberOfShowedComments),
+    )
     const updateCommentList = () => {
-        const newList = [...commentList, ...parentComment]
-        setCommentList(newList)
+        const newTotal = numberOfShowedComments + 3
+        setNumberOfShowedComments(newTotal)
     }
     const getReplies = (commentId: string) => {
         const repliesComment: Comment[] = []
@@ -31,28 +35,34 @@ export default function CommentItemsList(props: ICommentItemsListProps) {
         })
         return repliesComment
     }
-    if (!commentList) {
-        return <></>
+    const getLimitComments = () => {
+        return parentComment.slice(0, numberOfShowedComments)
     }
+    useEffect(() => {
+        if (!commentList) {
+            return
+        }
+        console.log(commentList)
+        console.log(parentComment)
+    }, [commentList, props.leaningId])
     return (
         <div>
-            {parentComment.length > 0 &&
-                parentComment.map((item, index) => {
-                    return (
-                        <div className="space-y-6" key={index}>
-                            <CommentItem
-                                data={item}
-                                replies={getReplies(item._id)}
-                                getLearningCommentParent={
-                                    props.getLearningCommentParent
-                                }
-                                leaningId={props.leaningId}
-                                addComment={props.addComment}
-                            />
-                            {index !== commentList.length - 1 && <Divider />}
-                        </div>
-                    )
-                })}
+            {getLimitComments().map((item, index) => {
+                return (
+                    <div className="space-y-6" key={index}>
+                        <CommentItem
+                            data={item}
+                            replies={getReplies(item._id)}
+                            getLearningCommentParent={
+                                props.getLearningCommentParent
+                            }
+                            leaningId={props.leaningId}
+                            addComment={props.addComment}
+                        />
+                        {index !== commentList.length - 1 && <Divider />}
+                    </div>
+                )
+            })}
             <Button
                 className="btn-primary-outline w-full mt-5"
                 onClick={() => updateCommentList()}

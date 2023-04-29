@@ -15,7 +15,7 @@ import { QuestionDetailType } from '@/store/questions/types'
 import { faEdit, faEye, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
-import CreateQuestionModal from './create-question/create-question-form'
+import CreateQuestionModal from './create-question/create-question-modal'
 import Title from '@/containers/create-course/components/title'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 
@@ -122,7 +122,7 @@ export default function QuestionBankContainers() {
             {showCreateQuestionModal && (
                 <CreateQuestionModal
                     showModal={showCreateQuestionModal}
-                    OpenModal={setShowCreateQuestionModal}
+                    openModal={setShowCreateQuestionModal}
                 />
             )}
             <div className="grid grid-cols-1 divide-y divide-gray-300">
@@ -132,7 +132,7 @@ export default function QuestionBankContainers() {
                         className="flex justify-between items-center hover:bg-gray-300 px-10 py-3 cursor-pointer"
                         onClick={() => chosenQuestions(index)}
                     >
-                        <div className="text-black line-clamp-2">
+                        <div className="text-black line-clamp-2 pr-5">
                             {item.question}
                         </div>
                         <div className="flex items-center space-x-5">

@@ -22,8 +22,9 @@ const LearningCourseContent = () => {
         setShowPlayQuizModal,
         isPerfectScore,
         setIsPerfectScore,
+        currentTab,
+        setCurrentTab,
     } = useLearningCourseContext()
-    const [currentTab, setCurrentTab] = useState('Overview')
 
     const getTabContent = () => {
         switch (currentTab) {
@@ -100,7 +101,10 @@ const LearningCourseContent = () => {
                         <span className="sr-only">Loading...</span>
                     </div>
                 )}
-                <NavBarLearner setCurrentTab={setCurrentTab} />
+                <NavBarLearner
+                    currentTab={currentTab}
+                    setCurrentTab={setCurrentTab}
+                />
                 <div className="px-12 mt-8">{getTabContent()}</div>
             </div>
             <div className="w-1/4">

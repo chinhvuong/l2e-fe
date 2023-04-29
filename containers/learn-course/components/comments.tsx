@@ -17,6 +17,7 @@ export default function LearningCommentsDetail() {
     const dispatch = useAppDispatch()
     const parentComment = useAppSelector(getComments)
     const [lessonId, setLessonId] = useState('')
+    const [canfetchApi, setCanFetchApi] = useState(false)
     const {
         mutate: getLearningCommentParent,
         isLoading: isLoadingLearningCommentParent,
@@ -42,28 +43,25 @@ export default function LearningCommentsDetail() {
     useEffect(() => {
         if (lessonId !== localStorage.getItem(LESSON_ID)) {
             setLessonId(localStorage.getItem(LESSON_ID) ?? '')
+            setCanFetchApi(false)
         } else {
-            if (localStorage.getItem(LESSON_ID) !== undefined) {
-                getLearningCommentParent({})
-            }
+            setCanFetchApi(true)
+            getLearningCommentParent({})
         }
-    }, [lessonId, localStorage.getItem(LESSON_ID)])
+    }, [lessonId, localStorage.getItem(LESSON_ID), canfetchApi])
     return (
         <div className="space-y-10">
             <div className="flex justify-center space-x-7 under_lg:flex-wrap under_lg:justify-center mt-3">
                 <CommentForm
                     handleSubmit={createParentComment}
-                    submitLabel="Create Comment"
-                    hasCancelButton={false}
+                    // hasCancelButton={false}
                 />
             </div>
-            {parentComment.length > 0 && (
-                <CommentItemsList
-                    leaningId={lessonId}
-                    getLearningCommentParent={getLearningCommentParent}
-                    addComment={addComment}
-                />
-            )}
+            <CommentItemsList
+                leaningId={lessonId}
+                addComment={addComment}
+                getLearningCommentParent={getLearningCommentParent}
+            />
         </div>
     )
 }

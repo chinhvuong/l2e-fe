@@ -33,7 +33,9 @@ function Button({
                 textButton ? btnText : btnCommon
             } flex items-center ${
                 isLoading || disabled ? 'cursor-not-allowed' : 'cursor-pointer'
-            } whitespace-nowrap	text-ellipsis overflow-hidden ${rest.className}`}
+            } whitespace-nowrap	text-ellipsis overflow-hidden ${
+                disabled && 'bg-gray-400'
+            } ${rest.className}`}
             disabled={disabled}
         >
             {children}

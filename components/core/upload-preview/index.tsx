@@ -26,7 +26,10 @@ export default function UploadPreview(props: IUploadPreviewProps) {
     const { mutate: uploadFile, isLoading } = useAPI.post(
         FileAPI.UPLOAD_SINGLE_FILE,
         {
-            onError: noop,
+            onError: (err) => {
+                setUploadedFile(null)
+                dispatch(updateCanSaveCourseState(true))
+            },
             onSuccess: (response: UploadOneFileResponse) => {
                 props.setFileLink && props.setFileLink(response.url)
                 setTimeout(() => dispatch(updateCanSaveCourseState(true)), 1000)

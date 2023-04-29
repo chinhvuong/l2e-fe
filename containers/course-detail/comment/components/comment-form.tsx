@@ -1,19 +1,18 @@
-import { UseMutateFunction } from '@tanstack/react-query'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MouseEventHandler, useState } from 'react'
 
 export interface ICommentFormProps {
     handleSubmit: (content: string) => void
-    submitLabel: string
-    hasCancelButton: boolean
-    handleCancel?: MouseEventHandler<HTMLButtonElement> | undefined
+    // hasCancelButton: boolean
+    // handleCancel?: MouseEventHandler<HTMLButtonElement> | undefined
     initialText?: string
 }
 
 const CommentForm = ({
     handleSubmit,
-    submitLabel,
-    hasCancelButton = false,
-    handleCancel,
+    // hasCancelButton = false,
+    // handleCancel,
     initialText = '',
 }: ICommentFormProps) => {
     const [text, setText] = useState(initialText)
@@ -24,27 +23,25 @@ const CommentForm = ({
         setText('')
     }
     return (
-        <form onSubmit={onSubmit} className="flex w-full">
+        <form onSubmit={onSubmit} className="flex w-full space-x-5">
             <textarea
-                className="w-full border-[1px] border-black"
+                id="textarea"
+                className="w-full h-20 border rounded-lg px-4 py-3 border-black overflow-y-auto scrollbar resize-none"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
+                placeholder="Write comment..."
             />
-            <button
-                className="comment-form-button"
-                disabled={isTextareaDisabled}
-            >
-                {submitLabel}
+            <button disabled={isTextareaDisabled} className="cursor-pointer">
+                <FontAwesomeIcon
+                    icon={faPaperPlane}
+                    className="bg-primary hover:bg-primary-hover p-3 rounded-full text-white text-sm"
+                />
             </button>
-            {hasCancelButton && (
-                <button
-                    type="button"
-                    className="comment-form-button comment-form-cancel-button"
-                    onClick={handleCancel}
-                >
+            {/* {hasCancelButton && (
+                <button type="button" onClick={handleCancel}>
                     Cancel
                 </button>
-            )}
+            )} */}
         </form>
     )
 }

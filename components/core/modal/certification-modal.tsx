@@ -61,7 +61,7 @@ export default function CertificateModal(props: ICertificateModalProps) {
                                         className="w-f p-1 m-1"
                                     />
                                     <div className="flex space-x-5 mt-7">
-                                        {certificate.status === 'MINTING' ? (
+                                        {certificate.status === 'OFF_CHAIN' ? (
                                             <Button
                                                 onClick={() =>
                                                     handleClaimCertificate()
