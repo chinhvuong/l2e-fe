@@ -92,13 +92,23 @@ export default function ReviewItem(props: IReviewItemProps) {
                 deleteAction={handleDeleteRating}
             />
             <div className="flex items-center my-4 space-x-5 sm:space-x-0">
-                <img
-                    src="/images/avatar.jpg"
-                    alt=""
-                    className="rounded-[50%] w-[60px] sm:hidden"
-                />
+                {props.data.user.avatar !== null ? (
+                    <img
+                        src={`${props.data.user.avatar}`}
+                        alt=""
+                        className="rounded-[50%] w-[60px]"
+                    />
+                ) : (
+                    <img
+                        src="/images/avatar.jpg"
+                        alt=""
+                        className="rounded-[50%] w-[60px]"
+                    />
+                )}
                 <div className="space-y-2">
-                    <div className="font-bold mt-1">{props.data.user.name}</div>
+                    <div className="font-bold mt-1">
+                        {props.data.user?.name ?? 'default user'}
+                    </div>
                     <div className="flex items-center space-x-5">
                         <RatingStar
                             id={props.data._id}
