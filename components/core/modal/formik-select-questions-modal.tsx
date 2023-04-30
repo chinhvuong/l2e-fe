@@ -85,10 +85,6 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
         context.setFieldValue('questions', chosenQuestions)
         setShowModal(false)
     }
-    useEffect(() => {
-        console.log(chosenQuestions)
-        //    setQuestions(context.values.questions)
-    }, [isEdit, quizDetail, , chosenQuestions, context])
 
     useEffect(() => {
         isOverflowY()
