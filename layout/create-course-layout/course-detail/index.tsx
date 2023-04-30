@@ -44,7 +44,7 @@ export default function CreateCourseLayout({
                         className="flex justify-center w-full app-transition main-transition h-full bg-white"
                         id="content"
                     >
-                        <div className="flex pt-[120px] pb-20 w-[1200px] space-x-7">
+                        <div className="flex pt-[120px] w-[1200px] space-x-7">
                             <ToastContainer />
                             <Sidebar />
                             <div className="w-full h-full bg-white border shadow-xl">
