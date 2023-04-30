@@ -27,7 +27,9 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
     const { questionsList, isEdit, setShowModal } = props
     const context = useFormikContext<IQuestionsInputType>()
     const quizDetail = useAppSelector(getQuizDetailInfo)
-    const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>([])
+    const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>(
+        context.values.questions,
+    )
     const modalContent = useRef<HTMLDivElement>(null)
     const [isOverflowContent, setIsOverflowContent] = useState(false)
 
@@ -35,29 +37,32 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
         const { checked, name, value } = event.target
         if (checked) {
             setQuestions([...chosenQuestions, questionsList?.[parseInt(value)]])
-            context.setFieldValue('questions', [
-                ...context.values.questions,
-                questionsList?.[parseInt(value)],
-            ])
+            // context.setFieldValue('questions', [
+            //     ...context.values.questions,
+            //     questionsList?.[parseInt(value)],
+            // ])
         } else {
-            context.setFieldValue(
-                'questions',
-                context.values.questions.filter((v) => v._id !== name),
+            // context.setFieldValue(
+            //     'questions',
+            //     context.values.questions.filter((v) => v._id !== name),
+            // )
+            console.log(
+                chosenQuestions.filter((question) => question._id !== name),
             )
             setQuestions(
-                chosenQuestions.filter(
-                    (question) =>
-                        question._id !== questionsList?.[parseInt(value)]._id,
-                ),
+                chosenQuestions.filter((question) => question._id !== name),
             )
         }
     }
 
     const checkQuestion = (question: QuestionDetailType) => {
+        console.log(
+            chosenQuestions.filter((object) => object._id === question._id)
+                .length > 0,
+        )
         if (
-            context.values.questions.filter(
-                (object) => object._id === question._id,
-            ).length > 0
+            chosenQuestions.filter((object) => object._id === question._id)
+                .length > 0
         ) {
             return true
         } else {
@@ -76,12 +81,14 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
             )
         }
     }
-
+    const saveUpdateQuestion = () => {
+        context.setFieldValue('questions', chosenQuestions)
+        setShowModal(false)
+    }
     useEffect(() => {
-        if (isEdit) {
-            setQuestions(quizDetail.questions)
-        }
-    }, [isEdit, quizDetail])
+        console.log(chosenQuestions)
+        //    setQuestions(context.values.questions)
+    }, [isEdit, quizDetail, , chosenQuestions, context])
 
     useEffect(() => {
         isOverflowY()
@@ -140,7 +147,7 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                                     <div className="font-medium">Cancel</div>
                                 </Button>
                                 <button
-                                    type="submit"
+                                    onClick={() => saveUpdateQuestion()}
                                     className="rounded-[80px] py-3 px-8 border text-white bg-primary enabled:hover:bg-primary-hover"
                                 >
                                     Save
