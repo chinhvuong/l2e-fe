@@ -8,6 +8,7 @@ import { LearnerAPI } from '@/api/api-path'
 import { UseMutateFunction } from '@tanstack/react-query'
 import Divider from '@/components/core/divider'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
+import { dataUser } from '@/data/users'
 
 export interface ICommentItemProps {
     data: Comment
@@ -100,14 +101,22 @@ export default function CommentItem(props: ICommentItemProps) {
             />
             <div className="mt-6">
                 <div className="flex items-center space-x-5 sm:space-x-0">
-                    <img
-                        src="/images/avatar.jpg"
-                        alt=""
-                        className="rounded-[50%] w-[60px] sm:hidden"
-                    />
+                    {props.data.user.avatar !== null ? (
+                        <img
+                            src={`${props.data.user.avatar}`}
+                            alt=""
+                            className="rounded-[50%] w-[60px]"
+                        />
+                    ) : (
+                        <img
+                            src="/images/avatar.jpg"
+                            alt=""
+                            className="rounded-[50%] w-[60px]"
+                        />
+                    )}
                     <div className="space-y-1">
                         <div className="font-bold text-lg mt-1">
-                            {props.data.user.name}
+                            {props.data.user?.name ?? 'default user'}
                         </div>
                         <div className="text-description text-xs">
                             {getTimeAgo()}
