@@ -56,10 +56,6 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
     }
 
     const checkQuestion = (question: QuestionDetailType) => {
-        console.log(
-            chosenQuestions.filter((object) => object._id === question._id)
-                .length > 0,
-        )
         if (
             chosenQuestions.filter((object) => object._id === question._id)
                 .length > 0
