@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import CreateQuizModal from '../quiz/create-quiz'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
+import '@/components/core/modal/style.scss'
 
 export enum QuizTitle {
     LIST = 'Quizzes',

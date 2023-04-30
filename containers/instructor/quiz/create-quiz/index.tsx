@@ -9,12 +9,16 @@ import { ErrorMessage, FormikProvider, useFormik } from 'formik'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import * as yup from 'yup'
 import { QuizTitle } from '..'
+import { QuestionDetailType } from '@/store/questions/types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
 export interface ICreateQuizFormProps {
     changeMode: Dispatch<SetStateAction<QuizTitle>>
 }
 
 export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
+    const answerPrefix = ['A. ', 'B. ', 'C. ', 'D. ']
     const { questionListsDetail, quizDetail, getQuizzesList } =
         useCreateCourseContext()
     const [courseId, setCourseId] = useState<string>('')
@@ -117,19 +121,15 @@ export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
             <LoadingScreen
                 isLoading={isLoadingCreateQuiz || isLoadingUpdateQuiz}
             />
-            {questionListsDetail.length > 0 && showModal && (
-                <QuestionsListModal
-                    questionsList={[
-                        ...questionListsDetail,
-                        ...questionListsDetail,
-                        ...questionListsDetail,
-                    ]}
-                    isEdit={isEdit}
-                    setShowModal={setShowModal}
-                />
-            )}
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
+                    {questionListsDetail.length > 0 && showModal && (
+                        <QuestionsListModal
+                            questionsList={questionListsDetail}
+                            isEdit={isEdit}
+                            setShowModal={setShowModal}
+                        />
+                    )}
                     <div className="py-5 px-10">
                         <div>
                             <div className="font-bold ml-[25px] pb-2">
@@ -153,7 +153,7 @@ export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
                         </div>
                         <button
                             className="bg-blue-200 text-black active:bg-blue-500 
-      font-bold px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+      font-bold px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-5 my-5"
                             type="button"
                             onClick={() => setShowModal(true)}
                         >
@@ -162,18 +162,50 @@ export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
                         <div className="ml-[25px] text-sm mt-1 text-red-500">
                             <ErrorMessage name="questions" />
                         </div>
-                        {formik?.values.questions?.map((question, index) => (
-                            <div
-                                key={index}
-                                className={`flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] ${
-                                    question.question !== ''
-                                        ? 'border-black'
-                                        : 'hidden'
-                                } space-x-5`}
-                            >
-                                {question.question}
-                            </div>
-                        ))}
+                        <div className="space-y-5">
+                            {formik?.values.questions?.map(
+                                (question, index) => (
+                                    <div key={index}>
+                                        <div className="px-6">
+                                            <h1 className="font-semibold text-lg mb-3">
+                                                {`${index + 1}. ` +
+                                                    question?.question}
+                                            </h1>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-5 w-full">
+                                            {question?.choices.map(
+                                                (choice, choiceIndex) => (
+                                                    <div
+                                                        key={choiceIndex}
+                                                        className={`flex justify-between items-center rounded-[80px] cursor-pointer py-3 px-6 border-2 font-medium ${
+                                                            choiceIndex ===
+                                                            question?.correctAnswer
+                                                                ? `bg-green-400 bg-opacity-10 text-green-400 border-green-400`
+                                                                : `text-description border-description`
+                                                        }`}
+                                                    >
+                                                        <span>
+                                                            {answerPrefix[
+                                                                choiceIndex
+                                                            ] + choice}
+                                                        </span>
+                                                        {choiceIndex ===
+                                                            question?.correctAnswer && (
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faCircleCheck
+                                                                }
+                                                                className="text-[20px] text-green-400 ml-2"
+                                                            />
+                                                        )}
+                                                    </div>
+                                                ),
+                                            )}
+                                        </div>
+                                    </div>
+                                ),
+                            )}
+                        </div>
                         <div className="flex justify-end space-x-5 my-6">
                             <Button
                                 outline

@@ -1,6 +1,7 @@
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { MouseEventHandler, useState } from 'react'
+import { useState } from 'react'
+import '@/components/core/modal/style.scss'
 
 export interface ICommentFormProps {
     handleSubmit: (content: string) => void

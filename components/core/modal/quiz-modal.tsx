@@ -2,7 +2,8 @@ import { QuestionDetailType } from '@/store/questions/types'
 import { QuizDetailType } from '@/store/quiz/types'
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import './style.scss'
 
 interface IQuizModalProps {
     isShow: boolean
