@@ -1,52 +1,46 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import LoadingScreen from '@/components/core/animate/loading-screen'
-import Title from '@/containers/create-course/components/title'
-import {
-    useFormik,
-    FormikProvider,
-    FieldArray,
-    ErrorMessage,
-    Field,
-} from 'formik'
-import { useRouter } from 'next/router'
-import { COURSE_ID } from '@/constants/localStorage'
-import useAPI from '@/api/hooks/useAPI'
 import { InstructorAPI } from '@/api/api-path'
-import * as yup from 'yup'
+import useAPI from '@/api/hooks/useAPI'
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import Button from '@/components/core/button'
 import QuestionsListModal from '@/components/core/modal/formik-select-questions-modal'
+import { COURSE_ID } from '@/constants/localStorage'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
+import { ErrorMessage, FormikProvider, useFormik } from 'formik'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import * as yup from 'yup'
+import { QuizTitle } from '..'
 
-interface QuizModal {
-    showModal: boolean
-    OpenModal: Dispatch<SetStateAction<boolean>>
+export interface ICreateQuizFormProps {
+    changeMode: Dispatch<SetStateAction<QuizTitle>>
 }
-export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
-    const { isLoading, questionListsDetail, quizDetail, getQuizzesList } =
+
+export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
+    const { questionListsDetail, quizDetail, getQuizzesList } =
         useCreateCourseContext()
     const [courseId, setCourseId] = useState<string>('')
     const [isEdit, setEdit] = useState<boolean>(false)
+    const [showModal, setShowModal] = useState(false)
     const { mutate: createQuiz, isLoading: isLoadingCreateQuiz } = useAPI.post(
-        InstructorAPI.CREAT_QUIZ,
+        InstructorAPI.CREATE_QUIZ,
         {
             onError: () => {},
-            onSuccess: (response) => {
+            onSuccess: () => {
                 getQuizzesList({})
-                OpenModal(false)
                 formik.resetForm()
+                changeMode(QuizTitle.LIST)
             },
         },
     )
     const { mutate: updateQuiz, isLoading: isLoadingUpdateQuiz } = useAPI.put(
-        InstructorAPI.CREAT_QUIZ + '/' + quizDetail._id,
+        InstructorAPI.CREATE_QUIZ + '/' + quizDetail._id,
         {
             onError: (errors) => {
                 console.log(errors)
             },
-            onSuccess: (response) => {
+            onSuccess: () => {
                 getQuizzesList({})
-                OpenModal(false)
                 formik.resetForm()
+                changeMode(QuizTitle.LIST)
             },
         },
     )
@@ -117,91 +111,86 @@ export default function CreateQuizModal({ showModal, OpenModal }: QuizModal) {
             setEdit(false)
         }
     }, [courseId, quizDetail])
+
     return (
         <>
-            <div className="flex w-full">
-                <div className="inset-10 z-50 w-full h-full bg-white border shadow-xl">
-                    {showModal && (
+            <LoadingScreen
+                isLoading={isLoadingCreateQuiz || isLoadingUpdateQuiz}
+            />
+            {questionListsDetail.length > 0 && showModal && (
+                <QuestionsListModal
+                    questionsList={[
+                        ...questionListsDetail,
+                        ...questionListsDetail,
+                        ...questionListsDetail,
+                    ]}
+                    isEdit={isEdit}
+                    setShowModal={setShowModal}
+                />
+            )}
+            <FormikProvider value={formik}>
+                <form onSubmit={formik.handleSubmit}>
+                    <div className="py-5 px-10">
+                        <div>
+                            <div className="font-bold ml-[25px] pb-2">
+                                Quiz Name
+                            </div>
+                            <div
+                                className={`flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] border-black space-x-5`}
+                            >
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formik.values.name}
+                                    className="w-full outline-none"
+                                    autoComplete="off"
+                                    onChange={formik.handleChange}
+                                />
+                            </div>
+                            <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                <ErrorMessage name="name" />
+                            </div>
+                        </div>
                         <button
-                            className="bg-transparent border-0 text-black float-right"
-                            onClick={() => OpenModal(false)}
+                            className="bg-blue-200 text-black active:bg-blue-500 
+      font-bold px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                            type="button"
+                            onClick={() => setShowModal(true)}
                         >
-                            <span className="text-black opacity-7 h-6 w-6 text-xl block  py-0 ">
-                                X
-                            </span>
+                            Show Questions List
                         </button>
-                    )}
-                </div>
-            </div>
-            {showModal ? (
-                <>
-                    <div className="inset-10 z-50 w-full h-full bg-white border shadow-xl focus:outline-none">
-                        <LoadingScreen
-                            isLoading={
-                                isLoadingCreateQuiz || isLoadingUpdateQuiz
-                            }
-                        />
-                        <FormikProvider value={formik}>
-                            <form onSubmit={formik.handleSubmit}>
-                                <Title title={'Create Quiz'} />
-                                <div className="py-10 px-14 space-y-5">
-                                    <div>
-                                        <div className="font-bold ml-[25px] pb-2">
-                                            Quiz Name
-                                        </div>
-                                        <div
-                                            className={`flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] border-black space-x-5`}
-                                        >
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                value={formik.values.name}
-                                                className="w-full outline-none"
-                                                autoComplete="off"
-                                                onChange={formik.handleChange}
-                                            />
-                                        </div>
-                                        <div className="ml-[25px] text-sm mt-1 text-red-500">
-                                            <ErrorMessage name="name" />
-                                        </div>
-                                    </div>
-                                    <QuestionsListModal
-                                        questionsList={questionListsDetail}
-                                        isEdit={isEdit}
-                                    />
-                                    <div className="ml-[25px] text-sm mt-1 text-red-500">
-                                        <ErrorMessage name="questions" />
-                                    </div>
-                                    {formik?.values.questions?.map(
-                                        (question, index) => (
-                                            <div
-                                                key={index}
-                                                className={`flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] ${
-                                                    question.question !== ''
-                                                        ? 'border-black'
-                                                        : 'hidden'
-                                                } space-x-5`}
-                                            >
-                                                {question.question}
-                                            </div>
-                                        ),
-                                    )}
-                                    <div className="flex space-y-5 my-4">
-                                        <button
-                                            type="submit"
-                                            className="rounded-[80px] py-[8px] px-[25px] border-[1px] text-white bg-primary w-full"
-                                        >
-                                            {isEdit
-                                                ? 'EDIT QUIZ'
-                                                : 'CREATE QUIZ'}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </FormikProvider>
+                        <div className="ml-[25px] text-sm mt-1 text-red-500">
+                            <ErrorMessage name="questions" />
+                        </div>
+                        {formik?.values.questions?.map((question, index) => (
+                            <div
+                                key={index}
+                                className={`flex items-center justify-between py-[10px] rounded-[80px] px-[25px] border-[1px] ${
+                                    question.question !== ''
+                                        ? 'border-black'
+                                        : 'hidden'
+                                } space-x-5`}
+                            >
+                                {question.question}
+                            </div>
+                        ))}
+                        <div className="flex justify-end space-x-5 my-6">
+                            <Button
+                                outline
+                                onClick={() => changeMode(QuizTitle.LIST)}
+                            >
+                                <div className="font-medium">Cancel</div>
+                            </Button>
+                            <button
+                                type="submit"
+                                className="rounded-[80px] py-3 px-8 border text-white bg-primary enabled:hover:bg-primary-hover"
+                            >
+                                Save
+                            </button>
+                        </div>
                     </div>
-                </>
-            ) : null}
+                </form>
+            </FormikProvider>
         </>
     )
 }

@@ -14,7 +14,6 @@ export interface IInputProps {
     defaultValue?: string | null
     updateToStore?: ActionCreatorWithPayload<any, string>
     updateInput?: Function
-    type?: string
     validate?: boolean
     widtharray?: boolean
     index: number
@@ -38,7 +37,6 @@ export default function FormikInput({
     charLimit,
     placeholder,
     defaultValue,
-    type,
     validate = false,
     index,
 }: IInputProps) {
@@ -68,6 +66,7 @@ export default function FormikInput({
                     className="w-full outline-none"
                     autoComplete="off"
                     onChange={context.handleChange}
+                    placeholder={placeholder}
                 />
             </div>
             {validate && (

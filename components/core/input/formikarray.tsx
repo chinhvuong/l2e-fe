@@ -57,7 +57,7 @@ export default function ChoicesArray({
         <FieldArray
             name={arrayname}
             render={(questionhelper) => (
-                <div className="grid grid-cols-2 gap-7">
+                <div className="grid grid-cols-2 gap-5">
                     {context.values.questions?.[index].choices?.map(
                         (choice, indext) => (
                             <div className="flex flex-col" key={indext}>
@@ -67,7 +67,7 @@ export default function ChoicesArray({
                                             type="radio"
                                             name={correctAnswername}
                                             value={indext}
-                                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+                                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 cursor-pointer"
                                             autoComplete="off"
                                             onChange={() =>
                                                 context.setFieldValue(
@@ -97,6 +97,7 @@ export default function ChoicesArray({
                                             className="w-full outline-none resize-none"
                                             autoComplete="off"
                                             onChange={context.handleChange}
+                                            placeholder="Insert choice"
                                         />
                                     </div>
                                 </div>

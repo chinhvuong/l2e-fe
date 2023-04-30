@@ -15,8 +15,6 @@ export default function Header() {
         myAccountBalance,
         setShowPlayQuizModal,
         isCurrentLessonLearned,
-        handleChangeLecture,
-        currentPosition,
     } = useLearningCourseContext()
     const [percentage, setPercentage] = useState(0)
     const [text, setText] = useState('')
@@ -34,11 +32,6 @@ export default function Header() {
         })
         setPercentage((completedLessons * 100) / totalLessons)
         setText(`${completedLessons}/${totalLessons}`)
-        if (completedLessons === totalLessons) {
-            const newPosition = [...currentPosition]
-            newPosition[2] = 1
-            handleChangeLecture([...newPosition])
-        }
     }
 
     useEffect(() => {

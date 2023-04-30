@@ -32,9 +32,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
     const [isStart, setIsStart] = useState<boolean>(false)
     const [isFinish, setIsFinish] = useState<boolean>(false)
     const [timerId, setTimerId] = useState<NodeJS.Timeout>()
-    const [currentQuiz, setCurrentQuiz] = useState<PlayQuizRes | undefined>(
-        undefined,
-    )
+    const [currentQuiz, setCurrentQuiz] = useState<PlayQuizRes>()
     const [numberOfCorrectAnswer, setNumberOfCorrectAnswer] = useState(0)
     const [totalQuestions, setTotalQuestions] = useState(0)
 
@@ -194,8 +192,6 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
         handleShowModal(false)
     }
 
-    console.log('answers', answers)
-
     return (
         <>
             {showModal ? (
@@ -271,9 +267,11 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                                 >
                                                                     <div className="px-6">
                                                                         <h1 className="font-semibold text-lg mb-3">
-                                                                            {
-                                                                                question?.question
-                                                                            }
+                                                                            {`${
+                                                                                questionIndex +
+                                                                                1
+                                                                            }. ` +
+                                                                                question?.question}
                                                                         </h1>
                                                                     </div>
                                                                     <div className="grid grid-cols-2 gap-5 w-full">
