@@ -1,9 +1,8 @@
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
-import { Rating } from '@/constants/interfaces'
+import { useLearningCourseContext } from '@/containers/learn-course/learning-course-context'
 import { useState } from 'react'
 import ReviewItem from './review-item'
-import { useLearningCourseContext } from '@/containers/learn-course/learning-course-context'
 
 export interface IReviewItemsListProps {}
 

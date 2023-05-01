@@ -8,12 +8,23 @@ export interface IRatingBarProps {
     setRating: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function RatingBar(props: IRatingBarProps) {
+export default function RatingBar({
+    selectedRatingPoint,
+    setRating,
+}: IRatingBarProps) {
     const [draftRatingPoint, setDraftRatingPoint] = useState(0)
     const totalStars = [1, 2, 3, 4, 5]
+    const starDescription = [
+        'What do you think?',
+        'Awful, not what I expected at all',
+        'Poor, pretty disappointed',
+        'Average, could be better',
+        'Good, what I expected',
+        'Amazing, above expectations!',
+    ]
 
     const handleSetSelectedRatingPoint = (value: number): void => {
-        props.setRating(value)
+        setRating(value)
         setDraftRatingPoint(value)
     }
 
@@ -21,33 +32,38 @@ export default function RatingBar(props: IRatingBarProps) {
         setDraftRatingPoint(value)
     }
 
+    console.log('draftRatingPoint', draftRatingPoint)
+
     return (
-        <div className={`flex items-center`}>
-            {totalStars.map((item) => {
-                return (
-                    <div
-                        key={item}
-                        onClick={() => handleSetSelectedRatingPoint(item)}
-                        onMouseEnter={() => handleSetDraftRatingPoint(item)}
-                        onMouseLeave={() =>
-                            setDraftRatingPoint(props.selectedRatingPoint)
-                        }
-                        className="px-1"
-                    >
-                        {item <= draftRatingPoint ? (
-                            <FontAwesomeIcon
-                                icon={faStar}
-                                className="text-star sm:text-xs cursor-pointer"
-                            />
-                        ) : (
-                            <FontAwesomeIcon
-                                icon={faEmptyStar}
-                                className="text-star sm:text-xs cursor-pointer"
-                            />
-                        )}
-                    </div>
-                )
-            })}
+        <div className="flex flex-col items-center space-y-3">
+            <div>{starDescription[draftRatingPoint]}</div>
+            <div className="flex items-center">
+                {totalStars.map((item) => {
+                    return (
+                        <div
+                            key={item}
+                            onClick={() => handleSetSelectedRatingPoint(item)}
+                            onMouseOver={() => handleSetDraftRatingPoint(item)}
+                            onMouseOut={() =>
+                                handleSetDraftRatingPoint(selectedRatingPoint)
+                            }
+                            className="px-1"
+                        >
+                            {item <= draftRatingPoint ? (
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className="text-star sm:text-xs 2xl:text-3xl cursor-pointer"
+                                />
+                            ) : (
+                                <FontAwesomeIcon
+                                    icon={faEmptyStar}
+                                    className="text-star sm:text-xs 2xl:text-3xl cursor-pointer"
+                                />
+                            )}
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 }
