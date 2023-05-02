@@ -103,7 +103,7 @@ export default function ReviewItem(props: IReviewItemProps) {
                     />
                 ) : (
                     <img
-                        src="/images/avatar.jpg"
+                        src="/svgs/default_user_avatar.svg"
                         alt=""
                         className="rounded-[50%] w-[60px]"
                     />

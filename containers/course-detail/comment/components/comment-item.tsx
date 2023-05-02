@@ -109,7 +109,7 @@ export default function CommentItem(props: ICommentItemProps) {
                         />
                     ) : (
                         <img
-                            src="/images/avatar.jpg"
+                            src="/svgs/default_user_avatar.svg"
                             alt=""
                             className="rounded-[50%] w-[60px]"
                         />
@@ -179,7 +179,7 @@ export default function CommentItem(props: ICommentItemProps) {
                     {canReply && (
                         <div className="flex items-center space-x-5 sm:space-x-0 mt-5 ml-10">
                             <img
-                                src="/images/avatar.jpg"
+                                src="/svgs/default_user_avatar.svg"
                                 alt=""
                                 className="rounded-[50%] w-[60px] sm:hidden"
                             />
