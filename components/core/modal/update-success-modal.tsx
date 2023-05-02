@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Button from '../button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
-import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons'
+import {
+    faCircleChevronDown,
+    faCircleChevronUp,
+} from '@fortawesome/free-solid-svg-icons'
 
 interface IWelcomeBackModalProps {
     isShow: boolean
@@ -24,7 +27,7 @@ export default function UpdateReviewsModal(props: IWelcomeBackModalProps) {
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 <div className="flex flex-col items-center justify-between py-10 px-20 w-[500px]">
                                     <FontAwesomeIcon
-                                        icon={faCircleChevronDown}
+                                        icon={faCircleChevronUp}
                                         className="text-5xl text-green-500"
                                     />
                                     <div className="text-center text-2xl font-bold pr-3">
@@ -33,8 +36,8 @@ export default function UpdateReviewsModal(props: IWelcomeBackModalProps) {
                                     </div>
                                     <div className="text-center">
                                         Your reivews will be{' '}
-                                        {props.userRequest.toLowerCase()}d after
-                                        few minutes.
+                                        {props.userRequest.toLowerCase()}d as
+                                        soon as possible.
                                     </div>
                                 </div>
                                 <div

@@ -65,6 +65,10 @@ export default function CommentItem(props: ICommentItemProps) {
             new Date().getDate() - new Date(props.data.updatedAt).getDate()
         const hourAgo =
             new Date().getHours() - new Date(props.data.updatedAt).getHours()
+        const minuteAgo = Math.round(
+            (new Date().getTime() - new Date(props.data.updatedAt).getTime()) /
+                60000,
+        )
 
         if (yearAgo > 1) {
             return `${yearAgo} years ago`
@@ -80,8 +84,12 @@ export default function CommentItem(props: ICommentItemProps) {
             return 'yesterday'
         } else if (hourAgo > 1) {
             return `${hourAgo} hours ago`
-        } else if (hourAgo === 1) {
+        } else if (hourAgo === 1 && minuteAgo >= 60) {
             return `1 hour ago`
+        } else if (1 < minuteAgo && minuteAgo < 60) {
+            return `${minuteAgo} minutes ago`
+        } else if (minuteAgo === 1) {
+            return `1 minute ago`
         } else {
             return 'recently'
         }
@@ -123,7 +131,7 @@ export default function CommentItem(props: ICommentItemProps) {
                         </div>
                     </div>
                 </div>
-                <div className="my-4  sm:ml-0">
+                <div className="my-4 sm:ml-0">
                     <div className="ml-20">
                         {!isEdit && !isLoadingUpdateComment ? (
                             <div className="text-justify">
