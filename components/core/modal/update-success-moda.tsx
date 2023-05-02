@@ -4,6 +4,7 @@ import Button from '../button'
 interface IWelcomeBackModalProps {
     isShow: boolean
     setIsShow: React.Dispatch<React.SetStateAction<boolean>>
+    userRequest: string
 }
 
 export default function UpdateReviewsModal(props: IWelcomeBackModalProps) {
@@ -25,11 +26,13 @@ export default function UpdateReviewsModal(props: IWelcomeBackModalProps) {
                                     />
                                     <div className="absolute z-50 top-44 w-full">
                                         <div className="text-center text-2xl font-bold pr-3">
-                                            Request Update Successfully.
+                                            Request {props.userRequest}{' '}
+                                            Successfully.
                                         </div>
                                         <div className="text-center text-md pr-3 pt-3">
-                                            Your reivews will be updated after
-                                            few minutes.
+                                            Your reivews will be{' '}
+                                            {props.userRequest.toLowerCase()}d
+                                            after few minutes.
                                         </div>
                                         <div className="flex justify-center mt-7 pr-3">
                                             <Button

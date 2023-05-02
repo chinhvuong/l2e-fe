@@ -14,14 +14,17 @@ import RatingBar from '@/components/core/rating-star/rating-bar'
 import CommentForm from '@/containers/course-detail/comment/components/comment-form'
 import { useLearningCourseContext } from '../learning-course-context'
 import { toast } from 'react-toastify'
+import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
 
 export interface ILearningReviewDetailProps {}
 
 export default function LearningReviewDetail() {
-    const { courseId, createRatingDetail, canRating } =
+    const { courseId, createRatingDetail, canRating, ratings } =
         useLearningCourseContext()
     const [selectedRating, setSelectedRating] = useState('All')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
+    const [show, isShow] = useState(false)
+    const [userAction, setUserAction] = useState('')
     const [ratingCount, setRatingCount] = useState(0)
     const clickOutSideRef = useRef(null)
     const ratingsValue = ['All', '5', '4', '3', '2', '1']
@@ -47,6 +50,8 @@ export default function LearningReviewDetail() {
                 rating: ratingCount,
                 content: content,
             })
+            isShow(true)
+            setUserAction('Create')
         } else {
             toast.error('You must rating and give reviews !')
         }
@@ -169,7 +174,12 @@ export default function LearningReviewDetail() {
                         </div>
                     </div>
                 </div>
-                <ReviewItemsList />
+                <ReviewItemsList ratings={ratings} isLearn={true} />
+                <UpdateReviewsModal
+                    isShow={show}
+                    setIsShow={isShow}
+                    userRequest={userAction}
+                />
             </div>
         </div>
     )

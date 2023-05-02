@@ -195,7 +195,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         useAPI.post(LearnerAPI.CREATE_RATING, {
             onError: () => {},
             onSuccess: (response) => {
-                getRatingCourseDetail({})
+                // getRatingCourseDetail({})
             },
         })
 

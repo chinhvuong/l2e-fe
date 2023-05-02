@@ -26,7 +26,6 @@ export interface IQuestionsListModalProps {
 export default function QuestionsListModal(props: IQuestionsListModalProps) {
     const { questionsList, isEdit, setShowModal } = props
     const context = useFormikContext<IQuestionsInputType>()
-    const quizDetail = useAppSelector(getQuizDetailInfo)
     const [chosenQuestions, setQuestions] = useState<QuestionDetailType[]>(
         context.values.questions,
     )
@@ -46,9 +45,6 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
             //     'questions',
             //     context.values.questions.filter((v) => v._id !== name),
             // )
-            console.log(
-                chosenQuestions.filter((question) => question._id !== name),
-            )
             setQuestions(
                 chosenQuestions.filter((question) => question._id !== name),
             )
