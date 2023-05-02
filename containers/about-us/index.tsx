@@ -1,4 +1,5 @@
 import Button from '@/components/core/button'
+import Divider from '@/components/core/divider'
 import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -43,6 +44,74 @@ export default function AboutUsContainer() {
                 />
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
+            <div>
+                <div className="flex justify-center text-2xl font-semibold mt-10">
+                    About us
+                </div>
+                <div className="flex justify-center mt-2 mb-5">
+                    <Divider className="w-20" />
+                </div>
+                <div className="flex justify-center text-lg">
+                    <div className="w-[55%] text-center">
+                        This is a non-profit team-based graduation project about
+                        education. The website provides courses with
+                        certificates saved on Blockchain.
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div className="flex justify-center text-2xl font-semibold mt-10">
+                    Meet the team
+                </div>
+                <div className="flex justify-center mt-2 mb-10">
+                    <Divider className="w-20" />
+                </div>
+                <div className="grid grid-cols-3">
+                    <div className="flex justify-end">
+                        <div className="flex flex-col items-center">
+                            <img
+                                src="/images/chinh_vuong.jpg"
+                                alt="chinh_vuong"
+                                className="w-40 h-40 rounded-full"
+                            />
+                            <div className="mt-5 mb-1 font-semibold">
+                                Vương Văn Chính
+                            </div>
+                            <div className="text-sm text-description">
+                                Team Lead, Full-stack Developer
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <img
+                            src="/images/huu_an.jpg"
+                            alt="huu_an"
+                            className="w-40 h-40 rounded-full"
+                        />
+                        <div className="mt-5 mb-1 font-semibold">
+                            Nguyễn Hữu An
+                        </div>
+                        <div className="text-sm text-description">
+                            Front-end Developer
+                        </div>
+                    </div>
+                    <div className="flex justify-start">
+                        <div className="flex flex-col items-center">
+                            <img
+                                src="/images/viet_hoa.jpg"
+                                alt="viet_hoa"
+                                className="w-40 h-40 rounded-full"
+                            />
+                            <div className="mt-5 mb-1 font-semibold">
+                                Nguyễn Việt Hòa
+                            </div>
+                            <div className="text-sm text-description">
+                                Front-end, Web3 Developer
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

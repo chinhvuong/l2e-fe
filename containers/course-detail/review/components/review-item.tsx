@@ -1,17 +1,14 @@
+import { LearnerAPI } from '@/api/api-path'
+import useAPI from '@/api/hooks/useAPI'
+import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
+import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
 import RatingStar from '@/components/core/rating-star'
-import * as React from 'react'
+import RatingBar from '@/components/core/rating-star/rating-bar'
 import ShowMore from '@/components/core/show-more'
 import { Rating } from '@/store/rating/types'
-import { useAccount } from 'wagmi'
 import { useState } from 'react'
-import { useLearningCourseContext } from '@/containers/learn-course/learning-course-context'
-import useAPI from '@/api/hooks/useAPI'
-import { LearnerAPI } from '@/api/api-path'
+import { useAccount } from 'wagmi'
 import CommentForm from '../../comment/components/comment-form'
-import RatingBar from '@/components/core/rating-star/rating-bar'
-import { UseMutateFunction } from '@tanstack/react-query'
-import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
-import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 
 export interface IReviewItemProps {
     data: Rating
@@ -46,7 +43,7 @@ export default function ReviewItem(props: IReviewItemProps) {
     const isUser =
         String(address).toLowerCase() ===
         props.data.user.walletAddress.toLowerCase()
-    const [isEdit, setEdit] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
     const [ratingCount, setRatingCount] = useState(0)
     const getTimeAgo = () => {
         const yearAgo =
@@ -58,6 +55,10 @@ export default function ReviewItem(props: IReviewItemProps) {
             new Date().getDate() - new Date(props.data.updatedAt).getDate()
         const hourAgo =
             new Date().getHours() - new Date(props.data.updatedAt).getHours()
+        const minuteAgo = Math.round(
+            (new Date().getTime() - new Date(props.data.updatedAt).getTime()) /
+                60000,
+        )
 
         if (yearAgo > 1) {
             return `${yearAgo} years ago`
@@ -73,8 +74,12 @@ export default function ReviewItem(props: IReviewItemProps) {
             return 'yesterday'
         } else if (hourAgo > 1) {
             return `${hourAgo} hours ago`
-        } else if (hourAgo === 1) {
+        } else if (hourAgo === 1 && minuteAgo >= 60) {
             return `1 hour ago`
+        } else if (1 < minuteAgo && minuteAgo < 60) {
+            return `${minuteAgo} minutes ago`
+        } else if (minuteAgo === 1) {
+            return `1 minute ago`
         } else {
             return 'recently'
         }
@@ -82,10 +87,11 @@ export default function ReviewItem(props: IReviewItemProps) {
     const handleDeleteRating = () => {
         setShowDeleteRatingConfirmModal(false)
         deleteRating({})
+        setIsEdit(false)
     }
-    const EditRating = (text: string) => {
+    const editRating = (text: string) => {
         updateRating({ rating: ratingCount, content: text })
-        setEdit(false)
+        setIsEdit(false)
     }
     return (
         <div>
@@ -93,6 +99,11 @@ export default function ReviewItem(props: IReviewItemProps) {
                 isShow={showDeleteRatingConfirmModal}
                 setIsShow={setShowDeleteRatingConfirmModal}
                 deleteAction={handleDeleteRating}
+            />
+            <UpdateReviewsModal
+                isShow={show}
+                setIsShow={isShow}
+                userRequest={userAction}
             />
             <div className="flex items-center my-4 space-x-5 sm:space-x-0">
                 {props.data.user.avatar !== null ? (
@@ -122,15 +133,11 @@ export default function ReviewItem(props: IReviewItemProps) {
                     </div>
                 </div>
             </div>
-            <div
-                id={`review-${props.data._id}`}
-                className="space-y-3 relative ml-[80px] sm:ml-0"
-            >
+            <div className="space-y-3 relative ml-[80px] sm:ml-0">
                 {!isEdit ? (
                     <div className="text-justify">{props.data.content}</div>
                 ) : (
                     <div>
-                        <div>Your Rating: </div>
                         <RatingBar
                             selectedRatingPoint={ratingCount}
                             setRating={setRatingCount}
@@ -139,9 +146,9 @@ export default function ReviewItem(props: IReviewItemProps) {
                             // submitLabel="Update"
                             // hasCancelButton
                             initialText={props.data.content}
-                            handleSubmit={EditRating}
+                            handleSubmit={editRating}
                             // handleCancel={() => {
-                            // setEdit(false)
+                            // setIsEdit(false)
                             // }}
                         />
                     </div>
@@ -151,7 +158,7 @@ export default function ReviewItem(props: IReviewItemProps) {
                         className={`hover:text-primary-hover-hover pr-6 ${
                             isEdit ? 'text-primary' : 'text-black'
                         }`}
-                        onClick={() => setEdit(true)}
+                        onClick={() => setIsEdit(!isEdit)}
                     >
                         <div className="font-semibold text-center text-sm mt-3">
                             Edit
@@ -168,16 +175,7 @@ export default function ReviewItem(props: IReviewItemProps) {
                         </div>
                     </button>
                 )}
-                <ShowMore
-                    el={`review-${props.data._id}`}
-                    elHeightPreview={200}
-                />
             </div>
-            <UpdateReviewsModal
-                isShow={show}
-                setIsShow={isShow}
-                userRequest={userAction}
-            />
         </div>
     )
 }

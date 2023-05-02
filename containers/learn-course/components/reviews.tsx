@@ -1,20 +1,19 @@
-import { useState, useRef } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faMagnifyingGlass,
-    faChevronDown,
-    faStar,
-} from '@fortawesome/free-solid-svg-icons'
-import useOutsideClick from '@/hooks/useOutSideClick'
-import { dataRatings } from '@/data/ratings'
-import ReviewItemsList from '@/containers/course-detail/review/components/review-items-list'
-import RatingAnalysisBar from '@/containers/course-detail/review/components/rating-analysis-bar'
+import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
 import RatingStar from '@/components/core/rating-star'
 import RatingBar from '@/components/core/rating-star/rating-bar'
 import CommentForm from '@/containers/course-detail/comment/components/comment-form'
-import { useLearningCourseContext } from '../learning-course-context'
+import RatingAnalysisBar from '@/containers/course-detail/review/components/rating-analysis-bar'
+import ReviewItemsList from '@/containers/course-detail/review/components/review-items-list'
+import useOutsideClick from '@/hooks/useOutSideClick'
+import {
+    faChevronDown,
+    faMagnifyingGlass,
+    faStar,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
-import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
+import { useLearningCourseContext } from '../learning-course-context'
 
 export interface ILearningReviewDetailProps {}
 
@@ -60,17 +59,10 @@ export default function LearningReviewDetail() {
         <div className="space-y-10">
             {canRating && (
                 <div>
-                    <div className="flex flex-col items-center">
-                        <div className="text-xl font-bold">
-                            Rate this course:
-                        </div>
-                        <div className="pt-5 pb-10">
-                            <RatingBar
-                                selectedRatingPoint={ratingCount}
-                                setRating={setRatingCount}
-                            />
-                        </div>
-                    </div>
+                    <RatingBar
+                        selectedRatingPoint={ratingCount}
+                        setRating={setRatingCount}
+                    />
                     <CommentForm handleSubmit={createRating} />
                 </div>
             )}
@@ -174,7 +166,10 @@ export default function LearningReviewDetail() {
                         </div>
                     </div>
                 </div>
-                <ReviewItemsList ratings={ratings} isLearn={true} />
+                <ReviewItemsList
+                    ratings={[...ratings].reverse()}
+                    isLearn={true}
+                />
                 <UpdateReviewsModal
                     isShow={show}
                     setIsShow={isShow}
