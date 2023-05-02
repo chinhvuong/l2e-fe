@@ -1,7 +1,6 @@
 import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
-import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
 import RatingStar from '@/components/core/rating-star'
 import RatingBar from '@/components/core/rating-star/rating-bar'
 import ShowMore from '@/components/core/show-more'
@@ -9,6 +8,8 @@ import { Rating } from '@/store/rating/types'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import CommentForm from '../../comment/components/comment-form'
+import { UseMutateFunction } from '@tanstack/react-query'
+import UpdateReviewsModal from '@/components/core/modal/update-success-modal'
 
 export interface IReviewItemProps {
     data: Rating

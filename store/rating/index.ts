@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { dataUser } from '@/data/users'
-import { Rating } from './types'
+import { Rating, RatingOverView } from './types'
 
 const initialState = {
     detailRating: {
@@ -13,6 +13,15 @@ const initialState = {
         user: dataUser,
     },
     ratinglist: [] as Rating[],
+    overviewRating: {
+        one: 0,
+        two: 0,
+        three: 1,
+        four: 0,
+        five: 0,
+        overview: 3,
+    },
+    totalRating: 0,
 }
 
 export const ratingSlice = createSlice({
@@ -30,10 +39,25 @@ export const ratingSlice = createSlice({
             const newRating: Rating = action.payload
             state.detailRating = newRating
         },
+        UpdateOverviewRatingState(
+            state,
+            action: PayloadAction<RatingOverView>,
+        ) {
+            state.totalRating =
+                action.payload.one +
+                action.payload.two +
+                action.payload.three +
+                action.payload.four +
+                action.payload.five
+            state.overviewRating = action.payload
+        },
     },
 })
 
-export const { UpdateRatingsState, UpdateRatingDetailState } =
-    ratingSlice.actions
+export const {
+    UpdateRatingsState,
+    UpdateRatingDetailState,
+    UpdateOverviewRatingState,
+} = ratingSlice.actions
 
 export default ratingSlice.reducer

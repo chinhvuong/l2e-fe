@@ -30,6 +30,7 @@ export const LearnerAPI = {
     COMMENT: '/comment',
     RATING: '/rating',
     CREATE_RATING: '/rating/create',
+    GET_OVERVIEW_RATING: '/rating/rating-overview',
 }
 
 export const InstructorAPI = {
