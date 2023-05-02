@@ -17,9 +17,13 @@ import {
 } from 'react'
 import { getComments } from '@/store/comment/selectors'
 import { LESSON_ID } from '@/constants/localStorage'
-import { UpdateRatingsState } from '@/store/rating'
-import { getRatings } from '@/store/rating/selectors'
-import { Rating } from '@/store/rating/types'
+import { UpdateOverviewRatingState, UpdateRatingsState } from '@/store/rating'
+import {
+    getOverViewRatings,
+    getRatings,
+    getTotalRatings,
+} from '@/store/rating/selectors'
+import { Rating, RatingOverView } from '@/store/rating/types'
 import { useAccount } from 'wagmi'
 
 export interface LectureQuiz {
@@ -113,6 +117,8 @@ interface ILearningCourseContext {
     setCurrentTab: Dispatch<SetStateAction<string>>
     searchTerm: string
     setSearchTerm: Dispatch<SetStateAction<string>>
+    overviewRating: RatingOverView
+    totalRating: number
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -132,6 +138,8 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const [myAccountBalance, setMyAccountBalance] = useState(0)
     const [showPlayQuizModal, setShowPlayQuizModal] = useState(false)
     const [currentTab, setCurrentTab] = useState('Overview')
+    const overviewRating = useAppSelector(getOverViewRatings)
+    const totalRating = useAppSelector(getTotalRatings)
     const router = useRouter()
 
     const [courseDetail, setCourseDetail] = useState<
@@ -196,6 +204,16 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             },
         },
     )
+
+    const {
+        mutate: getRatingOverViewCourseDetail,
+        isLoading: isLoadingRatingOverViewCourseDetail,
+    } = useAPI.getMutation(LearnerAPI.GET_OVERVIEW_RATING + '?id=' + courseId, {
+        onError: () => {},
+        onSuccess: (response) => {
+            dispatch(UpdateOverviewRatingState(response))
+        },
+    })
 
     const { mutate: createRatingDetail, isLoading: isLoadingCreateRating } =
         useAPI.post(LearnerAPI.CREATE_RATING, {
@@ -282,6 +300,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             setCourseId(router.query.slug)
             setTimeout(getLearningCourseDetail, 1000)
             setTimeout(getRatingCourseDetail, 1000)
+            setTimeout(getRatingOverViewCourseDetail, 1000)
             getMyBalance({})
         }
     }, [router.query.slug])
@@ -313,6 +332,8 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 setCurrentTab,
                 searchTerm,
                 setSearchTerm,
+                overviewRating,
+                totalRating,
             }}
         >
             {children}

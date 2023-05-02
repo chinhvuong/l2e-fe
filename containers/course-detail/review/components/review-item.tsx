@@ -47,7 +47,6 @@ export default function ReviewItem(props: IReviewItemProps) {
     const [isEdit, setIsEdit] = useState(false)
     const [ratingCount, setRatingCount] = useState(0)
     const getTimeAgo = () => {
-        console.log(props.data.updatedAt)
         const yearAgo =
             new Date().getFullYear() -
             new Date(props.data.updatedAt).getFullYear()

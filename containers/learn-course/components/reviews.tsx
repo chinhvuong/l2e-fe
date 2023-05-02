@@ -24,6 +24,8 @@ export interface ILearningReviewDetailProps {}
 
 export default function LearningReviewDetail() {
     const {
+        overviewRating,
+        totalRating,
         courseId,
         createRatingDetail,
         canRating,
@@ -35,7 +37,6 @@ export default function LearningReviewDetail() {
     const dispatch = useAppDispatch()
     const [selectedRating, setSelectedRating] = useState('All')
     const [isLoading, setIsLoading] = useState(false)
-    //  const [searchTerm, setSearchTerm] = useState<string>('')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
     const [show, isShow] = useState(false)
     const [userAction, setUserAction] = useState('')
@@ -73,7 +74,9 @@ export default function LearningReviewDetail() {
         },
     )
     const onSearchRating = () => {
+        setIsLoading(true)
         if (selectedRating === 'All') {
+            setTimeout(() => setIsLoading(false), 1000)
             setTimeout(getRatingCourseDetail, 1000)
         } else {
             setTimeout(getFilterRatingCourseDetail, 1000)
@@ -93,6 +96,9 @@ export default function LearningReviewDetail() {
         if (e.key === 'Enter') {
             onSearchRating()
         }
+    }
+    const getRatingPercents = (ratingcount: number) => {
+        return Math.round((ratingcount / totalRating) * 100)
     }
     function createRating(content: string) {
         if (validateRating(content)) {
@@ -124,10 +130,14 @@ export default function LearningReviewDetail() {
                 <div className="flex justify-center space-x-7 under_lg:flex-wrap under_lg:justify-center mt-3">
                     <div className="flex flex-col items-center sm:hidden">
                         <div className="text-primary text-[70px] font-bold leading-[95px]">
-                            4.7
+                            {overviewRating.overview}
                         </div>
                         <div className="sm:hidden">
-                            <RatingStar id="4.7" ratingScore={4.7} hideScore />
+                            <RatingStar
+                                id={overviewRating.overview.toString()}
+                                ratingScore={overviewRating.overview}
+                                hideScore
+                            />
                         </div>
                         <div className="text-primary font-bold mt-1">
                             Course rating
@@ -136,17 +146,32 @@ export default function LearningReviewDetail() {
                     <div className="space-y-2 sm:ml-0 ml-5">
                         <div className="items-center hidden sm:flex">
                             <div className="text-primary font-bold text-[45px] leading-[65px] mr-2">
-                                4.7
+                                {overviewRating.overview}
                             </div>
-                            <div className="text-primary font-bold mt-1 text-[25px] mt-4">
+                            <div className="text-primary font-bold text-[25px] mt-4">
                                 Course rating
                             </div>
                         </div>
-                        <RatingAnalysisBar percent={71} star={5} />
-                        <RatingAnalysisBar percent={23} star={4} />
-                        <RatingAnalysisBar percent={4} star={3} />
-                        <RatingAnalysisBar percent={1} star={2} />
-                        <RatingAnalysisBar percent={1} star={1} />
+                        <RatingAnalysisBar
+                            percent={getRatingPercents(overviewRating.five)}
+                            star={5}
+                        />
+                        <RatingAnalysisBar
+                            percent={getRatingPercents(overviewRating.four)}
+                            star={4}
+                        />
+                        <RatingAnalysisBar
+                            percent={getRatingPercents(overviewRating.three)}
+                            star={3}
+                        />
+                        <RatingAnalysisBar
+                            percent={getRatingPercents(overviewRating.two)}
+                            star={2}
+                        />
+                        <RatingAnalysisBar
+                            percent={getRatingPercents(overviewRating.one)}
+                            star={1}
+                        />
                     </div>
                 </div>
             </div>
