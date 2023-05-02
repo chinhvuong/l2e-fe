@@ -13,7 +13,7 @@ import { dataRatings } from '@/data/ratings'
 export interface IReviewDetailProps {}
 
 export default function ReviewDetail() {
-    const { data } = useCourseDetailContext()
+    const { data, ratings } = useCourseDetailContext()
 
     const [selectedRating, setSelectedRating] = useState('All')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
@@ -103,7 +103,7 @@ export default function ReviewDetail() {
                             </div>
                         </div>
                     </div>
-                    <ReviewItemsList data={dataRatings} />
+                    <ReviewItemsList ratings={ratings} isLearn={false} />
                 </div>
             )}
         </>

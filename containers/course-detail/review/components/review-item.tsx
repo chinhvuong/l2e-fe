@@ -15,20 +15,21 @@ import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 
 export interface IReviewItemProps {
     data: Rating
-    getRatingCourseDetail: UseMutateFunction<unknown, any, object, unknown>
+    isLearn: boolean
 }
 
 export default function ReviewItem(props: IReviewItemProps) {
-    const { setCanRating } = useLearningCourseContext()
     const { address } = useAccount()
     const [show, isShow] = useState(false)
+    const [userAction, setUserAction] = useState('')
     const [showDeleteRatingConfirmModal, setShowDeleteRatingConfirmModal] =
         useState(false)
     const { mutate: updateRating, isLoading: isLoadingUpdateComment } =
         useAPI.put(LearnerAPI.RATING + '/' + props.data._id, {
             onError: () => {},
             onSuccess: (response) => {
-                props.getRatingCourseDetail({})
+                //  props.getRatingCourseDetail({})
+                setUserAction('Update')
                 isShow(true)
             },
         })
@@ -36,8 +37,10 @@ export default function ReviewItem(props: IReviewItemProps) {
         useAPI.delete(LearnerAPI.RATING + '/' + props.data._id, {
             onError: () => {},
             onSuccess: (response) => {
-                setCanRating(true)
-                props.getRatingCourseDetail({})
+                setUserAction('Delete')
+                isShow(true)
+                //   setCanRating(true)
+                //  props.getRatingCourseDetail({})
             },
         })
     const isUser =
@@ -143,7 +146,7 @@ export default function ReviewItem(props: IReviewItemProps) {
                         />
                     </div>
                 )}
-                {isUser && (
+                {isUser && props.isLearn && (
                     <button
                         className={`hover:text-primary-hover-hover pr-6 ${
                             isEdit ? 'text-primary' : 'text-black'
@@ -155,7 +158,7 @@ export default function ReviewItem(props: IReviewItemProps) {
                         </div>
                     </button>
                 )}
-                {isUser && (
+                {isUser && props.isLearn && (
                     <button
                         className="text-black hover:text-primary p-2"
                         onClick={() => setShowDeleteRatingConfirmModal(true)}
@@ -170,7 +173,11 @@ export default function ReviewItem(props: IReviewItemProps) {
                     elHeightPreview={200}
                 />
             </div>
-            <UpdateReviewsModal isShow={show} setIsShow={isShow} />
+            <UpdateReviewsModal
+                isShow={show}
+                setIsShow={isShow}
+                userRequest={userAction}
+            />
         </div>
     )
 }
