@@ -24,15 +24,18 @@ export interface ILearningReviewDetailProps {}
 
 export default function LearningReviewDetail() {
     const {
-        isLoading,
         courseId,
         createRatingDetail,
         canRating,
         ratings,
         getRatingCourseDetail,
+        searchTerm,
+        setSearchTerm,
     } = useLearningCourseContext()
     const dispatch = useAppDispatch()
     const [selectedRating, setSelectedRating] = useState('All')
+    const [isLoading, setIsLoading] = useState(false)
+    //  const [searchTerm, setSearchTerm] = useState<string>('')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
     const [show, isShow] = useState(false)
     const [userAction, setUserAction] = useState('')
@@ -40,10 +43,12 @@ export default function LearningReviewDetail() {
     const clickOutSideRef = useRef(null)
     const ratingsValue = ['All', '5', '4', '3', '2', '1']
     const onSelectRating = (item: string) => {
+        setIsLoading(true)
         setSelectedRating(item)
         setOpenRatingSelect(false)
         if (item === 'All') {
-            getRatingCourseDetail({})
+            setTimeout(() => setIsLoading(false), 1000)
+            setTimeout(getRatingCourseDetail, 1000)
         } else {
             setTimeout(getFilterRatingCourseDetail, 1000)
         }
@@ -55,16 +60,25 @@ export default function LearningReviewDetail() {
         LearnerAPI.RATING +
             '?course=' +
             courseId +
+            '&query=' +
+            searchTerm +
             '&rating=' +
             parseInt(selectedRating),
         {
             onError: () => {},
             onSuccess: (response) => {
                 dispatch(UpdateRatingsState(response.data))
-                validateRating(response.data)
+                setIsLoading(false)
             },
         },
     )
+    const onSearchRating = () => {
+        if (selectedRating === 'All') {
+            setTimeout(getRatingCourseDetail, 1000)
+        } else {
+            setTimeout(getFilterRatingCourseDetail, 1000)
+        }
+    }
     useOutsideClick(clickOutSideRef, () => {
         setOpenRatingSelect(false)
     })
@@ -73,6 +87,11 @@ export default function LearningReviewDetail() {
             return false
         } else {
             return true
+        }
+    }
+    const handleEnterEvent = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            onSearchRating()
         }
     }
     function createRating(content: string) {
@@ -90,9 +109,7 @@ export default function LearningReviewDetail() {
     }
     return (
         <div className="space-y-10">
-            <LoadingScreen
-                isLoading={isLoading || isLoadingFilterRatingCourseDetail}
-            />
+            <LoadingScreen isLoading={isLoading} />
             {canRating && (
                 <div>
                     <RatingBar
@@ -141,11 +158,18 @@ export default function LearningReviewDetail() {
                             <input
                                 className="w-full mr-[20px] outline-none"
                                 placeholder="Search..."
+                                value={searchTerm}
+                                onChange={(e) => {
+                                    const queryword = e.target.value
+                                    setSearchTerm(queryword)
+                                }}
+                                onKeyDown={handleEnterEvent}
                             ></input>
                         </div>
                         <FontAwesomeIcon
                             icon={faMagnifyingGlass}
                             className="bg-primary p-4 rounded-full text-white"
+                            onClick={() => onSearchRating()}
                         />
                     </div>
                     <div className="mb-8">

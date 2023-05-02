@@ -111,6 +111,8 @@ interface ILearningCourseContext {
     setCanRating: React.Dispatch<React.SetStateAction<boolean>>
     currentTab: string
     setCurrentTab: Dispatch<SetStateAction<string>>
+    searchTerm: string
+    setSearchTerm: Dispatch<SetStateAction<string>>
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -120,6 +122,7 @@ export const LearningCourseContext = createContext<ILearningCourseContext>(
 export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     children,
 }) => {
+    const [searchTerm, setSearchTerm] = useState<string>('')
     const { address } = useAccount()
     const [canRating, setCanRating] = useState(true)
     const ratings = useAppSelector(getRatings)
@@ -183,13 +186,16 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const {
         mutate: getRatingCourseDetail,
         isLoading: isLoadingRatingCourseDetail,
-    } = useAPI.getMutation(LearnerAPI.RATING + '?course=' + courseId, {
-        onError: () => {},
-        onSuccess: (response) => {
-            dispatch(UpdateRatingsState(response.data))
-            validateRating(response.data)
+    } = useAPI.getMutation(
+        LearnerAPI.RATING + '?course=' + courseId + '&query=' + searchTerm,
+        {
+            onError: () => {},
+            onSuccess: (response) => {
+                dispatch(UpdateRatingsState(response.data))
+                validateRating(response.data)
+            },
         },
-    })
+    )
 
     const { mutate: createRatingDetail, isLoading: isLoadingCreateRating } =
         useAPI.post(LearnerAPI.CREATE_RATING, {
@@ -305,6 +311,8 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 courseId,
                 currentTab,
                 setCurrentTab,
+                searchTerm,
+                setSearchTerm,
             }}
         >
             {children}
