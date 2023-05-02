@@ -107,7 +107,7 @@ export default function ReviewItem(props: IReviewItemProps) {
                 )}
                 <div className="space-y-2">
                     <div className="font-bold mt-1">
-                        {props.data.user?.name ?? 'default user'}
+                        {props.data.user?.name ?? 'Anonymous'}
                     </div>
                     <div className="flex items-center space-x-5">
                         <RatingStar

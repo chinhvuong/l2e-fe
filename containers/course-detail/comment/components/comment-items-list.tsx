@@ -1,13 +1,11 @@
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
-import { Rating } from '@/constants/interfaces'
-import { useEffect, useState } from 'react'
-import CommentItem from './comment-item'
-import { Comment } from '@/store/comment/types'
-import { UseMutateFunction } from '@tanstack/react-query'
 import { useAppSelector } from '@/hooks'
 import { getComments } from '@/store/comment/selectors'
-import useAPI from '@/api/hooks/useAPI'
+import { Comment } from '@/store/comment/types'
+import { UseMutateFunction } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
+import CommentItem from './comment-item'
 export interface ICommentItemsListProps {
     leaningId: string
     addComment: UseMutateFunction<unknown, any, object, unknown>
@@ -23,6 +21,7 @@ export default function CommentItemsList(props: ICommentItemsListProps) {
     const updateCommentList = () => {
         const newTotal = numberOfShowedComments + 3
         setNumberOfShowedComments(newTotal)
+        setCommentList(parentComment.slice(0, newTotal))
     }
     const getReplies = (commentId: string) => {
         const repliesComment: Comment[] = []
@@ -35,19 +34,16 @@ export default function CommentItemsList(props: ICommentItemsListProps) {
         })
         return repliesComment
     }
-    const getLimitComments = () => {
-        return parentComment.slice(0, numberOfShowedComments)
-    }
+
     useEffect(() => {
-        if (!commentList) {
-            return
+        if (parentComment.length !== 0) {
+            setCommentList(parentComment.slice(0, numberOfShowedComments))
         }
-        console.log(commentList)
-        console.log(parentComment)
-    }, [commentList, props.leaningId])
+    }, [parentComment])
+
     return (
         <div>
-            {getLimitComments().map((item, index) => {
+            {commentList.map((item, index) => {
                 return (
                     <div className="space-y-6" key={index}>
                         <CommentItem
@@ -63,14 +59,16 @@ export default function CommentItemsList(props: ICommentItemsListProps) {
                     </div>
                 )
             })}
-            <Button
-                className="btn-primary-outline w-full mt-5"
-                onClick={() => updateCommentList()}
-            >
-                <div className="font-medium text-[16px] text-center w-full">
-                    Show more comments
-                </div>
-            </Button>
+            {parentComment.length > numberOfShowedComments && (
+                <Button
+                    className="btn-primary-outline w-full mt-5"
+                    onClick={() => updateCommentList()}
+                >
+                    <div className="font-medium text-[16px] text-center w-full">
+                        Show more comments
+                    </div>
+                </Button>
+            )}
         </div>
     )
 }

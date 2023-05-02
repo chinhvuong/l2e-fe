@@ -55,16 +55,18 @@ export default function LearningReviewDetail() {
         <div className="space-y-10">
             {canRating && (
                 <div>
-                    <div>Your Rating: </div>
-                    <RatingBar
-                        selectedRatingPoint={ratingCount}
-                        setRating={setRatingCount}
-                    />
-                    <CommentForm
-                        handleSubmit={createRating}
-                        submitLabel="Create Rating"
-                        hasCancelButton={false}
-                    />
+                    <div className="flex flex-col items-center">
+                        <div className="text-xl font-bold">
+                            Rate this course:
+                        </div>
+                        <div className="pt-5 pb-10">
+                            <RatingBar
+                                selectedRatingPoint={ratingCount}
+                                setRating={setRatingCount}
+                            />
+                        </div>
+                    </div>
+                    <CommentForm handleSubmit={createRating} />
                 </div>
             )}
             <div>

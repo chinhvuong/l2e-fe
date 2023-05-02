@@ -194,12 +194,6 @@ const Account = (props: any) => {
                         </div>
                     </div>
                 </div>
-                <FontAwesomeIcon
-                    icon={faCartShopping}
-                    className={`text-[25px] cursor-pointer under_lg:hidden ${
-                        !props.darkTheme ? 'text-black' : 'text-white'
-                    }`}
-                />
                 <div className="relative">
                     <img
                         src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"

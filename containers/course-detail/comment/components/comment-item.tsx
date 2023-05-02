@@ -116,7 +116,7 @@ export default function CommentItem(props: ICommentItemProps) {
                     )}
                     <div className="space-y-1">
                         <div className="font-bold text-lg mt-1">
-                            {props.data.user?.name ?? 'default user'}
+                            {props.data.user?.name ?? 'Anonymous'}
                         </div>
                         <div className="text-description text-xs">
                             {getTimeAgo()}
