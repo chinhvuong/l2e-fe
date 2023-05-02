@@ -14,13 +14,25 @@ import RatingBar from '@/components/core/rating-star/rating-bar'
 import CommentForm from '@/containers/course-detail/comment/components/comment-form'
 import { useLearningCourseContext } from '../learning-course-context'
 import { toast } from 'react-toastify'
-import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
+import UpdateReviewsModal from '@/components/core/modal/update-success-modal'
+import { LearnerAPI } from '@/api/api-path'
+import useAPI from '@/api/hooks/useAPI'
+import { UpdateRatingsState } from '@/store/rating'
+import { useAppDispatch } from '@/hooks'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 
 export interface ILearningReviewDetailProps {}
 
 export default function LearningReviewDetail() {
-    const { courseId, createRatingDetail, canRating, ratings } =
-        useLearningCourseContext()
+    const {
+        isLoading,
+        courseId,
+        createRatingDetail,
+        canRating,
+        ratings,
+        getRatingCourseDetail,
+    } = useLearningCourseContext()
+    const dispatch = useAppDispatch()
     const [selectedRating, setSelectedRating] = useState('All')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
     const [show, isShow] = useState(false)
@@ -31,8 +43,29 @@ export default function LearningReviewDetail() {
     const onSelectRating = (item: string) => {
         setSelectedRating(item)
         setOpenRatingSelect(false)
+        if (item === 'All') {
+            getRatingCourseDetail({})
+        } else {
+            setTimeout(getFilterRatingCourseDetail, 1000)
+        }
     }
-
+    const {
+        mutate: getFilterRatingCourseDetail,
+        isLoading: isLoadingFilterRatingCourseDetail,
+    } = useAPI.getMutation(
+        LearnerAPI.RATING +
+            '?course=' +
+            courseId +
+            '&rating=' +
+            parseInt(selectedRating),
+        {
+            onError: () => {},
+            onSuccess: (response) => {
+                dispatch(UpdateRatingsState(response.data))
+                validateRating(response.data)
+            },
+        },
+    )
     useOutsideClick(clickOutSideRef, () => {
         setOpenRatingSelect(false)
     })
@@ -58,6 +91,9 @@ export default function LearningReviewDetail() {
     }
     return (
         <div className="space-y-10">
+            <LoadingScreen
+                isLoading={isLoading || isLoadingFilterRatingCourseDetail}
+            />
             {canRating && (
                 <div>
                     <div className="flex flex-col items-center">

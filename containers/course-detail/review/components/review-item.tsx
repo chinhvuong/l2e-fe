@@ -10,7 +10,7 @@ import { LearnerAPI } from '@/api/api-path'
 import CommentForm from '../../comment/components/comment-form'
 import RatingBar from '@/components/core/rating-star/rating-bar'
 import { UseMutateFunction } from '@tanstack/react-query'
-import UpdateReviewsModal from '@/components/core/modal/update-success-moda'
+import UpdateReviewsModal from '@/components/core/modal/update-success-modal'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 
 export interface IReviewItemProps {
@@ -49,6 +49,7 @@ export default function ReviewItem(props: IReviewItemProps) {
     const [isEdit, setEdit] = useState(false)
     const [ratingCount, setRatingCount] = useState(0)
     const getTimeAgo = () => {
+        console.log(props.data.updatedAt)
         const yearAgo =
             new Date().getFullYear() -
             new Date(props.data.updatedAt).getFullYear()

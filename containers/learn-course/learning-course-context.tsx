@@ -252,8 +252,18 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
 
     const isLoading = useMemo(() => {
-        return isLoadingLearningCourseDetail || isLoadingGetMyBalance
-    }, [isLoadingLearningCourseDetail, isLoadingGetMyBalance])
+        return (
+            isLoadingLearningCourseDetail ||
+            isLoadingGetMyBalance ||
+            isLoadingRatingCourseDetail ||
+            isLoadingCreateRating
+        )
+    }, [
+        isLoadingLearningCourseDetail,
+        isLoadingGetMyBalance,
+        isLoadingRatingCourseDetail,
+        isLoadingCreateRating,
+    ])
 
     // useEffect(() => {
     //     if (!isLoading) {
