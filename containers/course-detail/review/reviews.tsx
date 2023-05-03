@@ -163,10 +163,7 @@ export default function ReviewDetail() {
                         </div>
                     </div>
                     {ratings.length > 0 && (
-                        <ReviewItemsList
-                            ratings={[...ratings].reverse()}
-                            isLearn={false}
-                        />
+                        <ReviewItemsList ratings={ratings} isLearn={false} />
                     )}
                 </div>
             )}

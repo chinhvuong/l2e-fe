@@ -82,11 +82,11 @@ export default function EditProfileModal(props: IProfileModalProps) {
                         className="w-full h-full flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
                         tabIndex={-1}
                     >
-                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                        <div className="relative w-auto my-6 mx-auto max-w-2xl">
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 <div className="flex items-center justify-between p-5">
-                                    <div className="item-center p-5">
-                                        <div className="py-5 px-14 space-y-5">
+                                    <div className="item-center py-5 px-7">
+                                        <div className="py-5 space-y-5">
                                             <Input
                                                 id="your-name"
                                                 label="Name"
@@ -137,13 +137,27 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                 }
                                             />
                                         </div>
-                                        <Button
-                                            className="h-1/5 items-center justify-center mx-12"
-                                            onClick={() => updateUserProfile()}
-                                        >
-                                            {' '}
-                                            Submit Update
-                                        </Button>
+                                        <div className="flex justify-end space-x-5 mt-4">
+                                            <Button
+                                                outline
+                                                onClick={() =>
+                                                    handleShowModal(false)
+                                                }
+                                            >
+                                                <div className="font-medium">
+                                                    Cancel
+                                                </div>
+                                            </Button>
+                                            <Button
+                                                onClick={() =>
+                                                    updateUserProfile()
+                                                }
+                                            >
+                                                <div className="font-medium">
+                                                    Save
+                                                </div>
+                                            </Button>
+                                        </div>
                                     </div>
                                     <div
                                         className="absolute top-5 right-5 cursor-pointer"
