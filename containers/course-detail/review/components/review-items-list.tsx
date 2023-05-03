@@ -13,12 +13,12 @@ export default function ReviewItemsList({
     ratings,
     isLearn,
 }: IReviewItemsListProps) {
-    const [numberOfShowedRatings, setNumberOfShowedRating] = useState(1)
+    const [numberOfShowedRatings, setNumberOfShowedRating] = useState(3)
     const [reviewList, setReviewList] = useState(
         ratings.slice(0, numberOfShowedRatings),
     )
     const updateReviewList = () => {
-        const newTotal = numberOfShowedRatings + 1
+        const newTotal = numberOfShowedRatings + 3
         setNumberOfShowedRating(newTotal)
         setReviewList(ratings.slice(0, newTotal))
     }

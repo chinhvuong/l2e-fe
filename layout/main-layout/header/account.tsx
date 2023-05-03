@@ -64,7 +64,7 @@ const Account = (props: any) => {
     }
 
     const goToProfilePage = () => {
-        Router.push('/profile')
+        Router.push('/profile/detail')
     }
 
     const logOut = async () => {

@@ -50,7 +50,7 @@ export default function ValidateModal(props: IValidateModalProps) {
                                                     <li>
                                                         On the{' '}
                                                         <a href="https://www.udemy.com/course/4890572/manage/basics/">
-                                                            <span className="text-hyperlink underline">
+                                                            <span className="text-hyperlink underline underline-offset-4">
                                                                 Landing page
                                                             </span>
                                                         </a>{' '}
@@ -78,7 +78,7 @@ export default function ValidateModal(props: IValidateModalProps) {
                                                     <li>
                                                         On the{' '}
                                                         <a href="https://www.udemy.com/course/4890572/manage/goals/">
-                                                            <span className="text-hyperlink underline">
+                                                            <span className="text-hyperlink underline underline-offset-4">
                                                                 Intended
                                                                 learners
                                                             </span>
@@ -106,7 +106,7 @@ export default function ValidateModal(props: IValidateModalProps) {
                                                     <li>
                                                         On the{' '}
                                                         <a href="https://www.udemy.com/course/4890572/manage/curriculum/">
-                                                            <span className="text-hyperlink underline">
+                                                            <span className="text-hyperlink underline underline-offset-4">
                                                                 Curriculum
                                                             </span>
                                                         </a>{' '}

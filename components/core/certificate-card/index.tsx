@@ -1,63 +1,32 @@
-import * as React from 'react'
 import Label from '@/components/core/label'
+import { Certificate } from '@/store/certification/types'
 import RatingStar from '../rating-star'
-import Router from 'next/router'
-import { CoursePreview } from '@/api/dto/course.dto'
-import { COURSE_ID } from '@/constants/localStorage'
-import { useAppDispatch } from '@/hooks'
-import { resetCourseDetailStore, updateIdState } from '@/store/course'
-import { resetCurriculumStore } from '@/store/course/curriculum'
-import { resetIntendedLearnersStore } from '@/store/course/intended-learners'
 
-export interface IHorizontalCourseCardProps {
-    data: CoursePreview
+export interface ICertificateCardProps {
+    data: Certificate
     className?: string
-    clickMode: 'view' | 'edit'
-    setClicked?: React.Dispatch<React.SetStateAction<boolean>>
     showDetail?: boolean
     showStatus?: boolean
 }
 
-export default function HorizontalCourseCard({
+export default function CertificateCard({
     data,
     className,
-    clickMode,
-    setClicked,
     showDetail = true,
     showStatus = false,
-}: IHorizontalCourseCardProps) {
-    const dispatch = useAppDispatch()
-
-    const handleCourseClick = () => {
-        if (setClicked) {
-            dispatch(resetCourseDetailStore())
-            dispatch(resetCurriculumStore())
-            dispatch(resetIntendedLearnersStore())
-            setClicked(true)
-        }
-
-        if (clickMode === 'view') {
-            Router.push(`/course/${data._id}`)
-        } else {
-            localStorage.setItem(COURSE_ID, data._id)
-            Router.push(`/update-course/${data._id}/landing-page`)
-        }
-    }
-
+}: ICertificateCardProps) {
     return (
         <div
             className={`flex w-full space-x-5 cursor-pointer hover:bg-gray-300 py-6 ${className}`}
-            onClick={() => handleCourseClick()}
         >
             <img
                 src={
-                    data.thumbnail ??
-                    'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg'
+                    'https://marketplace.canva.com/EAFIEvneNCM/1/0/1600w/canva-golden-elegant-certificate-of-appreciation-0bN-aLORS9U.jpg'
                 }
                 alt=""
                 className="w-[25%] min-w-[170px]"
             />
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
                 <div>
                     <div className="font-semibold text-xl line-clamp-2">
                         {data.name}
@@ -103,7 +72,7 @@ export default function HorizontalCourseCard({
                         color={data.category.color}
                     />
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

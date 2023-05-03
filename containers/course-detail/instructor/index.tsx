@@ -44,7 +44,7 @@ export default function Instructor() {
             {instructor && data && (
                 <div id="instructor-section">
                     <div className="font-semibold text-[26px]">Instructor</div>
-                    <div className="font-semibold text-[22px] mt-3 text-hyperlink underline cursor-pointer">
+                    <div className="font-semibold text-[22px] mt-3 text-hyperlink underline underline-offset-4 cursor-pointer">
                         {instructor.name}
                     </div>
                     <div className="text-description mt-1">

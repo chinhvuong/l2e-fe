@@ -11,7 +11,7 @@ export default function Company() {
             <div className="text-[14px] mt-1 mb-5 text-description">
                 This course was selected for our collection of top-rated courses
                 trusted by businesses worldwide.{' '}
-                <span className="text-hyperlink underline decoration-hyperlink cursor-pointer">
+                <span className="text-hyperlink underline underline-offset-4 decoration-hyperlink cursor-pointer">
                     Learn more
                 </span>
             </div>

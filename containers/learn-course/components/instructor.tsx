@@ -32,7 +32,7 @@ export default function LearningInstructorDetail() {
     }
     return (
         <div id="instructor-section">
-            <div className="font-semibold text-[22px] mt-3 text-hyperlink underline cursor-pointer">
+            <div className="font-semibold text-[22px] mt-3 text-hyperlink underline underline-offset-4 cursor-pointer">
                 {dataUser.name}
             </div>
             <div className="text-description mt-1">{dataUser.title}</div>
