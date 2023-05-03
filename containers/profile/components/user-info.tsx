@@ -38,7 +38,7 @@ export default function UserInfoDetail() {
     return (
         <>
             <LoadingScreen isLoading={isLoading} />
-            <div className="h-full mt-9 px-14">
+            <div className="h-full pt-9 px-14">
                 <div className="flex justify-between">
                     <div className="font-semibold text-[30px]">Courses</div>
                     <div className="text-white">
@@ -47,7 +47,7 @@ export default function UserInfoDetail() {
                                 setIsShowProfileModal(!isShowProfileModal)
                             }}
                         >
-                            Edit profile
+                            Edit Profile
                         </Button>
                     </div>
                 </div>

@@ -23,7 +23,7 @@ export default function CertificationsList() {
     return (
         <>
             <LoadingScreen isLoading={isLoading} />
-            <div className="h-full mt-9 px-14">
+            <div className="h-full pt-9 px-14">
                 <div className="font-semibold text-[30px]">Certificates</div>
                 <div className="mt-10">
                     {certificationsList?.map((certification, index) => (
