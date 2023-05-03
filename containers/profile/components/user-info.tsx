@@ -109,6 +109,7 @@ export default function UserInfoDetail() {
                     <EditProfileModal
                         isShow={isShowProfileModal}
                         setIsShow={setIsShowProfileModal}
+                        userInfo={userInfo}
                     />
                 </div>
             </div>

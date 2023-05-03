@@ -98,7 +98,11 @@ export default function LearningReviewDetail() {
         }
     }
     const getRatingPercents = (ratingcount: number) => {
-        return Math.round((ratingcount / totalRating) * 100)
+        if (totalRating === 0) {
+            return 0
+        } else {
+            return Math.round((ratingcount / totalRating) * 100)
+        }
     }
     function createRating(content: string) {
         if (validateRating(content)) {
@@ -244,7 +248,10 @@ export default function LearningReviewDetail() {
                     </div>
                 </div>
                 {ratings.length > 0 && (
-                    <ReviewItemsList ratings={ratings} isLearn={true} />
+                    <ReviewItemsList
+                        ratings={[...ratings].reverse()}
+                        isLearn={true}
+                    />
                 )}
                 <UpdateReviewsModal
                     isShow={show}

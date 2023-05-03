@@ -19,43 +19,54 @@ import RichTextEditor from '../rich-text-editor'
 interface IProfileModalProps {
     isShow: boolean
     setIsShow: React.Dispatch<React.SetStateAction<boolean>>
+    userInfo: User
 }
 
 export default function EditProfileModal(props: IProfileModalProps) {
-    const { userInfo, updateProfile, isLoading } = useUpdateProfileContext()
+    const { updateProfile } = useUpdateProfileContext()
     const { isShow, setIsShow } = props
     const dispatch = useAppDispatch()
     const [showModal, setShowModal] = useState(isShow)
-
+    const [userProfile, setUserProfile] = useState<User>({} as User)
     useEffect(() => {
         setShowModal(isShow)
-    }, [isShow])
+        if (props.userInfo._id !== undefined) {
+            setUserProfile(props.userInfo)
+        }
+    }, [isShow, props.userInfo])
     const updateUserProfile = () => {
-        console.log(userInfo.title)
         updateProfile({
-            name: userInfo.name,
-            avatar: userInfo.avatar,
-            title: userInfo.title,
-            bio: userInfo.bio,
+            name: userProfile.name,
+            avatar: userProfile.avatar,
+            title: userProfile.title,
+            bio: userProfile.bio,
         })
         setShowModal(false)
         setIsShow(false)
     }
 
     const handleNameChange = (value: string) => {
-        dispatch(updateUserNameState(value))
+        const newUserInfo = { ...userProfile }
+        newUserInfo.name = value
+        setUserProfile(newUserInfo)
     }
 
     const handleAvatarChange = (value: string) => {
-        dispatch(updateUserAvatarState(value))
+        const newUserInfo = { ...userProfile }
+        newUserInfo.avatar = value
+        setUserProfile(newUserInfo)
     }
 
     const handleTitleChange = (value: string) => {
-        dispatch(updateUserTitleState(value))
+        const newUserInfo = { ...userProfile }
+        newUserInfo.title = value
+        setUserProfile(newUserInfo)
     }
 
     const handleUserBioChange = (value: string) => {
-        dispatch(updateUserBioState(value))
+        const newUserInfo = { ...userProfile }
+        newUserInfo.bio = value
+        setUserProfile(newUserInfo)
     }
 
     const handleShowModal = (value: boolean) => {
@@ -80,7 +91,7 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                 id="your-name"
                                                 label="Name"
                                                 placeholder="Insert your new name"
-                                                defaultValue={userInfo.name}
+                                                defaultValue={userProfile.name}
                                                 updateInput={handleNameChange}
                                             />
                                             <div className="flex">
@@ -89,7 +100,7 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                         label="Avatar"
                                                         type="image"
                                                         defaultPreview={
-                                                            userInfo.avatar
+                                                            userProfile.avatar
                                                         }
                                                         setFileLink={
                                                             handleAvatarChange
@@ -115,12 +126,12 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                 id="your-title"
                                                 label="Title"
                                                 placeholder="Insert your new title"
-                                                defaultValue={userInfo.title}
+                                                defaultValue={userProfile.title}
                                                 updateInput={handleTitleChange}
                                             />
                                             <RichTextEditor
                                                 label="Bio"
-                                                defaultValue={userInfo.bio}
+                                                defaultValue={userProfile.bio}
                                                 updateState={
                                                     handleUserBioChange
                                                 }
