@@ -9,29 +9,82 @@ import ReviewItemsList from './components/review-items-list'
 import useOutsideClick from '@/hooks/useOutSideClick'
 import { useCourseDetailContext } from '../course-detail-context'
 import { dataRatings } from '@/data/ratings'
+import useAPI from '@/api/hooks/useAPI'
+import { LearnerAPI } from '@/api/api-path'
+import { useAppDispatch } from '@/hooks'
+import { UpdateRatingsState } from '@/store/rating'
+import LoadingScreen from '@/components/core/animate/loading-screen'
 
 export interface IReviewDetailProps {}
 
 export default function ReviewDetail() {
-    const { data, ratings } = useCourseDetailContext()
-
+    const {
+        data,
+        ratings,
+        getRatingCourseDetail,
+        courseId,
+        searchTerm,
+        setSearchTerm,
+    } = useCourseDetailContext()
+    const [isLoading, setIsLoading] = useState(false)
     const [selectedRating, setSelectedRating] = useState('All')
     const [openRatingSelect, setOpenRatingSelect] = useState(false)
     const clickOutSideRef = useRef(null)
     const ratingsValue = ['All', '5', '4', '3', '2', '1']
-
+    const dispatch = useAppDispatch()
     const onSelectRating = (item: string) => {
+        setIsLoading(true)
         setSelectedRating(item)
         setOpenRatingSelect(false)
+        if (item === 'All') {
+            setTimeout(() => setIsLoading(false), 1000)
+            setTimeout(getRatingCourseDetail, 1000)
+        } else {
+            setTimeout(getFilterRatingCourseDetail, 1000)
+        }
+    }
+    const {
+        mutate: getFilterRatingCourseDetail,
+        isLoading: isLoadingFilterRatingCourseDetail,
+    } = useAPI.getMutation(
+        LearnerAPI.RATING +
+            '?course=' +
+            courseId +
+            '&query=' +
+            searchTerm +
+            '&rating=' +
+            parseInt(selectedRating),
+        {
+            onError: () => {},
+            onSuccess: (response) => {
+                dispatch(UpdateRatingsState(response.data))
+                setIsLoading(false)
+            },
+        },
+    )
+    const onSearchRating = () => {
+        setIsLoading(true)
+        if (selectedRating === 'All') {
+            setTimeout(() => setIsLoading(false), 1000)
+            setTimeout(getRatingCourseDetail, 1000)
+        } else {
+            setTimeout(getFilterRatingCourseDetail, 1000)
+        }
     }
 
     useOutsideClick(clickOutSideRef, () => {
         setOpenRatingSelect(false)
     })
+    const handleEnterEvent = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            onSearchRating()
+        }
+    }
     return (
         <>
             {data && (
                 <div>
+                    <LoadingScreen isLoading={isLoading} />
                     <div className="font-semibold text-[26px]">Reviews</div>
                     <div className="flex items-center justify-between under_lg:justify-center">
                         <div className="flex items-center space-x-4 mr-4">
@@ -39,6 +92,12 @@ export default function ReviewDetail() {
                                 <input
                                     className="w-full mr-[20px] outline-none"
                                     placeholder="Search..."
+                                    value={searchTerm}
+                                    onChange={(e) => {
+                                        const queryword = e.target.value
+                                        setSearchTerm(queryword)
+                                    }}
+                                    onKeyDown={handleEnterEvent}
                                 ></input>
                             </div>
                             <FontAwesomeIcon
@@ -103,7 +162,12 @@ export default function ReviewDetail() {
                             </div>
                         </div>
                     </div>
-                    <ReviewItemsList ratings={ratings} isLearn={false} />
+                    {ratings.length > 0 && (
+                        <ReviewItemsList
+                            ratings={[...ratings].reverse()}
+                            isLearn={false}
+                        />
+                    )}
                 </div>
             )}
         </>

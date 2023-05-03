@@ -2,13 +2,25 @@ import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
 import { dataUser } from '@/data/users'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { UpdateRatingsState } from '@/store/rating'
-import { getRatings } from '@/store/rating/selectors'
-import { Rating } from '@/store/rating/types'
+import { UpdateOverviewRatingState, UpdateRatingsState } from '@/store/rating'
+import {
+    getOverViewRatings,
+    getRatings,
+    getTotalRatings,
+} from '@/store/rating/selectors'
+import { Rating, RatingOverView } from '@/store/rating/types'
 import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import {
+    Dispatch,
+    SetStateAction,
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 
 interface ICourseDetailContext {
     isLoading: boolean
@@ -16,6 +28,11 @@ interface ICourseDetailContext {
     instructor: any
     ratings: Rating[]
     getRatingCourseDetail: UseMutateFunction<unknown, any, object, unknown>
+    searchTerm: string
+    setSearchTerm: Dispatch<SetStateAction<string>>
+    overviewRating: RatingOverView
+    totalRating: number
+    courseId: string
 }
 
 export const CourseDetailContext = createContext<ICourseDetailContext>(
@@ -25,12 +42,15 @@ export const CourseDetailContext = createContext<ICourseDetailContext>(
 export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     children,
 }) => {
+    const [searchTerm, setSearchTerm] = useState<string>('')
     const [courseId, setCourseId] = useState('')
     const dispatch = useAppDispatch()
     const [data, setData] = useState(undefined)
     const [instructor, setInstructor] = useState({})
     const router = useRouter()
     const ratings = useAppSelector(getRatings)
+    const overviewRating = useAppSelector(getOverViewRatings)
+    const totalRating = useAppSelector(getTotalRatings)
     const { mutate: getCourseDetail, isLoading: isLoadingCourseDetail } =
         useAPI.getMutation(
             LearnerAPI.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
@@ -45,10 +65,23 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const {
         mutate: getRatingCourseDetail,
         isLoading: isLoadingRatingCourseDetail,
-    } = useAPI.getMutation(LearnerAPI.RATING + '?course=' + courseId, {
+    } = useAPI.getMutation(
+        LearnerAPI.RATING + '?course=' + courseId + '&query=' + searchTerm,
+        {
+            onError: () => {},
+            onSuccess: (response) => {
+                dispatch(UpdateRatingsState(response.data))
+            },
+        },
+    )
+
+    const {
+        mutate: getRatingOverViewCourseDetail,
+        isLoading: isLoadingRatingOverViewCourseDetail,
+    } = useAPI.getMutation(LearnerAPI.GET_OVERVIEW_RATING + '?id=' + courseId, {
         onError: () => {},
         onSuccess: (response) => {
-            dispatch(UpdateRatingsState(response.data))
+            dispatch(UpdateOverviewRatingState(response))
         },
     })
     useEffect(() => {
@@ -56,6 +89,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
             setCourseId(router.query.slug)
             setTimeout(getCourseDetail, 1000)
             setTimeout(getRatingCourseDetail, 1000)
+            setTimeout(getRatingOverViewCourseDetail, 1000)
         }
     }, [router.query.slug])
 
@@ -71,6 +105,11 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 instructor,
                 ratings,
                 getRatingCourseDetail,
+                searchTerm,
+                setSearchTerm,
+                overviewRating,
+                totalRating,
+                courseId,
             }}
         >
             {children}
