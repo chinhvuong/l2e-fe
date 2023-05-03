@@ -1,6 +1,7 @@
 import { InstructorAPI, UserAPI } from '@/api/api-path'
 import {
     CoursePreview,
+    GetAllCoursesResponse,
     GetCategoryResponse,
     GetMintSignatureResponse,
 } from '@/api/dto/course.dto'
@@ -9,25 +10,20 @@ import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
+import Select from '@/components/core/select'
+import { Sort, SortLabel } from '@/constants'
 import { Category } from '@/constants/interfaces'
-import {
-    CATEGORY,
-    CATEGORY_NAME_LIST,
-    COURSE_ID,
-} from '@/constants/localStorage'
+import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
+import { useAppDispatch } from '@/hooks'
 import { createCourse } from '@/hooks/coursedex'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
+import { updateLoadingState } from '@/store/course'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useSigner } from 'wagmi'
 import { goerli } from 'wagmi/chains'
 import Search from './search'
-import { GetAllCoursesResponse } from '@/api/dto/course.dto'
-import Select from '@/components/core/select'
-import { Sort, SortLabel } from '@/constants'
-import { useAppDispatch } from '@/hooks'
-import { updateIdState, updateLoadingState } from '@/store/course'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 
 export default function InstructorCoursesContainer() {
     const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()

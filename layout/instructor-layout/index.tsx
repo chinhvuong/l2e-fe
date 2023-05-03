@@ -4,8 +4,6 @@ import { getLoadingState } from '@/store/course/selectors'
 import { ReactChild } from 'react'
 import Sidebar from './sidebar'
 
-export interface IMyCoursesLayoutProps {}
-
 export default function InstructorLayout({
     children,
 }: {

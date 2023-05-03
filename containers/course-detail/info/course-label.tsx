@@ -62,7 +62,7 @@ export default function CourseLabel() {
                             ratingScore={data.rating === null ? 0 : data.rating}
                         />
                         {data.reviews && (
-                            <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer under_xl:mx-3">
+                            <div className="text-[14px] font-light underline underline-offset-4 decoration-hyperlink-light text-hyperlink-light cursor-pointer under_xl:mx-3">
                                 {`(${data.reviews.toLocaleString()} ratings)`}
                             </div>
                         )}

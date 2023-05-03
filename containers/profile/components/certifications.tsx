@@ -1,41 +1,61 @@
-import Button from '@/components/core/button'
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import CertificateCard from '@/components/core/certificate-card'
+import Divider from '@/components/core/divider'
 import CertificateModal from '@/components/core/modal/certification-modal'
-import { useAppSelector } from '@/hooks'
-import { getCertifications } from '@/store/certification/selectors'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { Certificate } from '@/store/certification/types'
 import { useState } from 'react'
 import { useUpdateProfileContext } from '../update-profile-context'
 
 export default function CertificationsList() {
-    const { certificationsList } = useUpdateProfileContext()
+    const { certificationsList, isLoading } = useUpdateProfileContext()
     const [isShowCertificate, setShowCertification] = useState(false)
     const [selectedCertification, setSelectedCertification] =
         useState<Certificate>()
-    function handleChosenCertification(certification: Certificate) {
+
+    const handleChosenCertification = (certification: Certificate) => {
         setShowCertification(!isShowCertificate)
         setSelectedCertification(certification)
     }
+
+    useHideFirstEnterLoadingScreen()
+
     return (
-        <div>
-            {certificationsList?.map((certification, index) => (
-                <div
-                    key={index}
-                    onClick={() => handleChosenCertification(certification)}
-                >
-                    <img
-                        src={
-                            'https://marketplace.canva.com/EAFIEvneNCM/1/0/1600w/canva-golden-elegant-certificate-of-appreciation-0bN-aLORS9U.jpg'
-                        }
-                        alt=""
-                        className="w-4/5 p-1 m-1"
+        <>
+            <LoadingScreen isLoading={isLoading} />
+            <div className="h-full mt-9 px-14">
+                <div className="font-semibold text-[30px]">Certificates</div>
+                <div className="mt-10">
+                    {certificationsList?.map((certification, index) => (
+                        <div
+                            key={index}
+                            onClick={() =>
+                                handleChosenCertification(certification)
+                            }
+                            className={`${
+                                index === certificationsList.length - 1 &&
+                                'pb-6'
+                            }`}
+                        >
+                            <CertificateCard
+                                key={certification._id}
+                                data={certification}
+                                showDetail={false}
+                                showStatus={true}
+                            />
+
+                            {index !== certificationsList.length - 1 && (
+                                <Divider />
+                            )}
+                        </div>
+                    ))}
+                    <CertificateModal
+                        isShow={isShowCertificate}
+                        setIsShow={setShowCertification}
+                        certificate={selectedCertification as Certificate}
                     />
                 </div>
-            ))}
-            <CertificateModal
-                isShow={isShowCertificate}
-                setIsShow={setShowCertification}
-                certificate={selectedCertification as Certificate}
-            />
-        </div>
+            </div>
+        </>
     )
 }

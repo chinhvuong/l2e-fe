@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import Button from '../button'
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
-import {
-    faCircleChevronDown,
-    faCircleChevronUp,
-} from '@fortawesome/free-solid-svg-icons'
+import React from 'react'
 
 interface IWelcomeBackModalProps {
     isShow: boolean
@@ -27,17 +22,14 @@ export default function UpdateReviewsModal(props: IWelcomeBackModalProps) {
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 <div className="flex flex-col items-center justify-between py-10 px-20 w-[500px]">
                                     <FontAwesomeIcon
-                                        icon={faCircleChevronUp}
+                                        icon={faCircleCheck}
                                         className="text-5xl text-green-500"
                                     />
-                                    <div className="text-center text-2xl font-bold pr-3">
-                                        Request {props.userRequest}{' '}
-                                        Successfully.
+                                    <div className="text-xl text-center font-bold mt-5 mb-2">
+                                        {`${props.userRequest} the review successfully!`}
                                     </div>
-                                    <div className="text-center">
-                                        Your reivews will be{' '}
-                                        {props.userRequest.toLowerCase()}d as
-                                        soon as possible.
+                                    <div className="text-sm text-center">
+                                        {`Your review will be ${props.userRequest.toLowerCase()}d as soon as possible.`}
                                     </div>
                                 </div>
                                 <div

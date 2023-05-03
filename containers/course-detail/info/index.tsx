@@ -118,7 +118,7 @@ export default function CourseInfo() {
                                     data.students !== null) && (
                                     <div className="flex items-center space-x-4 my-2">
                                         {data.reviews !== null && (
-                                            <div className="text-[14px] font-light underline decoration-hyperlink-light text-hyperlink-light cursor-pointer">
+                                            <div className="text-[14px] font-light underline underline-offset-4 decoration-hyperlink-light text-hyperlink-light cursor-pointer">
                                                 {`(${data.reviews} ${
                                                     data.reviews === 0
                                                         ? 'rating'
@@ -140,12 +140,9 @@ export default function CourseInfo() {
                             </div>
                             <div className="text-[14px] font-light">
                                 Created by{' '}
-                                <Hyperlink>
+                                <span className="text-hyperlink-light underline underline-offset-4 decoration-hyperlink-light cursor-pointer">
                                     {data?.author?.name ?? 'Anonymous'}
-                                </Hyperlink>
-                                {/* <span className="text-hyperlink-light underline decoration-hyperlink-light cursor-pointer">
-                                {data.owner}
-                            </span> */}
+                                </span>
                             </div>
                             <div className="flex text-[14px] font-light space-x-6">
                                 <div className="flex items-center space-x-2">
