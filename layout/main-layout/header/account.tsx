@@ -219,7 +219,7 @@ const Account = (props: any) => {
                             >
                                 <FontAwesomeIcon
                                     icon={faUser}
-                                    className="w-[16px]"
+                                    className="w-[14px]"
                                 />
                                 <div>Profile</div>
                             </div>

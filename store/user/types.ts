@@ -1,8 +1,8 @@
 export interface User {
     _id: string
     walletAddress: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     name: string
     title: string
     bio: string

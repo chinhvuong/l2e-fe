@@ -1,11 +1,10 @@
 import UserProfileDetail from '@/components/common/user-profile-detail'
-import { useLearningCourseContext } from '../learning-course-context'
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import EditProfileModal from '@/components/core/modal/edit-profile-modal'
+import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
+import { useState } from 'react'
 
-export interface ILearningInstructorDetailProps {}
-
-export default function LearningInstructorDetail() {
-    const { courseDetail } = useLearningCourseContext()
-
+export default function UserDetailPreviewContainer() {
     const userInfo = {
         _id: '6444a59e17e96be03fe27e3e',
         __v: 0,
@@ -20,6 +19,25 @@ export default function LearningInstructorDetail() {
         walletAddress: '0x4BCD25Ac40C446D28318c225b613AF963C4BC3f8',
         isAdmin: true,
     }
+    const isLoading = false
 
-    return <UserProfileDetail data={userInfo} />
+    const [isShowProfileModal, setIsShowProfileModal] = useState(false)
+
+    useHideFirstEnterLoadingScreen()
+
+    return (
+        <>
+            <LoadingScreen isLoading={isLoading} />
+            <div className="h-full pt-5 px-14">
+                <div className="mx-60 under_2xl:mx-20">
+                    <UserProfileDetail data={userInfo} showShortDescription />
+                    <EditProfileModal
+                        isShow={isShowProfileModal}
+                        setIsShow={setIsShowProfileModal}
+                        userInfo={userInfo}
+                    />
+                </div>
+            </div>
+        </>
+    )
 }

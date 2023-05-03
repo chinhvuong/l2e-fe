@@ -1,14 +1,12 @@
-import { useLearningCourseContext } from '@/containers/learn-course/learning-course-context'
+import { LearnerAPI } from '@/api/api-path'
+import useAPI from '@/api/hooks/useAPI'
+import Divider from '@/components/core/divider'
+import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import { Comment } from '@/store/comment/types'
+import { UseMutateFunction } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import CommentForm from './comment-form'
-import useAPI from '@/api/hooks/useAPI'
-import { LearnerAPI } from '@/api/api-path'
-import { UseMutateFunction } from '@tanstack/react-query'
-import Divider from '@/components/core/divider'
-import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
-import { dataUser } from '@/data/users'
 
 export interface ICommentItemProps {
     data: Comment

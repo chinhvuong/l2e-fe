@@ -22,9 +22,9 @@ export default function StudentFeedback() {
                         Student feedback
                     </div>
                     <div className="flex justify-between under_lg:flex-wrap under_lg:justify-center mt-3">
-                        <div className="flex flex-col items-center sm:hidden">
+                        <div className="flex flex-col items-center sm:hidden w-full">
                             <div className="text-primary text-[70px] font-bold leading-[95px]">
-                                {overviewRating.overview}
+                                {Number(overviewRating.overview).toFixed(1)}
                             </div>
                             <div className="sm:hidden">
                                 <RatingStar
@@ -38,14 +38,6 @@ export default function StudentFeedback() {
                             </div>
                         </div>
                         <div className="space-y-2 sm:ml-0 ml-5">
-                            <div className="items-center hidden sm:flex">
-                                <div className="text-primary font-bold text-[45px] leading-[65px] mr-2">
-                                    {overviewRating.overview}
-                                </div>
-                                <div className="text-primary font-bold mt-1 text-[25px] mt-4">
-                                    Course rating
-                                </div>
-                            </div>
                             <RatingAnalysisBar
                                 percent={getRatingPercents(overviewRating.five)}
                                 star={5}

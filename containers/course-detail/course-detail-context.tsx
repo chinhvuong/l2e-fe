@@ -1,6 +1,5 @@
 import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import { dataUser } from '@/data/users'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { UpdateOverviewRatingState, UpdateRatingsState } from '@/store/rating'
 import {
@@ -25,7 +24,7 @@ import {
 interface ICourseDetailContext {
     isLoading: boolean
     data: any
-    instructor: any
+    instructor: User
     ratings: Rating[]
     getRatingCourseDetail: UseMutateFunction<unknown, any, object, unknown>
     searchTerm: string
@@ -46,7 +45,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const [courseId, setCourseId] = useState('')
     const dispatch = useAppDispatch()
     const [data, setData] = useState(undefined)
-    const [instructor, setInstructor] = useState({})
+    const [instructor, setInstructor] = useState({} as User)
     const router = useRouter()
     const ratings = useAppSelector(getRatings)
     const overviewRating = useAppSelector(getOverViewRatings)
@@ -58,7 +57,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 onError: () => {},
                 onSuccess: (response) => {
                     setData(response)
-                    setInstructor(dataUser)
+                    setInstructor(response.author)
                 },
             },
         )
@@ -94,8 +93,16 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }, [router.query.slug])
 
     const isLoading = useMemo(() => {
-        return isLoadingCourseDetail
-    }, [isLoadingCourseDetail])
+        return (
+            isLoadingCourseDetail ||
+            isLoadingRatingCourseDetail ||
+            isLoadingRatingOverViewCourseDetail
+        )
+    }, [
+        isLoadingCourseDetail,
+        isLoadingRatingCourseDetail,
+        isLoadingRatingOverViewCourseDetail,
+    ])
 
     return (
         <CourseDetailContext.Provider

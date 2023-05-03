@@ -1,3 +1,9 @@
+import {
+    FacebookIcon,
+    InstagramIcon,
+    TwitterIcon,
+    YoutubeIcon,
+} from '@/components/core/icons'
 import Logo from '@/layout/main-layout/header/logo'
 import Router from 'next/router'
 import React from 'react'
@@ -40,26 +46,10 @@ const Footer = () => {
                         className="cursor-pointer"
                     />
                     <div className="flex space-x-8">
-                        <img
-                            src="/svgs/logos/facebook-icon.svg"
-                            alt="facebook-icon"
-                            className="w-8 cursor-pointer"
-                        />
-                        <img
-                            src="/svgs/logos/twitter-icon.svg"
-                            alt="twitter-icon"
-                            className="w-8 cursor-pointer"
-                        />
-                        <img
-                            src="/svgs/logos/instagram-icon.svg"
-                            alt="instagram-icon"
-                            className="w-8 cursor-pointer"
-                        />
-                        <img
-                            src="/svgs/logos/youtube-icon.svg"
-                            alt="youtube-icon"
-                            className="w-8 cursor-pointer"
-                        />
+                        <FacebookIcon />
+                        <TwitterIcon />
+                        <InstagramIcon />
+                        <YoutubeIcon />
                     </div>
                     <div className="flex space-x-5 text-white font-semibold pt-2">
                         <div
