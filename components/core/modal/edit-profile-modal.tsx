@@ -4,18 +4,12 @@ import VideoPreview from '../video-preview'
 import { User } from '@/store/user/types'
 import { useUpdateProfileContext } from '@/containers/profile/update-profile-context'
 import Input from '../input'
-import {
-    updateUserAvatarState,
-    updateUserBioState,
-    updateUserNameState,
-    updateUserTitleState,
-} from '@/store/user'
 import UploadPreview from '../upload-preview'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
 import Button from '../button'
-import { useAppDispatch } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import RichTextEditor from '../rich-text-editor'
-
+import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 interface IProfileModalProps {
     isShow: boolean
     setIsShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -25,53 +19,141 @@ interface IProfileModalProps {
 export default function EditProfileModal(props: IProfileModalProps) {
     const { updateProfile } = useUpdateProfileContext()
     const { isShow, setIsShow } = props
-    const dispatch = useAppDispatch()
     const [showModal, setShowModal] = useState(isShow)
     const [userProfile, setUserProfile] = useState<User>({} as User)
+    const [errorUpdate, setError] = useState<User>({} as User)
     useEffect(() => {
         setShowModal(isShow)
         if (props.userInfo._id !== undefined) {
             setUserProfile(props.userInfo)
+            validateUpdate(props.userInfo.bio, 'bio')
         }
     }, [isShow, props.userInfo])
     const updateUserProfile = () => {
-        updateProfile({
-            name: userProfile.name,
-            avatar: userProfile.avatar,
-            title: userProfile.title,
-            bio: userProfile.bio,
-        })
-        setShowModal(false)
-        setIsShow(false)
+        if (getValidateResult()) {
+            updateProfile({
+                name: userProfile.name,
+                avatar: userProfile.avatar,
+                title: userProfile.title,
+                bio: userProfile.bio,
+            })
+            setShowModal(false)
+            setIsShow(false)
+        } else {
+            validateUpdate(userProfile.name, 'name')
+            validateUpdate(userProfile.title, 'title')
+            validateUpdate(userProfile.avatar, 'avatar')
+        }
     }
-
+    const getBioLength = (value: string) => {
+        if (value === null || value === undefined || value === '') {
+            return 0
+        } else {
+            return EditorState.createWithContent(
+                ContentState.createFromBlockArray(
+                    convertFromHTML(value).contentBlocks,
+                ),
+            )
+                .getCurrentContent()
+                .getPlainText()
+                .split(/(\s+)/)
+                .filter((e) => e.trim().length > 0).length
+        }
+    }
+    const validateUpdate = (value: string, field: string) => {
+        switch (field) {
+            case 'name':
+                if (value === '' || value === null) {
+                    console.log(value)
+                    const errors = { ...errorUpdate }
+                    errors.name = 'This field is required'
+                    setError(errors)
+                } else {
+                    const errors = { ...errorUpdate }
+                    errors.name = ''
+                    setError(errors)
+                }
+                break
+            case 'title':
+                if (value === '' || value === null) {
+                    const errors = { ...errorUpdate }
+                    errors.title = 'This field is required'
+                    setError(errors)
+                } else {
+                    const errors = { ...errorUpdate }
+                    errors.title = ''
+                    setError(errors)
+                }
+                break
+            case 'bio':
+                if (getBioLength(value) < 1) {
+                    const errors = { ...errorUpdate }
+                    errors.bio =
+                        'This field is required at least  have one word contain at least two letters'
+                    setError(errors)
+                } else {
+                    const errors = { ...errorUpdate }
+                    errors.bio = ''
+                    setError(errors)
+                }
+                break
+            case 'avatar':
+                if (value === null) {
+                    const errors = { ...errorUpdate }
+                    errors.avatar = 'This field is required'
+                    setError(errors)
+                } else {
+                    const errors = { ...errorUpdate }
+                    errors.avatar = ''
+                    setError(errors)
+                }
+                break
+        }
+    }
+    const getValidateResult = () => {
+        if (
+            errorUpdate.avatar !== '' ||
+            errorUpdate.name !== '' ||
+            errorUpdate.title !== '' ||
+            errorUpdate.bio !== ''
+        ) {
+            return false
+        } else {
+            return true
+        }
+    }
     const handleNameChange = (value: string) => {
         const newUserInfo = { ...userProfile }
         newUserInfo.name = value
         setUserProfile(newUserInfo)
+        validateUpdate(value, 'name')
     }
 
     const handleAvatarChange = (value: string) => {
         const newUserInfo = { ...userProfile }
         newUserInfo.avatar = value
         setUserProfile(newUserInfo)
+        validateUpdate(value, 'avatar')
     }
 
     const handleTitleChange = (value: string) => {
         const newUserInfo = { ...userProfile }
         newUserInfo.title = value
         setUserProfile(newUserInfo)
+        validateUpdate(value, 'title')
     }
 
     const handleUserBioChange = (value: string) => {
         const newUserInfo = { ...userProfile }
         newUserInfo.bio = value
         setUserProfile(newUserInfo)
+        validateUpdate(value, 'bio')
     }
 
     const handleShowModal = (value: boolean) => {
         setShowModal(value)
         setIsShow(value)
+        setError({} as User)
     }
 
     return (
@@ -94,6 +176,11 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                 defaultValue={userProfile.name}
                                                 updateInput={handleNameChange}
                                             />
+                                            {errorUpdate.name !== '' && (
+                                                <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                                    {errorUpdate.name}
+                                                </div>
+                                            )}
                                             <div className="flex">
                                                 <div className="h-1/4">
                                                     <UploadPreview
@@ -120,6 +207,12 @@ export default function EditProfileModal(props: IProfileModalProps) {
                         .jpeg,. gif, or .png. no text on the image.`}</span>
                                                         </div>
                                                     </UploadPreview>
+                                                    {errorUpdate.avatar !==
+                                                        '' && (
+                                                        <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                                            {errorUpdate.avatar}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <Input
@@ -129,6 +222,11 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                 defaultValue={userProfile.title}
                                                 updateInput={handleTitleChange}
                                             />
+                                            {errorUpdate.title !== '' && (
+                                                <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                                    {errorUpdate.title}
+                                                </div>
+                                            )}
                                             <RichTextEditor
                                                 label="Bio"
                                                 defaultValue={userProfile.bio}
@@ -136,6 +234,11 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                     handleUserBioChange
                                                 }
                                             />
+                                            {errorUpdate.bio !== '' && (
+                                                <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                                    {errorUpdate.bio}
+                                                </div>
+                                            )}
                                         </div>
                                         <Button
                                             className="h-1/5 items-center justify-center mx-12"
