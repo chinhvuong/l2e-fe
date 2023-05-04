@@ -6,7 +6,7 @@ import VideoModal from '@/components/core/modal/video-modal'
 import RatingStar from '@/components/core/rating-star'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
 import { useAppDispatch } from '@/hooks'
-import { updateEnrollStatus } from '@/store/course'
+import { updateEnrollStatus, updateLoadingState } from '@/store/course'
 import { getLoginState } from '@/store/user/selectors'
 import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Sidebar from '../components/sidebar'
 import { useCourseDetailContext } from '../course-detail-context'
+import Router from 'next/router'
 
 type Category = {
     name: string
@@ -58,6 +59,11 @@ export default function CourseInfo() {
         return `Last updated ${
             new Date(data.updatedAt).getMonth() + 1
         }/${new Date(data.updatedAt).getFullYear()}`
+    }
+
+    const goToUserDetailPage = () => {
+        dispatch(updateLoadingState(true))
+        Router.push('/user/1')
     }
 
     useEffect(() => {
@@ -114,13 +120,13 @@ export default function CourseInfo() {
                                         />
                                     )}
                                 </div>
-                                {(data.reviews !== null ||
+                                {(data.ratingCount !== null ||
                                     data.students !== null) && (
                                     <div className="flex items-center space-x-4 my-2">
-                                        {data.reviews !== null && (
+                                        {data.ratingCount !== null && (
                                             <div className="text-[14px] font-light underline underline-offset-4 decoration-hyperlink-light text-hyperlink-light cursor-pointer">
-                                                {`(${data.reviews} ${
-                                                    data.reviews === 0
+                                                {`(${data.ratingCount} ${
+                                                    data.ratingCount < 2
                                                         ? 'rating'
                                                         : 'ratings'
                                                 })`}
@@ -129,7 +135,7 @@ export default function CourseInfo() {
                                         {data.students !== null && (
                                             <div className="text-[14px] font-light">
                                                 {`${data.students} ${
-                                                    data.students === 0
+                                                    data.students < 2
                                                         ? 'student'
                                                         : 'students'
                                                 }`}
@@ -140,7 +146,10 @@ export default function CourseInfo() {
                             </div>
                             <div className="text-[14px] font-light">
                                 Created by{' '}
-                                <span className="text-hyperlink-light underline underline-offset-4 decoration-hyperlink-light cursor-pointer">
+                                <span
+                                    className="text-hyperlink-light underline underline-offset-4 decoration-hyperlink-light cursor-pointer"
+                                    onClick={() => goToUserDetailPage()}
+                                >
                                     {data?.author?.name ?? 'Anonymous'}
                                 </span>
                             </div>

@@ -248,10 +248,7 @@ export default function LearningReviewDetail() {
                     </div>
                 </div>
                 {ratings.length > 0 && (
-                    <ReviewItemsList
-                        ratings={[...ratings].reverse()}
-                        isLearn={true}
-                    />
+                    <ReviewItemsList ratings={ratings} isLearn={true} />
                 )}
                 <UpdateReviewsModal
                     isShow={show}

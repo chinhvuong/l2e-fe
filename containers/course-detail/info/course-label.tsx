@@ -61,14 +61,18 @@ export default function CourseLabel() {
                             id={data._id}
                             ratingScore={data.rating === null ? 0 : data.rating}
                         />
-                        {data.reviews && (
+                        {data.ratingCount && (
                             <div className="text-[14px] font-light underline underline-offset-4 decoration-hyperlink-light text-hyperlink-light cursor-pointer under_xl:mx-3">
-                                {`(${data.reviews.toLocaleString()} ratings)`}
+                                {`(${data.ratingCount} ${
+                                    data.ratingCount < 2 ? 'rating' : 'ratings'
+                                })`}
                             </div>
                         )}
                         {data.students && (
                             <div className="text-[14px] font-light text-white">
-                                {`${data.students.toLocaleString()} students`}
+                                {`(${data.students} ${
+                                    data.students < 2 ? 'student' : 'students'
+                                })`}
                             </div>
                         )}
                     </div>
