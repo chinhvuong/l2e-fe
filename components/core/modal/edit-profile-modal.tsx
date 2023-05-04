@@ -153,7 +153,9 @@ export default function EditProfileModal(props: IProfileModalProps) {
     const handleShowModal = (value: boolean) => {
         setShowModal(value)
         setIsShow(value)
-        setError({} as User)
+        if (value === false) {
+            setError({} as User)
+        }
     }
 
     return (
