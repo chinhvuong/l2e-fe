@@ -1,18 +1,17 @@
+import { CourseDetailPreview } from '@/api/dto/course.dto'
+import Loading from '@/components/core/animate/loading'
 import Button from '@/components/core/button'
+import { getEnrollStatusState } from '@/store/course/selectors'
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Loading from '@/components/core/animate/loading'
-import { useSelector } from 'react-redux'
-import { getEnrollStatusState } from '@/store/course/selectors'
-import EnrollBtn from './enroll-btn'
 import Router from 'next/router'
+import { useSelector } from 'react-redux'
+import EnrollBtn from './enroll-btn'
 export interface IPriceEnrollShareProps {
-    price: number
-    courseId?: number
-    _id: string
+    data: CourseDetailPreview
 }
 
-export default function PriceEnrollShare(props: IPriceEnrollShareProps) {
+export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
     const isEnrolled = useSelector(getEnrollStatusState)
 
     return (
@@ -24,28 +23,30 @@ export default function PriceEnrollShare(props: IPriceEnrollShareProps) {
             ) : (
                 <div>
                     <div className="font-semibold text-[36px]">
-                        {props.price + ' USDT'}
+                        {data.price + ' USDT'}
                     </div>
-                    <div className="flex items-center space-x-4 mt-3 mb-5">
-                        {isEnrolled === true ? (
-                            <Button
-                                className="w-full flex items-center justify-center"
-                                onClick={() =>
-                                    Router.push(`/learn/${props._id}`)
-                                }
-                            >
-                                <div className="font-medium text-[20px]">
-                                    Learn
-                                </div>
-                            </Button>
-                        ) : (
-                            <EnrollBtn />
-                        )}
-                        <FontAwesomeIcon
-                            icon={faShareNodes}
-                            className="text-[20px] text-black rounded-full bg-white py-[14px] px-[16px] border border-black"
-                        />
-                    </div>
+                    {data.author.walletAddress !== data.owner && (
+                        <div className="flex items-center space-x-4 mt-3 mb-5">
+                            {isEnrolled === true ? (
+                                <Button
+                                    className="w-full flex items-center justify-center"
+                                    onClick={() =>
+                                        Router.push(`/learn/${data._id}`)
+                                    }
+                                >
+                                    <div className="font-medium text-[20px]">
+                                        Learn
+                                    </div>
+                                </Button>
+                            ) : (
+                                <EnrollBtn />
+                            )}
+                            <FontAwesomeIcon
+                                icon={faShareNodes}
+                                className="text-[20px] text-black rounded-full bg-white py-[14px] px-[16px] border border-black"
+                            />
+                        </div>
+                    )}
                 </div>
             )}
         </div>

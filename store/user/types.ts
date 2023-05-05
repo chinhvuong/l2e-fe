@@ -3,12 +3,12 @@ export interface User {
     walletAddress: string
     createdAt: string
     updatedAt: string
-    name: string
-    title: string
-    bio: string
+    name: string | null
+    title: string | null
+    bio: string | null
     rating: number
     courses?: number[]
-    avatar: string
+    avatar: string | null
     nonce: number
 }
 

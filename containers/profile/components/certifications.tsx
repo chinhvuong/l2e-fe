@@ -23,8 +23,10 @@ export default function CertificationsList() {
     return (
         <>
             <LoadingScreen isLoading={isLoading} />
-            <div className="h-full pt-9 px-14">
-                <div className="font-semibold text-[30px]">Certificates</div>
+            <div className="h-full pt-9 px-[3.5rem]">
+                <div className="font-semibold text-[30px] px-4">
+                    Certificates
+                </div>
                 <div className="mt-10">
                     {certificationsList?.map((certification, index) => (
                         <div
@@ -40,10 +42,7 @@ export default function CertificationsList() {
                             <CertificateCard
                                 key={certification._id}
                                 data={certification}
-                                showDetail={false}
-                                showStatus={true}
                             />
-
                             {index !== certificationsList.length - 1 && (
                                 <Divider />
                             )}

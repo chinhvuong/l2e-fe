@@ -24,6 +24,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSigner } from 'wagmi'
 import { goerli } from 'wagmi/chains'
 import Search from './search'
+import Pagination from '@/components/core/pagination'
 
 export default function InstructorCoursesContainer() {
     const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
@@ -34,6 +35,9 @@ export default function InstructorCoursesContainer() {
         {} as GetAllCoursesResponse,
     )
     const [sortBy, setSortBy] = useState<string>('')
+    const [pageNumber, setPageNumber] = useState(1)
+    const limit = 10
+    const [totalPage, setTotalPage] = useState(1)
     const router = useRouter()
     const dispatch = useAppDispatch()
 
@@ -92,17 +96,16 @@ export default function InstructorCoursesContainer() {
 
     const { mutate: getAllMyCourses, isLoading: isLoadingAllMyCourses } =
         useAPI.getMutation(
-            `${InstructorAPI.GET_ALL_MY_COURSES}${
-                search !== '' ? '?query=' + search : ''
-            }${
-                sortBy !== ''
-                    ? (search === '' ? '?' : '&') + 'sort=' + getSortParams()
-                    : ''
+            `${InstructorAPI.GET_ALL_MY_COURSES}?page=${
+                pageNumber - 1
+            }&limit=${limit}${search !== '' ? '&query=' + search : ''}${
+                sortBy !== '' ? '&sort=' + getSortParams() : ''
             }`,
             {
                 onError: () => {},
                 onSuccess: (response) => {
                     setAllMyCourses(response)
+                    setTotalPage(Math.ceil(response.total / limit))
                 },
             },
         )
@@ -128,7 +131,7 @@ export default function InstructorCoursesContainer() {
     useEffect(() => {
         getAllMyCourses({})
         changeURL()
-    }, [search, sortBy])
+    }, [search, sortBy, pageNumber])
 
     useEffect(() => {
         if (isCourseClicked) {
@@ -173,8 +176,8 @@ export default function InstructorCoursesContainer() {
     return (
         <>
             <LoadingScreen isLoading={isLoading} />
-            <div className="h-full mt-9">
-                <div className="flex justify-between px-14">
+            <div className="mt-9 px-[3.5rem]">
+                <div className="flex justify-between px-4">
                     <div className="font-semibold text-[30px]">Courses</div>
                     <div className="text-white">
                         <Button onClick={() => goToCreateCoursePage()}>
@@ -182,7 +185,7 @@ export default function InstructorCoursesContainer() {
                         </Button>
                     </div>
                 </div>
-                <div className="flex under_xl:block space-x-5 under_xl:space-x-0 px-14">
+                <div className="flex under_xl:block space-x-5 under_xl:space-x-0 px-4">
                     <Search
                         darkTheme={false}
                         setSearch={setSearch}
@@ -206,7 +209,7 @@ export default function InstructorCoursesContainer() {
                         No courses found.
                     </div>
                 ) : (
-                    <div className="space-x-10 px-14">
+                    <div className="space-x-10">
                         <div>
                             {!isLoadingSigner &&
                                 !isLoadingAllMyCourses &&
@@ -245,6 +248,10 @@ export default function InstructorCoursesContainer() {
                         </div>
                     </div>
                 )}
+                <Pagination
+                    totalPage={totalPage}
+                    setPageNumber={setPageNumber}
+                />
             </div>
         </>
     )

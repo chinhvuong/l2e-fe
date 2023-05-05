@@ -26,6 +26,7 @@ import {
 import { Rating, RatingOverView } from '@/store/rating/types'
 import { useAccount } from 'wagmi'
 import { User } from '@/store/user/types'
+import { CourseDetailIncludeList } from '@/constants/interfaces'
 
 export interface LectureQuiz {
     _id: string
@@ -67,7 +68,7 @@ export interface LearningCourseSections {
     lessons: LearningCourseLectures[]
 }
 export interface LearningCourseRes {
-    include: {}
+    include: CourseDetailIncludeList
     _id: string
     owner: string
     author: User

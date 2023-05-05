@@ -90,11 +90,11 @@ export default function LearnerCoursesContainer() {
     return (
         <>
             <LoadingScreen isLoading={isLoading} />
-            <div className="h-full mt-9">
-                <div className="flex justify-between px-14">
+            <div className="h-full mt-9 px-[3.5rem]">
+                <div className="flex justify-between px-4">
                     <div className="font-semibold text-[30px]">Courses</div>
                 </div>
-                <div className="flex under_xl:block space-x-5 under_xl:space-x-0 px-14">
+                <div className="flex under_xl:block space-x-5 under_xl:space-x-0 px-4">
                     <Search
                         darkTheme={false}
                         setSearch={setSearch}
@@ -118,7 +118,7 @@ export default function LearnerCoursesContainer() {
                         No courses found.
                     </div>
                 ) : (
-                    <div className="space-x-10 px-14">
+                    <div className="space-x-10">
                         <div>
                             {!isLoading &&
                                 allMyCourses &&

@@ -1,4 +1,5 @@
 import { LearnerAPI } from '@/api/api-path'
+import { CourseDetailPreview } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { UpdateOverviewRatingState, UpdateRatingsState } from '@/store/rating'
@@ -23,7 +24,7 @@ import {
 
 interface ICourseDetailContext {
     isLoading: boolean
-    data: any
+    data: CourseDetailPreview | undefined
     instructor: User
     ratings: Rating[]
     getRatingCourseDetail: UseMutateFunction<unknown, any, object, unknown>
@@ -44,7 +45,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [courseId, setCourseId] = useState('')
     const dispatch = useAppDispatch()
-    const [data, setData] = useState(undefined)
+    const [data, setData] = useState<CourseDetailPreview>()
     const [instructor, setInstructor] = useState({} as User)
     const router = useRouter()
     const ratings = useAppSelector(getRatings)
@@ -55,7 +56,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
             LearnerAPI.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
             {
                 onError: () => {},
-                onSuccess: (response) => {
+                onSuccess: (response: CourseDetailPreview) => {
                     setData(response)
                     setInstructor(response.author)
                 },

@@ -6,12 +6,10 @@ import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { updateLoadingState } from '@/store/course'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import Search from '../instructor/components/search'
 
 const SearchPageContainer = () => {
     const router = useRouter()
@@ -124,7 +122,9 @@ const SearchPageContainer = () => {
                 ) : (
                     <div className="px-24 under_lg:px-10 space-y-5">
                         <div className="text-2xl font-bold">
-                            {`${allMyCourses.total} results for "${router.query.query}"`}
+                            {`${allMyCourses.total} ${
+                                allMyCourses.total < 2 ? 'result' : 'results'
+                            } for "${router.query.query}"`}
                         </div>
                         <div className="flex space-x-10">
                             <div className="w-[300px]">

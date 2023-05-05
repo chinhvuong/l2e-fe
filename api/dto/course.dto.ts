@@ -1,92 +1,10 @@
+import { CourseDetailIncludeList } from '@/constants/interfaces'
 import {
     CurriculumLecture,
     CurriculumSection,
 } from '@/store/course/curriculum/types'
-
-export interface CreateCourseRequest {
-    name: string
-    category: string
-}
-
-export interface CreateCourseResponse {
-    owner: string
-    author: string
-    name: string
-    overview: string
-    description: string
-    price: number
-    rating: number
-    reviews: number
-    students: number
-    language: string
-    approved: boolean
-    requirements: string[]
-    goals: string[]
-    thumbnail: string | null
-    promotionalVideo: string | null
-    category: string
-    _id: string
-    createdAt: string
-    updatedAt: string
-    __v: number
-}
-
-export interface UpdateCourseRequest {
-    _id: string
-    name: string
-    overview: string
-    description: string
-    price: number
-    language: string
-    requirements: string[]
-    goals: string[]
-    thumbnail: string | null
-    promotionalVideo: string | null
-    include: {
-        duration: string
-        resource: string
-        assignments: string
-        certificate: string
-        lifetimeAccess: string
-        device: string
-        articles: string
-        exercise: string
-    }
-    category: string
-}
-
-export interface UpdateCourseResponse {
-    include: {
-        duration: string
-        resource: string
-        assignments: string
-        certificate: string
-        lifetimeAccess: string
-        device: string
-        articles: string
-        exercise: string
-    }
-    _id: string
-    owner: string
-    author: string
-    name: string
-    overview: string
-    description: string
-    price: number
-    rating: number
-    reviews: number
-    students: number
-    language: string
-    approved: false
-    requirements: string
-    goals: string
-    thumbnail: string | null
-    promotionalVideo: string | null
-    category: string
-    createdAt: string
-    updatedAt: string
-    __v: number
-}
+import { CourseSectionWithLectures } from '@/store/course/types'
+import { User } from '@/store/user/types'
 
 type Category = {
     _id: string
@@ -99,25 +17,10 @@ type Category = {
     createdAt: string
     updatedAt: string
 }
-export interface GetCategoryResponse {
-    total: number
-    data: Category[]
-}
 
-export interface GetCourseDetailResponse {
-    include: {
-        duration: string
-        resource: string
-        assignments: string
-        certificate: string
-        lifetimeAccess: string
-        device: string
-        articles: string
-        exercise: string
-    }
+export interface CourseDetailPreview {
     _id: string
     owner: string
-    author: string
     name: string
     overview: string
     description: string
@@ -126,15 +29,24 @@ export interface GetCourseDetailResponse {
     reviews: number
     students: number
     language: string
-    approved: false
-    requirements: string
-    goals: string
-    thumbnail: string | null
-    promotionalVideo: string | null
-    category: string
+    approved: string
+    requirements: string[]
+    goals: string[]
+    thumbnail: string
+    promotionalVideo: string
     createdAt: string
     updatedAt: string
-    __v: number
+    include: CourseDetailIncludeList
+    courseId: number
+    author: User
+    category: Category
+    ratingCount: number
+    sections: CourseSectionWithLectures[]
+}
+
+export interface GetCategoryResponse {
+    total: number
+    data: Category[]
 }
 
 export type CoursePreview = {
@@ -145,19 +57,7 @@ export type CoursePreview = {
     students: number
     courseId?: number
     approved: boolean
-    author: {
-        _id: string
-        __v: number
-        avatar: string | null
-        bio: string | null
-        createdAt: string
-        name: string | null
-        nonce: number
-        rating: number
-        title: string | null
-        updatedAt: string
-        walletAddress: string
-    }
+    author: User
     category: Category
     ratingCount: number
     thumbnail: string

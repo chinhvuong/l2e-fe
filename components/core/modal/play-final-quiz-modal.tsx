@@ -17,6 +17,7 @@ import LoadingScreen from '../animate/loading-screen'
 import Button from '../button'
 import './style.scss'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import Router from 'next/router'
 
 interface IPlayFinalTestModalProps {
     isShow: boolean
@@ -288,9 +289,11 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                         <div className="flex justify-center">
                                                             <Button
                                                                 className=" btn-primary mt-6"
-                                                                // onClick={() =>
-                                                                //     claim cerfiticate
-                                                                // }
+                                                                onClick={() =>
+                                                                    Router.push(
+                                                                        '/profile/certificates',
+                                                                    )
+                                                                }
                                                             >
                                                                 <div className="font-medium text-center">
                                                                     Claim

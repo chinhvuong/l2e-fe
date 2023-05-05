@@ -1,5 +1,15 @@
 import { CourseNameLabel } from './types'
 
+export interface CourseDetailIncludeList {
+    duration: string
+    resource: string
+    assignments: string
+    certificate: string
+    lifetimeAccess: string
+    device: string
+    articles: string
+    exercise: string
+}
 export interface CourseDetail {
     _id: string
     owner: string
@@ -20,16 +30,7 @@ export interface CourseDetail {
     promotionalVideo: string
     requirements: string[]
     goals: string[]
-    include: {
-        duration: string
-        resource: string
-        assignments: string
-        certificate: string
-        lifetimeAccess: string
-        device: string
-        articles: string
-        exercise: string
-    }
+    include: CourseDetailIncludeList
 }
 export interface CourseInfo_Preview {
     id: number

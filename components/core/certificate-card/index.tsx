@@ -1,23 +1,56 @@
 import Label from '@/components/core/label'
 import { Certificate } from '@/store/certification/types'
-import RatingStar from '../rating-star'
 
 export interface ICertificateCardProps {
     data: Certificate
     className?: string
-    showDetail?: boolean
-    showStatus?: boolean
 }
 
 export default function CertificateCard({
     data,
     className,
-    showDetail = true,
-    showStatus = false,
 }: ICertificateCardProps) {
+    const enum CertificateStatus {
+        ON_CHAIN = 'On Chain',
+        OFF_CHAIN = 'Off Chain',
+        MINTING = 'Minting',
+    }
+
+    const enum CertificateStatusColor {
+        ON_CHAIN = '#4ADE80',
+        OFF_CHAIN = '#E11D48',
+        MINTING = '#9CA3AF',
+    }
+
+    const getCertificateStatusLabel = (status: string): string => {
+        switch (status) {
+            case 'ON_CHAIN':
+                return CertificateStatus.ON_CHAIN
+            case 'OFF_CHAIN':
+                return CertificateStatus.OFF_CHAIN
+            case 'MINTING':
+                return CertificateStatus.MINTING
+            default:
+                return ''
+        }
+    }
+
+    const getCertificateStatusLabelColor = (status: string): string => {
+        switch (status) {
+            case 'ON_CHAIN':
+                return CertificateStatusColor.ON_CHAIN
+            case 'OFF_CHAIN':
+                return CertificateStatusColor.OFF_CHAIN
+            case 'MINTING':
+                return CertificateStatusColor.MINTING
+            default:
+                return ''
+        }
+    }
+
     return (
         <div
-            className={`flex w-full space-x-5 cursor-pointer hover:bg-gray-300 py-6 ${className}`}
+            className={`flex w-full space-x-5 cursor-pointer hover:bg-gray-300 p-5 ${className}`}
         >
             <img
                 src={
@@ -26,53 +59,31 @@ export default function CertificateCard({
                 alt=""
                 className="w-[25%] min-w-[170px]"
             />
-            {/* <div className="space-y-3">
-                <div>
-                    <div className="font-semibold text-xl line-clamp-2">
-                        {data.name}
+            <div className="space-y-3">
+                <div className="font-semibold text-xl line-clamp-2">
+                    {data.course.name}
+                </div>
+                <div className="space-y-1">
+                    <div>
+                        <span>Graduation day: </span>
+                        {new Date(data.createdAt).toLocaleDateString('vi-VN')}
+                    </div>
+                    <div>
+                        <span>Final Test score: </span>
+                        {`${data.finalGrade}/100`}
+                    </div>
+                    <div>
+                        <span>Level: </span>
+                        {data.graduation}
                     </div>
                 </div>
-                {showDetail && (
-                    <>
-                        <RatingStar
-                            id={data._id}
-                            ratingScore={data.rating}
-                            ratings={data.ratingCount.toString()}
-                        />
-                        <div className="font-bold text-xl">
-                            {data.price} USDT
-                        </div>
-                    </>
-                )}
                 <div className="flex space-x-3">
-                    {showStatus && (
-                        <>
-                            <Label
-                                name={
-                                    data.approved ? 'Approved' : 'Not Approved'
-                                }
-                                color={data.approved ? '#22C55E' : '#E11D48'}
-                            />
-                            <Label
-                                name={
-                                    data.approved && data.courseId
-                                        ? 'Minted'
-                                        : 'Not Minted'
-                                }
-                                color={
-                                    data.approved && data.courseId
-                                        ? '#22C55E'
-                                        : '#E11D48'
-                                }
-                            />
-                        </>
-                    )}
                     <Label
-                        name={data.category.name}
-                        color={data.category.color}
+                        name={getCertificateStatusLabel(data.status)}
+                        color={getCertificateStatusLabelColor(data.status)}
                     />
                 </div>
-            </div> */}
+            </div>
         </div>
     )
 }

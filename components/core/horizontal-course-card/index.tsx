@@ -46,7 +46,7 @@ export default function HorizontalCourseCard({
 
     return (
         <div
-            className={`flex w-full space-x-5 cursor-pointer hover:bg-gray-300 py-6 ${className}`}
+            className={`flex w-full space-x-5 cursor-pointer hover:bg-gray-300 p-5 ${className}`}
             onClick={() => handleCourseClick()}
         >
             <img

@@ -1,5 +1,6 @@
-import { Rating } from '@/constants/interfaces'
+import { CourseDetailIncludeList, Rating } from '@/constants/interfaces'
 import { QuizDetailType } from '../quiz/types'
+import { User } from '../user/types'
 export interface CourseNestedLecture {
     name: string
     description: string
@@ -17,19 +18,7 @@ export interface CourseSectionWithLectures {
 export interface CourseDetail {
     _id: string
     owner: string
-    author: {
-        _id: string
-        __v: number
-        avatar: string | null
-        bio: string | null
-        createdAt: string
-        name: string | null
-        nonce: number
-        rating: number
-        title: string | null
-        updatedAt: string
-        walletAddress: string
-    }
+    author: User
     finalTest?: QuizDetailType
     name: string
     overview: string
@@ -44,16 +33,7 @@ export interface CourseDetail {
     goals: string[]
     thumbnail: string | null
     promotionalVideo: string | null
-    include: {
-        duration: string
-        resource: string
-        assignments: string
-        certificate: string
-        lifetimeAccess: string
-        device: string
-        articles: string
-        exercise: string
-    }
+    include: CourseDetailIncludeList
     category: string
     __v: number
     createdAt: string

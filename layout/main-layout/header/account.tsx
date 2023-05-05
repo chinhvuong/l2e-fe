@@ -150,7 +150,7 @@ const Account = (props: any) => {
                         {myAccountBalance} ABC
                     </div>
                     <div
-                        className={`w-[270px] absolute z-30 right-0 ${
+                        className={`w-[270px] absolute z-30 right-10 ${
                             !(hoverWallet || hoverWalletActions) && 'hidden'
                         }`}
                         onMouseEnter={() => setHoverWalletActions(true)}

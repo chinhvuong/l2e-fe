@@ -81,17 +81,21 @@ export default function CourseLabel() {
                     <div className="font-semibold text-[24px] text-white">
                         {data.price} USDT
                     </div>
-                    {isEnroll ? (
-                        <Button
-                            className="btn-primary under_lg:w-full"
-                            onClick={() => Router.push(`/learn/${data._id}`)}
-                        >
-                            <div className="font-medium text-[20px]">Learn</div>
-                        </Button>
-                    ) : (
-                        <EnrollBtn className="btn-primary under_lg:w-full flex gap-4 items-center" />
-                    )}
-
+                    {data.author.walletAddress !== data.owner &&
+                        (isEnroll ? (
+                            <Button
+                                className="btn-primary under_lg:w-full"
+                                onClick={() =>
+                                    Router.push(`/learn/${data._id}`)
+                                }
+                            >
+                                <div className="font-medium text-[20px]">
+                                    Learn
+                                </div>
+                            </Button>
+                        ) : (
+                            <EnrollBtn className="btn-primary under_lg:w-full flex gap-4 items-center" />
+                        ))}
                     <FontAwesomeIcon
                         icon={faShareNodes}
                         className="text-[20px] rounded-full bg-white py-[14px] px-[16px] border border-black"

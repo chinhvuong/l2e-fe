@@ -56,12 +56,8 @@ export default function Sidebar() {
                             />
                         )}
                         <div className="space-y-4 mt-4 mb-6">
-                            <div className="mx-7">
-                                <PriceEnrollShare
-                                    price={data.price}
-                                    courseId={data.courseId}
-                                    _id={data._id}
-                                />
+                            <div className="mx-7 space-y-3">
+                                <PriceEnrollShare data={data} />
                                 {dataCourses_detail.include && (
                                     <IncludeList
                                         data={dataCourses_detail.include}
