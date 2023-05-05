@@ -79,9 +79,15 @@ export default function UserProfileDetail({
                 </>
             )}
             <div className="flex items-center my-4">
-                {data.avatar !== null && (
+                {data.avatar !== null ? (
                     <img
                         src={`${data?.avatar}`}
+                        alt=""
+                        className="rounded-[50%] w-[120px]"
+                    />
+                ) : (
+                    <img
+                        src="/svgs/default_user_avatar.svg"
                         alt=""
                         className="rounded-[50%] w-[120px]"
                     />

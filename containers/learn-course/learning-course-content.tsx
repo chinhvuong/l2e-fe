@@ -25,7 +25,6 @@ const LearningCourseContent = () => {
         currentTab,
         setCurrentTab,
     } = useLearningCourseContext()
-
     const getTabContent = () => {
         switch (currentTab) {
             case 'Overview':
