@@ -18,12 +18,19 @@ export default function EditProfileModal(props: IProfileModalProps) {
     const { isShow, setIsShow } = props
     const [showModal, setShowModal] = useState(isShow)
     const [userProfile, setUserProfile] = useState<User>({} as User)
-    const [errorUpdate, setError] = useState<User>({} as User)
+    const [errorUpdate, setError] = useState<User>({
+        bio: '',
+        name: '',
+        title: '',
+        avatar: '',
+    } as User)
     useEffect(() => {
         setShowModal(isShow)
         if (props.userInfo._id !== undefined) {
             setUserProfile(props.userInfo)
-            validateUpdate(props.userInfo.bio, 'bio')
+            if (isShow) {
+                validateUserInfo(props.userInfo)
+            }
         }
     }, [isShow, props.userInfo])
     const updateUserProfile = () => {
@@ -36,10 +43,6 @@ export default function EditProfileModal(props: IProfileModalProps) {
             })
             setShowModal(false)
             setIsShow(false)
-        } else {
-            validateUpdate(userProfile.name, 'name')
-            validateUpdate(userProfile.title, 'title')
-            validateUpdate(userProfile.avatar, 'avatar')
         }
     }
     const getBioLength = (value: string) => {
@@ -57,11 +60,26 @@ export default function EditProfileModal(props: IProfileModalProps) {
                 .filter((e) => e.trim().length > 0).length
         }
     }
+    const validateUserInfo = (value: User) => {
+        const errors = { ...errorUpdate }
+        if (value.name === '' || value.name === null) {
+            errors.name = 'This field is required'
+        }
+        if (value.title === '' || value.title === null) {
+            errors.title = 'This field is required'
+        }
+        if (value.avatar === '' || value.avatar === null) {
+            errors.avatar = 'This field is required'
+        }
+        if (getBioLength(String(value.bio)) < 100) {
+            errors.bio = 'This field requires at least 100 words'
+        }
+        setError(errors)
+    }
     const validateUpdate = (value: string | null, field: string) => {
         switch (field) {
             case 'name':
                 if (value === '' || value === null) {
-                    console.log(value)
                     const errors = { ...errorUpdate }
                     errors.name = 'This field is required'
                     setError(errors)
@@ -83,7 +101,8 @@ export default function EditProfileModal(props: IProfileModalProps) {
                 }
                 break
             case 'bio':
-                if (getBioLength(value ?? '') < 100) {
+                if (getBioLength(String(value)) < 100) {
+                    console.log('Error')
                     const errors = { ...errorUpdate }
                     errors.bio = 'This field requires at least 100 words'
                     setError(errors)
@@ -150,7 +169,12 @@ export default function EditProfileModal(props: IProfileModalProps) {
         setShowModal(value)
         setIsShow(value)
         if (value === false) {
-            setError({} as User)
+            setError({
+                bio: '',
+                name: '',
+                title: '',
+                avatar: '',
+            } as User)
         }
     }
 
