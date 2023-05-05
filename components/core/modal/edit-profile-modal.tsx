@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import ReactPlayer from 'react-player'
-import VideoPreview from '../video-preview'
-import { User } from '@/store/user/types'
-import { useUpdateProfileContext } from '@/containers/profile/update-profile-context'
-import Input from '../input'
-import UploadPreview from '../upload-preview'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
+import { useUpdateProfileContext } from '@/containers/profile/update-profile-context'
+import { User } from '@/store/user/types'
+import { ContentState, EditorState, convertFromHTML } from 'draft-js'
+import React, { useEffect, useState } from 'react'
 import Button from '../button'
-import { useAppDispatch, useAppSelector } from '@/hooks'
+import Input from '../input'
 import RichTextEditor from '../rich-text-editor'
-import { ContentState, convertFromHTML, EditorState } from 'draft-js'
+import UploadPreview from '../upload-preview'
 interface IProfileModalProps {
     isShow: boolean
     setIsShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -60,7 +57,7 @@ export default function EditProfileModal(props: IProfileModalProps) {
                 .filter((e) => e.trim().length > 0).length
         }
     }
-    const validateUpdate = (value: string, field: string) => {
+    const validateUpdate = (value: string | null, field: string) => {
         switch (field) {
             case 'name':
                 if (value === '' || value === null) {
@@ -86,10 +83,9 @@ export default function EditProfileModal(props: IProfileModalProps) {
                 }
                 break
             case 'bio':
-                if (getBioLength(value) < 1) {
+                if (getBioLength(value ?? '') < 100) {
                     const errors = { ...errorUpdate }
-                    errors.bio =
-                        'This field is required at least  have one word contain at least two letters'
+                    errors.bio = 'This field requires at least 100 words'
                     setError(errors)
                 } else {
                     const errors = { ...errorUpdate }
@@ -171,25 +167,32 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                 <div className="flex items-center justify-between p-5">
                                     <div className="item-center py-5 px-7">
                                         <div className="py-5 space-y-5">
-                                            <Input
-                                                id="your-name"
-                                                label="Name"
-                                                placeholder="Insert your new name"
-                                                defaultValue={userProfile.name}
-                                                updateInput={handleNameChange}
-                                            />
-                                            {errorUpdate.name !== '' && (
-                                                <div className="ml-[25px] text-sm mt-1 text-red-500">
-                                                    {errorUpdate.name}
-                                                </div>
-                                            )}
+                                            <div>
+                                                <Input
+                                                    id="your-name"
+                                                    label="Name"
+                                                    placeholder="Insert your new name"
+                                                    defaultValue={
+                                                        userProfile.name
+                                                    }
+                                                    updateInput={
+                                                        handleNameChange
+                                                    }
+                                                />
+                                                {errorUpdate.name !== '' && (
+                                                    <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                                        {errorUpdate.name}
+                                                    </div>
+                                                )}
+                                            </div>
                                             <div className="flex">
                                                 <div className="h-1/4">
                                                     <UploadPreview
                                                         label="Avatar"
                                                         type="image"
                                                         defaultPreview={
-                                                            userProfile.avatar
+                                                            userProfile.avatar ??
+                                                            ''
                                                         }
                                                         setFileLink={
                                                             handleAvatarChange
@@ -217,30 +220,40 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                     )}
                                                 </div>
                                             </div>
-                                            <Input
-                                                id="your-title"
-                                                label="Title"
-                                                placeholder="Insert your new title"
-                                                defaultValue={userProfile.title}
-                                                updateInput={handleTitleChange}
-                                            />
-                                            {errorUpdate.title !== '' && (
-                                                <div className="ml-[25px] text-sm mt-1 text-red-500">
-                                                    {errorUpdate.title}
-                                                </div>
-                                            )}
-                                            <RichTextEditor
-                                                label="Bio"
-                                                defaultValue={userProfile.bio}
-                                                updateState={
-                                                    handleUserBioChange
-                                                }
-                                            />
-                                            {errorUpdate.bio !== '' && (
-                                                <div className="ml-[25px] text-sm mt-1 text-red-500">
-                                                    {errorUpdate.bio}
-                                                </div>
-                                            )}
+                                            <div>
+                                                <Input
+                                                    id="your-title"
+                                                    label="Title"
+                                                    placeholder="Insert your new title"
+                                                    defaultValue={
+                                                        userProfile.title
+                                                    }
+                                                    updateInput={
+                                                        handleTitleChange
+                                                    }
+                                                />
+                                                {errorUpdate.title !== '' && (
+                                                    <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                                        {errorUpdate.title}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <RichTextEditor
+                                                    label="Bio"
+                                                    defaultValue={
+                                                        userProfile.bio ?? ''
+                                                    }
+                                                    updateState={
+                                                        handleUserBioChange
+                                                    }
+                                                />
+                                                {errorUpdate.bio !== '' && (
+                                                    <div className="ml-[25px] text-sm mt-1 text-red-500">
+                                                        {errorUpdate.bio}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                         <div className="flex justify-end space-x-5 mt-4">
                                             <Button

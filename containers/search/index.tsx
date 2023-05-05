@@ -4,6 +4,7 @@ import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
+import Pagination from '@/components/core/pagination'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
 import { updateLoadingState } from '@/store/course'
@@ -18,6 +19,9 @@ const SearchPageContainer = () => {
         {} as GetAllCoursesResponse,
     )
     const [sortBy, setSortBy] = useState<string>('')
+    const [pageNumber, setPageNumber] = useState(1)
+    const limit = 10
+    const [totalPage, setTotalPage] = useState(1)
     const dispatch = useDispatch()
 
     const getSortParams = () => {
@@ -39,19 +43,14 @@ const SearchPageContainer = () => {
 
     const { mutate: getAllMyCourses, isLoading: isLoadingAllMyCourses } =
         useAPI.getMutation(
-            `${UserAPI.GET_ALL_COURSES}${
-                router.query.query !== '' ? '?query=' + router.query.query : ''
-            }${
-                sortBy !== ''
-                    ? (router.query.query === '' ? '?' : '&') +
-                      'sort=' +
-                      getSortParams()
-                    : ''
-            }`,
+            `${UserAPI.GET_ALL_COURSES}?page=${pageNumber - 1}&limit=${limit}${
+                router.query.query !== '' ? '&query=' + router.query.query : ''
+            }${sortBy !== '' ? '&sort=' + getSortParams() : ''}`,
             {
                 onError: () => {},
                 onSuccess: (response) => {
                     setAllMyCourses(response)
+                    setTotalPage(Math.ceil(response.total / limit))
                 },
             },
         )
@@ -171,6 +170,10 @@ const SearchPageContainer = () => {
                                             )
                                         },
                                     )}
+                                <Pagination
+                                    totalPage={totalPage}
+                                    setPageNumber={setPageNumber}
+                                />
                             </div>
                         </div>
                     </div>

@@ -25,19 +25,22 @@ export default function UserProfileDetail({
     const [showMore, setShowMore] = useState(false)
 
     const convertStringToHTML = () => {
-        const element = document.getElementById('instructor-bio-content')
-        let displayedData = data.bio.replace(
-            /'<li>'/g,
-            '<li class="list-disc list-inside ml-2">',
-        )
-        displayedData = displayedData.replace(
-            /'<ul>'/g,
-            '<ul class="space-y-3">',
-        )
+        if (data.bio) {
+            const element = document.getElementById('instructor-bio-content')
+            let displayedData = data.bio.replace(
+                /'<li>'/g,
+                '<li class="list-disc list-inside ml-2">',
+            )
+            displayedData = displayedData.replace(
+                /'<ul>'/g,
+                '<ul class="space-y-3">',
+            )
 
-        if (element) {
-            element.innerHTML = displayedData
+            if (element) {
+                element.innerHTML = displayedData
+            }
         }
+        return ''
     }
 
     const getUIContent = (content: string) => {
