@@ -1,17 +1,14 @@
-import { useState } from 'react'
+import ShowMore from '@/components/core/show-more'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ShowMore from '@/components/core/show-more'
-import { useAppSelector } from '@/hooks'
-import { getGoals } from '@/store/course/selectors'
+import { useState } from 'react'
 import { useCourseDetailContext } from '../course-detail-context'
 
 export interface IWhatYouWillLearnProps {}
 
 export default function WhatYouWillLearn() {
     const { data } = useCourseDetailContext()
-    const goals = data.goals
-    const [showFullContent, setShowFullContent] = useState(true)
+    const goals = data?.goals
 
     return (
         <>
@@ -35,9 +32,7 @@ export default function WhatYouWillLearn() {
                                         className="mt-1"
                                     />
                                     <div
-                                        className={`w-[360px] lg:w-[270px] under_lg:w-full md:text-left text-justify ${
-                                            !showFullContent && 'line-clamp-3'
-                                        }`}
+                                        className={`w-[360px] lg:w-[270px] under_lg:w-full md:text-left text-justify`}
                                     >
                                         {item}
                                     </div>
@@ -45,11 +40,6 @@ export default function WhatYouWillLearn() {
                             )
                         })}
                     </div>
-                    <ShowMore
-                        el="what-you-will-learn"
-                        elHeightPreview={400}
-                        setShowFullContent={setShowFullContent}
-                    />
                 </div>
             )}
         </>

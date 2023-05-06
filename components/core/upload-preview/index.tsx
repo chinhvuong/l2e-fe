@@ -3,7 +3,6 @@ import { UploadOneFileResponse } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import { useAppDispatch } from '@/hooks'
 import { updateCanSaveCourseState } from '@/store/course'
-import { noop } from 'lodash'
 import { ReactNode, ReactText, useEffect, useState } from 'react'
 import Loading from '../animate/loading'
 import Button from '../button'
@@ -15,11 +14,21 @@ export interface IUploadPreviewProps {
     children: ReactNode | ReactText
     defaultPreview: string
     setFileLink?: Function
+    imgClassName?: string
+    childrenClassName?: string
 }
 
-export default function UploadPreview(props: IUploadPreviewProps) {
+export default function UploadPreview({
+    label,
+    type,
+    children,
+    defaultPreview,
+    setFileLink,
+    imgClassName,
+    childrenClassName,
+}: IUploadPreviewProps) {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
-    const [uploadedFileURL, setUploadedFileURL] = useState(props.defaultPreview)
+    const [uploadedFileURL, setUploadedFileURL] = useState(defaultPreview)
     const [showModal, setShowModal] = useState(false)
     const dispatch = useAppDispatch()
 
@@ -31,7 +40,7 @@ export default function UploadPreview(props: IUploadPreviewProps) {
                 dispatch(updateCanSaveCourseState(true))
             },
             onSuccess: (response: UploadOneFileResponse) => {
-                props.setFileLink && props.setFileLink(response.url)
+                setFileLink && setFileLink(response.url)
                 setTimeout(() => dispatch(updateCanSaveCourseState(true)), 1000)
             },
         },
@@ -55,7 +64,7 @@ export default function UploadPreview(props: IUploadPreviewProps) {
     const handleUploadFile = () => {
         const inputFile = document.createElement('input')
         inputFile.type = 'file'
-        inputFile.accept = props.type === 'image' ? 'image/*' : 'video/*'
+        inputFile.accept = type === 'image' ? 'image/*' : 'video/*'
 
         inputFile.click()
 
@@ -74,23 +83,23 @@ export default function UploadPreview(props: IUploadPreviewProps) {
 
     return (
         <div className="space-y-3">
-            <div className="font-bold ml-[25px]">{props.label}</div>
+            <div className="font-bold ml-[25px]">{label}</div>
             <div className="flex">
-                <div className="basis-1/2">
+                <div className={`basis-1/2 ${imgClassName}`}>
                     {isLoading ? (
                         <div className="flex justify-center items-center h-full">
                             <Loading />
                         </div>
                     ) : (
                         <>
-                            {props.type === 'image' && (
+                            {type === 'image' && (
                                 <img
                                     src={uploadedFileURL}
                                     alt="Course image"
                                     className="w-full"
                                 />
                             )}
-                            {props.type === 'video' &&
+                            {type === 'video' &&
                                 (uploadedFileURL ===
                                 '/images/placeholder.jpeg' ? (
                                     <img
@@ -108,8 +117,10 @@ export default function UploadPreview(props: IUploadPreviewProps) {
                         </>
                     )}
                 </div>
-                <div className="basis-1/2 ml-5 space-y-3">
-                    {props.children}
+                <div
+                    className={`basis-1/2 ml-5 space-y-3 ${childrenClassName}`}
+                >
+                    {children}
                     <Button onClick={() => handleUploadFile()}>
                         <div>Upload</div>
                     </Button>

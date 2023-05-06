@@ -33,6 +33,20 @@ interface ICourseDetailContext {
     overviewRating: RatingOverView
     totalRating: number
     courseId: string
+    setCurrentTab: Dispatch<SetStateAction<ViewCourseDetailTab>>
+    currentTab: ViewCourseDetailTab
+}
+
+export type ViewCourseDetailTab =
+    | 'Overview'
+    | 'Curriculum'
+    | 'Instructor'
+    | 'Reviews'
+export enum ViewCourseDetailTabTitle {
+    OVERVIEW = 'Overview',
+    CURRICULUM = 'Curriculum',
+    INSTRUCTOR = 'Instructor',
+    REVIEWS = 'Reviews',
 }
 
 export const CourseDetailContext = createContext<ICourseDetailContext>(
@@ -51,6 +65,10 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const ratings = useAppSelector(getRatings)
     const overviewRating = useAppSelector(getOverViewRatings)
     const totalRating = useAppSelector(getTotalRatings)
+    const [currentTab, setCurrentTab] = useState<ViewCourseDetailTab>(
+        ViewCourseDetailTabTitle.OVERVIEW,
+    )
+
     const { mutate: getCourseDetail, isLoading: isLoadingCourseDetail } =
         useAPI.getMutation(
             LearnerAPI.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
@@ -118,6 +136,8 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 overviewRating,
                 totalRating,
                 courseId,
+                currentTab,
+                setCurrentTab,
             }}
         >
             {children}

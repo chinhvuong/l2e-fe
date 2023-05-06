@@ -1,63 +1,41 @@
-import { useState, useEffect } from 'react'
+import {
+    ViewCourseDetailTabTitle,
+    useCourseDetailContext,
+} from '../course-detail-context'
 
 export interface INavBarProps {}
 
 export default function NavBar() {
-    const menu = ['Overview', 'Curriculum', 'Instructor', 'Reviews']
-    const menuTarget = [
-        'overview-section',
-        'curriculum-section',
-        'instructor-section',
-        'reviews-section',
+    const { currentTab, setCurrentTab } = useCourseDetailContext()
+    const menu = [
+        ViewCourseDetailTabTitle.OVERVIEW,
+        ViewCourseDetailTabTitle.CURRICULUM,
+        ViewCourseDetailTabTitle.INSTRUCTOR,
+        ViewCourseDetailTabTitle.REVIEWS,
     ]
 
-    const [scrollY, setScrollY] = useState(0)
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrollY(window.scrollY)
-        }
-
-        handleScroll()
-
-        window.addEventListener('scroll', handleScroll)
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll)
-        }
-    }, [])
-
-    const navigate = (target: string) => {
-        const el = document.getElementById(target)
-        let screenPosition
-        if (el) {
-            screenPosition = el.getBoundingClientRect()
-        }
-        if (screenPosition?.y) {
-            window.scrollBy({
-                top: screenPosition?.y - 60,
-                behavior: 'smooth',
-            })
-        }
-    }
-
     return (
-        <div
-            className={`flex justify-around bg-white drop-shadow-lg	 ${
-                scrollY <= 1200 ? 'hidden' : 'sticky z-20 under_2xl:top-0'
-            }`}
-        >
-            {menu.map((item, index) => {
-                return (
-                    <div
-                        className="text-hyperlink font-bold cursor-pointer py-3 under_lg:text-xs"
-                        key={index}
-                        onClick={() => navigate(menuTarget[index])}
-                    >
-                        {item}
-                    </div>
-                )
-            })}
+        <div className="2xl:flex 2xl:justify-center w-full bg-white drop-shadow-lg">
+            <div className="2xl:flex 2xl:w-[1250px] 2xl:justify-between">
+                <div className="flex justify-around 2xl:w-[820px] mx-8">
+                    {menu.map((item, index) => {
+                        return (
+                            <div
+                                className={`font-bold cursor-pointer py-3 under_lg:text-xs ${
+                                    currentTab === item
+                                        ? 'border-b-2 border-hyperlink text-hyperlink'
+                                        : 'text-description'
+                                }`}
+                                key={index}
+                                onClick={() => setCurrentTab(item)}
+                            >
+                                {item}
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className="w-[0px] 2xl:w-[320px]"></div>
+            </div>
         </div>
     )
 }

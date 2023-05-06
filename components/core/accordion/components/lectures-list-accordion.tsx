@@ -56,9 +56,7 @@ export default function LecturesListAccordion(
                             icon={faCirclePlay}
                             className="pt-1 px-6"
                         />
-                        <div className="text-hyperlink underline underline-offset-4">
-                            {data.name}
-                        </div>
+                        <div>{data.name}</div>
                     </div>
                     <div className="text-description">{data.length}</div>
                 </div>

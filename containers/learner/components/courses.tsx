@@ -10,6 +10,7 @@ import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScre
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import Search from '../../instructor/components/search'
+import Pagination from '@/components/core/pagination'
 
 export default function LearnerCoursesContainer() {
     const [isCourseClicked, setIsCourseClicked] = useState<boolean>(false)
@@ -18,6 +19,9 @@ export default function LearnerCoursesContainer() {
         {} as GetAllCoursesResponse,
     )
     const [sortBy, setSortBy] = useState<string>('')
+    const [pageNumber, setPageNumber] = useState(1)
+    const limit = 10
+    const [totalPage, setTotalPage] = useState(1)
     const router = useRouter()
 
     const getSortParams = () => {
@@ -39,23 +43,24 @@ export default function LearnerCoursesContainer() {
 
     const { mutate: getAllMyCourses, isLoading: isLoadingAllMyCourses } =
         useAPI.getMutation(
-            `${LearnerAPI.GET_ALL_MY_ENROLL_COURSES}${
-                search !== '' ? '?query=' + search : ''
-            }${
-                sortBy !== ''
-                    ? (search === '' ? '?' : '&') + 'sort=' + getSortParams()
-                    : ''
+            `${LearnerAPI.GET_ALL_MY_ENROLL_COURSES}?page=${
+                pageNumber - 1
+            }&limit=${limit}${search !== '' ? '&query=' + search : ''}${
+                sortBy !== '' ? '&sort=' + getSortParams() : ''
             }`,
             {
                 onError: () => {},
                 onSuccess: (response) => {
                     setAllMyCourses(response)
+                    setTotalPage(Math.ceil(response.total / limit))
                 },
             },
         )
 
     const changeURL = () => {
         const newQuery: any = {}
+        newQuery.page = pageNumber
+        newQuery.limit = limit
         if (search !== '') {
             newQuery.query = search
         }
@@ -75,7 +80,7 @@ export default function LearnerCoursesContainer() {
     useEffect(() => {
         getAllMyCourses({})
         changeURL()
-    }, [search, sortBy])
+    }, [search, sortBy, pageNumber])
 
     useHideFirstEnterLoadingScreen()
 
@@ -153,6 +158,10 @@ export default function LearnerCoursesContainer() {
                         </div>
                     </div>
                 )}
+                <Pagination
+                    totalPage={totalPage}
+                    setPageNumber={setPageNumber}
+                />
             </div>
         </>
     )

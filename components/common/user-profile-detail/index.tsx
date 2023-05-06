@@ -22,8 +22,6 @@ export default function UserProfileDetail({
     className,
     showShortDescription = false,
 }: IUserProfileDetailProps) {
-    const [showMore, setShowMore] = useState(false)
-
     const convertStringToHTML = () => {
         if (data.bio) {
             const element = document.getElementById('instructor-bio-content')
@@ -61,7 +59,6 @@ export default function UserProfileDetail({
     useEffect(() => {
         if (data && data.bio) {
             convertStringToHTML()
-            setShowMore(true)
         }
     }, [data])
 
@@ -120,7 +117,6 @@ export default function UserProfileDetail({
                 <div className="text-justify space-y-3">
                     {data?.bio && getUIContent(data?.bio)}
                 </div>
-                {showMore && <ShowMore el="instructor" elHeightPreview={400} />}
             </div>
         </>
     )

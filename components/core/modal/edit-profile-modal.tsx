@@ -2,11 +2,12 @@ import Hyperlink from '@/containers/create-course/components/hyperlink'
 import { useUpdateProfileContext } from '@/containers/profile/update-profile-context'
 import { User } from '@/store/user/types'
 import { ContentState, EditorState, convertFromHTML } from 'draft-js'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Button from '../button'
 import Input from '../input'
 import RichTextEditor from '../rich-text-editor'
 import UploadPreview from '../upload-preview'
+import './style.scss'
 interface IProfileModalProps {
     isShow: boolean
     setIsShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -24,6 +25,9 @@ export default function EditProfileModal(props: IProfileModalProps) {
         title: '',
         avatar: '',
     } as User)
+
+    const modalContent = useRef<HTMLDivElement>(null)
+
     useEffect(() => {
         setShowModal(isShow)
         if (props.userInfo._id !== undefined) {
@@ -178,19 +182,40 @@ export default function EditProfileModal(props: IProfileModalProps) {
         }
     }
 
+    const isOverflowY = () => {
+        if (modalContent && modalContent.current) {
+            return (
+                modalContent.current.scrollHeight !==
+                Math.max(
+                    modalContent.current.offsetHeight,
+                    modalContent.current.clientHeight,
+                )
+            )
+        }
+    }
+
     return (
         <>
             {showModal ? (
                 <>
-                    <div
-                        className="w-full h-full flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                        tabIndex={-1}
-                    >
-                        <div className="relative w-auto my-6 mx-auto max-w-2xl">
-                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                <div className="flex items-center justify-between p-5">
-                                    <div className="item-center py-5 px-7">
-                                        <div className="py-5 space-y-5">
+                    <div className="flex justify-center items-center fixed inset-0 z-40 outline-none focus:outline-none">
+                        <div className="relative">
+                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none pt-5">
+                                <div
+                                    className={`${
+                                        isOverflowY()
+                                            ? 'py-10 pl-10 pr-5'
+                                            : 'p-10'
+                                    }`}
+                                >
+                                    <div
+                                        className={`space-y-5 max-w-3xl max-h-[500px] ${
+                                            isOverflowY() &&
+                                            'overflow-y-scroll scrollbar pr-5'
+                                        }`}
+                                        ref={modalContent}
+                                    >
+                                        <div className="pb-5 space-y-5">
                                             <div>
                                                 <Input
                                                     id="your-name"
@@ -221,6 +246,8 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                         setFileLink={
                                                             handleAvatarChange
                                                         }
+                                                        imgClassName="basis-1/4"
+                                                        childrenClassName="basis-3/4"
                                                     >
                                                         <div>
                                                             <span>
@@ -311,7 +338,7 @@ export default function EditProfileModal(props: IProfileModalProps) {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gray-700 bg-opacity-50 fixed inset-0 z-40"></div>
+                    <div className="bg-gray-700 bg-opacity-50 fixed inset-0 z-30"></div>
                 </>
             ) : null}
         </>

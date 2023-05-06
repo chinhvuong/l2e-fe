@@ -8,7 +8,7 @@ export interface IRequirementProps {}
 
 export default function Requirement() {
     const { data } = useCourseDetailContext()
-    const requirements = data.requirements
+    const requirements = data?.requirements
 
     return (
         <>
@@ -29,7 +29,6 @@ export default function Requirement() {
                             </div>
                         )
                     })}
-                    <ShowMore el="requirement" elHeightPreview={400} />
                 </div>
             )}
         </>

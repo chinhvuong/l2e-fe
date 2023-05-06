@@ -57,6 +57,8 @@ const SearchPageContainer = () => {
 
     const changeURL = () => {
         const newQuery: any = {}
+        newQuery.page = pageNumber
+        newQuery.limit = limit
         if (router.query.query !== '') {
             newQuery.query = router.query.query
         }
@@ -79,7 +81,7 @@ const SearchPageContainer = () => {
         getAllMyCourses({})
         changeURL()
         dispatch(updateLoadingState(false))
-    }, [sortBy, router.query.query])
+    }, [sortBy, router.query.query, pageNumber])
 
     const handleSortChange = (value: string) => {
         setSortBy(value)

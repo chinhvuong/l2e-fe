@@ -34,6 +34,18 @@ export default function CourseContent({ sections }: ICourseContentProps) {
         )
     }
 
+    const getCurriculumDescription = (
+        curriculum: CourseSectionWithLectures[],
+    ) => {
+        let totalLessons = 0
+        curriculum.forEach((section) => {
+            totalLessons += section.lessons.length
+        })
+        return `${sections.length} ${
+            sections.length < 2 ? 'section' : 'sections'
+        } • ${totalLessons} ${totalLessons < 2 ? 'lecture' : 'lectures'}`
+    }
+
     if (!sections) {
         return <></>
     }
@@ -44,7 +56,7 @@ export default function CourseContent({ sections }: ICourseContentProps) {
             <div
                 className={`flex justify-between my-4 under_lg:block under_lg:space-y-1`}
             >
-                <div>101 sections • 676 lectures • 64h 2m total length</div>
+                <div>{getCurriculumDescription(sections)}</div>
                 <div
                     className="text-hyperlink font-bold cursor-pointer"
                     onClick={() => setExpandAllSections(!expandAllSections)}

@@ -38,8 +38,8 @@ export default function CourseLabel() {
 
     return (
         <div
-            className={`h-[80px] w-full bg-black z-20 py-3 px-[30px] 2xl:top-0 under_2xl:bottom-0 under_2xl:fixed ${
-                scrollY <= 500 ? 'hidden' : 'sticky'
+            className={`h-[80px] w-full bg-black z-20 py-3 px-[30px] 2xl:-top-1 under_2xl:bottom-0 under_2xl:fixed ${
+                scrollY <= 600 ? 'hidden' : 'sticky'
             } under_lg:hidden`}
         >
             <div className="flex items-center justify-between">

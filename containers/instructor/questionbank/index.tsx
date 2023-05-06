@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import CreateQuestionModal from './create-question/create-question-form'
 import Title from '@/containers/create-course/components/title'
+import Pagination from '@/components/core/pagination'
 
 export enum QuestionBankTitle {
     LIST = 'Questions',
@@ -157,6 +158,12 @@ export default function QuestionBankContainers() {
                             </div>
                         </div>
                     ))}
+                    <div className="py-3 pr-3">
+                        <Pagination
+                            totalPage={totalPage}
+                            setPageNumber={setPageNumber}
+                        />
+                    </div>
                 </div>
             ) : (
                 <CreateQuestionModal changeMode={setMode} />

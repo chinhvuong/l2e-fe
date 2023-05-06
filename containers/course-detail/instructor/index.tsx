@@ -8,9 +8,6 @@ export default function Instructor() {
         <>
             {instructor && (
                 <div id="instructor-section">
-                    <div className="font-semibold text-[26px] mb-3">
-                        Instructor
-                    </div>
                     <UserProfileDetail data={instructor} />
                 </div>
             )}

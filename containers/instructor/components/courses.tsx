@@ -112,6 +112,8 @@ export default function InstructorCoursesContainer() {
 
     const changeURL = () => {
         const newQuery: any = {}
+        newQuery.page = pageNumber
+        newQuery.limit = limit
         if (search !== '') {
             newQuery.query = search
         }

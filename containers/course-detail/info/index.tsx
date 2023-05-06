@@ -1,20 +1,19 @@
 import { LearnerAPI } from '@/api/api-path'
-import { callAPI } from '@/api/axios-client'
-import Breadcrumb from '@/components/core/breadcrumb'
+import useAPI from '@/api/hooks/useAPI'
 import Label from '@/components/core/label'
 import VideoModal from '@/components/core/modal/video-modal'
 import RatingStar from '@/components/core/rating-star'
-import Hyperlink from '@/containers/create-course/components/hyperlink'
 import { useAppDispatch } from '@/hooks'
 import { updateEnrollStatus, updateLoadingState } from '@/store/course'
 import { getLoginState } from '@/store/user/selectors'
 import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
+import Router from 'next/router'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Sidebar from '../components/sidebar'
 import { useCourseDetailContext } from '../course-detail-context'
-import Router from 'next/router'
 
 type Category = {
     name: string
@@ -27,38 +26,42 @@ export default function CourseInfo() {
     const loginState = useSelector(getLoginState)
     const [showModal, setShowModal] = useState(false)
     const dispatch = useAppDispatch()
-    const breadcrumb = [
-        {
-            text: 'Home',
-            href: '/',
-        },
-        {
-            text: 'About Us',
-            href: '/about-us',
-        },
-    ]
+    const [scrollY, setScrollY] = useState(0)
+
     useEffect(() => {
-        const f = async () => {
-            try {
-                const isEnr = await callAPI(
-                    'get',
-                    LearnerAPI.CHECK_ENROLL + data._id,
-                    {},
-                )
-                dispatch(updateEnrollStatus(isEnr.enroll))
-            } catch (error) {
-                console.log('🚀 ~ file: index.tsx:41 ~ f ~ error', error)
-            }
+        const handleScroll = () => {
+            setScrollY(window.scrollY)
         }
+
+        handleScroll()
+
+        window.addEventListener('scroll', handleScroll)
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
+    }, [])
+
+    const { mutate: checkEnrollState, isLoading: isLoadingCheckEnrollState } =
+        useAPI.getMutation(LearnerAPI.CHECK_ENROLL + data?._id ?? '', {
+            onError: noop,
+            onSuccess(response) {
+                dispatch(updateEnrollStatus(response.enroll))
+            },
+        })
+
+    useEffect(() => {
         if (data && data._id) {
-            f()
+            checkEnrollState({})
         }
     }, [loginState, data])
 
     const getLastUpdated = () => {
-        return `Last updated ${
-            new Date(data.updatedAt).getMonth() + 1
-        }/${new Date(data.updatedAt).getFullYear()}`
+        return data
+            ? `Last updated ${
+                  new Date(data.updatedAt).getMonth() + 1
+              }/${new Date(data.updatedAt).getFullYear()}`
+            : ''
     }
 
     const goToUserDetailPage = () => {
@@ -80,10 +83,7 @@ export default function CourseInfo() {
         <div className="bg-black flex justify-center" id="overview-section">
             <div className="2xl:w-[1250px] lg:w-[700px] px-8 under_lg:px-0 py-10 flex justify-between relative">
                 {data ? (
-                    <div className="w-[800px] under_lg:w-full text-white">
-                        {/* <div className="under_lg:px-8">
-                        <Breadcrumb data={breadcrumb} />
-                    </div> */}
+                    <div className="w-[820px] under_lg:w-full text-white">
                         <div className="2xl:hidden">
                             {data.promotionalVideo && (
                                 <VideoModal
@@ -101,9 +101,6 @@ export default function CourseInfo() {
                             <div className="text-[20px]">{data.overview}</div>
                             <div className="flex items-center flex-wrap">
                                 <div className="flex items-center space-x-4 mr-4 my-2">
-                                    {/* {data.isBestseller && (
-                                    <Label name="Bestseller" />
-                                )} */}
                                     {category && (
                                         <Label
                                             name={category.name}
@@ -169,17 +166,10 @@ export default function CourseInfo() {
                                     </div>
                                 </div>
                             </div>
-                            {/* <PriceEnrollShare
-                            price={data.price}
-                            className="2xl:hidden"
-                            _id={data._id}
-                            courseId={data.courseId}
-
-                        /> */}
                         </div>
                     </div>
                 ) : (
-                    <div className="w-[800px] under_lg:w-full text-white">
+                    <div className="w-[820px] under_lg:w-full text-white">
                         <div className="animate-pulse flex space-x-4 w-[90%] py-6">
                             <div className="flex-1 space-y-6">
                                 <div className="h-2 bg-slate-700 rounded w-full"></div>
@@ -195,7 +185,13 @@ export default function CourseInfo() {
                         </div>
                     </div>
                 )}
-                <Sidebar />
+                <div
+                    className={`under_2xl:hidden bg-white z-20 h-fit drop-shadow-xl ${
+                        scrollY > 600 ? 'hidden' : 'absolute right-0'
+                    }`}
+                >
+                    <Sidebar />
+                </div>
             </div>
         </div>
     )

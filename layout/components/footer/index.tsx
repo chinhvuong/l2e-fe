@@ -18,7 +18,7 @@ const Footer = () => {
     }
 
     return (
-        <div className="space-y-10">
+        <div className="space-y-10 mt-10">
             <div className="mt-10 mx-10 xl:mx-[150px] md:mx-[10px] sm:mx-[50px]">
                 <div className="text-center text-description font-medium text-lg py-10">
                     Trusted by 5,000+ Companies Worldwide
