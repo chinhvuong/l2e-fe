@@ -1,7 +1,7 @@
 import { InstructorAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
 import useAPI from '@/api/hooks/useAPI'
-import { COURSE_ID, QUESTION_ID, QUIZ_ID } from '@/constants/localStorage'
+import { COURSE_ID } from '@/constants/localStorage'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import {
     updateCourseDetail,
@@ -37,8 +37,17 @@ import { UpdateQuizzesState } from '@/store/quiz'
 import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
 import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
 import { UseMutateFunction } from '@tanstack/react-query'
-import { ContentState, convertFromHTML, EditorState } from 'draft-js'
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { ContentState, EditorState, convertFromHTML } from 'draft-js'
+import { useRouter } from 'next/router'
+import {
+    Dispatch,
+    SetStateAction,
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 interface ICreateCourseContext {
     isLoading: boolean
     getCourseDetail: UseMutateFunction<unknown, any, object, unknown>
@@ -54,6 +63,12 @@ interface ICreateCourseContext {
     quizDetail: QuizDetailType
     questionDetail: QuestionDetailType
     chosenFinalTest: QuizSelectType
+    setSearchQuestions: Dispatch<SetStateAction<string>>
+    setSearchQuizzes: Dispatch<SetStateAction<string>>
+    setPageNumberQuestions: Dispatch<SetStateAction<number>>
+    setPageNumberQuizzes: Dispatch<SetStateAction<number>>
+    totalPageQuestions: number
+    totalPageQuizzes: number
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>(
@@ -74,6 +89,49 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const quizzezDetail = useAppSelector(getQuizzez)
     const quizDetail = useAppSelector(getQuizDetailInfo)
     const questionDetail = useAppSelector(getQuestionDetailInfo)
+    const [searchQuestions, setSearchQuestions] = useState('')
+    const [pageNumberQuestions, setPageNumberQuestions] = useState(1)
+    const [searchQuizzes, setSearchQuizzes] = useState('')
+    const [pageNumberQuizzes, setPageNumberQuizzes] = useState(1)
+    const limit = 10
+    const [totalPageQuestions, setTotalPageQuestions] = useState(1)
+    const [totalPageQuizzes, setTotalPageQuizzes] = useState(1)
+    const router = useRouter()
+
+    const changeURLQuestions = () => {
+        const newQuery: any = {}
+        newQuery.page = setSearchQuestions
+        newQuery.limit = limit
+        if (searchQuestions !== '') {
+            newQuery.query = searchQuestions
+        }
+        console.log('router.asPath', router)
+        router.push(
+            {
+                pathname: router.pathname.replace('[slug]', courseId),
+                query: newQuery,
+            },
+            undefined,
+            { shallow: true },
+        )
+    }
+
+    const changeURLQuizzes = () => {
+        const newQuery: any = {}
+        newQuery.page = setSearchQuizzes
+        newQuery.limit = limit
+        if (searchQuizzes !== '') {
+            newQuery.query = searchQuizzes
+        }
+        router.push(
+            {
+                pathname: router.pathname.replace('[slug]', courseId),
+                query: newQuery,
+            },
+            undefined,
+            { shallow: true },
+        )
+    }
 
     const { mutate: updateCourse, isLoading: isLoadingUpdateCourse } =
         useAPI.put(InstructorAPI.UPDATE_COURSE + courseDetail._id, {
@@ -135,21 +193,31 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         )
     const { mutate: getQuizzesList, isLoading: isLoadingQuizzesList } =
         useAPI.getMutation(
-            InstructorAPI.GET_QUIZZES + '?courseId=' + courseId,
+            `${InstructorAPI.GET_QUIZZES}?courseId=${courseId}&page=${
+                pageNumberQuizzes - 1
+            }&limit=${limit}${
+                searchQuizzes !== '' ? '&query=' + searchQuizzes : ''
+            }`,
             {
                 onError: () => {},
                 onSuccess: (response) => {
                     dispatch(UpdateQuizzesState(response?.data))
+                    setTotalPageQuizzes(Math.ceil(response.total / limit))
                 },
             },
         )
     const { mutate: getQuestionsList, isLoading: isLoadingQuestionsList } =
         useAPI.getMutation(
-            InstructorAPI.GET_QUESTIONS + '?courseId=' + courseId,
+            `${InstructorAPI.GET_QUESTIONS}?courseId=${courseId}&page=${
+                pageNumberQuestions - 1
+            }&limit=${limit}${
+                searchQuestions !== '' ? '&query=' + searchQuestions : ''
+            }`,
             {
                 onError: () => {},
                 onSuccess: (response) => {
                     dispatch(UpdateAllQuestionState(response?.data))
+                    setTotalPageQuestions(Math.ceil(response.total / limit))
                 },
             },
         )
@@ -224,11 +292,37 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         } else {
             if (localStorage.getItem(COURSE_ID) !== null) {
                 getCourseDetail({})
-                getQuestionsList({})
-                getQuizzesList({})
             }
         }
     }, [courseId])
+
+    useEffect(() => {
+        if (courseId !== localStorage.getItem(COURSE_ID)) {
+            setCourseId(localStorage.getItem(COURSE_ID) ?? '')
+        } else {
+            if (
+                localStorage.getItem(COURSE_ID) !== null &&
+                router.pathname.includes('question')
+            ) {
+                getQuestionsList({})
+                changeURLQuestions()
+            }
+        }
+    }, [searchQuestions, pageNumberQuestions, courseId, router.pathname])
+
+    useEffect(() => {
+        if (courseId !== localStorage.getItem(COURSE_ID)) {
+            setCourseId(localStorage.getItem(COURSE_ID) ?? '')
+        } else {
+            if (
+                localStorage.getItem(COURSE_ID) !== null &&
+                router.pathname.includes('quiz')
+            ) {
+                getQuizzesList({})
+                changeURLQuizzes()
+            }
+        }
+    }, [searchQuizzes, pageNumberQuizzes, courseId, router.pathname])
 
     const isLoading = useMemo(() => {
         return (
@@ -237,7 +331,8 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             isLoadingGetSections ||
             isLoadingUpsertSections ||
             isLoadingCurriculum ||
-            isLoadingQuizzesList
+            isLoadingQuizzesList ||
+            isLoadingQuestionsList
         )
     }, [
         isLoadingUpdateCourse,
@@ -246,6 +341,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         isLoadingUpsertSections,
         isLoadingCurriculum,
         isLoadingQuizzesList,
+        isLoadingQuestionsList,
     ])
 
     return (
@@ -265,6 +361,12 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 quizDetail,
                 questionDetail,
                 chosenFinalTest,
+                setSearchQuestions,
+                setSearchQuizzes,
+                setPageNumberQuestions,
+                setPageNumberQuizzes,
+                totalPageQuestions,
+                totalPageQuizzes,
             }}
         >
             {children}

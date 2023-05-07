@@ -4,7 +4,9 @@ import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import QuestionModal from '@/components/core/modal/question-modal'
+import Pagination from '@/components/core/pagination'
 import { QUESTION_ID } from '@/constants/localStorage'
+import Title from '@/containers/create-course/components/title'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import { useAppDispatch } from '@/hooks'
 import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
@@ -16,9 +18,8 @@ import { QuestionDetailType } from '@/store/questions/types'
 import { faEdit, faEye, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
+import Search from '../components/search'
 import CreateQuestionModal from './create-question/create-question-form'
-import Title from '@/containers/create-course/components/title'
-import Pagination from '@/components/core/pagination'
 
 export enum QuestionBankTitle {
     LIST = 'Questions',
@@ -27,7 +28,13 @@ export enum QuestionBankTitle {
 }
 
 export default function QuestionBankContainers() {
-    const { questionListsDetail, getQuestionsList } = useCreateCourseContext()
+    const {
+        questionListsDetail,
+        getQuestionsList,
+        setSearchQuestions,
+        setPageNumberQuestions,
+        totalPageQuestions,
+    } = useCreateCourseContext()
     const [isLoading, setIsLoading] = useState(true)
     const dispatch = useAppDispatch()
     const [showViewQuestionModal, setShowViewQuestionModal] = useState(false)
@@ -43,7 +50,7 @@ export default function QuestionBankContainers() {
     const { mutate: deleteQuestion, isLoading: isLoadingDeleteQuestion } =
         useAPI.delete(InstructorAPI.DELETE_QUESTION + questionId, {
             onError: () => {},
-            onSuccess: (response) => {
+            onSuccess: () => {
                 getQuestionsList({})
                 setDelete(false)
                 setQuestionId('')
@@ -125,46 +132,60 @@ export default function QuestionBankContainers() {
                 )}
             </Title>
             {mode === QuestionBankTitle.LIST ? (
-                <div className="grid grid-cols-1 divide-y divide-gray-300">
-                    {questionListsDetail?.map((item, index) => (
-                        <div
-                            key={index}
-                            className="flex justify-between items-center hover:bg-gray-300 px-10 py-3 cursor-pointer"
-                            onClick={() => chosenQuestions(index)}
-                        >
-                            <div className="text-black line-clamp-2 pr-5">
-                                {item.question}
+                <>
+                    <Search
+                        darkTheme={false}
+                        setSearch={setSearchQuestions}
+                        className="mx-10 my-5"
+                    />
+                    <div className="grid grid-cols-1">
+                        {questionListsDetail?.map((item, index) => (
+                            <div
+                                key={index}
+                                className="flex justify-between items-center hover:bg-gray-300 px-10 py-3 cursor-pointer border-t border-gray-300"
+                                onClick={() => chosenQuestions(index)}
+                            >
+                                <div className="text-black line-clamp-2 pr-5">
+                                    {item.question}
+                                </div>
+                                <div className="flex items-center space-x-5">
+                                    <FontAwesomeIcon
+                                        onClick={() =>
+                                            handleOpenViewQuestionModal(item)
+                                        }
+                                        className="cursor-pointer h-6 items-center text-black mt-0.5"
+                                        icon={faEye}
+                                    />
+                                    <FontAwesomeIcon
+                                        onClick={() =>
+                                            goToEditQuestionMode(index)
+                                        }
+                                        className="cursor-pointer h-6 items-center text-black"
+                                        icon={faEdit}
+                                    />
+                                    <FontAwesomeIcon
+                                        onClick={() =>
+                                            handleOpenDeleteConfirmModal(index)
+                                        }
+                                        className="cursor-pointer h-6 items-center text-black"
+                                        icon={faTrashCan}
+                                    />
+                                </div>
                             </div>
-                            <div className="flex items-center space-x-5">
-                                <FontAwesomeIcon
-                                    onClick={() =>
-                                        handleOpenViewQuestionModal(item)
-                                    }
-                                    className="cursor-pointer h-6 items-center text-black mt-0.5"
-                                    icon={faEye}
-                                />
-                                <FontAwesomeIcon
-                                    onClick={() => goToEditQuestionMode(index)}
-                                    className="cursor-pointer h-6 items-center text-black"
-                                    icon={faEdit}
-                                />
-                                <FontAwesomeIcon
-                                    onClick={() =>
-                                        handleOpenDeleteConfirmModal(index)
-                                    }
-                                    className="cursor-pointer h-6 items-center text-black"
-                                    icon={faTrashCan}
-                                />
+                        ))}
+                        {questionListsDetail.length === 0 && (
+                            <div className="flex justify-center text-xl font-bold mt-5">
+                                No results found.
                             </div>
-                        </div>
-                    ))}
+                        )}
+                    </div>
                     <div className="py-3 pr-3">
                         <Pagination
-                            totalPage={totalPage}
-                            setPageNumber={setPageNumber}
+                            totalPage={totalPageQuestions}
+                            setPageNumber={setPageNumberQuestions}
                         />
                     </div>
-                </div>
+                </>
             ) : (
                 <CreateQuestionModal changeMode={setMode} />
             )}
