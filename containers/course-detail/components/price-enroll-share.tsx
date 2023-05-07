@@ -19,7 +19,7 @@ export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
         if (
             String(address).toLowerCase() !==
                 data.author.walletAddress.toLowerCase() ||
-            String(address).toLowerCase() !== data.owner
+            String(address).toLowerCase() !== data.owner.toLowerCase()
         ) {
             return true
         } else {
