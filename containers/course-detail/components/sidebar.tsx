@@ -5,13 +5,15 @@ import { useState } from 'react'
 import { useCourseDetailContext } from '../course-detail-context'
 import IncludeList from './include-list'
 import PriceEnrollShare from './price-enroll-share'
+import { useSelector } from 'react-redux'
+import { getLoginState } from '@/store/user/selectors'
 
 export interface ISidebarProps {}
 
 export default function Sidebar() {
     const { data } = useCourseDetailContext()
     const [showModal, setShowModal] = useState(false)
-
+    const loginState = useSelector(getLoginState)
     return (
         <div className="w-[320px]">
             {data ? (
@@ -34,7 +36,7 @@ export default function Sidebar() {
                         )}
                         <div className="space-y-4 mt-4 pb-6">
                             <div className="mx-7 space-y-3">
-                                <PriceEnrollShare data={data} />
+                                {loginState && <PriceEnrollShare data={data} />}
                                 {dataCourses_detail.include && (
                                     <IncludeList
                                         data={dataCourses_detail.include}

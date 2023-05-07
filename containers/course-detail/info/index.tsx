@@ -50,12 +50,6 @@ export default function CourseInfo() {
             },
         })
 
-    useEffect(() => {
-        if (data && data._id) {
-            checkEnrollState({})
-        }
-    }, [loginState, data])
-
     const getLastUpdated = () => {
         return data
             ? `Last updated ${
@@ -66,10 +60,13 @@ export default function CourseInfo() {
 
     const goToUserDetailPage = () => {
         dispatch(updateLoadingState(true))
-        Router.push('/user/1')
+        Router.push('/user/' + data?.author._id)
     }
 
     useEffect(() => {
+        if (data && data._id && loginState) {
+            checkEnrollState({})
+        }
         if (data) {
             const courseCategory = {
                 name: data?.category?.name,
@@ -77,7 +74,7 @@ export default function CourseInfo() {
             }
             setCategory(courseCategory)
         }
-    }, [data])
+    }, [loginState, data])
 
     return (
         <div className="bg-black flex justify-center" id="overview-section">

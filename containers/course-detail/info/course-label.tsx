@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import EnrollBtn from '../components/enroll-btn'
 import { useCourseDetailContext } from '../course-detail-context'
 import Router from 'next/router'
+import { useAccount } from 'wagmi'
 
 export interface ICourseLabelProps {}
 
@@ -17,7 +18,20 @@ export default function CourseLabel() {
     const [scrollY, setScrollY] = useState(0)
     const { data } = useCourseDetailContext()
     const isEnroll = useSelector(getEnrollStatusState)
-
+    const { address } = useAccount()
+    const canEnroll = () => {
+        if (data !== undefined) {
+            if (
+                String(address).toLowerCase() !==
+                    data.author.walletAddress.toLowerCase() ||
+                String(address).toLowerCase() !== data.owner
+            ) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
     useEffect(() => {
         const handleScroll = () => {
             setScrollY(window.scrollY)
@@ -81,7 +95,7 @@ export default function CourseLabel() {
                     <div className="font-semibold text-[24px] text-white">
                         {data.price} USDT
                     </div>
-                    {data.author.walletAddress !== data.owner &&
+                    {canEnroll() &&
                         (isEnroll ? (
                             <Button
                                 className="btn-primary under_lg:w-full"
