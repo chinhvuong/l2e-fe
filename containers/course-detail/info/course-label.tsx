@@ -23,7 +23,7 @@ export default function CourseLabel() {
         if (data !== undefined) {
             if (
                 String(address).toLowerCase() !==
-                    data.author.walletAddress.toLowerCase() ||
+                    data.author.walletAddress.toLowerCase() &&
                 String(address).toLowerCase() !== data.owner.toLowerCase()
             ) {
                 return true

@@ -18,7 +18,7 @@ export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
     const canEnroll = () => {
         if (
             String(address).toLowerCase() !==
-                data.author.walletAddress.toLowerCase() ||
+                data.author.walletAddress.toLowerCase() &&
             String(address).toLowerCase() !== data.owner.toLowerCase()
         ) {
             return true
