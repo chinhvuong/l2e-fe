@@ -115,49 +115,44 @@ export default function LearnerCoursesContainer() {
                         />
                     </div>
                 </div>
-                {isLoading ||
-                (allMyCourses &&
-                    allMyCourses?.data &&
-                    allMyCourses.data.length === 0) ? (
-                    <div className="text-2xl text-center font-semibold pt-12">
-                        No courses found.
-                    </div>
-                ) : (
-                    <div className="space-x-10">
-                        <div>
-                            {!isLoading &&
-                                allMyCourses &&
-                                allMyCourses?.data &&
-                                allMyCourses.data.map(
-                                    (course: CoursePreview, index: number) => {
-                                        return (
-                                            <div
-                                                key={course._id}
-                                                className={`${
-                                                    index ===
-                                                        allMyCourses.data
-                                                            .length -
-                                                            1 && 'pb-6'
-                                                }`}
-                                            >
-                                                <HorizontalCourseCard
-                                                    key={course._id}
-                                                    data={course}
-                                                    clickMode={'view'}
-                                                    setClicked={
-                                                        setIsCourseClicked
-                                                    }
-                                                />
-                                                {index !==
+                <div className="space-x-10">
+                    <div>
+                        {!isLoading &&
+                            allMyCourses &&
+                            allMyCourses?.data &&
+                            allMyCourses.data.map(
+                                (course: CoursePreview, index: number) => {
+                                    return (
+                                        <div
+                                            key={course._id}
+                                            className={`${
+                                                index ===
                                                     allMyCourses.data.length -
-                                                        1 && <Divider />}
-                                            </div>
-                                        )
-                                    },
-                                )}
-                        </div>
+                                                        1 && 'pb-6'
+                                            }`}
+                                        >
+                                            <HorizontalCourseCard
+                                                key={course._id}
+                                                data={course}
+                                                clickMode={'view'}
+                                                setClicked={setIsCourseClicked}
+                                            />
+                                            {index !==
+                                                allMyCourses.data.length -
+                                                    1 && <Divider />}
+                                        </div>
+                                    )
+                                },
+                            )}
                     </div>
-                )}
+                    {allMyCourses &&
+                        allMyCourses?.data &&
+                        allMyCourses.data.length === 0 && (
+                            <div className="flex justify-center text-xl font-bold my-10">
+                                No results found.
+                            </div>
+                        )}
+                </div>
                 <Pagination
                     totalPage={totalPage}
                     setPageNumber={setPageNumber}

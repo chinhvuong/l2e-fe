@@ -16,6 +16,8 @@ import { useEffect, useState } from 'react'
 import CreateQuizModal from '../quiz/create-quiz'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import '@/components/core/modal/style.scss'
+import Search from '../components/search'
+import Pagination from '@/components/core/pagination'
 
 export enum QuizTitle {
     LIST = 'Quizzes',
@@ -24,7 +26,13 @@ export enum QuizTitle {
 }
 
 export default function QuizContainer() {
-    const { quizzezDetail, getQuizzesList } = useCreateCourseContext()
+    const {
+        quizzezDetail,
+        getQuizzesList,
+        setSearchQuizzes,
+        setPageNumberQuizzes,
+        totalPageQuizzes,
+    } = useCreateCourseContext()
     const [isLoading, setIsLoading] = useState(true)
     const dispatch = useAppDispatch()
     const [showViewQuizModal, setShowViewQuizModal] = useState(false)
@@ -123,40 +131,58 @@ export default function QuizContainer() {
                 )}
             </Title>
             {mode === QuizTitle.LIST ? (
-                <div className="grid grid-cols-1 divide-y divide-gray-300">
-                    {quizzezDetail?.map((item, index) => (
-                        <div
-                            key={index}
-                            className="flex justify-between items-center hover:bg-gray-300 px-10 py-3 cursor-pointer"
-                            onClick={() => chosenQuiz(index)}
-                        >
-                            <div className="text-black line-clamp-2">
-                                {item.name}
+                <>
+                    <Search
+                        darkTheme={false}
+                        setSearch={setSearchQuizzes}
+                        className="mx-10 my-5"
+                    />
+                    <div className="grid grid-cols-1 divide-y divide-gray-300">
+                        {quizzezDetail?.map((item, index) => (
+                            <div
+                                key={index}
+                                className="flex justify-between items-center hover:bg-gray-300 px-10 py-3 cursor-pointer"
+                                onClick={() => chosenQuiz(index)}
+                            >
+                                <div className="text-black line-clamp-2">
+                                    {item.name}
+                                </div>
+                                <div className="flex items-center space-x-5">
+                                    <FontAwesomeIcon
+                                        onClick={() =>
+                                            handleOpenViewQuizModal(item)
+                                        }
+                                        className="cursor-pointer h-6 items-center text-black mt-0.5"
+                                        icon={faEye}
+                                    />
+                                    <FontAwesomeIcon
+                                        onClick={() => goToEditQuizMode(index)}
+                                        className="cursor-pointer h-6 items-center text-black"
+                                        icon={faEdit}
+                                    />
+                                    <FontAwesomeIcon
+                                        onClick={() =>
+                                            handleOpenDeleteConfirmModal(index)
+                                        }
+                                        className="cursor-pointer h-6 items-center text-black"
+                                        icon={faTrashCan}
+                                    />
+                                </div>
                             </div>
-                            <div className="flex items-center space-x-5">
-                                <FontAwesomeIcon
-                                    onClick={() =>
-                                        handleOpenViewQuizModal(item)
-                                    }
-                                    className="cursor-pointer h-6 items-center text-black mt-0.5"
-                                    icon={faEye}
-                                />
-                                <FontAwesomeIcon
-                                    onClick={() => goToEditQuizMode(index)}
-                                    className="cursor-pointer h-6 items-center text-black"
-                                    icon={faEdit}
-                                />
-                                <FontAwesomeIcon
-                                    onClick={() =>
-                                        handleOpenDeleteConfirmModal(index)
-                                    }
-                                    className="cursor-pointer h-6 items-center text-black"
-                                    icon={faTrashCan}
-                                />
+                        ))}
+                        {quizzezDetail.length === 0 && (
+                            <div className="flex justify-center text-xl font-bold mt-5">
+                                No results found.
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        )}
+                    </div>
+                    <div className="py-3 pr-3">
+                        <Pagination
+                            totalPage={totalPageQuizzes}
+                            setPageNumber={setPageNumberQuizzes}
+                        />
+                    </div>
+                </>
             ) : (
                 <CreateQuizModal changeMode={setMode} />
             )}

@@ -3,21 +3,14 @@ import useAPI from '@/api/hooks/useAPI'
 import CourseListSwiper from '@/components/common/course-list-swiper'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
-import CorrectQuizAnswerModal from '@/components/core/modal/correct-quiz-answer-modal'
 import WelcomeBackModal from '@/components/core/modal/welcome-back-modal'
 import VerticalCourseCard from '@/components/core/vertical-course-card'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import { updateTokenBalance } from '@/store/user'
-import { getClaimState, getLoginState } from '@/store/user/selectors'
+import { useAppSelector } from '@/hooks'
+import { getClaimState } from '@/store/user/selectors'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { noop } from 'lodash'
-import { useEffect, useState } from 'react'
 
 const HomePageContainer = () => {
-    const dispatch = useAppDispatch()
-    const [showWelcomeBackModal, setShowWelcomeBackModal] =
-        useState<boolean>(false)
     const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
         refetchOnWindowFocus: false,
     })

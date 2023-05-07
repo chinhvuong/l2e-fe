@@ -1,20 +1,13 @@
 import Divider from '@/components/core/divider'
-import ShowMore from '@/components/core/show-more'
 import { faCheck, faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parse from 'html-react-parser'
-import { useEffect, useState } from 'react'
 import { useLearningCourseContext } from '../learning-course-context'
 
 export interface ILearningOverviewDetailProps {}
 
 export default function LearningOverviewDetail() {
     const { courseDetail } = useLearningCourseContext()
-
-    const [showMore, setShowMore] = useState(false)
-    useEffect(() => {
-        setShowMore(true)
-    }, [courseDetail])
 
     const getUIContent = (content: string) => {
         let formattedData = content.replace(
@@ -89,7 +82,6 @@ export default function LearningOverviewDetail() {
                     {getUIContent(courseDetail.description)}
                 </div>
             </div>
-            {showMore && <ShowMore el="overview" elHeightPreview={600} />}
         </div>
     )
 }

@@ -1,7 +1,5 @@
-import * as React from 'react'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ShowMore from '@/components/core/show-more'
 import { useCourseDetailContext } from '../course-detail-context'
 
 export interface IRequirementProps {}

@@ -1,7 +1,5 @@
-import ShowMore from '@/components/core/show-more'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
 import { useCourseDetailContext } from '../course-detail-context'
 
 export interface IWhatYouWillLearnProps {}

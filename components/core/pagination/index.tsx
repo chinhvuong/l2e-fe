@@ -3,7 +3,7 @@ import {
     faChevronRight,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export interface IPaginationProps {
     totalPage: number
@@ -21,6 +21,10 @@ export default function Pagination({
         setPageNumber(page)
         setPage(page)
     }
+
+    useEffect(() => {
+        setTotalPage(total)
+    }, [total])
 
     const getPaginationStepUI = () => {
         const isCurrentPageClassName =
