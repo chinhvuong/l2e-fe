@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CourseDetail, CourseDetailState } from './types'
-import { dataRatings } from '@/data/ratings'
 import { QuizDetailType } from '../quiz/types'
+import { CourseDetail, CourseDetailState } from './types'
 
 const initialState: CourseDetailState = {
     courseDetail: {
@@ -70,7 +69,7 @@ const initialState: CourseDetailState = {
             new Date().setDate(new Date().getDate() - 1),
         ).toISOString(),
     },
-    reviews: dataRatings,
+    reviews: [],
     isEnroll: false,
     isSaved: false,
     isLoading: false,

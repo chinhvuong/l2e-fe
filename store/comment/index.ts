@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { dataUser } from '@/data/users'
 import { Comment } from './types'
 
 const initialState = {
@@ -12,7 +11,7 @@ const initialState = {
         createdAt: new Date(),
         updatedAt: new Date(),
         replies: [] as Comment[],
-        user: dataUser,
+        user: {},
     },
     commentlist: [] as Comment[],
 }

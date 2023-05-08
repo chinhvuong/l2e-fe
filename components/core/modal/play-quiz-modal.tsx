@@ -369,10 +369,10 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                     )}
                                 </div>
                                 <div
-                                    className="absolute top-5 right-5 cursor-pointer"
+                                    className="absolute top-5 right-5 cursor-pointer bg-gray-300 px-2 rounded-full"
                                     onClick={() => handleCloseModal()}
                                 >
-                                    ✕
+                                    x
                                 </div>
                             </div>
                         </div>

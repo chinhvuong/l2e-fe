@@ -1,4 +1,4 @@
-import QuizContainer from '@/containers/instructor/quiz'
+import QuizContainer from '@/containers/create-course/quiz'
 import CreateCourseLayout from '@/layout/create-course-layout/course-detail'
 import type { ReactElement } from 'react'
 

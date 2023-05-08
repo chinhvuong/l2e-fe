@@ -1,4 +1,3 @@
-import { useAppDispatch } from '@/hooks'
 import Logo from '@/layout/main-layout/header/logo'
 import { faChartSimple, faTv } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,7 +10,6 @@ export default function Sidebar() {
     const menu = ['Profile', 'Certificates']
     const menuTarget = ['detail', 'certificates']
     const router = useRouter()
-    const dispatch = useAppDispatch()
     const [currentTab, setCurrentTab] = useState(() => {
         const list = router.route.split('/')
         return list[list.length - 1]

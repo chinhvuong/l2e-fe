@@ -2,6 +2,7 @@ import { LearnerAPI } from '@/api/api-path'
 import { CourseDetailPreview } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import { updateEnrollStatus } from '@/store/course'
 import { UpdateOverviewRatingState, UpdateRatingsState } from '@/store/rating'
 import {
     getOverViewRatings,
@@ -9,6 +10,7 @@ import {
     getTotalRatings,
 } from '@/store/rating/selectors'
 import { Rating, RatingOverView } from '@/store/rating/types'
+import { getLoginState } from '@/store/user/selectors'
 import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { noop } from 'lodash'
@@ -22,6 +24,7 @@ import {
     useMemo,
     useState,
 } from 'react'
+import { useSelector } from 'react-redux'
 
 interface ICourseDetailContext {
     isLoading: boolean
@@ -36,6 +39,8 @@ interface ICourseDetailContext {
     courseId: string
     setCurrentTab: Dispatch<SetStateAction<ViewCourseDetailTab>>
     currentTab: ViewCourseDetailTab
+    isShowVideoModal: boolean
+    setIsShowVideoModal: Dispatch<SetStateAction<boolean>>
 }
 
 export type ViewCourseDetailTab =
@@ -69,6 +74,8 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const [currentTab, setCurrentTab] = useState<ViewCourseDetailTab>(
         ViewCourseDetailTabTitle.OVERVIEW,
     )
+    const [isShowVideoModal, setIsShowVideoModal] = useState(false)
+    const loginState = useSelector(getLoginState)
 
     const { mutate: getCourseDetail, isLoading: isLoadingCourseDetail } =
         useAPI.getMutation(
@@ -103,6 +110,21 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
             dispatch(UpdateOverviewRatingState(response))
         },
     })
+
+    const { mutate: checkEnrollState, isLoading: isLoadingCheckEnrollState } =
+        useAPI.getMutation(LearnerAPI.CHECK_ENROLL + data?._id ?? '', {
+            onError: noop,
+            onSuccess(response) {
+                dispatch(updateEnrollStatus(response.enroll))
+            },
+        })
+
+    useEffect(() => {
+        if (data && data._id && loginState) {
+            checkEnrollState({})
+        }
+    }, [loginState, data])
+
     useEffect(() => {
         if (typeof router.query.slug === 'string') {
             setCourseId(router.query.slug)
@@ -116,12 +138,14 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
         return (
             isLoadingCourseDetail ||
             isLoadingRatingCourseDetail ||
-            isLoadingRatingOverViewCourseDetail
+            isLoadingRatingOverViewCourseDetail ||
+            isLoadingCheckEnrollState
         )
     }, [
         isLoadingCourseDetail,
         isLoadingRatingCourseDetail,
         isLoadingRatingOverViewCourseDetail,
+        isLoadingCheckEnrollState,
     ])
 
     return (
@@ -139,6 +163,8 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 courseId,
                 currentTab,
                 setCurrentTab,
+                isShowVideoModal,
+                setIsShowVideoModal,
             }}
         >
             {children}

@@ -3,7 +3,19 @@ import { dataUser } from '@/data/users'
 import { User, UserState } from './types'
 
 const initialState: UserState = {
-    user: dataUser,
+    user: {
+        _id: '638610e6d308cc1b3f485e99',
+        walletAddress: '',
+        createdAt: '',
+        updatedAt: '',
+        name: '',
+        title: '',
+        bio: '',
+        rating: 0,
+        courses: [],
+        avatar: '',
+        nonce: 0,
+    },
     isLogin: false,
     asset: {
         approve: 0,
