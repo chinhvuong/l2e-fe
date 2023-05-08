@@ -69,7 +69,6 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
             if (distance < 0) {
                 clearInterval(countdown)
                 setTimer("Time's up!")
-                console.log('finalTest', finalTest)
                 finalTest &&
                     submitFinalTestAnswer({
                         gameId: finalTest.gameId,

@@ -2,11 +2,11 @@ import LoadingScreen from '@/components/core/animate/loading-screen'
 import Input from '@/components/core/input'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Select from '@/components/core/select'
+import SingleReactSelect from '@/components/core/select/singleselect'
 import UploadPreview from '@/components/core/upload-preview'
 import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import {
     updateCourseCategory,
     updateCourseDescription,
@@ -16,12 +16,12 @@ import {
     updateCoursePrice,
     updateCoursePromotionalVideo,
     updateCourseThumbnail,
-    updateFinaltestState,
 } from '@/store/course'
 import {
     getFinalTestSelection,
     getMyCourseDetail,
 } from '@/store/course/selectors'
+import { getQuizSelect } from '@/store/quiz/selectors'
 import {
     convertToCategoryID,
     convertToCategoryName,
@@ -29,9 +29,6 @@ import {
 } from '@/utils'
 import { useEffect, useState } from 'react'
 import Title from '../components/title'
-import { QuizSelectType } from '@/store/quiz/types'
-import { getQuizSelect } from '@/store/quiz/selectors'
-import SingleReactSelect from '@/components/core/select/singleselect'
 
 export interface ILandingPageContainerProps {}
 
@@ -58,7 +55,6 @@ export default function LandingPageContainer() {
     )
     const quizSelect = useAppSelector(getQuizSelect)
 
-    console.log(chosenFinalTest)
     useEffect(() => {
         if (courseDetail._id !== '') {
             setIsLoading(false)
@@ -82,8 +78,6 @@ export default function LandingPageContainer() {
             )
         }
     }, [courseDetail._id])
-
-    useHideFirstEnterLoadingScreen()
 
     const handleTitleChange = (value: string) => {
         setTitle(value)

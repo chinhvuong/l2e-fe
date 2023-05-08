@@ -2,7 +2,6 @@ import { UserAPI } from '@/api/api-path'
 import { CoursePreview } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import useOutsideClick from '@/hooks/useOutSideClick'
-import { updateLoadingState } from '@/store/course'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { debounce, noop } from 'lodash'
@@ -41,7 +40,6 @@ export default function Search(props: ISearch) {
 
     const handleGetSearchResults = (queryword: string) => {
         if (queryword !== '') {
-            console.log('queryword', queryword)
             setOpenResultSelect(true)
             getSearchResults({})
         } else {
@@ -65,7 +63,6 @@ export default function Search(props: ISearch) {
     }
     const handleEnterEvent = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            dispatch(updateLoadingState(true))
             goToSearchPageCourse()
         }
     }

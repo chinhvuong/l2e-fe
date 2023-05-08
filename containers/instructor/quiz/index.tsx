@@ -2,22 +2,22 @@ import { InstructorAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
+import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import QuizModal from '@/components/core/modal/quiz-modal'
+import '@/components/core/modal/style.scss'
+import Pagination from '@/components/core/pagination'
 import { QUIZ_ID } from '@/constants/localStorage'
 import Title from '@/containers/create-course/components/title'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import { useAppDispatch } from '@/hooks'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { ClearQuizDetailState, UpdateQuizDetailState } from '@/store/quiz'
 import { QuizDetailType } from '@/store/quiz/types'
 import { faEdit, faEye, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
 import { useEffect, useState } from 'react'
-import CreateQuizModal from '../quiz/create-quiz'
-import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
-import '@/components/core/modal/style.scss'
 import Search from '../../../components/common/search'
-import Pagination from '@/components/core/pagination'
+import CreateQuizModal from '../quiz/create-quiz'
 
 export enum QuizTitle {
     LIST = 'Quizzes',
@@ -46,7 +46,7 @@ export default function QuizContainer() {
 
     const { mutate: deleteQuiz, isLoading: isLoadingDeleteQuiz } =
         useAPI.delete(InstructorAPI.DELETE_QUIZ + quizId, {
-            onError: () => {},
+            onError: noop,
             onSuccess: () => {
                 getQuizzesList({})
                 setQuizId('')
@@ -100,8 +100,6 @@ export default function QuizContainer() {
             }
         }
     }, [quizzezDetail, quizId, isDelete])
-
-    useHideFirstEnterLoadingScreen()
 
     return (
         <div>

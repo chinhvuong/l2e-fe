@@ -7,7 +7,7 @@ import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 import Pagination from '@/components/core/pagination'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
-import { updateLoadingState } from '@/store/course'
+import { noop } from 'lodash'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -47,7 +47,7 @@ const SearchPageContainer = () => {
                 router.query.query !== '' ? '&query=' + router.query.query : ''
             }${sortBy !== '' ? '&sort=' + getSortParams() : ''}`,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response) => {
                     setAllMyCourses(response)
                     setTotalPage(Math.ceil(response.total / limit))
@@ -80,7 +80,6 @@ const SearchPageContainer = () => {
     useEffect(() => {
         getAllMyCourses({})
         changeURL()
-        dispatch(updateLoadingState(false))
     }, [sortBy, router.query.query, pageNumber])
 
     const handleSortChange = (value: string) => {

@@ -1,17 +1,8 @@
-import { LearnerAPI, UserAPI } from '@/api/api-path'
-import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
-import PlayQuizModal from '@/components/core/modal/play-quiz-modal'
-import { PlayQuizRes } from '@/store/questions/types'
-import { noop } from 'lodash'
-import { useEffect, useRef, useState } from 'react'
-import ReactPlayer from 'react-player'
+import { useState } from 'react'
 import CertificationsList from './components/certifications'
 import NavBarProfile from './components/nav-bar'
 import UserInfoDetail from './components/user-info'
-import { useAppDispatch } from '@/hooks'
-import { updateCertifications } from '@/store/certification'
-import { updateUserInfo } from '@/store/user'
 import { useUpdateProfileContext } from './update-profile-context'
 
 const ProfileContainer = () => {

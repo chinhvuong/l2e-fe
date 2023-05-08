@@ -50,7 +50,7 @@ export default function CourseBasicCreateContainer() {
 
     const { mutate: createCourse, isLoading: isLoadingCreateCourse } =
         useAPI.post(InstructorAPI.CREATE_COURSE, {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 dispatch(updateCourseDetail(response))
                 response?.goals &&
@@ -78,7 +78,7 @@ export default function CourseBasicCreateContainer() {
 
     const { mutate: upsertSections, isLoading: isLoadingUpsertSections } =
         useAPI.post(InstructorAPI.UPSERT_SECTIONS + courseId, {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 const sectionsBasicInfo: CurriculumSection[] = []
                 response.forEach((item: SectionResponseItem) => {

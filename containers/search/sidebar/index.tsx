@@ -1,10 +1,3 @@
-import Button from '@/components/core/button'
-import Router, { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import useWeb3 from '@/wallet/hooks/useWeb3'
-import RatingStar from '@/components/core/rating-star'
-
 export interface IMyCoursesLayoutProps {}
 export interface ISidebarProps {
     onRadioBoxChange: (e: React.ChangeEvent<HTMLInputElement>) => void

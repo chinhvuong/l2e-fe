@@ -11,6 +11,7 @@ import {
 import { Rating, RatingOverView } from '@/store/rating/types'
 import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
+import { noop } from 'lodash'
 import { useRouter } from 'next/router'
 import {
     Dispatch,
@@ -73,7 +74,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
         useAPI.getMutation(
             LearnerAPI.GET_COURSE_DETAIL + courseId + '?id=' + courseId,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response: CourseDetailPreview) => {
                     setData(response)
                     setInstructor(response.author)
@@ -86,7 +87,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     } = useAPI.getMutation(
         LearnerAPI.RATING + '?course=' + courseId + '&query=' + searchTerm,
         {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 dispatch(UpdateRatingsState(response.data))
             },
@@ -97,7 +98,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
         mutate: getRatingOverViewCourseDetail,
         isLoading: isLoadingRatingOverViewCourseDetail,
     } = useAPI.getMutation(LearnerAPI.GET_OVERVIEW_RATING + '?id=' + courseId, {
-        onError: () => {},
+        onError: noop,
         onSuccess: (response) => {
             dispatch(UpdateOverviewRatingState(response))
         },

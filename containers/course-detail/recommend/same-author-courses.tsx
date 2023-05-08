@@ -7,7 +7,6 @@ export default function SameAuthorCourses() {
                 More courses by{' '}
                 <span className="text-hyperlink">Dr. Angela Vu </span>
             </div>
-            {/* <VerticalCourseList data={dataCourses_preview_list} /> */}
         </div>
     )
 }

@@ -1,6 +1,5 @@
 import { useAppDispatch } from '@/hooks'
 import Logo from '@/layout/main-layout/header/logo'
-import { updateLoadingState } from '@/store/course'
 import { faChartSimple, faTv } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router, { useRouter } from 'next/router'
@@ -51,7 +50,6 @@ export default function Sidebar() {
     }
 
     const handleChangeTab = (index: number) => {
-        dispatch(updateLoadingState(true))
         goToMenuTarget(index)
     }
 

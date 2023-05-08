@@ -1,19 +1,19 @@
-import { useState, useRef } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { LearnerAPI } from '@/api/api-path'
+import useAPI from '@/api/hooks/useAPI'
+import LoadingScreen from '@/components/core/animate/loading-screen'
+import { useAppDispatch } from '@/hooks'
+import useOutsideClick from '@/hooks/useOutSideClick'
+import { UpdateRatingsState } from '@/store/rating'
 import {
-    faMagnifyingGlass,
     faChevronDown,
+    faMagnifyingGlass,
     faStar,
 } from '@fortawesome/free-solid-svg-icons'
-import ReviewItemsList from './components/review-items-list'
-import useOutsideClick from '@/hooks/useOutSideClick'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
+import { useRef, useState } from 'react'
 import { useCourseDetailContext } from '../course-detail-context'
-import { dataRatings } from '@/data/ratings'
-import useAPI from '@/api/hooks/useAPI'
-import { LearnerAPI } from '@/api/api-path'
-import { useAppDispatch } from '@/hooks'
-import { UpdateRatingsState } from '@/store/rating'
-import LoadingScreen from '@/components/core/animate/loading-screen'
+import ReviewItemsList from './components/review-items-list'
 
 export interface IReviewDetailProps {}
 
@@ -55,7 +55,7 @@ export default function ReviewDetail() {
             '&rating=' +
             parseInt(selectedRating),
         {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 dispatch(UpdateRatingsState(response.data))
                 setIsLoading(false)

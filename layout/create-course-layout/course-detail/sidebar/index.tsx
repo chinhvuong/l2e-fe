@@ -8,7 +8,6 @@ import ValidateModal, {
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import MintBtn from '@/containers/instructor/components/mint-btn'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { updateLoadingState } from '@/store/course'
 import {
     getCurriculumLecturesForm,
     getCurriculumSectionsForm,
@@ -75,7 +74,6 @@ export default function Sidebar() {
     }
 
     const validateCourse = () => {
-        console.log(courseDetail.finalTest)
         const validateCourse = {
             landingPage: [] as string[],
             intendedLearners: [] as string[],
@@ -206,7 +204,6 @@ export default function Sidebar() {
     }, [courseDetail])
 
     const handleChangeTab = (index: number) => {
-        dispatch(updateLoadingState(true))
         goToMenuTarget(index)
     }
 

@@ -67,8 +67,6 @@ export default function Input({
             }
             setPrevVal(value)
             setInput(value)
-
-            console.log('number', value)
         } else {
             setInput(e.target.value)
         }

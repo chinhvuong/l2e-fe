@@ -1,5 +1,4 @@
 import LoadingScreen from '@/components/core/animate/loading-screen'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import {
     addCurriculumSection,
     deleteCurriculumSection,
@@ -18,7 +17,6 @@ export interface ICurriculumContainerProps {}
 export default function CurriculumContainer() {
     const { isLoading, courseSections, courseLectures } =
         useCreateCourseContext()
-    useHideFirstEnterLoadingScreen()
     return (
         <div>
             <LoadingScreen

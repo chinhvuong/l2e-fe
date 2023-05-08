@@ -134,11 +134,6 @@ export default function Resource(props: IResourceProps) {
                     ...downloadableMaterials,
                     target.files[0].name,
                 ])
-
-                // const formData = new FormData()
-                // formData.append('files', uploadedFiles)
-
-                // uploadFiles(formData)
             }
         }
     }

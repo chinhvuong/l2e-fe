@@ -1,13 +1,13 @@
-import * as React from 'react'
-import Label from '@/components/core/label'
-import RatingStar from '../rating-star'
-import Router from 'next/router'
 import { CoursePreview } from '@/api/dto/course.dto'
+import Label from '@/components/core/label'
 import { COURSE_ID } from '@/constants/localStorage'
 import { useAppDispatch } from '@/hooks'
-import { resetCourseDetailStore, updateIdState } from '@/store/course'
+import { resetCourseDetailStore } from '@/store/course'
 import { resetCurriculumStore } from '@/store/course/curriculum'
 import { resetIntendedLearnersStore } from '@/store/course/intended-learners'
+import Router from 'next/router'
+import * as React from 'react'
+import RatingStar from '../rating-star'
 
 export interface IHorizontalCourseCardProps {
     data: CoursePreview

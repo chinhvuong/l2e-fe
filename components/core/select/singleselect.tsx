@@ -1,7 +1,6 @@
 import { useAppDispatch } from '@/hooks'
 import { updateFinaltestState } from '@/store/course'
 import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
-import { useState } from 'react'
 import Select, { ActionMeta, SingleValue } from 'react-select'
 
 export interface ISelectProps {

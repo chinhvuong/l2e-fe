@@ -1,4 +1,7 @@
+import LoadingScreen from '@/components/core/animate/loading-screen'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
+import { useAppSelector } from '@/hooks'
+import { updateCourseGoals, updateCourseRequirements } from '@/store/course'
 import {
     addRequirements,
     addWhatYouWillLearn,
@@ -13,15 +16,11 @@ import {
     getWhatYouWillLearnForm,
     getWhatYouWillLearnState,
 } from '@/store/course/intended-learners/selectors'
-import { useState, useEffect } from 'react'
-import DragAndDropInput from './components/drag-drop-input'
+import { getMyCourseDetail } from '@/store/course/selectors'
+import { useEffect, useState } from 'react'
 import Subtitle from '../components/subtitle'
 import Title from '../components/title'
-import { useAppSelector } from '@/hooks'
-import { getMyCourseDetail } from '@/store/course/selectors'
-import { updateCourseGoals, updateCourseRequirements } from '@/store/course'
-import LoadingScreen from '@/components/core/animate/loading-screen'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
+import DragAndDropInput from './components/drag-drop-input'
 
 export interface IIntendedLearnersContainerProps {}
 
@@ -34,8 +33,6 @@ export default function IntendedLearnersContainer() {
             setIsLoading(false)
         }
     }, [courseId])
-
-    useHideFirstEnterLoadingScreen()
 
     return (
         <div>

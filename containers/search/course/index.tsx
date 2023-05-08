@@ -1,10 +1,7 @@
 import { CoursePreview } from '@/api/dto/course.dto'
-// import HorizontalCourseCard from '@/components/core/horizontal-course-card'
-import React, { useState } from 'react'
-import Router from 'next/router'
-import useAPI from '@/api/hooks/useAPI'
-import { InstructorAPI } from '@/api/api-path'
 import RatingStar from '@/components/core/rating-star'
+import Router from 'next/router'
+import { useState } from 'react'
 
 type Props = {
     course: CoursePreview

@@ -1,7 +1,14 @@
+import { FileAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
+import Loading from '@/components/core/animate/loading'
 import Button from '@/components/core/button'
+import VideoModal from '@/components/core/modal/video-modal'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
+import { useAppDispatch } from '@/hooks'
+import { updateCanSaveCourseState } from '@/store/course'
+import { updateCurriculumLectureMainContent } from '@/store/course/curriculum'
+import { CurriculumLecture } from '@/store/course/curriculum/types'
 import {
     faFileLines,
     faFilePowerpoint,
@@ -10,14 +17,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
 import { useEffect, useState } from 'react'
-import { FileAPI } from '@/api/api-path'
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { CurriculumLecture } from '@/store/course/curriculum/types'
-import { useAppDispatch } from '@/hooks'
-import { updateCurriculumLectureMainContent } from '@/store/course/curriculum'
-import Loading from '@/components/core/animate/loading'
-import { updateCanSaveCourseState } from '@/store/course'
-import VideoModal from '@/components/core/modal/video-modal'
 
 export interface IMainContentProps {
     lectureDetail: CurriculumLecture
@@ -150,7 +149,6 @@ export default function MainContent({ lectureDetail }: IMainContentProps) {
                         </div>
                         <div
                             className={`flex flex-col space-y-3 items-center w-[100px] text-center py-3 px-2 border border-black hover:border-primary hover:bg-primary hover:text-white rounded-[10px] cursor-pointer`}
-                            // onClick={() => setContentType('slide')}
                         >
                             <FontAwesomeIcon
                                 icon={faFilePowerpoint}

@@ -1,17 +1,16 @@
+import Search from '@/components/common/search'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import CertificateCard from '@/components/core/certificate-card'
 import Divider from '@/components/core/divider'
 import CertificateModal from '@/components/core/modal/certification-modal'
+import Pagination from '@/components/core/pagination'
 import Select from '@/components/core/select'
-import Search from '@/components/common/search'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { Certificate } from '@/store/certification/types'
 import { useState } from 'react'
 import {
     SortLabelCertificate,
     useUpdateProfileContext,
 } from '../update-profile-context'
-import Pagination from '@/components/core/pagination'
 
 export default function CertificationsList() {
     const {
@@ -35,8 +34,6 @@ export default function CertificationsList() {
     const handleSortChange = (value: string) => {
         setSortBy(value)
     }
-
-    useHideFirstEnterLoadingScreen()
 
     return (
         <>

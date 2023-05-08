@@ -1,25 +1,21 @@
-import UserProfileDetail from '@/components/common/user-profile-detail'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
-import EditProfileModal from '@/components/core/modal/edit-profile-modal'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
-import { useState } from 'react'
-import { useUpdateProfileContext } from '../update-profile-context'
 import {
     FacebookIcon,
     InstagramIcon,
     TwitterIcon,
     YoutubeIcon,
 } from '@/components/core/icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import EditProfileModal from '@/components/core/modal/edit-profile-modal'
 import { faAward, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parse from 'html-react-parser'
+import { useState } from 'react'
+import { useUpdateProfileContext } from '../update-profile-context'
 
 export default function UserInfoDetail() {
     const { userInfo, isLoading } = useUpdateProfileContext()
     const [isShowProfileModal, setIsShowProfileModal] = useState(false)
-
-    useHideFirstEnterLoadingScreen()
 
     const getUIContent = (content: string) => {
         let formattedData = content.replace(

@@ -106,7 +106,6 @@ export default function EditProfileModal(props: IProfileModalProps) {
                 break
             case 'bio':
                 if (getBioLength(String(value)) < 100) {
-                    console.log('Error')
                     const errors = { ...errorUpdate }
                     errors.bio = 'This field requires at least 100 words'
                     setError(errors)
