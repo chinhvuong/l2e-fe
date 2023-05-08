@@ -23,7 +23,7 @@ import Router, { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useSigner } from 'wagmi'
 import { goerli } from 'wagmi/chains'
-import Search from './search'
+import Search from '../../../components/common/search'
 import Pagination from '@/components/core/pagination'
 
 export default function InstructorCoursesContainer() {
@@ -141,16 +141,18 @@ export default function InstructorCoursesContainer() {
         }
     }, [isCourseClicked])
 
-    useEffect(() => {
-        ;(async () => {
-            if (courseId) {
-                getSignatureMint({})
-                if (requireinfo) {
-                    setCourseId('')
-                    await createCourse(signer!, requireinfo)
-                }
+    const createNewCourse = async () => {
+        if (courseId) {
+            getSignatureMint({})
+            if (requireinfo) {
+                setCourseId('')
+                await createCourse(signer!, requireinfo)
             }
-        })()
+        }
+    }
+
+    useEffect(() => {
+        createNewCourse()
     }, [requireinfo, courseId])
 
     const goToCreateCoursePage = () => {

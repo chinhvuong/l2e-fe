@@ -1,9 +1,4 @@
 import { useAppDispatch } from '@/hooks'
-import { updateLoadingState } from '@/store/course'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Router from 'next/router'
-import Explore from './explore'
 import Logo from './logo'
 import Search from './search'
 import './style.scss'
@@ -15,11 +10,6 @@ interface IHeader {
 
 const Header = (props: IHeader) => {
     const dispatch = useAppDispatch()
-
-    const goToAboutUsPage = () => {
-        dispatch(updateLoadingState(true))
-        Router.push('/about-us')
-    }
 
     return (
         <>

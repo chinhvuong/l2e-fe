@@ -34,9 +34,6 @@ export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
                 </div>
             ) : (
                 <div>
-                    <div className="font-semibold text-[36px]">
-                        {data.price + ' USDT'}
-                    </div>
                     {canEnroll() && (
                         <div className="flex items-center space-x-4 mt-3 mb-5">
                             {isEnrolled === true ? (

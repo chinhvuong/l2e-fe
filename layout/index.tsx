@@ -1,12 +1,12 @@
-import { useRouter } from 'next/router'
-import { ReactChild } from 'react'
-import { ToastContainer } from 'react-toastify'
-import Footer from './components/footer'
-import Header from './main-layout/header'
-import 'react-toastify/dist/ReactToastify.min.css'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import { useAppSelector } from '@/hooks'
 import { getLoadingState } from '@/store/course/selectors'
+import { useRouter } from 'next/router'
+import { ReactChild } from 'react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
+import Footer from './components/footer'
+import Header from './main-layout/header'
 const Layout = ({ children }: { children: ReactChild }) => {
     const router = useRouter()
     const isLoading = useAppSelector(getLoadingState)

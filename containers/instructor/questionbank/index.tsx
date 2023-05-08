@@ -18,7 +18,7 @@ import { QuestionDetailType } from '@/store/questions/types'
 import { faEdit, faEye, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
-import Search from '../components/search'
+import Search from '../../../components/common/search'
 import CreateQuestionModal from './create-question/create-question-form'
 
 export enum QuestionBankTitle {

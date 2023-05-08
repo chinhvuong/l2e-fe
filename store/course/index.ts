@@ -36,7 +36,6 @@ const initialState: CourseDetailState = {
         owner: '',
         author: {
             _id: '',
-            __v: 0,
             avatar: null,
             bio: null,
             createdAt: '2022-10-25T04:10:15.411Z',

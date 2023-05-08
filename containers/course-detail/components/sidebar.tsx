@@ -36,6 +36,9 @@ export default function Sidebar() {
                         )}
                         <div className="space-y-4 mt-4 pb-6">
                             <div className="mx-7 space-y-3">
+                                <div className="font-semibold text-[36px]">
+                                    {data.price + ' USDT'}
+                                </div>
                                 {loginState && <PriceEnrollShare data={data} />}
                                 {dataCourses_detail.include && (
                                     <IncludeList

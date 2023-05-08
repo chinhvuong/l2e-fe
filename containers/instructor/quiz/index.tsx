@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react'
 import CreateQuizModal from '../quiz/create-quiz'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import '@/components/core/modal/style.scss'
-import Search from '../components/search'
+import Search from '../../../components/common/search'
 import Pagination from '@/components/core/pagination'
 
 export enum QuizTitle {

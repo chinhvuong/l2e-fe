@@ -9,7 +9,7 @@ import { Sort, SortLabel } from '@/constants'
 import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import Search from '../../instructor/components/search'
+import Search from '../../../components/common/search'
 import Pagination from '@/components/core/pagination'
 
 export default function LearnerCoursesContainer() {

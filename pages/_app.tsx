@@ -6,7 +6,6 @@ import '@/styles/global-style.css'
 import WagmiProvider from '@/wallet/provider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { NextPage } from 'next'
-import { appWithTranslation } from 'next-i18next'
 import { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
 import { Provider } from 'react-redux'
@@ -37,4 +36,4 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     )
 }
 
-export default appWithTranslation(App)
+export default App
