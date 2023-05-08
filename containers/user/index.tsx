@@ -5,7 +5,6 @@ export interface StaticUserProps {
     user: User
 }
 export default function UserDetailPreviewContainer(data: StaticUserProps) {
-    useHideFirstEnterLoadingScreen()
     return (
         <>
             <div className="h-full pt-5 px-14">
