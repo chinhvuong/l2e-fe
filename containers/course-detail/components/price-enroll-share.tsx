@@ -7,13 +7,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router from 'next/router'
 import { useSelector } from 'react-redux'
 import EnrollBtn from './enroll-btn'
+import { useAccount } from 'wagmi'
 export interface IPriceEnrollShareProps {
     data: CourseDetailPreview
 }
 
 export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
     const isEnrolled = useSelector(getEnrollStatusState)
-
+    const { address } = useAccount()
+    const canEnroll = () => {
+        if (
+            String(address).toLowerCase() !==
+                data.author.walletAddress.toLowerCase() &&
+            String(address).toLowerCase() !== data.owner.toLowerCase()
+        ) {
+            return true
+        } else {
+            return false
+        }
+    }
     return (
         <div>
             {false ? (
@@ -25,7 +37,7 @@ export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
                     <div className="font-semibold text-[36px]">
                         {data.price + ' USDT'}
                     </div>
-                    {data.author.walletAddress !== data.owner && (
+                    {canEnroll() && (
                         <div className="flex items-center space-x-4 mt-3 mb-5">
                             {isEnrolled === true ? (
                                 <Button

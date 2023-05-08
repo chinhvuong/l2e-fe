@@ -16,6 +16,7 @@ export const UserAPI = {
     CLAIM_CERTIFICATE: '/certificate/claim-certificate-signature',
     GET_LIST_CERTIFICATION: '/certificate',
     GET_USER_INFO: '/user/me',
+    GET_USER: 'user/',
 }
 
 export const LearnerAPI = {
