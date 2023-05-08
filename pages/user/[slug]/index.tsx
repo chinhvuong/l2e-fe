@@ -7,11 +7,18 @@ import { ParsedUrlQuery } from 'querystring'
 
 export const getStaticProps: GetStaticProps = async (context) => {
     const slug = (context.params as ParsedUrlQuery).slug
-    const res = await axios.get(
-        process.env.NEXT_PUBLIC_API_BACKEND_URL + UserAPI.GET_USER + slug,
-        {},
-    )
-    const user = res.data as User
+    let user = {} as User
+    try {
+        const res = await axios.get(
+            process.env.NEXT_PUBLIC_API_BACKEND_URL + UserAPI.GET_USER + slug,
+            {},
+        )
+        user = res.data as User
+    } catch (error) {
+        return {
+            notFound: true,
+        }
+    }
     return {
         props: { user },
         // Next.js will attempt to re-generate the page:

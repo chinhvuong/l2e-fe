@@ -59,7 +59,6 @@ export default function CourseInfo() {
     }
 
     const goToUserDetailPage = () => {
-        dispatch(updateLoadingState(true))
         Router.push('/user/' + data?.author._id)
     }
 

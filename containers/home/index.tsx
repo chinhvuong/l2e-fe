@@ -10,17 +10,16 @@ import { getClaimState } from '@/store/user/selectors'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const HomePageContainer = () => {
-    const { data, isLoading } = useAPI.get(UserAPI.GET_ALL_COURSES, {}, '', {
-        refetchOnWindowFocus: false,
-    })
+export interface StaticCourseListProps {
+    courseList: any
+}
+const HomePageContainer = (props: StaticCourseListProps) => {
     const isClaim = useAppSelector(getClaimState)
-
     const getCourseListUI = () => {
-        if (!data) {
+        if (!props.courseList) {
             return <></>
         }
-        return data.data.length < 5 ? (
+        return props.courseList.length < 5 ? (
             <>
                 <div className="flex justify-center mt-12 mb-4">
                     <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
@@ -30,7 +29,7 @@ const HomePageContainer = () => {
                     </div>
                 </div>
                 <div className="flex justify-center">
-                    {data.data.map((item: any, index: number) => (
+                    {props.courseList.map((item: any, index: number) => (
                         <div className="w-[300px]" key={index}>
                             <VerticalCourseCard
                                 key={item._id}
@@ -43,7 +42,7 @@ const HomePageContainer = () => {
             </>
         ) : (
             <CourseListSwiper
-                data={data.data}
+                data={props.courseList}
                 title="Popular courses"
                 className="mt-8"
             />
@@ -52,7 +51,6 @@ const HomePageContainer = () => {
 
     return (
         <div>
-            <LoadingScreen isLoading={isLoading} />
             <WelcomeBackModal isShow={isClaim} />
             <div className="bg-second h-[550px] flex justify-center items-center text-white space-x-10 px-14">
                 <div className="w-[540px] space-y-7">
@@ -87,7 +85,7 @@ const HomePageContainer = () => {
                 />
             </div>
             <img src="/svgs/curvedPart.svg" alt="" className="w-full" />
-            <div>{!isLoading && getCourseListUI()}</div>
+            <div>{getCourseListUI()}</div>
         </div>
     )
 }
