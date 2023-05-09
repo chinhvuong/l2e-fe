@@ -1,12 +1,14 @@
 import { InstructorAPI } from '@/api/api-path'
 import { QuestionCreateType } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
+import AddMoreButton from '@/components/core/button/add-button'
 import FormikInput from '@/components/core/input/formik'
 import ChoicesArray from '@/components/core/input/formikarray'
 import { COURSE_ID } from '@/constants/localStorage'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
+import { useAppDispatch } from '@/hooks'
+import { updateGlobalLoadingState } from '@/store/user'
 import {
     FieldArray,
     FieldArrayRenderProps,
@@ -18,7 +20,6 @@ import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import * as yup from 'yup'
 import { QuestionBankTitle } from '..'
-import AddMoreButton from '@/components/core/button/add-button'
 
 export interface ICreateQuestionFormProps {
     changeMode: Dispatch<SetStateAction<QuestionBankTitle>>
@@ -31,6 +32,7 @@ export default function CreateQuestionForm({
     const [courseId, setCourseId] = useState<string>('')
     const { questionDetail, getQuestionsList } = useCreateCourseContext()
     const [isEdit, setIsEdit] = useState<boolean>(false)
+    const dispatch = useAppDispatch()
     const schema = yup.object().shape({
         questions: yup
             .array()
@@ -131,11 +133,17 @@ export default function CreateQuestionForm({
             setIsEdit(false)
         }
     }, [courseId, questionDetail])
+
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingCreateQuestion || isLoadingUpdateQuestion,
+            ),
+        )
+    }, [isLoadingCreateQuestion, isLoadingUpdateQuestion])
+
     return (
         <>
-            <LoadingScreen
-                isLoading={isLoadingCreateQuestion || isLoadingUpdateQuestion}
-            />
             <div className="px-10 py-5">
                 <FormikProvider value={formik}>
                     <form onSubmit={formik.handleSubmit}>

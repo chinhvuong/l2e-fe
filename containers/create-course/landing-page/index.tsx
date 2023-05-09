@@ -1,4 +1,3 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Input from '@/components/core/input'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Select from '@/components/core/select'
@@ -22,6 +21,7 @@ import {
     getMyCourseDetail,
 } from '@/store/course/selectors'
 import { getQuizSelect } from '@/store/quiz/selectors'
+import { updateGlobalLoadingState } from '@/store/user'
 import {
     convertToCategoryID,
     convertToCategoryName,
@@ -118,9 +118,12 @@ export default function LandingPageContainer() {
         dispatch(updateCoursePromotionalVideo(value))
     }
 
+    useEffect(() => {
+        dispatch(updateGlobalLoadingState(isLoading))
+    }, [isLoading])
+
     return (
         <div>
-            <LoadingScreen isLoading={isLoading} />
             <Title title={'Landing page'} />
             {!isLoading && courseDetail._id !== '' && (
                 <div className="py-10 px-14 space-y-5">

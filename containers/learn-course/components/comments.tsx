@@ -3,9 +3,9 @@ import useAPI from '@/api/hooks/useAPI'
 import { LESSON_ID } from '@/constants/localStorage'
 import CommentForm from '@/containers/course-detail/comment/components/comment-form'
 import CommentItemsList from '@/containers/course-detail/comment/components/comment-items-list'
-import { useAppDispatch, useAppSelector } from '@/hooks'
+import { useAppDispatch } from '@/hooks'
 import { UpdateCommentsState } from '@/store/comment'
-import { getComments } from '@/store/comment/selectors'
+import { updateGlobalLoadingState } from '@/store/user'
 import { noop } from 'lodash'
 import { useEffect, useState } from 'react'
 
@@ -13,7 +13,6 @@ export interface ILearningCommentsDetailProps {}
 
 export default function LearningCommentsDetail() {
     const dispatch = useAppDispatch()
-    const parentComment = useAppSelector(getComments)
     const [lessonId, setLessonId] = useState('')
     const {
         mutate: getLearningCommentParent,
@@ -27,7 +26,7 @@ export default function LearningCommentsDetail() {
     const { mutate: addComment, isLoading: isLoadingCreateComment } =
         useAPI.post(LearnerAPI.COMMENT, {
             onError: noop,
-            onSuccess: (response) => {
+            onSuccess: () => {
                 getLearningCommentParent({})
             },
         })
@@ -44,6 +43,15 @@ export default function LearningCommentsDetail() {
             getLearningCommentParent({})
         }
     }, [lessonId, localStorage.getItem(LESSON_ID)])
+
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingLearningCommentParent || isLoadingCreateComment,
+            ),
+        )
+    }, [isLoadingLearningCommentParent, isLoadingCreateComment])
+
     return (
         <div className="space-y-10">
             <div className="flex justify-center space-x-7 under_lg:flex-wrap under_lg:justify-center mt-3">

@@ -1,4 +1,3 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import {
     FacebookIcon,
@@ -14,7 +13,7 @@ import { useState } from 'react'
 import { useUpdateProfileContext } from '../update-profile-context'
 
 export default function UserInfoDetail() {
-    const { userInfo, isLoading } = useUpdateProfileContext()
+    const { userInfo } = useUpdateProfileContext()
     const [isShowProfileModal, setIsShowProfileModal] = useState(false)
 
     const getUIContent = (content: string) => {
@@ -34,7 +33,6 @@ export default function UserInfoDetail() {
 
     return (
         <>
-            <LoadingScreen isLoading={isLoading} />
             <div className="h-full pt-9 px-[4.5rem]">
                 <div className="flex justify-between">
                     <div className="font-semibold text-[30px]">Profile</div>
@@ -52,10 +50,10 @@ export default function UserInfoDetail() {
                     <>
                         <div className="my-8">
                             <div className="font-semibold text-2xl mb-1 text-hyperlink cursor-pointer">
-                                {userInfo?.name}
+                                {userInfo?.name ?? 'Anonymous'}
                             </div>
                             <div className="text-description mt-1">
-                                {userInfo?.title}
+                                {userInfo?.title ?? ''}
                             </div>
                             <div className="flex space-x-5 py-3">
                                 <FacebookIcon
@@ -70,9 +68,15 @@ export default function UserInfoDetail() {
                                 <YoutubeIcon fillColor="#000000" width="20px" />
                             </div>
                             <div className="flex items-center my-4">
-                                {userInfo.avatar !== null && (
+                                {userInfo.avatar ? (
                                     <img
                                         src={`${userInfo?.avatar}`}
+                                        alt=""
+                                        className="rounded-[50%] w-[120px]"
+                                    />
+                                ) : (
+                                    <img
+                                        src="/svgs/default_user_avatar.svg"
                                         alt=""
                                         className="rounded-[50%] w-[120px]"
                                     />
@@ -103,8 +107,9 @@ export default function UserInfoDetail() {
                                 className="space-y-3 overflow-hidden relative"
                             >
                                 <div className="text-justify space-y-3">
-                                    {userInfo?.bio &&
-                                        getUIContent(userInfo?.bio)}
+                                    {userInfo?.bio
+                                        ? getUIContent(userInfo?.bio)
+                                        : 'No description'}
                                 </div>
                             </div>
                             <EditProfileModal

@@ -5,9 +5,6 @@ import {
     ActionCreatorWithoutPayload,
     ActionCreatorWithPayload,
 } from '@reduxjs/toolkit'
-import * as React from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Container } from './container'
 
 export interface IDragAndDropInputProps {
@@ -32,17 +29,15 @@ export default function DragAndDropInput({
     defaultInputBlock,
 }: IDragAndDropInputProps) {
     return (
-        <DndProvider backend={HTML5Backend}>
-            <Container
-                name={name}
-                addItem={addItem}
-                updateItem={updateItem}
-                updateItemToPayload={updateItemToPayload}
-                deleteItem={deleteItem}
-                getItems={getItems}
-                getUpdateState={getUpdateState}
-                defaultInputBlock={defaultInputBlock}
-            />
-        </DndProvider>
+        <Container
+            name={name}
+            addItem={addItem}
+            updateItem={updateItem}
+            updateItemToPayload={updateItemToPayload}
+            deleteItem={deleteItem}
+            getItems={getItems}
+            getUpdateState={getUpdateState}
+            defaultInputBlock={defaultInputBlock}
+        />
     )
 }

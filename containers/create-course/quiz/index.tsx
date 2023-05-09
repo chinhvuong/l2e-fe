@@ -1,6 +1,5 @@
 import { InstructorAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import QuizModal from '@/components/core/modal/quiz-modal'
@@ -12,6 +11,7 @@ import { useCreateCourseContext } from '@/containers/create-course/create-course
 import { useAppDispatch } from '@/hooks'
 import { ClearQuizDetailState, UpdateQuizDetailState } from '@/store/quiz'
 import { QuizDetailType } from '@/store/quiz/types'
+import { updateGlobalLoadingState } from '@/store/user'
 import { faEdit, faEye, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
@@ -101,9 +101,12 @@ export default function QuizContainer() {
         }
     }, [quizzezDetail, quizId, isDelete])
 
+    useEffect(() => {
+        dispatch(updateGlobalLoadingState(isLoading || isLoadingDeleteQuiz))
+    }, [isLoading, isLoadingDeleteQuiz])
+
     return (
         <div>
-            <LoadingScreen isLoading={isLoading || isLoadingDeleteQuiz} />
             {showViewQuizModal && selectedQuiz && (
                 <QuizModal
                     isShow={showViewQuizModal}

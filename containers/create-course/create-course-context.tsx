@@ -36,6 +36,7 @@ import { QuestionDetailType } from '@/store/questions/types'
 import { UpdateQuizzesState } from '@/store/quiz'
 import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
 import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
+import { updateGlobalLoadingState } from '@/store/user'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, EditorState, convertFromHTML } from 'draft-js'
 import { noop } from 'lodash'
@@ -46,11 +47,9 @@ import {
     createContext,
     useContext,
     useEffect,
-    useMemo,
     useState,
 } from 'react'
 interface ICreateCourseContext {
-    isLoading: boolean
     getCourseDetail: UseMutateFunction<unknown, any, object, unknown>
     updateCourse: UseMutateFunction<unknown, any, object, unknown>
     upsertSections: UseMutateFunction<unknown, any, object, unknown>
@@ -324,15 +323,17 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         }
     }, [searchQuizzes, pageNumberQuizzes, courseId, router.pathname])
 
-    const isLoading = useMemo(() => {
-        return (
-            isLoadingUpdateCourse ||
-            isLoadingGetCourseDetail ||
-            isLoadingGetSections ||
-            isLoadingUpsertSections ||
-            isLoadingCurriculum ||
-            isLoadingQuizzesList ||
-            isLoadingQuestionsList
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingUpdateCourse ||
+                    isLoadingGetCourseDetail ||
+                    isLoadingGetSections ||
+                    isLoadingUpsertSections ||
+                    isLoadingCurriculum ||
+                    isLoadingQuizzesList ||
+                    isLoadingQuestionsList,
+            ),
         )
     }, [
         isLoadingUpdateCourse,
@@ -347,7 +348,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     return (
         <CreateCourseContext.Provider
             value={{
-                isLoading,
                 getCourseDetail,
                 updateCourse,
                 upsertSections,

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { updateCertifications } from '@/store/certification'
 import { getCertifications } from '@/store/certification/selectors'
 import { Certificate } from '@/store/certification/types'
-import { updateUserInfo } from '@/store/user'
+import { updateGlobalLoadingState, updateUserInfo } from '@/store/user'
 import { getInstructorInfo } from '@/store/user/selectors'
 import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
@@ -16,11 +16,9 @@ import {
     createContext,
     useContext,
     useEffect,
-    useMemo,
     useState,
 } from 'react'
 interface IUpdateProfileContext {
-    isLoading: boolean
     getUserInfo: UseMutateFunction<unknown, any, object, unknown>
     getCertificationList: UseMutateFunction<unknown, any, object, unknown>
     updateProfile: UseMutateFunction<unknown, any, object, unknown>
@@ -143,11 +141,13 @@ export const UpdateProfileProvider: React.FC<React.PropsWithChildren<{}>> = ({
         changeURL()
     }, [search, sortBy, pageNumber])
 
-    const isLoading = useMemo(() => {
-        return (
-            isLoadingGetUserInfo ||
-            isLoadingCertificationList ||
-            isLoadingUpdateProfile
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingGetUserInfo ||
+                    isLoadingCertificationList ||
+                    isLoadingUpdateProfile,
+            ),
         )
     }, [
         isLoadingGetUserInfo,
@@ -158,7 +158,6 @@ export const UpdateProfileProvider: React.FC<React.PropsWithChildren<{}>> = ({
     return (
         <UpdateProfileContext.Provider
             value={{
-                isLoading,
                 getUserInfo,
                 getCertificationList,
                 updateProfile,

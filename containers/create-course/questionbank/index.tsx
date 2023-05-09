@@ -1,6 +1,5 @@
 import { InstructorAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import QuestionModal from '@/components/core/modal/question-modal'
@@ -14,6 +13,7 @@ import {
     UpdateDetailQuestionState,
 } from '@/store/course/question'
 import { QuestionDetailType } from '@/store/questions/types'
+import { updateGlobalLoadingState } from '@/store/user'
 import { faEdit, faEye, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
@@ -104,9 +104,12 @@ export default function QuestionBankContainers() {
         }
     }, [questionListsDetail, questionId, isDelete])
 
+    useEffect(() => {
+        dispatch(updateGlobalLoadingState(isLoading || isLoadingDeleteQuestion))
+    }, [isLoading, isLoadingDeleteQuestion])
+
     return (
         <div>
-            <LoadingScreen isLoading={isLoading || isLoadingDeleteQuestion} />
             <QuestionModal
                 isShow={showViewQuestionModal}
                 setIsShow={setShowViewQuestionModal}

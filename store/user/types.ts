@@ -21,4 +21,5 @@ export interface UserState {
         tokenBalance: number
     }
     isClaimDaily: boolean
+    globalLoading: boolean
 }

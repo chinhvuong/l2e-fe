@@ -4,11 +4,13 @@ import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import UpdateReviewsModal from '@/components/core/modal/update-success-modal'
 import RatingStar from '@/components/core/rating-star'
 import RatingBar from '@/components/core/rating-star/rating-bar'
+import { useAppDispatch } from '@/hooks'
 import { Rating } from '@/store/rating/types'
-import { useState } from 'react'
+import { updateGlobalLoadingState } from '@/store/user'
+import { noop } from 'lodash'
+import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import CommentForm from '../../comment/components/comment-form'
-import { noop } from 'lodash'
 
 export interface IReviewItemProps {
     data: Rating
@@ -21,10 +23,11 @@ export default function ReviewItem(props: IReviewItemProps) {
     const [userAction, setUserAction] = useState('')
     const [showDeleteRatingConfirmModal, setShowDeleteRatingConfirmModal] =
         useState(false)
+    const dispatch = useAppDispatch()
     const { mutate: updateRating, isLoading: isLoadingUpdateComment } =
         useAPI.put(LearnerAPI.RATING + '/' + props.data._id, {
             onError: noop,
-            onSuccess: (response) => {
+            onSuccess: () => {
                 setUserAction('Update')
                 isShow(true)
             },
@@ -32,7 +35,7 @@ export default function ReviewItem(props: IReviewItemProps) {
     const { mutate: deleteRating, isLoading: isLoadingDeleteComment } =
         useAPI.delete(LearnerAPI.RATING + '/' + props.data._id, {
             onError: noop,
-            onSuccess: (response) => {
+            onSuccess: () => {
                 setUserAction('Delete')
                 isShow(true)
             },
@@ -90,6 +93,15 @@ export default function ReviewItem(props: IReviewItemProps) {
         updateRating({ rating: ratingCount, content: text })
         setIsEdit(false)
     }
+
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingUpdateComment || isLoadingDeleteComment,
+            ),
+        )
+    }, [isLoadingUpdateComment, isLoadingDeleteComment])
+
     return (
         <div>
             <DeleteConfirmModal

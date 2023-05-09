@@ -19,3 +19,7 @@ export const getTokenBalanceState = (state: RootState) => {
 export const getClaimState = (state: RootState) => {
     return state.user.isClaimDaily
 }
+
+export const getGlobalLoadingState = (state: RootState) => {
+    return state.user.globalLoading
+}

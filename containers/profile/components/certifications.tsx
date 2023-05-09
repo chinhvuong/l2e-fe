@@ -1,5 +1,4 @@
 import Search from '@/components/common/search'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import CertificateCard from '@/components/core/certificate-card'
 import Divider from '@/components/core/divider'
 import CertificateModal from '@/components/core/modal/certification-modal'
@@ -15,7 +14,6 @@ import {
 export default function CertificationsList() {
     const {
         certificationsList,
-        isLoading,
         setSearch,
         sortBy,
         setSortBy,
@@ -37,7 +35,6 @@ export default function CertificationsList() {
 
     return (
         <>
-            <LoadingScreen isLoading={isLoading} />
             <div className="h-full pt-9 px-[3.5rem]">
                 <div className="font-semibold text-[30px] px-4">
                     Certificates

@@ -10,6 +10,7 @@ import {
     getTotalRatings,
 } from '@/store/rating/selectors'
 import { Rating, RatingOverView } from '@/store/rating/types'
+import { updateGlobalLoadingState } from '@/store/user'
 import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { noop } from 'lodash'
@@ -20,7 +21,6 @@ import {
     createContext,
     useContext,
     useEffect,
-    useMemo,
     useState,
 } from 'react'
 import { useAccount } from 'wagmi'
@@ -93,7 +93,6 @@ export interface LearningCourseRes {
 
 interface ILearningCourseContext {
     courseDetail: LearningCourseRes | undefined
-    isLoading: boolean
     playingVideo: string
     handleChangeLecture: (pos: number[]) => void
     myAccountBalance: number
@@ -272,18 +271,22 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         setCurrentTab('Overview')
     }
 
-    const isLoading = useMemo(() => {
-        return (
-            isLoadingLearningCourseDetail ||
-            isLoadingGetMyBalance ||
-            isLoadingRatingCourseDetail ||
-            isLoadingCreateRating
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingLearningCourseDetail ||
+                    isLoadingGetMyBalance ||
+                    isLoadingRatingCourseDetail ||
+                    isLoadingCreateRating ||
+                    isLoadingRatingOverViewCourseDetail,
+            ),
         )
     }, [
         isLoadingLearningCourseDetail,
         isLoadingGetMyBalance,
         isLoadingRatingCourseDetail,
         isLoadingCreateRating,
+        isLoadingRatingOverViewCourseDetail,
     ])
 
     useEffect(() => {
@@ -303,7 +306,6 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 canRating,
                 setCanRating,
                 courseDetail,
-                isLoading,
                 playingVideo,
                 handleChangeLecture,
                 myAccountBalance,

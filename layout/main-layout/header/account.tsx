@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { claimReward } from '@/hooks/coursedex'
 import {
     updateClaimDailyState,
+    updateGlobalLoadingState,
     updateLoginState,
     updateTokenBalance,
 } from '@/store/user'
@@ -40,7 +41,7 @@ const Account = (props: any) => {
     const [isValidWalletInput, setIsValidWalletInput] = useState(true)
     const [walletInputErrorMessage, setWalletInputErrorMessage] = useState('')
     const [input, setInput] = useState('')
-    const [isLoadingClaimtoken, setIsLoadingClaimtoken] = useState(false)
+    const [isLoadingClaimToken, setIsLoadingClaimToken] = useState(false)
     const { disconnect } = useWeb3()
     const { data: signer } = useSigner({
         chainId: sepolia.id,
@@ -103,17 +104,17 @@ const Account = (props: any) => {
         if (validateInput(input)) {
             try {
                 setDisabled(true)
-                setIsLoadingClaimtoken(true)
+                setIsLoadingClaimToken(true)
                 const payload = await callAPI('post', UserAPI.CLAIM_TOKEN, {
                     amount: parseInt(input),
                 })
                 await claimReward(signer as ethers.Signer, payload)
-                setIsLoadingClaimtoken(false)
+                setIsLoadingClaimToken(false)
                 getMyBalance({})
                 setDisabled(false)
             } catch (error) {
                 setDisabled(false)
-                setIsLoadingClaimtoken(false)
+                setIsLoadingClaimToken(false)
             }
         }
     }
@@ -122,16 +123,19 @@ const Account = (props: any) => {
         claimDailyReward({})
     }, [])
 
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingGetMyBalance ||
+                    isLoadingClaimDailyReward ||
+                    isLoadingClaimToken,
+            ),
+        )
+    }, [isLoadingGetMyBalance, isLoadingClaimDailyReward, isLoadingClaimToken])
+
     return (
         <>
-            <LoadingScreen isLoading={isLoadingGetMyBalance} />
             <div className="relative flex items-center justify-between space-x-10">
-                {/* <FontAwesomeIcon
-                icon={faBell}
-                className={`text-[25px] cursor-pointer under_lg:hidden ${
-                    !props.darkTheme ? 'text-black' : 'text-white'
-                }`}
-            /> */}
                 <div className="flex cursor-pointer">
                     <FontAwesomeIcon
                         icon={faWallet}
@@ -182,7 +186,7 @@ const Account = (props: any) => {
                                 <div className="font-medium w-full text-center">
                                     Claim token
                                 </div>
-                                {isLoadingClaimtoken && (
+                                {isLoadingClaimToken && (
                                     <Loading className="!text-white" />
                                 )}
                             </Button>

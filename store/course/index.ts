@@ -72,7 +72,6 @@ const initialState: CourseDetailState = {
     reviews: [],
     isEnroll: false,
     isSaved: false,
-    isLoading: false,
     canSaveCourse: true,
     canCreateCourse: true,
     descriptionLength: 0,

@@ -6,7 +6,6 @@ import {
     GetMintSignatureResponse,
 } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
@@ -17,9 +16,10 @@ import { Category } from '@/constants/interfaces'
 import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
 import { useAppDispatch } from '@/hooks'
 import { createCourse } from '@/hooks/coursedex'
+import { updateGlobalLoadingState } from '@/store/user'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSigner } from 'wagmi'
 import { sepolia } from 'wagmi/chains'
 import Search from '../../../components/common/search'
@@ -153,12 +153,14 @@ export default function InstructorCoursesContainer() {
         setSortBy(value)
     }
 
-    const isLoading = useMemo(() => {
-        return (
-            isLoadingSigner ||
-            isLoadingAllMyCourses ||
-            isLoadingGetSignatureMint ||
-            isLoadingGetCategory
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingSigner ||
+                    isLoadingAllMyCourses ||
+                    isLoadingGetSignatureMint ||
+                    isLoadingGetCategory,
+            ),
         )
     }, [
         isLoadingSigner,
@@ -169,7 +171,6 @@ export default function InstructorCoursesContainer() {
 
     return (
         <>
-            <LoadingScreen isLoading={isLoading} />
             <div className="mt-9 px-[3.5rem]">
                 <div className="flex justify-between px-4">
                     <div className="font-semibold text-[30px]">Courses</div>

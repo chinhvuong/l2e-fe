@@ -23,6 +23,7 @@ const initialState: UserState = {
         tokenBalance: 0,
     },
     isClaimDaily: false,
+    globalLoading: false,
 }
 
 export const userSlice = createSlice({
@@ -66,6 +67,9 @@ export const userSlice = createSlice({
         updateUserBioState(state, action: PayloadAction<string>) {
             state.user.bio = action.payload
         },
+        updateGlobalLoadingState(state, action: PayloadAction<boolean>) {
+            state.globalLoading = action.payload
+        },
     },
 })
 
@@ -79,6 +83,7 @@ export const {
     updateUserNameState,
     updateUserBioState,
     updateUserTitleState,
+    updateGlobalLoadingState,
 } = userSlice.actions
 
 export default userSlice.reducer

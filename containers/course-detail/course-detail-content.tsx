@@ -1,4 +1,3 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import { useEffect, useRef, useState } from 'react'
 import NavBar from './components/nav-bar'
 import Sidebar from './components/sidebar'
@@ -7,15 +6,15 @@ import {
     ViewCourseDetailTabTitle,
     useCourseDetailContext,
 } from './course-detail-context'
+import Curriculum from './curriculum'
 import CourseInfo from './info'
 import CourseLabel from './info/course-label'
 import Instructor from './instructor'
 import Overview from './overview'
 import Review from './review'
-import Curriculum from './curriculum'
 
 export default function CourseDetailContent() {
-    const { data, isLoading, currentTab } = useCourseDetailContext()
+    const { data, currentTab } = useCourseDetailContext()
     const [scrollY, setScrollY] = useState(0)
     const courseContent = useRef(null)
 
@@ -50,7 +49,6 @@ export default function CourseDetailContent() {
 
     return (
         <div className="relative">
-            <LoadingScreen isLoading={isLoading || !data} />
             <CourseLabel />
             <CourseInfo />
             <NavBar />

@@ -1,6 +1,5 @@
 import { InstructorAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import ValidateModal, {
     IValidateContent,
@@ -16,6 +15,7 @@ import {
     getDescriptionLength,
     getMyCourseDetail,
 } from '@/store/course/selectors'
+import { updateGlobalLoadingState } from '@/store/user'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -209,9 +209,12 @@ export default function Sidebar() {
         goToMenuTarget(index)
     }
 
+    useEffect(() => {
+        dispatch(updateGlobalLoadingState(isLoadingRequestApprove))
+    }, [isLoadingRequestApprove])
+
     return (
         <>
-            <LoadingScreen isLoading={isLoadingRequestApprove} />
             <div className="flex flex-col justify-start w-[300px] pt-7">
                 <div className="space-y-2 flex flex-col">
                     {menu.map((item, index) => {

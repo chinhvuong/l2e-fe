@@ -1,16 +1,17 @@
-import { PlayQuizRes, QuestionInPlayQuiz } from '@/store/questions/types'
-import React, { RefObject, useEffect, useRef, useState } from 'react'
-import Button from '../button'
-import useAPI from '@/api/hooks/useAPI'
 import { LearnerAPI } from '@/api/api-path'
-import { noop } from 'lodash'
-import LoadingScreen from '../animate/loading-screen'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import useAPI from '@/api/hooks/useAPI'
 import {
     LectureQuiz,
     useLearningCourseContext,
 } from '@/containers/learn-course/learning-course-context'
+import { useAppDispatch } from '@/hooks'
+import { PlayQuizRes, QuestionInPlayQuiz } from '@/store/questions/types'
+import { updateGlobalLoadingState } from '@/store/user'
+import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
+import { useEffect, useRef, useState } from 'react'
+import Button from '../button'
 import './style.scss'
 
 interface IPlayQuizModalProps {
@@ -35,6 +36,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
     const [currentQuiz, setCurrentQuiz] = useState<PlayQuizRes>()
     const [numberOfCorrectAnswer, setNumberOfCorrectAnswer] = useState(0)
     const [totalQuestions, setTotalQuestions] = useState(0)
+    const dispatch = useAppDispatch()
 
     const countdownTimer = (expiredAt: string) => {
         const countdownDate = new Date(
@@ -192,15 +194,18 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
         handleShowModal(false)
     }
 
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingSubmitQuizAnswer || isLoadingGetQuizDetail,
+            ),
+        )
+    }, [isLoadingSubmitQuizAnswer, isLoadingGetQuizDetail])
+
     return (
         <>
             {showModal ? (
                 <>
-                    <LoadingScreen
-                        isLoading={
-                            isLoadingSubmitQuizAnswer || isLoadingGetQuizDetail
-                        }
-                    />
                     <div
                         className={`${
                             isPerfectScore ? 'hidden' : 'flex'

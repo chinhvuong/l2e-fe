@@ -1,6 +1,5 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
-import { useAppSelector } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { updateCourseGoals, updateCourseRequirements } from '@/store/course'
 import {
     addRequirements,
@@ -17,6 +16,7 @@ import {
     getWhatYouWillLearnState,
 } from '@/store/course/intended-learners/selectors'
 import { getMyCourseDetail } from '@/store/course/selectors'
+import { updateGlobalLoadingState } from '@/store/user'
 import { useEffect, useState } from 'react'
 import Subtitle from '../components/subtitle'
 import Title from '../components/title'
@@ -27,6 +27,7 @@ export interface IIntendedLearnersContainerProps {}
 export default function IntendedLearnersContainer() {
     const courseId = useAppSelector(getMyCourseDetail)._id
     const [isLoading, setIsLoading] = useState(true)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (courseId !== '') {
@@ -34,9 +35,12 @@ export default function IntendedLearnersContainer() {
         }
     }, [courseId])
 
+    useEffect(() => {
+        dispatch(updateGlobalLoadingState(isLoading))
+    }, [isLoading])
+
     return (
         <div>
-            <LoadingScreen isLoading={isLoading} />
             <Title title={'Intended learners'} />
             {!isLoading && (
                 <div className="py-10 px-14 space-y-5">

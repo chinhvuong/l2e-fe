@@ -1,12 +1,12 @@
 import { UserAPI } from '@/api/api-path'
 import { CoursePreview, GetAllCoursesResponse } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 import Pagination from '@/components/core/pagination'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
+import { updateGlobalLoadingState } from '@/store/user'
 import { noop } from 'lodash'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -86,18 +86,18 @@ const SearchPageContainer = () => {
         setSortBy(value)
     }
 
-    const isLoading = useMemo(() => {
-        return isLoadingAllMyCourses || isCourseClicked
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(isLoadingAllMyCourses || isCourseClicked),
+        )
     }, [isLoadingAllMyCourses, isCourseClicked])
 
     return (
         <>
-            <LoadingScreen isLoading={isLoading} />
             <div className="h-full">
-                {isLoading ||
-                (allMyCourses &&
-                    allMyCourses?.data &&
-                    allMyCourses.data.length === 0) ? (
+                {allMyCourses &&
+                allMyCourses?.data &&
+                allMyCourses.data.length === 0 ? (
                     <div className="flex justify-center pt-5 pb-14">
                         <div>
                             <div className="text-2xl font-bold">
@@ -137,8 +137,7 @@ const SearchPageContainer = () => {
                                 />
                             </div>
                             <div>
-                                {!isLoading &&
-                                    allMyCourses &&
+                                {allMyCourses &&
                                     allMyCourses?.data &&
                                     allMyCourses.data.map(
                                         (

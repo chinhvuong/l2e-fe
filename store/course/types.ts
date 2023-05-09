@@ -48,7 +48,6 @@ export type CourseDetailState = {
     reviews: Rating[]
     isEnroll: boolean
     isSaved: boolean
-    isLoading: boolean
     canSaveCourse: boolean
     canCreateCourse: boolean
     descriptionLength: number

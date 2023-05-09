@@ -1,9 +1,9 @@
 import RichTextEditor from '@/components/core/rich-text-editor'
-import Title from '../components/title'
-import { useState, useEffect } from 'react'
-import { useAppSelector } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { getMyCourseDetail } from '@/store/course/selectors'
-import LoadingScreen from '@/components/core/animate/loading-screen'
+import { updateGlobalLoadingState } from '@/store/user'
+import { useEffect, useState } from 'react'
+import Title from '../components/title'
 
 export interface IMessagesContainerProps {}
 
@@ -13,6 +13,7 @@ export default function MessagesContainer() {
     const [welcomeMessage, setWelcomeMessage] = useState<string>('')
     const [congratulationMessage, setCongratulationMessage] =
         useState<string>('')
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (courseDetail._id !== '') {
@@ -20,9 +21,12 @@ export default function MessagesContainer() {
         }
     }, [courseDetail._id])
 
+    useEffect(() => {
+        dispatch(updateGlobalLoadingState(isLoading))
+    }, [isLoading])
+
     return (
         <div>
-            <LoadingScreen isLoading={isLoading} />
             <Title title={'Course messages'} />
             {!isLoading && (
                 <div className="py-10 px-14 space-y-5">

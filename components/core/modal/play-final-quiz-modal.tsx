@@ -4,7 +4,9 @@ import {
     LectureQuiz,
     useLearningCourseContext,
 } from '@/containers/learn-course/learning-course-context'
+import { useAppDispatch } from '@/hooks'
 import { PlayQuizRes } from '@/store/questions/types'
+import { updateGlobalLoadingState } from '@/store/user'
 import {
     faCircleCheck,
     faCircleExclamation,
@@ -12,12 +14,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
+import Router from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import LoadingScreen from '../animate/loading-screen'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import Button from '../button'
 import './style.scss'
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
-import Router from 'next/router'
 
 interface IPlayFinalTestModalProps {
     isShow: boolean
@@ -42,6 +43,8 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
     const [totalQuestions, setTotalQuestions] = useState(0)
     const [percentage, setPercentage] = useState(0)
     const [text, setText] = useState('')
+    const modalContent = useRef<HTMLDivElement>(null)
+    const dispatch = useAppDispatch()
 
     const countdownTimer = (expiredAt: string) => {
         const countdownDate = new Date(
@@ -83,8 +86,6 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
         }, 1000)
         return countdown
     }
-
-    const modalContent = useRef<HTMLDivElement>(null)
 
     const {
         mutate: getFinalTestDetail,
@@ -169,16 +170,18 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
         }
     }
 
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingSubmitFinalTestAnswer || isLoadingGetFinalTestDetail,
+            ),
+        )
+    }, [isLoadingSubmitFinalTestAnswer, isLoadingGetFinalTestDetail])
+
     return (
         <>
             {showModal ? (
                 <>
-                    <LoadingScreen
-                        isLoading={
-                            isLoadingSubmitFinalTestAnswer ||
-                            isLoadingGetFinalTestDetail
-                        }
-                    />
                     <div
                         className={`${
                             isPerfectScore ? 'hidden' : 'flex'

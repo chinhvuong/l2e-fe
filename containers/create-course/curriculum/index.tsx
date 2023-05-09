@@ -1,4 +1,3 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import {
     addCurriculumSection,
     deleteCurriculumSection,
@@ -15,17 +14,10 @@ import Section from './components/section'
 export interface ICurriculumContainerProps {}
 
 export default function CurriculumContainer() {
-    const { isLoading, courseSections, courseLectures } =
-        useCreateCourseContext()
+    const { courseSections, courseLectures } = useCreateCourseContext()
+
     return (
         <div>
-            <LoadingScreen
-                isLoading={
-                    isLoading ||
-                    courseSections.length === 0 ||
-                    courseLectures.length === 0
-                }
-            />
             <Title title={'Curriculum'} />
             {courseSections.length > 0 && courseLectures.length > 0 && (
                 <div className="py-10 px-14 space-y-5">

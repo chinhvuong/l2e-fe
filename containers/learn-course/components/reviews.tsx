@@ -1,25 +1,25 @@
+import { LearnerAPI } from '@/api/api-path'
+import useAPI from '@/api/hooks/useAPI'
+import UpdateReviewsModal from '@/components/core/modal/update-success-modal'
 import RatingStar from '@/components/core/rating-star'
 import RatingBar from '@/components/core/rating-star/rating-bar'
 import CommentForm from '@/containers/course-detail/comment/components/comment-form'
 import RatingAnalysisBar from '@/containers/course-detail/review/components/rating-analysis-bar'
 import ReviewItemsList from '@/containers/course-detail/review/components/review-items-list'
+import { useAppDispatch } from '@/hooks'
 import useOutsideClick from '@/hooks/useOutSideClick'
+import { UpdateRatingsState } from '@/store/rating'
+import { updateGlobalLoadingState } from '@/store/user'
 import {
     faChevronDown,
     faMagnifyingGlass,
     faStar,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useRef, useState } from 'react'
+import { noop } from 'lodash'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useLearningCourseContext } from '../learning-course-context'
-import UpdateReviewsModal from '@/components/core/modal/update-success-modal'
-import { useAppDispatch } from '@/hooks'
-import useAPI from '@/api/hooks/useAPI'
-import { LearnerAPI } from '@/api/api-path'
-import { UpdateRatingsState } from '@/store/rating'
-import LoadingScreen from '@/components/core/animate/loading-screen'
-import { noop } from 'lodash'
 
 export interface ILearningReviewDetailProps {}
 
@@ -118,9 +118,17 @@ export default function LearningReviewDetail() {
             toast.error('You must rate and give a review !')
         }
     }
+
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoading || isLoadingFilterRatingCourseDetail,
+            ),
+        )
+    }, [isLoading, isLoadingFilterRatingCourseDetail])
+
     return (
         <div className="space-y-10">
-            <LoadingScreen isLoading={isLoading} />
             {canRating && (
                 <div>
                     <RatingBar
