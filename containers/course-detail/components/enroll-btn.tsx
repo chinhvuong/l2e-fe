@@ -19,9 +19,8 @@ const EnrollBtn = ({ ...rest }: Props) => {
     const { data: signer } = useSigner({
         chainId: goerli.id,
     })
-    // const { address } = useAccount()
-    const enrollCourse = async (courseId: number) => {
-        if (isLoading) {
+    const enrollCourse = async (courseId: number | undefined) => {
+        if (isLoading || !data?.price || !courseId) {
             return
         }
         if (asset.balance >= data.price) {
@@ -58,7 +57,7 @@ const EnrollBtn = ({ ...rest }: Props) => {
     return (
         <Button
             className="w-full flex items-center justify-center"
-            onClick={() => enrollCourse(Number(data.courseId))}
+            onClick={() => enrollCourse(Number(data?.courseId))}
             {...rest}
         >
             <div className="font-medium text-[20px] pr-2">Enroll</div>

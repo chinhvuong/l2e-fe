@@ -1,16 +1,15 @@
 import Button from '@/components/core/button'
 import Label from '@/components/core/label'
 import RatingStar from '@/components/core/rating-star'
-import { courseCatagories } from '@/data/category'
 import { getEnrollStatusState } from '@/store/course/selectors'
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Router from 'next/router'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useAccount } from 'wagmi'
 import EnrollBtn from '../components/enroll-btn'
 import { useCourseDetailContext } from '../course-detail-context'
-import Router from 'next/router'
-import { useAccount } from 'wagmi'
 
 export interface ICourseLabelProps {}
 

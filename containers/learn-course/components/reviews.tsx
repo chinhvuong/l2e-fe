@@ -19,6 +19,7 @@ import useAPI from '@/api/hooks/useAPI'
 import { LearnerAPI } from '@/api/api-path'
 import { UpdateRatingsState } from '@/store/rating'
 import LoadingScreen from '@/components/core/animate/loading-screen'
+import { noop } from 'lodash'
 
 export interface ILearningReviewDetailProps {}
 
@@ -66,7 +67,7 @@ export default function LearningReviewDetail() {
             '&rating=' +
             parseInt(selectedRating),
         {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 dispatch(UpdateRatingsState(response.data))
                 setIsLoading(false)

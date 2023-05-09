@@ -4,13 +4,13 @@ import useAPI from '@/api/hooks/useAPI'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
+import Pagination from '@/components/core/pagination'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
+import { noop } from 'lodash'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import Search from '../../../components/common/search'
-import Pagination from '@/components/core/pagination'
 
 export default function LearnerCoursesContainer() {
     const [isCourseClicked, setIsCourseClicked] = useState<boolean>(false)
@@ -49,7 +49,7 @@ export default function LearnerCoursesContainer() {
                 sortBy !== '' ? '&sort=' + getSortParams() : ''
             }`,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response) => {
                     setAllMyCourses(response)
                     setTotalPage(Math.ceil(response.total / limit))
@@ -81,8 +81,6 @@ export default function LearnerCoursesContainer() {
         getAllMyCourses({})
         changeURL()
     }, [search, sortBy, pageNumber])
-
-    useHideFirstEnterLoadingScreen()
 
     const handleSortChange = (value: string) => {
         setSortBy(value)

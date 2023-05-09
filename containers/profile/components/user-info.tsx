@@ -1,25 +1,21 @@
-import UserProfileDetail from '@/components/common/user-profile-detail'
 import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
-import EditProfileModal from '@/components/core/modal/edit-profile-modal'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
-import { useState } from 'react'
-import { useUpdateProfileContext } from '../update-profile-context'
 import {
     FacebookIcon,
     InstagramIcon,
     TwitterIcon,
     YoutubeIcon,
 } from '@/components/core/icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import EditProfileModal from '@/components/core/modal/edit-profile-modal'
 import { faAward, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parse from 'html-react-parser'
+import { useState } from 'react'
+import { useUpdateProfileContext } from '../update-profile-context'
 
 export default function UserInfoDetail() {
     const { userInfo, isLoading } = useUpdateProfileContext()
     const [isShowProfileModal, setIsShowProfileModal] = useState(false)
-
-    useHideFirstEnterLoadingScreen()
 
     const getUIContent = (content: string) => {
         let formattedData = content.replace(
@@ -52,62 +48,102 @@ export default function UserInfoDetail() {
                         </Button>
                     </div>
                 </div>
-                <div className="my-8">
-                    <div className="font-semibold text-2xl mb-1 text-hyperlink cursor-pointer">
-                        {userInfo?.name}
-                    </div>
-                    <div className="text-description mt-1">
-                        {userInfo?.title}
-                    </div>
-                    <div className="flex space-x-5 py-3">
-                        <FacebookIcon fillColor="#000000" width="20px" />
-                        <TwitterIcon fillColor="#000000" width="20px" />
-                        <InstagramIcon fillColor="#000000" width="20px" />
-                        <YoutubeIcon fillColor="#000000" width="20px" />
-                    </div>
-                    <div className="flex items-center my-4">
-                        {userInfo.avatar !== null && (
-                            <img
-                                src={`${userInfo?.avatar}`}
-                                alt=""
-                                className="rounded-[50%] w-[120px]"
+                {userInfo ? (
+                    <>
+                        <div className="my-8">
+                            <div className="font-semibold text-2xl mb-1 text-hyperlink cursor-pointer">
+                                {userInfo?.name}
+                            </div>
+                            <div className="text-description mt-1">
+                                {userInfo?.title}
+                            </div>
+                            <div className="flex space-x-5 py-3">
+                                <FacebookIcon
+                                    fillColor="#000000"
+                                    width="20px"
+                                />
+                                <TwitterIcon fillColor="#000000" width="20px" />
+                                <InstagramIcon
+                                    fillColor="#000000"
+                                    width="20px"
+                                />
+                                <YoutubeIcon fillColor="#000000" width="20px" />
+                            </div>
+                            <div className="flex items-center my-4">
+                                {userInfo.avatar !== null && (
+                                    <img
+                                        src={`${userInfo?.avatar}`}
+                                        alt=""
+                                        className="rounded-[50%] w-[120px]"
+                                    />
+                                )}
+                                <div className="flex flex-col space-y-2 ml-7 mr-4">
+                                    <div className="flex items-center space-x-2">
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <div>4.7 Instructor Rating</div>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <FontAwesomeIcon
+                                            icon={faUserGroup}
+                                            className="text-sm"
+                                        />
+                                        <div>526,234 Reviews</div>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <FontAwesomeIcon
+                                            icon={faAward}
+                                            className="text-xl mr-0.5"
+                                        />
+                                        <div>1,634,289 Students</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                id="instructor"
+                                className="space-y-3 overflow-hidden relative"
+                            >
+                                <div className="text-justify space-y-3">
+                                    {userInfo?.bio &&
+                                        getUIContent(userInfo?.bio)}
+                                </div>
+                            </div>
+                            <EditProfileModal
+                                isShow={isShowProfileModal}
+                                setIsShow={setIsShowProfileModal}
+                                userInfo={userInfo}
                             />
-                        )}
-                        <div className="flex flex-col space-y-2 ml-7 mr-4">
-                            <div className="flex items-center space-x-2">
-                                <FontAwesomeIcon icon={faStar} />
-                                <div>4.7 Instructor Rating</div>
+                        </div>
+                    </>
+                ) : (
+                    <div className="animate-pulse flex w-full my-8">
+                        <div className="flex-1 space-y-6">
+                            <div className="h-2 bg-slate-700 rounded w-1/4"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/6"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/6"></div>
+                            <div className="flex items-center my-4">
+                                <div className="h-2 bg-slate-700 min-w-[120px] min-h-[120px]"></div>
+                                <div className="w-full flex flex-col space-y-5 ml-7 mr-4">
+                                    <div className="h-2 bg-slate-700 rounded w-1/6"></div>
+                                    <div className="h-2 bg-slate-700 rounded w-1/6"></div>
+                                    <div className="h-2 bg-slate-700 rounded w-1/6"></div>
+                                </div>
                             </div>
-                            <div className="flex items-center space-x-2">
-                                <FontAwesomeIcon
-                                    icon={faUserGroup}
-                                    className="text-sm"
-                                />
-                                <div>526,234 Reviews</div>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <FontAwesomeIcon
-                                    icon={faAward}
-                                    className="text-xl mr-0.5"
-                                />
-                                <div>1,634,289 Students</div>
-                            </div>
+                            <div className="h-2 bg-slate-700 rounded w-2/3"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/2"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/3"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/6"></div>
+                            <div className="h-2 bg-slate-700 rounded w-2/3"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/2"></div>
+                            <div className="h-2 bg-slate-700 rounded w-2/3"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/4"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/2"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/4"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/6"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/3"></div>
+                            <div className="h-2 bg-slate-700 rounded w-1/2"></div>
                         </div>
                     </div>
-                    <div
-                        id="instructor"
-                        className="space-y-3 overflow-hidden relative"
-                    >
-                        <div className="text-justify space-y-3">
-                            {userInfo?.bio && getUIContent(userInfo?.bio)}
-                        </div>
-                    </div>
-                    <EditProfileModal
-                        isShow={isShowProfileModal}
-                        setIsShow={setIsShowProfileModal}
-                        userInfo={userInfo}
-                    />
-                </div>
+                )}
             </div>
         </>
     )

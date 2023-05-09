@@ -1,3 +1,4 @@
+import LoadingScreen from '@/components/core/animate/loading-screen'
 import Layout from '@/layout'
 import WalletLogic from '@/layout/main-layout/header/wallet-logic'
 import { store } from '@/store'
@@ -7,7 +8,8 @@ import WagmiProvider from '@/wallet/provider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
-import { ReactElement, ReactNode } from 'react'
+import { useRouter } from 'next/router'
+import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
 type NextPageWithLayout = NextPage & {
     // eslint-disable-next-line no-unused-vars
@@ -19,17 +21,39 @@ type AppPropsWithLayout = AppProps & {
 }
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
+    const router = useRouter()
+
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        const handleStart = (url: string) => setIsLoading(true)
+        const handleComplete = (url: string) => {
+            setIsLoading(false)
+        }
+
+        router.events.on('routeChangeStart', handleStart)
+        router.events.on('routeChangeComplete', handleComplete)
+        router.events.on('routeChangeError', handleComplete)
+
+        return () => {
+            router.events.off('routeChangeStart', handleStart)
+            router.events.off('routeChangeComplete', handleComplete)
+            router.events.off('routeChangeError', handleComplete)
+        }
+    })
     // Use the layout defined at the page level, if available
     const queryClient = new QueryClient({
         defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
     })
     const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
+
     return (
         <QueryClientProvider client={queryClient}>
             <WagmiProvider>
                 <Provider store={store}>
                     <WalletLogic />
-                    {getLayout(<Component {...pageProps} />)}
+                    <LoadingScreen isLoading={isLoading} />
+                    <>{getLayout(<Component {...pageProps} />)}</>
                 </Provider>
             </WagmiProvider>
         </QueryClientProvider>

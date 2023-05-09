@@ -1,6 +1,5 @@
 import { UserAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
-import { GetMintSignatureResponse } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import Loading from '@/components/core/animate/loading'
 import LoadingScreen from '@/components/core/animate/loading-screen'
@@ -8,7 +7,6 @@ import Button from '@/components/core/button'
 import Input from '@/components/core/input'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { claimReward } from '@/hooks/coursedex'
-import { updateLoadingState } from '@/store/course'
 import {
     updateClaimDailyState,
     updateLoginState,
@@ -19,7 +17,6 @@ import { goerli } from '@/wallet/chains'
 import useWeb3 from '@/wallet/hooks/useWeb3'
 import {
     faBell,
-    faCartShopping,
     faChalkboardTeacher,
     faGear,
     faGraduationCap,
@@ -54,12 +51,10 @@ const Account = (props: any) => {
     const dispatch = useAppDispatch()
 
     const goToLearnerPage = () => {
-        dispatch(updateLoadingState(true))
         Router.push('/learner/courses')
     }
 
     const goToInstructorPage = () => {
-        dispatch(updateLoadingState(true))
         Router.push('/instructor/courses')
     }
 
@@ -257,10 +252,7 @@ const Account = (props: any) => {
                                 />
                                 <div>Instructor</div>
                             </div>
-                            <div
-                                className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer"
-                                // onClick={() => onSelectRating(item)}
-                            >
+                            <div className="flex items-center space-x-3 hover:bg-primary hover:text-white text-black box-border px-[20px] py-3 cursor-pointer">
                                 <FontAwesomeIcon
                                     icon={faGear}
                                     className="w-[16px]"

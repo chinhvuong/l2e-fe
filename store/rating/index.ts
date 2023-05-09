@@ -10,7 +10,7 @@ const initialState = {
         rating: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
-        user: dataUser,
+        user: {},
     },
     ratinglist: [] as Rating[],
     overviewRating: {

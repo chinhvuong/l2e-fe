@@ -1,7 +1,4 @@
 import Input from '@/components/core/input'
-import { useAppSelector } from '@/hooks'
-import { getCanCreateCourseState } from '@/store/course/selectors'
-import * as React from 'react'
 
 export interface ICourseTitleProps {
     defaultValue: string

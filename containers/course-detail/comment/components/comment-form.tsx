@@ -5,17 +5,10 @@ import '@/components/core/modal/style.scss'
 
 export interface ICommentFormProps {
     handleSubmit: (content: string) => void
-    // hasCancelButton: boolean
-    // handleCancel?: MouseEventHandler<HTMLButtonElement> | undefined
     initialText?: string
 }
 
-const CommentForm = ({
-    handleSubmit,
-    // hasCancelButton = false,
-    // handleCancel,
-    initialText = '',
-}: ICommentFormProps) => {
+const CommentForm = ({ handleSubmit, initialText = '' }: ICommentFormProps) => {
     const [text, setText] = useState(initialText)
     const isTextareaDisabled = text.length === 0
     const onSubmit = (event: { preventDefault: () => void }) => {

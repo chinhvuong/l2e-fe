@@ -69,7 +69,6 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
             if (distance < 0) {
                 clearInterval(countdown)
                 setTimer("Time's up!")
-                console.log('finalTest', finalTest)
                 finalTest &&
                     submitFinalTestAnswer({
                         gameId: finalTest.gameId,
@@ -424,10 +423,10 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                     )}
                                 </div>
                                 <div
-                                    className="absolute top-5 right-5 cursor-pointer"
+                                    className="absolute top-5 right-5 cursor-pointer bg-gray-300 px-2 rounded-full"
                                     onClick={() => handleShowModal(false)}
                                 >
-                                    ✕
+                                    x
                                 </div>
                             </div>
                         </div>

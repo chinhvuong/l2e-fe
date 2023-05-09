@@ -1,37 +1,38 @@
-import VideoModal from '@/components/core/modal/video-modal'
 import VideoPreview from '@/components/core/video-preview'
-import { dataCourses_detail } from '@/data/course-detail'
-import { useState } from 'react'
+import { getLoginState } from '@/store/user/selectors'
+import { useSelector } from 'react-redux'
 import { useCourseDetailContext } from '../course-detail-context'
 import IncludeList from './include-list'
 import PriceEnrollShare from './price-enroll-share'
-import { useSelector } from 'react-redux'
-import { getLoginState } from '@/store/user/selectors'
 
 export interface ISidebarProps {}
 
 export default function Sidebar() {
-    const { data } = useCourseDetailContext()
-    const [showModal, setShowModal] = useState(false)
+    const { data, isShowVideoModal, setIsShowVideoModal } =
+        useCourseDetailContext()
     const loginState = useSelector(getLoginState)
+    const includeList = {
+        duration: '65 hours on-demand video',
+        resource: '49 downloadable resources',
+        assignments: 'Assignments',
+        certificate: 'Certificate of completion',
+        lifetimeAccess: 'Full lifetime access',
+        device: 'Access on mobile and TV',
+        articles: '85 articles',
+        exercise: '8 coding exercises',
+    }
+
     return (
         <div className="w-[320px]">
             {data ? (
                 <>
-                    {data.promotionalVideo && (
-                        <VideoModal
-                            isShow={showModal}
-                            setIsShow={setShowModal}
-                            url={data.promotionalVideo}
-                            showPreview={false}
-                            courseName={data.name}
-                        />
-                    )}
                     <div>
                         {data.promotionalVideo && (
                             <VideoPreview
                                 video={data.promotionalVideo}
-                                onClick={() => setShowModal(!showModal)}
+                                onClick={() =>
+                                    setIsShowVideoModal(!isShowVideoModal)
+                                }
                             />
                         )}
                         <div className="space-y-4 mt-4 pb-6">
@@ -40,11 +41,7 @@ export default function Sidebar() {
                                     {data.price + ' USDT'}
                                 </div>
                                 {loginState && <PriceEnrollShare data={data} />}
-                                {dataCourses_detail.include && (
-                                    <IncludeList
-                                        data={dataCourses_detail.include}
-                                    />
-                                )}
+                                <IncludeList data={includeList} />
                             </div>
                         </div>
                     </div>

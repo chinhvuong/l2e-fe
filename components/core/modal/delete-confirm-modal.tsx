@@ -60,10 +60,10 @@ export default function DeleteConfirmModal(props: IDeleteConfirmModalProps) {
                                     </div>
                                 </div>
                                 <div
-                                    className="absolute top-5 right-5 cursor-pointer"
+                                    className="absolute top-5 right-5 cursor-pointer bg-gray-300 px-2 rounded-full"
                                     onClick={() => handleShowModal(false)}
                                 >
-                                    ✕
+                                    x
                                 </div>
                             </div>
                         </div>

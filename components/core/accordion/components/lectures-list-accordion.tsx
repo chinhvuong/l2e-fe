@@ -12,36 +12,6 @@ export interface ILecturesListItem {
     length?: string
 }
 
-// Quiz UI
-
-// <div className="mt-3 pr-6">
-//     <div className="flex justify-between">
-//         <div className="flex items-start">
-//             <FontAwesomeIcon icon={faCircleQuestion} className="pt-1 px-6" />
-//             <div>Skills Assessment</div>
-//             <FontAwesomeIcon
-//                 icon={!expand ? faChevronDown : faChevronUp}
-//                 className="bg-border-box p-1 rounded-full ml-4 cursor-pointer"
-//                 onClick={() => setexpand(!expand)}
-//             />
-//         </div>
-//         <div className="text-description">10 questions</div>
-//     </div>
-//     <div
-//         className={`pr-6 pl-[63px] text-description pt-3 space-y-3 w-[75%] ${
-//             !expandSubSections[0] && 'hidden'
-//         }`}
-//     >
-//         <div className="font-bold">
-//             Already learnt some Python? Want to skip ahead?
-//         </div>
-//         <div>
-//             Take this skill assessment and see which level of the course you
-//             should start at.
-//         </div>
-//     </div>
-// </div>
-
 export default function LecturesListAccordion(
     props: ILecturesListAccordionProps,
 ) {

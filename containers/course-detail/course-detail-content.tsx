@@ -50,7 +50,7 @@ export default function CourseDetailContent() {
 
     return (
         <div className="relative">
-            <LoadingScreen isLoading={isLoading} />
+            <LoadingScreen isLoading={isLoading || !data} />
             <CourseLabel />
             <CourseInfo />
             <NavBar />

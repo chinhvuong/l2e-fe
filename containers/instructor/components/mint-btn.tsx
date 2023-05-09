@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
-import { useSigner } from 'wagmi'
-import Button from '@/components/core/button'
-import Loading from '@/components/core/animate/loading'
-import { createCourse } from '@/hooks/coursedex'
-import { goerli } from 'wagmi/chains'
-import { ethers } from 'ethers'
-import { callAPI } from '@/api/axios-client'
 import { InstructorAPI } from '@/api/api-path'
+import { callAPI } from '@/api/axios-client'
+import Button from '@/components/core/button'
+import { createCourse } from '@/hooks/coursedex'
+import { ethers } from 'ethers'
+import { useState } from 'react'
+import { useSigner } from 'wagmi'
+import { goerli } from 'wagmi/chains'
 
 const MintBtn = ({ id }: { id: string }) => {
     const [isLoading, setIsLoading] = useState(false)

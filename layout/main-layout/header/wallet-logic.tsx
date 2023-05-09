@@ -46,7 +46,6 @@ export default function WalletLogic() {
     })
 
     useEffect(() => {
-        console.log(balance, approve)
         const asset: any = {}
         if (balance) {
             asset.balance = Number(balance)
@@ -81,15 +80,8 @@ export default function WalletLogic() {
                 refetchAllowance()
             }
         },
-        onDisconnect: () => {},
+        onDisconnect: noop,
     })
-
-    // const ensAvatar = useEnsAvatar({
-    //     address: account?.address,
-    //     // chainId: 1,
-    // })
-    // const ensName = useEnsName({ address: account?.address, chainId:  })
-    // const disconnect = useDisconnect()
 
     return <div></div>
 }

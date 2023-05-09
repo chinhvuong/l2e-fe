@@ -57,7 +57,7 @@ export default function CreateQuestionForm({
     })
     const { mutate: createQuestions, isLoading: isLoadingCreateQuestion } =
         useAPI.post(InstructorAPI.CREATE_QUESTIONS, {
-            onError: () => {},
+            onError: noop,
             onSuccess: () => {
                 getQuestionsList({})
                 formik.resetForm()

@@ -39,18 +39,7 @@ const LearningCourseContent = () => {
                 return <></>
         }
     }
-
-    // const [isReady, setIsReady] = useState(false)
     const playerRef = useRef<ReactPlayer>(null)
-
-    // const onReady = useCallback(() => {
-    //     if (!isReady) {
-    //         const timeToStart = 3 * 60
-    //         playerRef.current &&
-    //             playerRef.current?.seekTo(timeToStart, 'seconds')
-    //         setIsReady(true)
-    //     }
-    // }, [isReady])
 
     return (
         <div className="flex w-full">
@@ -81,7 +70,6 @@ const LearningCourseContent = () => {
                             !isCurrentLessonLearned &&
                                 setShowPlayQuizModal(true)
                         }}
-                        // onReady={onReady}
                     />
                 ) : (
                     <div

@@ -1,6 +1,4 @@
-import { useAppSelector } from '@/hooks'
 import { QuestionDetailType } from '@/store/questions/types'
-import { getQuizDetailInfo } from '@/store/quiz/selectors'
 import { useFormikContext } from 'formik'
 import {
     ChangeEvent,
@@ -10,8 +8,8 @@ import {
     useRef,
     useState,
 } from 'react'
-import './style.scss'
 import Button from '../button'
+import './style.scss'
 
 export interface IQuestionsInputType {
     questions: QuestionDetailType[]
@@ -36,15 +34,7 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
         const { checked, name, value } = event.target
         if (checked) {
             setQuestions([...chosenQuestions, questionsList?.[parseInt(value)]])
-            // context.setFieldValue('questions', [
-            //     ...context.values.questions,
-            //     questionsList?.[parseInt(value)],
-            // ])
         } else {
-            // context.setFieldValue(
-            //     'questions',
-            //     context.values.questions.filter((v) => v._id !== name),
-            // )
             setQuestions(
                 chosenQuestions.filter((question) => question._id !== name),
             )

@@ -1,11 +1,19 @@
 import { LearnerAPI, UserAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
+import { CourseDetailIncludeList } from '@/constants/interfaces'
+import { LESSON_ID } from '@/constants/localStorage'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { UpdateCommentsState } from '@/store/comment'
+import { UpdateOverviewRatingState, UpdateRatingsState } from '@/store/rating'
+import {
+    getOverViewRatings,
+    getRatings,
+    getTotalRatings,
+} from '@/store/rating/selectors'
+import { Rating, RatingOverView } from '@/store/rating/types'
+import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { noop } from 'lodash'
 import { useRouter } from 'next/router'
-import { Comment } from '@/store/comment/types'
 import {
     Dispatch,
     SetStateAction,
@@ -15,18 +23,7 @@ import {
     useMemo,
     useState,
 } from 'react'
-import { getComments } from '@/store/comment/selectors'
-import { LESSON_ID } from '@/constants/localStorage'
-import { UpdateOverviewRatingState, UpdateRatingsState } from '@/store/rating'
-import {
-    getOverViewRatings,
-    getRatings,
-    getTotalRatings,
-} from '@/store/rating/selectors'
-import { Rating, RatingOverView } from '@/store/rating/types'
 import { useAccount } from 'wagmi'
-import { User } from '@/store/user/types'
-import { CourseDetailIncludeList } from '@/constants/interfaces'
 
 export interface LectureQuiz {
     _id: string
@@ -183,7 +180,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     } = useAPI.getMutation(
         LearnerAPI.GET_LEARNING_COURSE_DETAIL + '?id=' + courseId,
         {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 setCourseDetail(response)
                 if (playingVideo === '') {
@@ -199,7 +196,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     } = useAPI.getMutation(
         LearnerAPI.RATING + '?course=' + courseId + '&query=' + searchTerm,
         {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 dispatch(UpdateRatingsState(response.data))
                 validateRating(response.data)
@@ -211,7 +208,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         mutate: getRatingOverViewCourseDetail,
         isLoading: isLoadingRatingOverViewCourseDetail,
     } = useAPI.getMutation(LearnerAPI.GET_OVERVIEW_RATING + '?id=' + courseId, {
-        onError: () => {},
+        onError: noop,
         onSuccess: (response) => {
             dispatch(UpdateOverviewRatingState(response))
         },
@@ -219,10 +216,8 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     const { mutate: createRatingDetail, isLoading: isLoadingCreateRating } =
         useAPI.post(LearnerAPI.CREATE_RATING, {
-            onError: () => {},
-            onSuccess: (response) => {
-                // getRatingCourseDetail({})
-            },
+            onError: noop,
+            onSuccess: noop,
         })
 
     const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
@@ -290,12 +285,6 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         isLoadingRatingCourseDetail,
         isLoadingCreateRating,
     ])
-
-    // useEffect(() => {
-    //     if (!isLoading) {
-    //         setPlayingVideo(getDefaultPlayedVideo())
-    //     }
-    // }, [isLoading])
 
     useEffect(() => {
         if (typeof router.query.slug === 'string') {

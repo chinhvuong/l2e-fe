@@ -1,17 +1,6 @@
 import Input from '@/components/core/input'
-import type { Identifier, XYCoord } from 'dnd-core'
-import { FC, useState } from 'react'
-import { useRef } from 'react'
-import { useDrag, useDrop } from 'react-dnd'
-import { ItemTypes } from '../type'
-import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { CurriculumSection } from '@/store/course/curriculum/types'
 import { RootState } from '@/store'
-import { TInputUpdate } from '@/store/course/types'
-import Lecture from '../lecture'
 import {
     addCurriculumLecture,
     deleteCurriculumLecture,
@@ -20,8 +9,17 @@ import {
 import {
     getCurriculumLectureDetail,
     getCurriculumLecturesForm,
-    getCurriculumLecturesOfSection,
 } from '@/store/course/curriculum/selectors'
+import { CurriculumSection } from '@/store/course/curriculum/types'
+import { TInputUpdate } from '@/store/course/types'
+import { faBars, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import type { Identifier, XYCoord } from 'dnd-core'
+import { FC, useRef, useState } from 'react'
+import { useDrag, useDrop } from 'react-dnd'
+import Lecture from '../lecture'
+import { ItemTypes } from '../type'
 
 export interface CardProps {
     id: string

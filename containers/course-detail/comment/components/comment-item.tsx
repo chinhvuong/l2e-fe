@@ -7,6 +7,7 @@ import { UseMutateFunction } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import CommentForm from './comment-form'
+import { noop } from 'lodash'
 
 export interface ICommentItemProps {
     data: Comment
@@ -28,14 +29,14 @@ export default function CommentItem(props: ICommentItemProps) {
 
     const { mutate: updateComment, isLoading: isLoadingUpdateComment } =
         useAPI.put(LearnerAPI.COMMENT + '/' + props.data._id, {
-            onError: () => {},
-            onSuccess: (response) => {
+            onError: noop,
+            onSuccess: () => {
                 props.getLearningCommentParent({})
             },
         })
     const { mutate: deleteComment, isLoading: isLoadingDeleteComment } =
         useAPI.delete(LearnerAPI.COMMENT + '/' + props.data._id, {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 props.getLearningCommentParent({})
             },
@@ -137,12 +138,8 @@ export default function CommentItem(props: ICommentItemProps) {
                             </div>
                         ) : (
                             <CommentForm
-                                // hasCancelButton
                                 initialText={props.data.content}
                                 handleSubmit={EditComment}
-                                // handleCancel={() => {
-                                //     setIsEdit(false)
-                                // }}
                             />
                         )}
                         {props.data.level === 1 && (
@@ -189,13 +186,7 @@ export default function CommentItem(props: ICommentItemProps) {
                                 alt=""
                                 className="rounded-[50%] w-[60px] sm:hidden"
                             />
-                            <CommentForm
-                                // hasCancelButton
-                                handleSubmit={ReplyComment}
-                                // handleCancel={() => {
-                                //     setCanReply(false)
-                                // }}
-                            />
+                            <CommentForm handleSubmit={ReplyComment} />
                         </div>
                     )}
                 </div>

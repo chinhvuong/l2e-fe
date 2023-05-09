@@ -4,12 +4,11 @@ import {
     TwitterIcon,
     YoutubeIcon,
 } from '@/components/core/icons'
-import ShowMore from '@/components/core/show-more'
 import { User } from '@/store/user/types'
 import { faAward, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parse from 'html-react-parser'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 export interface IUserProfileDetailProps {
     data: User

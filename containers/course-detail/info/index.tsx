@@ -1,17 +1,11 @@
-import { LearnerAPI } from '@/api/api-path'
-import useAPI from '@/api/hooks/useAPI'
 import Label from '@/components/core/label'
-import VideoModal from '@/components/core/modal/video-modal'
+import PlayVideoModal from '@/components/core/modal/play-video-modal'
 import RatingStar from '@/components/core/rating-star'
-import { useAppDispatch } from '@/hooks'
-import { updateEnrollStatus, updateLoadingState } from '@/store/course'
-import { getLoginState } from '@/store/user/selectors'
+import VideoPreview from '@/components/core/video-preview'
 import { faExclamationCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { noop } from 'lodash'
 import Router from 'next/router'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import Sidebar from '../components/sidebar'
 import { useCourseDetailContext } from '../course-detail-context'
 
@@ -21,11 +15,10 @@ type Category = {
 }
 
 export default function CourseInfo() {
-    const { data } = useCourseDetailContext()
+    const { data, isShowVideoModal, setIsShowVideoModal } =
+        useCourseDetailContext()
     const [category, setCategory] = useState<Category | null>(null)
-    const loginState = useSelector(getLoginState)
-    const [showModal, setShowModal] = useState(false)
-    const dispatch = useAppDispatch()
+
     const [scrollY, setScrollY] = useState(0)
 
     useEffect(() => {
@@ -42,14 +35,6 @@ export default function CourseInfo() {
         }
     }, [])
 
-    const { mutate: checkEnrollState, isLoading: isLoadingCheckEnrollState } =
-        useAPI.getMutation(LearnerAPI.CHECK_ENROLL + data?._id ?? '', {
-            onError: noop,
-            onSuccess(response) {
-                dispatch(updateEnrollStatus(response.enroll))
-            },
-        })
-
     const getLastUpdated = () => {
         return data
             ? `Last updated ${
@@ -63,9 +48,6 @@ export default function CourseInfo() {
     }
 
     useEffect(() => {
-        if (data && data._id && loginState) {
-            checkEnrollState({})
-        }
         if (data) {
             const courseCategory = {
                 name: data?.category?.name,
@@ -73,20 +55,26 @@ export default function CourseInfo() {
             }
             setCategory(courseCategory)
         }
-    }, [loginState, data])
+    }, [data])
 
     return (
         <div className="bg-black flex justify-center" id="overview-section">
             <div className="2xl:w-[1250px] lg:w-[700px] px-8 under_lg:px-0 py-10 flex justify-between relative">
                 {data ? (
                     <div className="w-[820px] under_lg:w-full text-white">
+                        <PlayVideoModal
+                            isShow={isShowVideoModal}
+                            setIsShow={setIsShowVideoModal}
+                            url={data.promotionalVideo}
+                            courseName={data.name}
+                        />
                         <div className="2xl:hidden">
                             {data.promotionalVideo && (
-                                <VideoModal
-                                    isShow={showModal}
-                                    setIsShow={setShowModal}
-                                    url={data.promotionalVideo}
-                                    courseName={data.name}
+                                <VideoPreview
+                                    video={data.promotionalVideo}
+                                    onClick={() =>
+                                        setIsShowVideoModal(!isShowVideoModal)
+                                    }
                                 />
                             )}
                         </div>

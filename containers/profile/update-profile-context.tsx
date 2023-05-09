@@ -81,7 +81,6 @@ export const UpdateProfileProvider: React.FC<React.PropsWithChildren<{}>> = ({
             onError: noop,
             onSuccess(response) {
                 setUserId(response._id)
-                console.log(response)
                 dispatch(updateUserInfo(response))
             },
         })

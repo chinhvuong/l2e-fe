@@ -1,19 +1,8 @@
 import React, { HtmlHTMLAttributes, useEffect, useState } from 'react'
 import useWeb3 from '../hooks/useWeb3'
-// import { isChainSupported } from '../utils'
 
 const WalletAccount = ({ ...rest }: HtmlHTMLAttributes<HTMLDivElement>) => {
     const { address, chain, chains } = useWeb3()
-    // const [openSwitchNetworkModal, setOpenSwitchNetworkModal] = useState(false)
-
-    // useEffect(() => {
-    //     console.log(chain && !isChainSupported(chain.id))
-    //     if (chain && !isChainSupported(chain.id)) {
-    //         setOpenSwitchNetworkModal(true)
-    //     } else if (chain && openSwitchNetworkModal) {
-    //         setOpenSwitchNetworkModal(false)
-    //     }
-    // }, [chain, chains])
 
     return (
         <>

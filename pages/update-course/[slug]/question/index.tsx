@@ -1,4 +1,4 @@
-import QuestionBankContainers from '@/containers/instructor/questionbank'
+import QuestionBankContainers from '@/containers/create-course/questionbank'
 import CreateCourseLayout from '@/layout/create-course-layout/course-detail'
 import type { ReactElement } from 'react'
 

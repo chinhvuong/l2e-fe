@@ -1,5 +1,4 @@
 import { ConnectorNames, WalletConfigV2 } from './types'
-// import { WalletFilledIcon } from '@pancakeswap/uikit'
 import { metaMaskConnector, walletConnectNoQrCodeConnector } from './utils'
 import { ExtendEthereum } from './types'
 
@@ -40,21 +39,6 @@ const walletsConfig = ({
             qrCode,
             downloadLink: 'https://metamask.io/download/',
         },
-        // {
-        //     id: 'binance',
-        //     title: 'Binance Wallet',
-        //     icon: '/images/wallets/binance.png',
-        //     installed: typeof window !== 'undefined' && Boolean(window.BinanceChain),
-        //     connectorId: ConnectorNames.BSC,
-        //     guide: {
-        //         desktop: 'https://www.bnbchain.org/en/binance-wallet',
-        //     },
-        //     downloadLink: {
-        //         desktop: isFirefox
-        //             ? 'https://addons.mozilla.org/en-US/firefox/addon/binance-chain/?src=search'
-        //             : 'https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp',
-        //     },
-        // },
         {
             id: 'coinbase',
             title: 'Coinbase Wallet',
@@ -100,16 +84,7 @@ export const createWallets = (
             (c) => c.installed && c.connectorId === ConnectorNames.Injected,
         )
         ? config // add injected icon if none of injected type wallets installed
-        : [
-              ...config,
-              // {
-              //     id: 'injected',
-              //     title: 'Injected',
-              //     icon: '',
-              //     connectorId: ConnectorNames.Injected,
-              //     installed: typeof window !== 'undefined' && Boolean(window.ethereum),
-              // },
-          ]
+        : [...config]
 }
 
 const docLangCodeMapping: Record<string, string> = {

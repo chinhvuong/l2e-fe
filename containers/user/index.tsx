@@ -1,5 +1,4 @@
 import UserProfileDetail from '@/components/common/user-profile-detail'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { User } from '@/store/user/types'
 export interface StaticUserProps {
     user: User
@@ -15,11 +14,6 @@ export default function UserDetailPreviewContainer(props: StaticUserProps) {
                             showShortDescription
                         />
                     )}
-                    {/* <EditProfileModal
-                        isShow={isShowProfileModal}
-                        setIsShow={setIsShowProfileModal}
-                        userInfo={user}
-                    /> */}
                 </div>
             </div>
         </>

@@ -53,8 +53,6 @@ const useWeb3 = () => {
             await disconnectAsync()
         } catch (error) {
             console.error(error)
-        } finally {
-            // clearUserStates(dispatch, { chainId: chain?.id, isDeactive: true })
         }
     }, [disconnectAsync])
 

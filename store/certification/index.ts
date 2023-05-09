@@ -1,12 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { dataUser } from '@/data/users'
 import { Certificate, CertificateState } from './types'
 
 const initialState: CertificateState = {
     certifications: [
         {
             _id: '64366f625ac318df990790fb',
-            user: dataUser,
+            user: {
+                _id: '638610e6d308cc1b3f485e99',
+                walletAddress: '',
+                createdAt: '',
+                updatedAt: '',
+                name: '',
+                title: '',
+                bio: '',
+                rating: 0,
+                courses: [],
+                avatar: '',
+                nonce: 0,
+            },
             course: {
                 _id: '638610e6d308cc1b3f485e99',
                 name: 'nggenng',
@@ -22,7 +33,19 @@ const initialState: CertificateState = {
     ],
     certificationDetails: {
         _id: '64366f625ac318df990790fb',
-        user: dataUser,
+        user: {
+            _id: '638610e6d308cc1b3f485e99',
+            walletAddress: '',
+            createdAt: '',
+            updatedAt: '',
+            name: '',
+            title: '',
+            bio: '',
+            rating: 0,
+            courses: [],
+            avatar: '',
+            nonce: 0,
+        },
         course: {
             _id: '638610e6d308cc1b3f485e99',
             name: 'nggenng',

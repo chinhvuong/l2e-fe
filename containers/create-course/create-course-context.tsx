@@ -38,6 +38,7 @@ import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
 import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, EditorState, convertFromHTML } from 'draft-js'
+import { noop } from 'lodash'
 import { useRouter } from 'next/router'
 import {
     Dispatch,
@@ -105,7 +106,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         if (searchQuestions !== '') {
             newQuery.query = searchQuestions
         }
-        console.log('router.asPath', router)
         router.push(
             {
                 pathname: router.pathname.replace('[slug]', courseId),
@@ -135,7 +135,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     const { mutate: updateCourse, isLoading: isLoadingUpdateCourse } =
         useAPI.put(InstructorAPI.UPDATE_COURSE + courseDetail._id, {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 dispatch(updateCourseDetail(response))
                 if (response?.goals && response.goals.length > 0) {
@@ -158,7 +158,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         useAPI.getMutation(
             InstructorAPI.GET_MY_COURSE_DETAIL + courseId + '?id=' + courseId,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response) => {
                     dispatch(updateCourseDetail(response))
                     if (response?.goals && response.goals.length > 0) {
@@ -199,7 +199,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 searchQuizzes !== '' ? '&query=' + searchQuizzes : ''
             }`,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response) => {
                     dispatch(UpdateQuizzesState(response?.data))
                     setTotalPageQuizzes(Math.ceil(response.total / limit))
@@ -214,7 +214,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 searchQuestions !== '' ? '&query=' + searchQuestions : ''
             }`,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response) => {
                     dispatch(UpdateAllQuestionState(response?.data))
                     setTotalPageQuestions(Math.ceil(response.total / limit))
@@ -240,7 +240,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         useAPI.getMutation(
             InstructorAPI.GET_SECTIONS + '?courseId=' + courseId,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response) => {
                     setIsLoadingCurriculum(true)
                     const sectionsBasicInfo: CurriculumSection[] = []
@@ -276,7 +276,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     const { mutate: upsertSections, isLoading: isLoadingUpsertSections } =
         useAPI.post(InstructorAPI.UPSERT_SECTIONS + courseId, {
-            onError: () => {},
+            onError: noop,
             onSuccess: (response) => {
                 setIsLoadingCurriculum(true)
                 response.forEach((section: any, index: number) => {

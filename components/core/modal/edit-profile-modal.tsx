@@ -106,7 +106,6 @@ export default function EditProfileModal(props: IProfileModalProps) {
                 break
             case 'bio':
                 if (getBioLength(String(value)) < 100) {
-                    console.log('Error')
                     const errors = { ...errorUpdate }
                     errors.bio = 'This field requires at least 100 words'
                     setError(errors)
@@ -329,10 +328,10 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                         </div>
                                     </div>
                                     <div
-                                        className="absolute top-5 right-5 cursor-pointer"
+                                        className="absolute top-5 right-5 cursor-pointer bg-gray-300 px-2 rounded-full"
                                         onClick={() => handleShowModal(false)}
                                     >
-                                        ✕
+                                        x
                                     </div>
                                 </div>
                             </div>

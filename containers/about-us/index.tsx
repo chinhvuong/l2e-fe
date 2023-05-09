@@ -1,12 +1,9 @@
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function AboutUsContainer() {
-    useHideFirstEnterLoadingScreen()
-
     return (
         <div>
             <div className="bg-second h-[550px] flex justify-center items-center text-white space-x-10 px-14">

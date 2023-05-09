@@ -10,21 +10,19 @@ import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
+import Pagination from '@/components/core/pagination'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
 import { Category } from '@/constants/interfaces'
 import { CATEGORY, CATEGORY_NAME_LIST } from '@/constants/localStorage'
 import { useAppDispatch } from '@/hooks'
 import { createCourse } from '@/hooks/coursedex'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
-import { updateLoadingState } from '@/store/course'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useSigner } from 'wagmi'
 import { goerli } from 'wagmi/chains'
 import Search from '../../../components/common/search'
-import Pagination from '@/components/core/pagination'
 
 export default function InstructorCoursesContainer() {
     const [requireinfo, setRequireinfo] = useState<GetMintSignatureResponse>()
@@ -45,7 +43,7 @@ export default function InstructorCoursesContainer() {
         useAPI.getMutation(
             InstructorAPI.GET_MINT_SIGNATURE + '?id=' + courseId,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response) => {
                     setRequireinfo(response)
                 },
@@ -70,8 +68,6 @@ export default function InstructorCoursesContainer() {
     useEffect(() => {
         getCategory({})
     }, [])
-
-    useHideFirstEnterLoadingScreen()
 
     const { data: signer, isLoading: isLoadingSigner } = useSigner({
         chainId: goerli.id,
@@ -102,7 +98,7 @@ export default function InstructorCoursesContainer() {
                 sortBy !== '' ? '&sort=' + getSortParams() : ''
             }`,
             {
-                onError: () => {},
+                onError: noop,
                 onSuccess: (response) => {
                     setAllMyCourses(response)
                     setTotalPage(Math.ceil(response.total / limit))
@@ -134,12 +130,6 @@ export default function InstructorCoursesContainer() {
         getAllMyCourses({})
         changeURL()
     }, [search, sortBy, pageNumber])
-
-    useEffect(() => {
-        if (isCourseClicked) {
-            dispatch(updateLoadingState(true))
-        }
-    }, [isCourseClicked])
 
     const createNewCourse = async () => {
         if (courseId) {

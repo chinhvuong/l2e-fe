@@ -9,7 +9,6 @@ import { QUESTION_ID } from '@/constants/localStorage'
 import Title from '@/containers/create-course/components/title'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import { useAppDispatch } from '@/hooks'
-import useHideFirstEnterLoadingScreen from '@/hooks/useHideFirstEnterLoadingScreen'
 import {
     ClearQuestionState,
     UpdateDetailQuestionState,
@@ -17,6 +16,7 @@ import {
 import { QuestionDetailType } from '@/store/questions/types'
 import { faEdit, faEye, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
 import { useEffect, useState } from 'react'
 import Search from '../../../components/common/search'
 import CreateQuestionModal from './create-question/create-question-form'
@@ -49,7 +49,7 @@ export default function QuestionBankContainers() {
 
     const { mutate: deleteQuestion, isLoading: isLoadingDeleteQuestion } =
         useAPI.delete(InstructorAPI.DELETE_QUESTION + questionId, {
-            onError: () => {},
+            onError: noop,
             onSuccess: () => {
                 getQuestionsList({})
                 setDelete(false)
@@ -103,8 +103,6 @@ export default function QuestionBankContainers() {
             }
         }
     }, [questionListsDetail, questionId, isDelete])
-
-    useHideFirstEnterLoadingScreen()
 
     return (
         <div>

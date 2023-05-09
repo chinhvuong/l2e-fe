@@ -18,8 +18,6 @@ export interface IRichTextEditorProps {
     defaultValue?: string
 }
 
-// bug ở phần placeholder, click order/unorder list đầu tiên
-
 export default function RichTextEditor(props: IRichTextEditorProps) {
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createWithContent(

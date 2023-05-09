@@ -12,6 +12,7 @@ import { QuizTitle } from '..'
 import { QuestionDetailType } from '@/store/questions/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { noop } from 'lodash'
 
 export interface ICreateQuizFormProps {
     changeMode: Dispatch<SetStateAction<QuizTitle>>
@@ -27,7 +28,7 @@ export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
     const { mutate: createQuiz, isLoading: isLoadingCreateQuiz } = useAPI.post(
         InstructorAPI.CREATE_QUIZ,
         {
-            onError: () => {},
+            onError: noop,
             onSuccess: () => {
                 getQuizzesList({})
                 formik.resetForm()
@@ -38,9 +39,7 @@ export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
     const { mutate: updateQuiz, isLoading: isLoadingUpdateQuiz } = useAPI.put(
         InstructorAPI.CREATE_QUIZ + '/' + quizDetail._id,
         {
-            onError: (errors) => {
-                console.log(errors)
-            },
+            onError: noop,
             onSuccess: () => {
                 getQuizzesList({})
                 formik.resetForm()
