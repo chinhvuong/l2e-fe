@@ -12,7 +12,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
             {},
         )
         courseList = res.data.data
-        console.log(res.data.data)
     } catch (error) {
         return {
             notFound: true,
