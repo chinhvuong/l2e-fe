@@ -27,7 +27,6 @@ export default function HorizontalCourseCard({
     showStatus = false,
 }: IHorizontalCourseCardProps) {
     const dispatch = useAppDispatch()
-
     const handleCourseClick = () => {
         if (setClicked) {
             dispatch(resetCourseDetailStore())
@@ -68,7 +67,7 @@ export default function HorizontalCourseCard({
                         <RatingStar
                             id={data._id}
                             ratingScore={data.rating}
-                            ratings={data.ratingCount.toString()}
+                            ratings={String(data.ratingCount)}
                         />
                         <div className="font-bold text-xl">
                             {data.price} USDT

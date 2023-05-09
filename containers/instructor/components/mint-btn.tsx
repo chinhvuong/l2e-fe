@@ -5,12 +5,12 @@ import { createCourse } from '@/hooks/coursedex'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import { useSigner } from 'wagmi'
-import { goerli } from 'wagmi/chains'
+import { sepolia } from 'wagmi/chains'
 
 const MintBtn = ({ id }: { id: string }) => {
     const [isLoading, setIsLoading] = useState(false)
     const { data: signer } = useSigner({
-        chainId: goerli.id,
+        chainId: sepolia.id,
     })
 
     const mintCourse = async (id: string) => {

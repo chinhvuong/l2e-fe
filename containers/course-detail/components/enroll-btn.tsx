@@ -8,7 +8,7 @@ import React, { HtmlHTMLAttributes, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { useSigner } from 'wagmi'
-import { goerli } from 'wagmi/chains'
+import { sepolia } from 'wagmi/chains'
 import { useCourseDetailContext } from '../course-detail-context'
 type Props = HtmlHTMLAttributes<HTMLButtonElement> & {}
 
@@ -17,7 +17,7 @@ const EnrollBtn = ({ ...rest }: Props) => {
     const asset = useSelector(getAssetState)
     const { data } = useCourseDetailContext()
     const { data: signer } = useSigner({
-        chainId: goerli.id,
+        chainId: sepolia.id,
     })
     const enrollCourse = async (courseId: number | undefined) => {
         if (isLoading || !data?.price || !courseId) {

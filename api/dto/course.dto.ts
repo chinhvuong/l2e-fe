@@ -29,7 +29,7 @@ export interface CourseDetailPreview {
     reviews: number
     students: number
     language: string
-    approved: string
+    approved: boolean
     requirements: string[]
     goals: string[]
     thumbnail: string

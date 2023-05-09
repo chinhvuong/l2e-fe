@@ -1,14 +1,14 @@
 import React, { ReactNode } from 'react'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { goerli } from 'wagmi/chains'
+import { sepolia } from 'wagmi/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 
 const { chains, provider, webSocketProvider } = configureChains(
-    [goerli],
+    [sepolia],
     [
-        alchemyProvider({ apiKey: 'wn-Jl6QMjs4Pq80s7AvkhsnuIicQLMn2' }),
+        alchemyProvider({ apiKey: 'pjyOtgRjbySAONlXtb1OKGyfJsqczF7K' }),
         publicProvider(),
     ],
     { targetQuorum: 1 },
