@@ -32,7 +32,7 @@ const UseClientMutation = (
                     if (!error?.response?.status) {
                         toast.error('Something went wrong!', {
                             position: 'top-center',
-                            autoClose: 3000,
+                            autoClose: 1000,
                             hideProgressBar: false,
                             closeOnClick: true,
                             pauseOnFocusLoss: false,
@@ -45,7 +45,7 @@ const UseClientMutation = (
                         logOut()
                         toast.error('Your token has been expired!', {
                             position: 'top-center',
-                            autoClose: 3000,
+                            autoClose: 1000,
                             hideProgressBar: false,
                             closeOnClick: true,
                             pauseOnFocusLoss: false,
@@ -59,7 +59,7 @@ const UseClientMutation = (
                             'Your account does not have permission to access that resource.',
                             {
                                 position: 'top-center',
-                                autoClose: 3000,
+                                autoClose: 1000,
                                 hideProgressBar: false,
                                 closeOnClick: true,
                                 pauseOnFocusLoss: false,

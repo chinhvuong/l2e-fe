@@ -177,12 +177,10 @@ export default function QuestionBankContainers() {
                             </div>
                         )}
                     </div>
-                    <div className="py-3 pr-3">
-                        <Pagination
-                            totalPage={totalPageQuestions}
-                            setPageNumber={setPageNumberQuestions}
-                        />
-                    </div>
+                    <Pagination
+                        totalPage={totalPageQuestions}
+                        setPageNumber={setPageNumberQuestions}
+                    />
                 </>
             ) : (
                 <CreateQuestionModal changeMode={setMode} />

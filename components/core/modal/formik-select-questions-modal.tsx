@@ -102,7 +102,7 @@ export default function QuestionsListModal(props: IQuestionsListModalProps) {
                                     <div key={question._id} className="flex">
                                         <div className="w-4 h-4 mt-0.5 mr-3 cursor-pointer">
                                             <input
-                                                className="w-4 h-4"
+                                                className="w-4 h-4 cursor-pointer"
                                                 id={String(index)}
                                                 type="checkbox"
                                                 name={question._id}

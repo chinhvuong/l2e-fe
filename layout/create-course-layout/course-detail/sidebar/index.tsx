@@ -164,7 +164,9 @@ export default function Sidebar() {
 
     const { mutate: requestApprove, isLoading: isLoadingRequestApprove } =
         useAPI.post(InstructorAPI.REQUEST_APPROVE, {
-            onSuccess: noop,
+            onSuccess: () => {
+                getCourseDetail({})
+            },
             onError: noop,
         })
 

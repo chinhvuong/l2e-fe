@@ -8,8 +8,8 @@ export interface Certificate {
     finalGrade: number
     graduation: string
     status: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     course: CourseDetailPreview
 }
 

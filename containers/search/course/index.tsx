@@ -31,7 +31,7 @@ const MySearchCourseCard = ({ course }: Props) => {
                     Author: {course.author.walletAddress}
                 </div>
                 <RatingStar
-                    ratings={course.rating.toString()}
+                    ratings={course?.rating ? course.rating.toString() : ''}
                     id={course._id}
                     ratingScore={course.rating}
                 />

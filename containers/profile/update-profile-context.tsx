@@ -111,10 +111,12 @@ export const UpdateProfileProvider: React.FC<React.PropsWithChildren<{}>> = ({
     useEffect(() => {
         if (userId !== '') {
             getCertificationList({})
-        } else {
-            getUserInfo({})
         }
     }, [userId])
+
+    useEffect(() => {
+        getUserInfo({})
+    }, [])
 
     const changeURL = () => {
         const newQuery: any = {}

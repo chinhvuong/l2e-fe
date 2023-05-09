@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { dataUser } from '@/data/users'
 import { Rating, RatingOverView } from './types'
 
 const initialState = {
@@ -8,8 +7,8 @@ const initialState = {
         course: '',
         content: '',
         rating: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: '',
+        updatedAt: '',
         user: {},
     },
     ratinglist: [] as Rating[],

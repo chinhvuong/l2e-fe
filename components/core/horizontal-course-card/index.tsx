@@ -67,7 +67,11 @@ export default function HorizontalCourseCard({
                         <RatingStar
                             id={data._id}
                             ratingScore={data.rating}
-                            ratings={String(data.ratingCount)}
+                            ratings={
+                                data?.ratingCount
+                                    ? data.ratingCount.toString()
+                                    : ''
+                            }
                         />
                         <div className="font-bold text-xl">
                             {data.price} USDT

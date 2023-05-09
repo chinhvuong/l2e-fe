@@ -24,7 +24,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
                     className="w-full app-transition main-transition h-full bg-white"
                     id="content"
                 >
-                    <ToastContainer />
+                    <ToastContainer style={{ width: 'max-content' }} />
                     {children}
                 </div>
             </main>

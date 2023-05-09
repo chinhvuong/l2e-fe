@@ -115,7 +115,7 @@ export default function LearningReviewDetail() {
             isShow(true)
             setUserAction('Create')
         } else {
-            toast.error('You must rating and give reviews !')
+            toast.error('You must rate and give a review !')
         }
     }
     return (

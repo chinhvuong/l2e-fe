@@ -19,7 +19,7 @@ const ProfileLayout = ({ children }: { children: ReactChild }) => {
                         className="flex justify-center w-full app-transition main-transition min-h-screen bg-white"
                         id="content"
                     >
-                        <ToastContainer />
+                        <ToastContainer style={{ width: 'max-content' }} />
                         <div className="flex justify-center w-full">
                             <Sidebar />
                             <div className="w-full h-full">{children}</div>

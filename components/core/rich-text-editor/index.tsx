@@ -1,16 +1,16 @@
+import { useAppDispatch } from '@/hooks'
+import { updateDescriptionLength } from '@/store/course'
+import { convertToHTML } from 'draft-convert'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
-import { useEffect, useState } from 'react'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import dynamic from 'next/dynamic'
+import { useState } from 'react'
+import { EditorProps } from 'react-draft-wysiwyg'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import './style.scss'
 const Editor = dynamic<EditorProps>(
     () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
     { ssr: false },
 )
-import './style.scss'
-import { convertToHTML } from 'draft-convert'
-import { EditorProps } from 'react-draft-wysiwyg'
-import { useAppDispatch } from '@/hooks'
-import { updateDescriptionLength } from '@/store/course'
 
 export interface IRichTextEditorProps {
     label?: string
@@ -27,30 +27,6 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
         ),
     )
     const dispatch = useAppDispatch()
-    const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
-    const [uploadedFilesURLs, setUploadedFilesURLs] = useState<string[]>([])
-
-    const handleUploadFile = (file: File) => {
-        return new Promise(async (resolve: any) => {
-            setUploadedFiles([...uploadedFiles, file])
-            const objectUrl = URL.createObjectURL(file)
-            setUploadedFilesURLs([...uploadedFilesURLs, objectUrl])
-            resolve({
-                data: {
-                    link: objectUrl,
-                },
-            })
-        })
-    }
-
-    const freeMemory = () => {
-        uploadedFilesURLs.map((item) => URL.revokeObjectURL(item))
-    }
-
-    useEffect(() => {
-        // free memory when ever this component is unmounted
-        return () => freeMemory()
-    }, [])
 
     return (
         <div>
@@ -80,7 +56,7 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
                     setEditorState(newState)
                 }}
                 toolbar={{
-                    options: ['blockType', 'inline', 'list', 'link', 'image'],
+                    options: ['blockType', 'inline', 'list', 'link'],
                     inline: {
                         options: ['bold', 'italic'],
                     },
@@ -106,15 +82,9 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
                         showOpenOptionOnHover: true,
                         options: ['link'],
                     },
-                    image: {
-                        uploadCallback: handleUploadFile,
-                        urlEnabled: true,
-                        uploadEnabled: true,
-                        previewImage: true,
-                        alt: { present: false, mandatory: false },
-                    },
                 }}
                 placeholder="Insert your course description."
+                handlePastedText={() => false}
             />
         </div>
     )

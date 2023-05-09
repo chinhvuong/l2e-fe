@@ -174,12 +174,10 @@ export default function QuizContainer() {
                             </div>
                         )}
                     </div>
-                    <div className="py-3 pr-3">
-                        <Pagination
-                            totalPage={totalPageQuizzes}
-                            setPageNumber={setPageNumberQuizzes}
-                        />
-                    </div>
+                    <Pagination
+                        totalPage={totalPageQuizzes}
+                        setPageNumber={setPageNumberQuizzes}
+                    />
                 </>
             ) : (
                 <CreateQuizModal changeMode={setMode} />

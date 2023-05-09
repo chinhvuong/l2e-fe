@@ -27,8 +27,8 @@ const initialState: CertificateState = {
             finalGrade: 100,
             graduation: 'A',
             status: 'OFF_CHAIN',
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            createdAt: '',
+            updatedAt: '',
         },
     ],
     certificationDetails: {
@@ -55,8 +55,8 @@ const initialState: CertificateState = {
         finalGrade: 100,
         graduation: 'A',
         status: 'OFF_CHAIN',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: '',
+        updatedAt: '',
     },
 }
 

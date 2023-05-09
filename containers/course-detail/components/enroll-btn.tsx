@@ -42,9 +42,9 @@ const EnrollBtn = ({ ...rest }: Props) => {
                 setIsLoading(false)
             }
         } else {
-            toast.error('You are not balance!', {
+            toast.error(`You don't have enough balance!`, {
                 position: 'top-center',
-                autoClose: 3000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnFocusLoss: false,

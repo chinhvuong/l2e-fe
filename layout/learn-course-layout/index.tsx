@@ -15,7 +15,7 @@ export default function LearnCourseLayout({
         <LearningCourseProvider>
             <div className="relative">
                 <Header />
-                <ToastContainer />
+                <ToastContainer style={{ width: 'max-content' }} />
                 <main id="main">
                     <div
                         className="w-full app-transition main-transition h-full bg-white"
