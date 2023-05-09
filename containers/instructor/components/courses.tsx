@@ -21,7 +21,7 @@ import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useSigner } from 'wagmi'
-import { goerli } from 'wagmi/chains'
+import { sepolia } from 'wagmi/chains'
 import Search from '../../../components/common/search'
 
 export default function InstructorCoursesContainer() {
@@ -70,7 +70,7 @@ export default function InstructorCoursesContainer() {
     }, [])
 
     const { data: signer, isLoading: isLoadingSigner } = useSigner({
-        chainId: goerli.id,
+        chainId: sepolia.id,
     })
 
     const getSortParams = () => {

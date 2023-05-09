@@ -1,4 +1,4 @@
-import { goerli, mainnet } from './chains'
+import { sepolia, mainnet } from './chains'
 import { configureChains, createClient } from 'wagmi'
 import memoize from 'lodash/memoize'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -7,7 +7,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
-const CHAINS = [mainnet, goerli]
+const CHAINS = [mainnet, sepolia]
 const getNodeRealUrl = (networkName: string) => {
     let host = null
 
@@ -25,6 +25,11 @@ const getNodeRealUrl = (networkName: string) => {
         case 'goerli':
             if (process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI) {
                 host = `eth-goerli.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI}`
+            }
+            break
+        case 'sepolia':
+            if (process.env.NEXT_PUBLIC_NODE_REAL_API_SEPOLIA) {
+                host = `eth-goerli.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_SEPOLIA}`
             }
             break
         default:

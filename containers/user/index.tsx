@@ -3,14 +3,14 @@ import { User } from '@/store/user/types'
 export interface StaticUserProps {
     user: User
 }
-export default function UserDetailPreviewContainer(data: StaticUserProps) {
+export default function UserDetailPreviewContainer(props: StaticUserProps) {
     return (
         <>
             <div className="h-full pt-5 px-14">
                 <div className="mx-60 under_2xl:mx-20">
-                    {data.user && (
+                    {props.user && (
                         <UserProfileDetail
-                            data={data.user}
+                            data={props.user}
                             showShortDescription
                         />
                     )}

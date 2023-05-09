@@ -1,3 +1,4 @@
+import { CourseDetailPreview } from '@/api/dto/course.dto'
 import { User } from '../user/types'
 
 export interface Certificate {
@@ -9,13 +10,7 @@ export interface Certificate {
     status: string
     createdAt: Date
     updatedAt: Date
-    course: courseInfo
-}
-
-export interface courseInfo {
-    _id: string
-    name: string
-    courseId: number
+    course: CourseDetailPreview
 }
 
 export interface CertificateState {

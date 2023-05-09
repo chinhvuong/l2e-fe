@@ -13,7 +13,7 @@ import {
     updateTokenBalance,
 } from '@/store/user'
 import { getTokenBalanceState } from '@/store/user/selectors'
-import { goerli } from '@/wallet/chains'
+import { sepolia } from '@/wallet/chains'
 import useWeb3 from '@/wallet/hooks/useWeb3'
 import {
     faBell,
@@ -43,7 +43,7 @@ const Account = (props: any) => {
     const [isLoadingClaimtoken, setIsLoadingClaimtoken] = useState(false)
     const { disconnect } = useWeb3()
     const { data: signer } = useSigner({
-        chainId: goerli.id,
+        chainId: sepolia.id,
     })
     const [disabled, setDisabled] = useState(false)
     const myAccountBalance = useAppSelector(getTokenBalanceState)

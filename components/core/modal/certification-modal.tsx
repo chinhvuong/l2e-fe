@@ -2,7 +2,7 @@ import { Certificate } from '@/store/certification/types'
 import React, { useEffect, useState } from 'react'
 import Button from '../button'
 import { useSigner } from 'wagmi'
-import { goerli } from '@/wallet/chains'
+import { sepolia } from '@/wallet/chains'
 import { callAPI } from '@/api/axios-client'
 import { UserAPI } from '@/api/api-path'
 import { claimCertificate } from '@/hooks/coursedex'
@@ -17,7 +17,7 @@ interface ICertificateModalProps {
 
 export default function CertificateModal(props: ICertificateModalProps) {
     const { data: signer } = useSigner({
-        chainId: goerli.id,
+        chainId: sepolia.id,
     })
     const { isShow, setIsShow, certificate } = props
     const [showModal, setShowModal] = useState(isShow)

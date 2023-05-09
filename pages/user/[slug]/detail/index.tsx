@@ -1,9 +1,14 @@
 import { UserAPI } from '@/api/api-path'
 import UserDetailPreviewContainer from '@/containers/user'
+import UsersInfoLayout from '@/layout/users-info-layout'
 import { User } from '@/store/user/types'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
+import { ReactElement } from 'react'
+export interface StaticUserProps {
+    user: User
+}
 
 export const getStaticProps: GetStaticProps = async (context) => {
     const slug = (context.params as ParsedUrlQuery).slug
@@ -32,4 +37,9 @@ export async function getStaticPaths() {
     return { paths: [], fallback: true }
 }
 
-export default UserDetailPreviewContainer
+export default function UserDetailPage(data: StaticUserProps) {
+    return <UserDetailPreviewContainer user={data.user} />
+}
+UserDetailPage.getLayout = function getLayout(page: ReactElement) {
+    return <UsersInfoLayout>{page}</UsersInfoLayout>
+}
