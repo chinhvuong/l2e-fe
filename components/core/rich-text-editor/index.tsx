@@ -1,5 +1,3 @@
-import { useAppDispatch } from '@/hooks'
-import { updateDescriptionLength } from '@/store/course'
 import { convertToHTML } from 'draft-convert'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import dynamic from 'next/dynamic'
@@ -16,23 +14,28 @@ export interface IRichTextEditorProps {
     label?: string
     updateState: Function
     defaultValue?: string
+    updateTextLength?: Function
 }
 
-export default function RichTextEditor(props: IRichTextEditorProps) {
+export default function RichTextEditor({
+    label,
+    updateState,
+    defaultValue,
+    updateTextLength,
+}: IRichTextEditorProps) {
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createWithContent(
             ContentState.createFromBlockArray(
-                convertFromHTML(props.defaultValue ?? '').contentBlocks,
+                convertFromHTML(defaultValue ?? '').contentBlocks,
             ),
         ),
     )
-    const dispatch = useAppDispatch()
 
     return (
         <div>
-            {props.label && (
+            {label && (
                 <div className="font-bold pb-2 pl-[25px] sm:text-xs sm:mt-2">
-                    {props.label}
+                    {label}
                 </div>
             )}
             <Editor
@@ -41,18 +44,15 @@ export default function RichTextEditor(props: IRichTextEditorProps) {
                 editorClassName="mx-[25px]"
                 toolbarClassName="toolbar"
                 onEditorStateChange={(newState) => {
-                    props.updateState(
-                        convertToHTML(editorState.getCurrentContent()),
-                    )
-                    dispatch(
-                        updateDescriptionLength(
+                    updateState(convertToHTML(editorState.getCurrentContent()))
+                    updateTextLength &&
+                        updateTextLength(
                             editorState
                                 .getCurrentContent()
                                 .getPlainText()
                                 .split(/(\s+)/)
                                 .filter((e) => e.trim().length > 0).length,
-                        ),
-                    )
+                        )
                     setEditorState(newState)
                 }}
                 toolbar={{

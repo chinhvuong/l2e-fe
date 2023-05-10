@@ -16,6 +16,9 @@ import {
     getMyCourseDetail,
 } from '@/store/course/selectors'
 import { updateGlobalLoadingState } from '@/store/user'
+import { getBioLength, getUserProfile } from '@/store/user/selectors'
+import { convertFromHTML } from 'draft-convert'
+import { ContentState, EditorState } from 'draft-js'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -27,9 +30,12 @@ export default function Sidebar() {
     const descriptionLength = useAppSelector(getDescriptionLength)
     const sections = useAppSelector(getCurriculumSectionsForm)
     const lectures = useAppSelector(getCurriculumLecturesForm)
+    const userProfile = useAppSelector(getUserProfile)
+    const bioLength = useAppSelector(getBioLength)
     const dispatch = useAppDispatch()
 
-    const { getCourseDetail } = useCreateCourseContext()
+    const { getCourseDetail, currentTab, setCurrentTab } =
+        useCreateCourseContext()
 
     const menu = [
         'Landing page',
@@ -37,6 +43,7 @@ export default function Sidebar() {
         'Curriculum',
         'Question',
         'Quiz',
+        'Profile',
     ]
 
     const menuTarget = [
@@ -45,13 +52,11 @@ export default function Sidebar() {
         'curriculum',
         'question',
         'quiz',
+        'profile',
     ]
     const router = useRouter()
     const [courseId, setCourseId] = useState('')
-    const [currentTab, setCurrentTab] = useState(() => {
-        const list = router.route.split('/')
-        return list[list.length - 1]
-    })
+
     const [showModal, setShowModal] = useState(false)
     const [validateCourseContent, setValidateCourseContent] = useState(
         {} as IValidateContent,
@@ -78,6 +83,7 @@ export default function Sidebar() {
             landingPage: [] as string[],
             intendedLearners: [] as string[],
             curriculum: [] as string[],
+            userProfile: [] as string[],
         }
         if (courseDetail.name === '') {
             validateCourse.landingPage.push('Have a course title')
@@ -158,6 +164,20 @@ export default function Sidebar() {
         })
         if (missingMainContent) {
             validateCourse.curriculum.push('Have content for all lectures')
+        }
+        if (userProfile.name === '' || userProfile.name === null) {
+            validateCourse.userProfile.push('Have a user name')
+        }
+        if (userProfile.title === '' || userProfile.title === null) {
+            validateCourse.userProfile.push('Have a user title')
+        }
+        if (userProfile.avatar === '' || userProfile.avatar === null) {
+            validateCourse.userProfile.push('Have a user avatar')
+        }
+        if (bioLength < 100) {
+            validateCourse.userProfile.push(
+                'Have a user bio with at least 100 words',
+            )
         }
         return validateCourse
     }

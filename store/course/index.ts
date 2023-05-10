@@ -55,8 +55,7 @@ const initialState: CourseDetailState = {
         approved: false,
         requirements: [],
         goals: [],
-        thumbnail:
-            'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg',
+        thumbnail: '/images/placeholder.jpeg',
         promotionalVideo: '',
         category: '',
         createdAt: '2022-10-25T04:10:15.411Z',

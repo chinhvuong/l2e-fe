@@ -138,7 +138,9 @@ export const UpdateProfileProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     useEffect(() => {
         getCertificationList({})
-        changeURL()
+        if (router.pathname.includes('certificates')) {
+            changeURL()
+        }
     }, [search, sortBy, pageNumber])
 
     useEffect(() => {

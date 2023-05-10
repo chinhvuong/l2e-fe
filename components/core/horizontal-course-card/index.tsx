@@ -49,10 +49,7 @@ export default function HorizontalCourseCard({
             onClick={() => handleCourseClick()}
         >
             <img
-                src={
-                    data.thumbnail ??
-                    'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg'
-                }
+                src={data.thumbnail ?? '/images/placeholder.jpeg'}
                 alt=""
                 className="w-[25%] min-w-[170px]"
             />

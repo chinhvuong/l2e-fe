@@ -1,4 +1,4 @@
-import { InstructorAPI } from '@/api/api-path'
+import { InstructorAPI, UserAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
 import useAPI from '@/api/hooks/useAPI'
 import { COURSE_ID } from '@/constants/localStorage'
@@ -37,6 +37,7 @@ import { UpdateQuizzesState } from '@/store/quiz'
 import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
 import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
 import { updateGlobalLoadingState } from '@/store/user'
+import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, EditorState, convertFromHTML } from 'draft-js'
 import { noop } from 'lodash'
@@ -69,6 +70,9 @@ interface ICreateCourseContext {
     setPageNumberQuizzes: Dispatch<SetStateAction<number>>
     totalPageQuestions: number
     totalPageQuizzes: number
+    userProfile: User | undefined
+    currentTab: string
+    setCurrentTab: Dispatch<SetStateAction<string>>
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>(
@@ -96,7 +100,12 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const limit = 10
     const [totalPageQuestions, setTotalPageQuestions] = useState(1)
     const [totalPageQuizzes, setTotalPageQuizzes] = useState(1)
+    const [userProfile, setUserProfile] = useState()
     const router = useRouter()
+    const [currentTab, setCurrentTab] = useState(() => {
+        const list = router.route.split('/')
+        return list[list.length - 1]
+    })
 
     const changeURLQuestions = () => {
         const newQuery: any = {}
@@ -136,6 +145,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         useAPI.put(InstructorAPI.UPDATE_COURSE + courseDetail._id, {
             onError: noop,
             onSuccess: (response) => {
+                updateProfile({})
                 dispatch(updateCourseDetail(response))
                 if (response?.goals && response.goals.length > 0) {
                     let newList: string[] = [...response.goals]
@@ -285,12 +295,27 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             },
         })
 
+    const { mutate: getUserInfo, isLoading: isLoadingGetUserInfo } =
+        useAPI.getMutation(UserAPI.GET_USER_INFO, {
+            onError: noop,
+            onSuccess(response) {
+                setUserProfile(response)
+            },
+        })
+
+    const { mutate: updateProfile, isLoading: isLoadingUpdateProfile } =
+        useAPI.put(UserAPI.GET_USER_INFO, {
+            onError: noop,
+            onSuccess: noop,
+        })
+
     useEffect(() => {
         if (courseId !== localStorage.getItem(COURSE_ID)) {
             setCourseId(localStorage.getItem(COURSE_ID) ?? '')
         } else {
             if (localStorage.getItem(COURSE_ID) !== null) {
                 getCourseDetail({})
+                getUserInfo({})
             }
         }
     }, [courseId])
@@ -332,7 +357,9 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                     isLoadingUpsertSections ||
                     isLoadingCurriculum ||
                     isLoadingQuizzesList ||
-                    isLoadingQuestionsList,
+                    isLoadingQuestionsList ||
+                    isLoadingGetUserInfo ||
+                    isLoadingUpdateProfile,
             ),
         )
     }, [
@@ -343,6 +370,8 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         isLoadingCurriculum,
         isLoadingQuizzesList,
         isLoadingQuestionsList,
+        isLoadingGetUserInfo,
+        isLoadingUpdateProfile,
     ])
 
     return (
@@ -367,6 +396,9 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 setPageNumberQuizzes,
                 totalPageQuestions,
                 totalPageQuizzes,
+                userProfile,
+                currentTab,
+                setCurrentTab,
             }}
         >
             {children}

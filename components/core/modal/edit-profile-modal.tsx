@@ -2,7 +2,7 @@ import Hyperlink from '@/containers/create-course/components/hyperlink'
 import { useUpdateProfileContext } from '@/containers/profile/update-profile-context'
 import { User } from '@/store/user/types'
 import { ContentState, EditorState, convertFromHTML } from 'draft-js'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../button'
 import Input from '../input'
 import RichTextEditor from '../rich-text-editor'
@@ -25,8 +25,6 @@ export default function EditProfileModal(props: IProfileModalProps) {
         title: '',
         avatar: '',
     } as User)
-
-    const modalContent = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         setShowModal(isShow)
@@ -181,39 +179,15 @@ export default function EditProfileModal(props: IProfileModalProps) {
         }
     }
 
-    const isOverflowY = () => {
-        if (modalContent && modalContent.current) {
-            return (
-                modalContent.current.scrollHeight !==
-                Math.max(
-                    modalContent.current.offsetHeight,
-                    modalContent.current.clientHeight,
-                )
-            )
-        }
-    }
-
     return (
         <>
             {showModal ? (
                 <>
                     <div className="flex justify-center items-center fixed inset-0 z-40 outline-none focus:outline-none">
                         <div className="relative">
-                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none pt-5">
-                                <div
-                                    className={`${
-                                        isOverflowY()
-                                            ? 'py-10 pl-10 pr-5'
-                                            : 'p-10'
-                                    }`}
-                                >
-                                    <div
-                                        className={`space-y-5 max-w-3xl max-h-[500px] ${
-                                            isOverflowY() &&
-                                            'overflow-y-scroll scrollbar pr-5'
-                                        }`}
-                                        ref={modalContent}
-                                    >
+                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                <div className="p-10 max-h-[500px] overflow-y-auto scrollbar">
+                                    <div className="space-y-5 max-w-3xl">
                                         <div className="pb-5 space-y-5">
                                             <div>
                                                 <Input

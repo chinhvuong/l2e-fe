@@ -16,29 +16,14 @@ export default function QuizModal(props: IQuizModalProps) {
     const answerPrefix = ['A. ', 'B. ', 'C. ', 'D. ']
 
     const [showModal, setShowModal] = useState(isShow)
-    const modalContent = useRef<HTMLDivElement>(null)
-    const [isOverflowContent, setIsOverflowContent] = useState(false)
 
     useEffect(() => {
         setShowModal(isShow)
-        isOverflowY()
     }, [isShow])
 
     const handleShowModal = (value: boolean) => {
         setShowModal(value)
         setIsShow(value)
-    }
-
-    const isOverflowY = () => {
-        if (modalContent && modalContent.current) {
-            setIsOverflowContent(
-                modalContent.current.scrollHeight !==
-                    Math.max(
-                        modalContent.current.offsetHeight,
-                        modalContent.current.clientHeight,
-                    ),
-            )
-        }
     }
 
     return (
@@ -48,23 +33,11 @@ export default function QuizModal(props: IQuizModalProps) {
                     <div className="flex justify-center items-center fixed inset-0 z-40 outline-none focus:outline-none">
                         <div className="relative">
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                <div
-                                    className={`${
-                                        isOverflowContent
-                                            ? 'py-10 pl-10 pr-5'
-                                            : 'p-10'
-                                    }`}
-                                >
+                                <div className="p-10">
                                     <div className="text-xl font-bold px-6 pb-5">
                                         Quiz: {quiz.name}
                                     </div>
-                                    <div
-                                        className={`space-y-5 max-w-3xl max-h-80 ${
-                                            isOverflowContent &&
-                                            'overflow-y-scroll scrollbar pr-5'
-                                        }`}
-                                        ref={modalContent}
-                                    >
+                                    <div className="space-y-5 max-w-3xl max-h-80 overflow-y-auto scrollbar">
                                         {quiz &&
                                             quiz.questions.map(
                                                 (

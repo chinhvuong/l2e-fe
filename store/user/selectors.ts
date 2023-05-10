@@ -23,3 +23,11 @@ export const getClaimState = (state: RootState) => {
 export const getGlobalLoadingState = (state: RootState) => {
     return state.user.globalLoading
 }
+
+export const getUserProfile = (state: RootState) => {
+    return state.user.user
+}
+
+export const getBioLength = (state: RootState) => {
+    return state.user.bioLength
+}

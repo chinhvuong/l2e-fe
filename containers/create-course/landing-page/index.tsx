@@ -15,6 +15,7 @@ import {
     updateCoursePrice,
     updateCoursePromotionalVideo,
     updateCourseThumbnail,
+    updateDescriptionLength,
 } from '@/store/course'
 import {
     getFinalTestSelection,
@@ -29,6 +30,7 @@ import {
 } from '@/utils'
 import { useEffect, useState } from 'react'
 import Title from '../components/title'
+import { getGlobalLoadingState } from '@/store/user/selectors'
 
 export interface ILandingPageContainerProps {}
 
@@ -37,7 +39,7 @@ export default function LandingPageContainer() {
     const chosenFinalTest = useAppSelector(getFinalTestSelection)
     const dispatch = useAppDispatch()
     const courseDetail = useAppSelector(getMyCourseDetail)
-    const [isLoading, setIsLoading] = useState(true)
+    const isLoading = useAppSelector(getGlobalLoadingState)
     const [title, setTitle] = useState<string>(courseDetail.name)
     const [subtitle, setSubtitle] = useState<string>(courseDetail.overview)
     const [language, setLanguage] = useState<string>(
@@ -57,7 +59,6 @@ export default function LandingPageContainer() {
 
     useEffect(() => {
         if (courseDetail._id !== '') {
-            setIsLoading(false)
             const listWithId = JSON.parse(
                 localStorage.getItem(CATEGORY) ?? '[]',
             )
@@ -117,10 +118,9 @@ export default function LandingPageContainer() {
     const handlePromotionalVideoChange = (value: string) => {
         dispatch(updateCoursePromotionalVideo(value))
     }
-
-    useEffect(() => {
-        dispatch(updateGlobalLoadingState(isLoading))
-    }, [isLoading])
+    const updateDescriptionLengthChange = (value: number) => {
+        dispatch(updateDescriptionLength(value))
+    }
 
     return (
         <div>
@@ -190,6 +190,7 @@ export default function LandingPageContainer() {
                             label="Description"
                             updateState={handleDescriptionChange}
                             defaultValue={courseDetail.description}
+                            updateTextLength={updateDescriptionLengthChange}
                         />
                         <UploadPreview
                             label="Thumbnail"

@@ -175,7 +175,7 @@ export default function QuestionBankContainers() {
                             </div>
                         ))}
                         {questionListsDetail.length === 0 && (
-                            <div className="flex justify-center text-xl font-bold mt-5">
+                            <div className="flex justify-center text-xl font-bold my-10">
                                 No results found.
                             </div>
                         )}

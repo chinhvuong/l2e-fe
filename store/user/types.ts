@@ -22,4 +22,5 @@ export interface UserState {
     }
     isClaimDaily: boolean
     globalLoading: boolean
+    bioLength: number
 }

@@ -23,13 +23,7 @@ export default function VerticalCourseCard({
             className={`space-y-3 cursor-pointer ${className}`}
             onClick={() => viewCourseDetail()}
         >
-            <img
-                src={
-                    data.thumbnail ??
-                    'https://img-c.udemycdn.com/course/750x422/437398_46c3_10.jpg'
-                }
-                alt=""
-            />
+            <img src={data.thumbnail ?? '/images/placeholder.jpeg'} alt="" />
             <div className="font-semibold text-lg line-clamp-3 h-[80px]">
                 {data.name}
             </div>
