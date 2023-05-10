@@ -3,14 +3,7 @@ import {
     CurriculumLecture,
     DeleteLecture,
 } from '@/store/course/curriculum/types'
-import { TInputUpdate } from '@/store/course/types'
-import {
-    ActionCreatorWithoutPayload,
-    ActionCreatorWithPayload,
-} from '@reduxjs/toolkit'
-import * as React from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { Container } from './container'
 
 export interface ILectureProps {
@@ -34,15 +27,13 @@ export default function Lecture({
     getCardDetail,
 }: ILectureProps) {
     return (
-        <DndProvider backend={HTML5Backend}>
-            <Container
-                sectionId={sectionId}
-                addItem={addItem}
-                updateItem={updateItem}
-                deleteItem={deleteItem}
-                getItems={getItems}
-                getCardDetail={getCardDetail}
-            />
-        </DndProvider>
+        <Container
+            sectionId={sectionId}
+            addItem={addItem}
+            updateItem={updateItem}
+            deleteItem={deleteItem}
+            getItems={getItems}
+            getCardDetail={getCardDetail}
+        />
     )
 }

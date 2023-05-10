@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { dataUser } from '@/data/users'
 import { User, UserState } from './types'
 
 const initialState: UserState = {
@@ -23,6 +22,8 @@ const initialState: UserState = {
         tokenBalance: 0,
     },
     isClaimDaily: false,
+    globalLoading: false,
+    bioLength: 0,
 }
 
 export const userSlice = createSlice({
@@ -66,6 +67,12 @@ export const userSlice = createSlice({
         updateUserBioState(state, action: PayloadAction<string>) {
             state.user.bio = action.payload
         },
+        updateUserBioLength(state, action: PayloadAction<number>) {
+            state.bioLength = action.payload
+        },
+        updateGlobalLoadingState(state, action: PayloadAction<boolean>) {
+            state.globalLoading = action.payload
+        },
     },
 })
 
@@ -79,6 +86,8 @@ export const {
     updateUserNameState,
     updateUserBioState,
     updateUserTitleState,
+    updateUserBioLength,
+    updateGlobalLoadingState,
 } = userSlice.actions
 
 export default userSlice.reducer

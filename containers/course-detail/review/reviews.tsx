@@ -1,9 +1,9 @@
 import { LearnerAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import { useAppDispatch } from '@/hooks'
 import useOutsideClick from '@/hooks/useOutSideClick'
 import { UpdateRatingsState } from '@/store/rating'
+import { updateGlobalLoadingState } from '@/store/user'
 import {
     faChevronDown,
     faMagnifyingGlass,
@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useCourseDetailContext } from '../course-detail-context'
 import ReviewItemsList from './components/review-items-list'
 
@@ -80,11 +80,19 @@ export default function ReviewDetail() {
             onSearchRating()
         }
     }
+
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoading || isLoadingFilterRatingCourseDetail,
+            ),
+        )
+    }, [isLoading, isLoadingFilterRatingCourseDetail])
+
     return (
         <>
             {data && (
                 <div>
-                    <LoadingScreen isLoading={isLoading} />
                     <div className="font-semibold text-[26px]">Reviews</div>
                     <div className="flex items-center justify-between under_lg:justify-center">
                         <div className="flex items-center space-x-4 mr-4">

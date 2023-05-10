@@ -10,6 +10,7 @@ import {
     getTotalRatings,
 } from '@/store/rating/selectors'
 import { Rating, RatingOverView } from '@/store/rating/types'
+import { updateGlobalLoadingState } from '@/store/user'
 import { getLoginState } from '@/store/user/selectors'
 import { User } from '@/store/user/types'
 import { UseMutateFunction } from '@tanstack/react-query'
@@ -21,13 +22,11 @@ import {
     createContext,
     useContext,
     useEffect,
-    useMemo,
     useState,
 } from 'react'
 import { useSelector } from 'react-redux'
 
 interface ICourseDetailContext {
-    isLoading: boolean
     data: CourseDetailPreview | undefined
     instructor: User
     ratings: Rating[]
@@ -134,12 +133,14 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
         }
     }, [router.query.slug])
 
-    const isLoading = useMemo(() => {
-        return (
-            isLoadingCourseDetail ||
-            isLoadingRatingCourseDetail ||
-            isLoadingRatingOverViewCourseDetail ||
-            isLoadingCheckEnrollState
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingCourseDetail ||
+                    isLoadingRatingCourseDetail ||
+                    isLoadingRatingOverViewCourseDetail ||
+                    isLoadingCheckEnrollState,
+            ),
         )
     }, [
         isLoadingCourseDetail,
@@ -151,7 +152,6 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
     return (
         <CourseDetailContext.Provider
             value={{
-                isLoading,
                 data,
                 instructor,
                 ratings,

@@ -1,16 +1,17 @@
-import { PlayQuizRes, QuestionInPlayQuiz } from '@/store/questions/types'
-import React, { RefObject, useEffect, useRef, useState } from 'react'
-import Button from '../button'
-import useAPI from '@/api/hooks/useAPI'
 import { LearnerAPI } from '@/api/api-path'
-import { noop } from 'lodash'
-import LoadingScreen from '../animate/loading-screen'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import useAPI from '@/api/hooks/useAPI'
 import {
     LectureQuiz,
     useLearningCourseContext,
 } from '@/containers/learn-course/learning-course-context'
+import { useAppDispatch } from '@/hooks'
+import { PlayQuizRes, QuestionInPlayQuiz } from '@/store/questions/types'
+import { updateGlobalLoadingState } from '@/store/user'
+import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { noop } from 'lodash'
+import { useEffect, useState } from 'react'
+import Button from '../button'
 import './style.scss'
 
 interface IPlayQuizModalProps {
@@ -35,6 +36,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
     const [currentQuiz, setCurrentQuiz] = useState<PlayQuizRes>()
     const [numberOfCorrectAnswer, setNumberOfCorrectAnswer] = useState(0)
     const [totalQuestions, setTotalQuestions] = useState(0)
+    const dispatch = useAppDispatch()
 
     const countdownTimer = (expiredAt: string) => {
         const countdownDate = new Date(
@@ -78,8 +80,6 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
         }, 1000)
         return countdown
     }
-
-    const modalContent = useRef<HTMLDivElement>(null)
 
     const { mutate: getQuizDetail, isLoading: isLoadingGetQuizDetail } =
         useAPI.post(LearnerAPI.GET_QUIZ_DETAIL, {
@@ -173,18 +173,6 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
         }
     }
 
-    const isOverflowY = () => {
-        if (modalContent && modalContent.current) {
-            return (
-                modalContent.current.scrollHeight !==
-                Math.max(
-                    modalContent.current.offsetHeight,
-                    modalContent.current.clientHeight,
-                )
-            )
-        }
-    }
-
     const handleCloseModal = () => {
         if (isFinish) {
             getLearningCourseDetail({})
@@ -192,15 +180,18 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
         handleShowModal(false)
     }
 
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingSubmitQuizAnswer || isLoadingGetQuizDetail,
+            ),
+        )
+    }, [isLoadingSubmitQuizAnswer, isLoadingGetQuizDetail])
+
     return (
         <>
             {showModal ? (
                 <>
-                    <LoadingScreen
-                        isLoading={
-                            isLoadingSubmitQuizAnswer || isLoadingGetQuizDetail
-                        }
-                    />
                     <div
                         className={`${
                             isPerfectScore ? 'hidden' : 'flex'
@@ -208,13 +199,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                     >
                         <div className="relative">
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                <div
-                                    className={`${
-                                        isOverflowY()
-                                            ? 'py-10 pl-10 pr-5'
-                                            : 'p-10'
-                                    }`}
-                                >
+                                <div className="p-10 max-h-80 overflow-y-auto scrollbar">
                                     <div className="text-xl font-bold px-6 pb-5">
                                         Quiz: {quiz.name}
                                     </div>
@@ -246,13 +231,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                     ? timer
                                                     : `${numberOfCorrectAnswer}/${totalQuestions}`}
                                             </div>
-                                            <div
-                                                className={`space-y-5 max-w-3xl max-h-80 ${
-                                                    isOverflowY() &&
-                                                    'overflow-y-scroll scrollbar pr-5'
-                                                }`}
-                                                ref={modalContent}
-                                            >
+                                            <div className="space-y-5 max-w-3xl">
                                                 {currentQuiz &&
                                                     currentQuiz.questions.map(
                                                         (

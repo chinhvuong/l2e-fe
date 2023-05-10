@@ -1,5 +1,10 @@
 import Logo from '@/layout/main-layout/header/logo'
-import { faChartSimple, faTv } from '@fortawesome/free-solid-svg-icons'
+import {
+    faAward,
+    faChartSimple,
+    faTv,
+    faUser,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router, { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -26,20 +31,20 @@ export default function Sidebar() {
 
     const getSidebarIcon = (name: string) => {
         switch (name) {
-            case 'Courses':
+            case 'Profile':
                 return (
                     <div className="w-[25px] flex justify-center">
                         <FontAwesomeIcon
-                            icon={faTv}
+                            icon={faUser}
                             className="text-[20px] text-white"
                         />
                     </div>
                 )
-            case 'Performance':
+            case 'Certificates':
                 return (
                     <div className="w-[25px] flex justify-center">
                         <FontAwesomeIcon
-                            icon={faChartSimple}
+                            icon={faAward}
                             className="text-[20px] text-white"
                         />
                     </div>

@@ -1,18 +1,18 @@
 import { InstructorAPI } from '@/api/api-path'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import QuestionsListModal from '@/components/core/modal/formik-select-questions-modal'
 import { COURSE_ID } from '@/constants/localStorage'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
+import { useAppDispatch } from '@/hooks'
+import { updateGlobalLoadingState } from '@/store/user'
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ErrorMessage, FormikProvider, useFormik } from 'formik'
+import { noop } from 'lodash'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import * as yup from 'yup'
 import { QuizTitle } from '..'
-import { QuestionDetailType } from '@/store/questions/types'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
-import { noop } from 'lodash'
 
 export interface ICreateQuizFormProps {
     changeMode: Dispatch<SetStateAction<QuizTitle>>
@@ -25,6 +25,7 @@ export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
     const [courseId, setCourseId] = useState<string>('')
     const [isEdit, setEdit] = useState<boolean>(false)
     const [showModal, setShowModal] = useState(false)
+    const dispatch = useAppDispatch()
     const { mutate: createQuiz, isLoading: isLoadingCreateQuiz } = useAPI.post(
         InstructorAPI.CREATE_QUIZ,
         {
@@ -115,11 +116,16 @@ export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
         }
     }, [courseId, quizDetail])
 
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingCreateQuiz || isLoadingUpdateQuiz,
+            ),
+        )
+    }, [isLoadingCreateQuiz, isLoadingUpdateQuiz])
+
     return (
         <>
-            <LoadingScreen
-                isLoading={isLoadingCreateQuiz || isLoadingUpdateQuiz}
-            />
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
                     {questionListsDetail.length > 0 && showModal && (

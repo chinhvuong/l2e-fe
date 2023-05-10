@@ -1,4 +1,4 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
+import GlobalLoading from '@/components/common/global-loading'
 import Layout from '@/layout'
 import WalletLogic from '@/layout/main-layout/header/wallet-logic'
 import { store } from '@/store'
@@ -10,6 +10,8 @@ import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 type NextPageWithLayout = NextPage & {
     // eslint-disable-next-line no-unused-vars
@@ -51,9 +53,11 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         <QueryClientProvider client={queryClient}>
             <WagmiProvider>
                 <Provider store={store}>
-                    <WalletLogic />
-                    <LoadingScreen isLoading={isLoading} />
-                    <>{getLayout(<Component {...pageProps} />)}</>
+                    <DndProvider backend={HTML5Backend}>
+                        <WalletLogic />
+                        <GlobalLoading isLoading={isLoading} />
+                        <>{getLayout(<Component {...pageProps} />)}</>
+                    </DndProvider>
                 </Provider>
             </WagmiProvider>
         </QueryClientProvider>

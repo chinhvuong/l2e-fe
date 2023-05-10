@@ -4,10 +4,12 @@ import Divider from '@/components/core/divider'
 import DeleteConfirmModal from '@/components/core/modal/delete-confirm-modal'
 import { Comment } from '@/store/comment/types'
 import { UseMutateFunction } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import CommentForm from './comment-form'
 import { noop } from 'lodash'
+import { useAppDispatch } from '@/hooks'
+import { updateGlobalLoadingState } from '@/store/user'
 
 export interface ICommentItemProps {
     data: Comment
@@ -26,6 +28,7 @@ export default function CommentItem(props: ICommentItemProps) {
     const [canReply, setCanReply] = useState(false)
     const [showDeleteCommentConfirmModal, setShowDeleteCommentConfirmModal] =
         useState(false)
+    const dispatch = useAppDispatch()
 
     const { mutate: updateComment, isLoading: isLoadingUpdateComment } =
         useAPI.put(LearnerAPI.COMMENT + '/' + props.data._id, {
@@ -98,6 +101,14 @@ export default function CommentItem(props: ICommentItemProps) {
         setShowDeleteCommentConfirmModal(false)
         deleteComment({})
     }
+
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingUpdateComment || isLoadingDeleteComment,
+            ),
+        )
+    }, [isLoadingUpdateComment, isLoadingDeleteComment])
 
     return (
         <>

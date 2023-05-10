@@ -1,6 +1,3 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
-import { useAppSelector } from '@/hooks'
-import { getLoadingState } from '@/store/course/selectors'
 import { ReactChild } from 'react'
 import Sidebar from './sidebar'
 
@@ -9,11 +6,8 @@ export default function InstructorLayout({
 }: {
     children: ReactChild
 }) {
-    const isLoading = useAppSelector(getLoadingState)
-
     return (
         <div className="relative">
-            <LoadingScreen isLoading={isLoading} />
             <main id="main">
                 <div
                     className="flex justify-center w-full app-transition main-transition min-h-screen bg-white"

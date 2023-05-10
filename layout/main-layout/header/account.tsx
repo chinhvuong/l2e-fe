@@ -2,13 +2,13 @@ import { UserAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
 import useAPI from '@/api/hooks/useAPI'
 import Loading from '@/components/core/animate/loading'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import Input from '@/components/core/input'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { claimReward } from '@/hooks/coursedex'
 import {
     updateClaimDailyState,
+    updateGlobalLoadingState,
     updateLoginState,
     updateTokenBalance,
 } from '@/store/user'
@@ -24,16 +24,12 @@ import {
     faUser,
     faWallet,
 } from '@fortawesome/free-solid-svg-icons'
-import { useNetwork, useSwitchNetwork } from 'wagmi'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ethers } from 'ethers'
 import { noop } from 'lodash'
 import Router from 'next/router'
 import { useEffect, useState } from 'react'
 import { useSigner } from 'wagmi'
-import { ethers } from 'ethers'
-interface Window {
-    ethereum: any
-}
 
 const Account = (props: any) => {
     const [hoverUser, setHoverUser] = useState(false)
@@ -43,7 +39,7 @@ const Account = (props: any) => {
     const [isValidWalletInput, setIsValidWalletInput] = useState(true)
     const [walletInputErrorMessage, setWalletInputErrorMessage] = useState('')
     const [input, setInput] = useState('')
-    const [isLoadingClaimtoken, setIsLoadingClaimtoken] = useState(false)
+    const [isLoadingClaimToken, setIsLoadingClaimToken] = useState(false)
     const { disconnect } = useWeb3()
     const { data: signer } = useSigner({
         chainId: sepolia.id,
@@ -70,11 +66,6 @@ const Account = (props: any) => {
         localStorage.clear()
         dispatch(updateLoginState(false))
     }
-    const { switchNetwork } = useSwitchNetwork({
-        onError(error) {
-            logOut()
-        },
-    })
     const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
             onError: noop,
@@ -111,17 +102,17 @@ const Account = (props: any) => {
         if (validateInput(input)) {
             try {
                 setDisabled(true)
-                setIsLoadingClaimtoken(true)
+                setIsLoadingClaimToken(true)
                 const payload = await callAPI('post', UserAPI.CLAIM_TOKEN, {
                     amount: parseInt(input),
                 })
                 await claimReward(signer as ethers.Signer, payload)
-                setIsLoadingClaimtoken(false)
+                setIsLoadingClaimToken(false)
                 getMyBalance({})
                 setDisabled(false)
             } catch (error) {
                 setDisabled(false)
-                setIsLoadingClaimtoken(false)
+                setIsLoadingClaimToken(false)
             }
         }
     }
@@ -160,17 +151,19 @@ const Account = (props: any) => {
         initWeb3()
         return () => removeListener(window.ethereum)
     }, [])
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingGetMyBalance ||
+                    isLoadingClaimDailyReward ||
+                    isLoadingClaimToken,
+            ),
+        )
+    }, [isLoadingGetMyBalance, isLoadingClaimDailyReward, isLoadingClaimToken])
+
     return (
         <>
-            <LoadingScreen isLoading={isLoadingGetMyBalance} />
             <div className="relative flex items-center justify-between space-x-10">
-                {/* <FontAwesomeIcon
-                icon={faBell}
-                className={`text-[25px] cursor-pointer under_lg:hidden ${
-                    !props.darkTheme ? 'text-black' : 'text-white'
-                }`}
-            /> */}
-
                 <div className="flex cursor-pointer">
                     <FontAwesomeIcon
                         icon={faWallet}
@@ -221,7 +214,7 @@ const Account = (props: any) => {
                                 <div className="font-medium w-full text-center">
                                     Claim token
                                 </div>
-                                {isLoadingClaimtoken && (
+                                {isLoadingClaimToken && (
                                     <Loading className="!text-white" />
                                 )}
                             </Button>

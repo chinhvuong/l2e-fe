@@ -2,7 +2,6 @@ import { InstructorAPI, UserAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
 import { GetCategoryResponse, SectionResponseItem } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import { Category } from '@/constants/interfaces'
 import {
@@ -21,6 +20,7 @@ import {
     updateAllRequirements,
     updateAllWhatYouWillLearn,
 } from '@/store/course/intended-learners'
+import { updateGlobalLoadingState } from '@/store/user'
 import { convertToCategoryID } from '@/utils'
 import { noop } from 'lodash'
 import Router from 'next/router'
@@ -234,16 +234,24 @@ export default function CourseBasicCreateContainer() {
         }
     }
 
-    return (
-        <div>
-            <LoadingScreen
-                isLoading={
-                    isLoadingCreateCourse ||
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingCreateCourse ||
                     isLoadingUpsertSections ||
                     isLoadingUpsertLessons ||
-                    isLoadingGetCategory
-                }
-            />
+                    isLoadingGetCategory,
+            ),
+        )
+    }, [
+        isLoadingCreateCourse,
+        isLoadingUpsertSections,
+        isLoadingUpsertLessons,
+        isLoadingGetCategory,
+    ])
+
+    return (
+        <div>
             <div className="flex justify-between items-center h-[100px] px-7">
                 <div className="w-[200px]">
                     <Button

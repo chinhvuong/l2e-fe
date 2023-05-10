@@ -2,6 +2,7 @@ import Button from '@/components/core/button'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import { useAppSelector } from '@/hooks'
 import { getCanSaveCourseState } from '@/store/course/selectors'
+import { getGlobalLoadingState } from '@/store/user/selectors'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router from 'next/router'
@@ -14,11 +15,11 @@ export default function Header() {
         courseSections,
         updateCourse,
         upsertSections,
-        isLoading,
         chosenFinalTest,
     } = useCreateCourseContext()
 
     const canSaveCourse = useAppSelector(getCanSaveCourseState)
+    const isLoading = useAppSelector(getGlobalLoadingState)
     const goBack = () => {
         Router.push('/instructor/courses')
     }

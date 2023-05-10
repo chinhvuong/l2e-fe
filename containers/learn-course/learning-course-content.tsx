@@ -1,20 +1,18 @@
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import CorrectQuizAnswerModal from '@/components/core/modal/correct-quiz-answer-modal'
 import PlayQuizModal from '@/components/core/modal/play-quiz-modal'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import ReactPlayer from 'react-player'
+import LearningCommentsDetail from './components/comments'
 import LearningInstructorDetail from './components/instructor'
 import LearnerCourseContent from './components/learner-course-content'
 import NavBarLearner from './components/nav-bar'
 import LearningOverviewDetail from './components/overview'
 import LearningReviewDetail from './components/reviews'
 import { useLearningCourseContext } from './learning-course-context'
-import LearningCommentsDetail from './components/comments'
 
 const LearningCourseContent = () => {
     const {
         courseDetail,
-        isLoading,
         playingVideo,
         currentQuiz,
         isCurrentLessonLearned,
@@ -55,7 +53,6 @@ const LearningCourseContent = () => {
                 isShow={isPerfectScore}
                 setIsShow={setIsPerfectScore}
             />
-            <LoadingScreen isLoading={isLoading} />
             <div className="w-3/4 border-r">
                 {courseDetail ? (
                     <ReactPlayer

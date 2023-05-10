@@ -4,7 +4,9 @@ import {
     LectureQuiz,
     useLearningCourseContext,
 } from '@/containers/learn-course/learning-course-context'
+import { useAppDispatch } from '@/hooks'
 import { PlayQuizRes } from '@/store/questions/types'
+import { updateGlobalLoadingState } from '@/store/user'
 import {
     faCircleCheck,
     faCircleExclamation,
@@ -12,12 +14,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
-import { useEffect, useRef, useState } from 'react'
-import LoadingScreen from '../animate/loading-screen'
+import Router from 'next/router'
+import { useEffect, useState } from 'react'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import Button from '../button'
 import './style.scss'
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
-import Router from 'next/router'
 
 interface IPlayFinalTestModalProps {
     isShow: boolean
@@ -42,6 +43,7 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
     const [totalQuestions, setTotalQuestions] = useState(0)
     const [percentage, setPercentage] = useState(0)
     const [text, setText] = useState('')
+    const dispatch = useAppDispatch()
 
     const countdownTimer = (expiredAt: string) => {
         const countdownDate = new Date(
@@ -83,8 +85,6 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
         }, 1000)
         return countdown
     }
-
-    const modalContent = useRef<HTMLDivElement>(null)
 
     const {
         mutate: getFinalTestDetail,
@@ -157,28 +157,18 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
         }
     }
 
-    const isOverflowY = () => {
-        if (modalContent && modalContent.current) {
-            return (
-                modalContent.current.scrollHeight !==
-                Math.max(
-                    modalContent.current.offsetHeight,
-                    modalContent.current.clientHeight,
-                )
-            )
-        }
-    }
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(
+                isLoadingSubmitFinalTestAnswer || isLoadingGetFinalTestDetail,
+            ),
+        )
+    }, [isLoadingSubmitFinalTestAnswer, isLoadingGetFinalTestDetail])
 
     return (
         <>
             {showModal ? (
                 <>
-                    <LoadingScreen
-                        isLoading={
-                            isLoadingSubmitFinalTestAnswer ||
-                            isLoadingGetFinalTestDetail
-                        }
-                    />
                     <div
                         className={`${
                             isPerfectScore ? 'hidden' : 'flex'
@@ -186,13 +176,7 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                     >
                         <div className="relative">
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                <div
-                                    className={`${
-                                        isOverflowY()
-                                            ? 'py-10 pl-10 pr-5'
-                                            : 'p-10'
-                                    }`}
-                                >
+                                <div className="p-10 max-h-80 overflow-y-auto scrollbar">
                                     <div className="text-xl font-bold px-6 pb-5">
                                         Final Test
                                     </div>
@@ -305,13 +289,7 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                             )}
                                             {!isFinish && (
                                                 <>
-                                                    <div
-                                                        className={`space-y-5 max-w-3xl max-h-80 ${
-                                                            isOverflowY() &&
-                                                            'overflow-y-scroll scrollbar pr-5'
-                                                        }`}
-                                                        ref={modalContent}
-                                                    >
+                                                    <div className="space-y-5 max-w-3xl">
                                                         {finalTest &&
                                                             finalTest.questions.map(
                                                                 (

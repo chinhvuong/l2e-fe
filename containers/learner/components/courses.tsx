@@ -1,12 +1,13 @@
 import { LearnerAPI } from '@/api/api-path'
 import { CoursePreview, GetAllCoursesResponse } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
 import Pagination from '@/components/core/pagination'
 import Select from '@/components/core/select'
 import { Sort, SortLabel } from '@/constants'
+import { useAppDispatch } from '@/hooks'
+import { updateGlobalLoadingState } from '@/store/user'
 import { noop } from 'lodash'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -23,6 +24,7 @@ export default function LearnerCoursesContainer() {
     const limit = 10
     const [totalPage, setTotalPage] = useState(1)
     const router = useRouter()
+    const dispatch = useAppDispatch()
 
     const getSortParams = () => {
         switch (sortBy) {
@@ -90,9 +92,14 @@ export default function LearnerCoursesContainer() {
         return isLoadingAllMyCourses || isCourseClicked
     }, [isLoadingAllMyCourses, isCourseClicked])
 
+    useEffect(() => {
+        dispatch(
+            updateGlobalLoadingState(isLoadingAllMyCourses || isCourseClicked),
+        )
+    }, [isLoadingAllMyCourses, isCourseClicked])
+
     return (
         <>
-            <LoadingScreen isLoading={isLoading} />
             <div className="h-full mt-9 px-[3.5rem]">
                 <div className="flex justify-between px-4">
                     <div className="font-semibold text-[30px]">Courses</div>

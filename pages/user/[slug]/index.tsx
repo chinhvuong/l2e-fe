@@ -49,8 +49,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export async function getStaticPaths() {
+    const res = await axios.get(
+        process.env.NEXT_PUBLIC_API_BACKEND_URL +
+            UserAPI.GET_USER +
+            '?sort=cratedAt%3A1',
+        {},
+    )
+    const userLists = res.data.data as User[]
+    const paths = userLists.map((user) => ({
+        params: { slug: user._id },
+    }))
     return {
-        paths: [],
+        paths,
         fallback: true,
     }
 }
