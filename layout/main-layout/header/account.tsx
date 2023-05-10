@@ -2,7 +2,6 @@ import { UserAPI } from '@/api/api-path'
 import { callAPI } from '@/api/axios-client'
 import useAPI from '@/api/hooks/useAPI'
 import Loading from '@/components/core/animate/loading'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import Input from '@/components/core/input'
 import { useAppDispatch, useAppSelector } from '@/hooks'
@@ -25,7 +24,6 @@ import {
     faUser,
     faWallet,
 } from '@fortawesome/free-solid-svg-icons'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ethers } from 'ethers'
 import { noop } from 'lodash'
@@ -68,7 +66,6 @@ const Account = (props: any) => {
         localStorage.clear()
         dispatch(updateLoginState(false))
     }
-
     const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
             onError: noop,
@@ -80,6 +77,7 @@ const Account = (props: any) => {
         useAPI.post(UserAPI.CLAIM_TODAY_REWARD, {
             onError: noop,
             onSuccess: (response) => {
+                console.log('Hi')
                 dispatch(updateClaimDailyState(response.success))
                 getMyBalance({})
             },
@@ -118,11 +116,41 @@ const Account = (props: any) => {
             }
         }
     }
-
     useEffect(() => {
         claimDailyReward({})
     }, [])
-
+    const setListener = (ethereum: any) => {
+        ethereum.on('chainChanged', pageReload)
+    }
+    const removeListener = (ethereum: any) => {
+        ethereum.removeListener('chainChanged', pageReload)
+    }
+    const changetoSepoliNetworks = async (ethereum: any) => {
+        try {
+            await ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: ethers.utils.hexlify(sepolia.id) }],
+            })
+        } catch (error) {
+            logOut()
+        }
+    }
+    function pageReload() {
+        window.location.reload()
+    }
+    useEffect(() => {
+        async function initWeb3() {
+            try {
+                setListener(window.ethereum)
+                changetoSepoliNetworks(window.ethereum)
+                // then add logic here
+            } catch (error: any) {
+                console.log(error)
+            }
+        }
+        initWeb3()
+        return () => removeListener(window.ethereum)
+    }, [])
     useEffect(() => {
         dispatch(
             updateGlobalLoadingState(

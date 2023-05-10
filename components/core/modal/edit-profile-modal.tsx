@@ -30,9 +30,6 @@ export default function EditProfileModal(props: IProfileModalProps) {
         setShowModal(isShow)
         if (props.userInfo._id !== undefined) {
             setUserProfile(props.userInfo)
-            if (isShow) {
-                validateUserInfo(props.userInfo)
-            }
         }
     }, [isShow, props.userInfo])
     const updateUserProfile = () => {
@@ -45,6 +42,8 @@ export default function EditProfileModal(props: IProfileModalProps) {
             })
             setShowModal(false)
             setIsShow(false)
+        } else {
+            validateUserInfo(userProfile)
         }
     }
     const getBioLength = (value: string) => {
@@ -128,14 +127,18 @@ export default function EditProfileModal(props: IProfileModalProps) {
     }
     const getValidateResult = () => {
         if (
-            errorUpdate.avatar !== '' ||
-            errorUpdate.name !== '' ||
-            errorUpdate.title !== '' ||
-            errorUpdate.bio !== ''
+            userProfile.avatar !== '' &&
+            userProfile.name !== '' &&
+            userProfile.title !== '' &&
+            userProfile.bio !== '' &&
+            userProfile.avatar !== null &&
+            userProfile.name !== null &&
+            userProfile.title !== null &&
+            userProfile.bio !== null
         ) {
-            return false
-        } else {
             return true
+        } else {
+            return false
         }
     }
     const handleNameChange = (value: string) => {

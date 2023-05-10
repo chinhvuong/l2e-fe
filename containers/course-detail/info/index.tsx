@@ -44,7 +44,7 @@ export default function CourseInfo() {
     }
 
     const goToUserDetailPage = () => {
-        Router.push('/user/' + data?.author._id + '/detail')
+        Router.push('/user/' + data?.author._id)
     }
 
     useEffect(() => {
