@@ -1,32 +1,46 @@
 import { UserAPI } from '@/api/api-path'
-import StaticLearnerCoursesContainer from '@/containers/user/components/courses'
-import UsersInfoLayout from '@/layout/users-info-layout'
+import UserDetailPreviewContainer from '@/containers/user'
 import { Certificate } from '@/store/certification/types'
+import { User } from '@/store/user/types'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { ReactElement } from 'react'
-export interface StaticCertificateProps {
+export interface StaticUserProps {
+    user: User
     certificates: Certificate[]
 }
-export default function ProfileCoursePage(data: StaticCertificateProps) {
-    return <StaticLearnerCoursesContainer certificates={data.certificates} />
-}
+
 export const getStaticProps: GetStaticProps = async (context) => {
     const slug = (context.params as ParsedUrlQuery).slug
+    let user = {} as User
     let certificates = [] as Certificate[]
     try {
         const res = await axios.get(
             process.env.NEXT_PUBLIC_API_BACKEND_URL +
                 UserAPI.GET_LIST_CERTIFICATION +
-                '?userId=' +
+                '?limit=5&page=0&userId=' +
                 slug,
             {},
         )
         certificates = res.data.data
-    } catch (error) {}
+    } catch (error) {
+        return {
+            notFound: true,
+        }
+    }
+    try {
+        const res = await axios.get(
+            process.env.NEXT_PUBLIC_API_BACKEND_URL + UserAPI.GET_USER + slug,
+            {},
+        )
+        user = res.data
+    } catch (error) {
+        return {
+            notFound: true,
+        }
+    }
     return {
-        props: { certificates },
+        props: { user, certificates },
         // Next.js will attempt to re-generate the page:
         // - When a request comes in
         // - At most once every 10 seconds
@@ -35,8 +49,17 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export async function getStaticPaths() {
-    return { paths: [], fallback: true }
+    return {
+        paths: [],
+        fallback: true,
+    }
 }
-ProfileCoursePage.getLayout = function getLayout(page: ReactElement) {
-    return <UsersInfoLayout>{page}</UsersInfoLayout>
+
+export default function UserDetailPage(data: StaticUserProps) {
+    return (
+        <UserDetailPreviewContainer
+            user={data.user}
+            certificates={data.certificates}
+        />
+    )
 }

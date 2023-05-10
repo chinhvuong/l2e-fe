@@ -24,13 +24,16 @@ import {
     faUser,
     faWallet,
 } from '@fortawesome/free-solid-svg-icons'
-
+import { useNetwork, useSwitchNetwork } from 'wagmi'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ethers } from 'ethers'
 import { noop } from 'lodash'
 import Router from 'next/router'
 import { useEffect, useState } from 'react'
 import { useSigner } from 'wagmi'
+import { ethers } from 'ethers'
+interface Window {
+    ethereum: any
+}
 
 const Account = (props: any) => {
     const [hoverUser, setHoverUser] = useState(false)
@@ -67,7 +70,11 @@ const Account = (props: any) => {
         localStorage.clear()
         dispatch(updateLoginState(false))
     }
-
+    const { switchNetwork } = useSwitchNetwork({
+        onError(error) {
+            logOut()
+        },
+    })
     const { mutate: getMyBalance, isLoading: isLoadingGetMyBalance } =
         useAPI.getMutation(UserAPI.GET_MY_BALANCE, {
             onError: noop,
@@ -79,6 +86,7 @@ const Account = (props: any) => {
         useAPI.post(UserAPI.CLAIM_TODAY_REWARD, {
             onError: noop,
             onSuccess: (response) => {
+                console.log('Hi')
                 dispatch(updateClaimDailyState(response.success))
                 getMyBalance({})
             },
@@ -117,11 +125,41 @@ const Account = (props: any) => {
             }
         }
     }
-
     useEffect(() => {
         claimDailyReward({})
     }, [])
-
+    const setListener = (ethereum: any) => {
+        ethereum.on('chainChanged', pageReload)
+    }
+    const removeListener = (ethereum: any) => {
+        ethereum.removeListener('chainChanged', pageReload)
+    }
+    const changetoSepoliNetworks = async (ethereum: any) => {
+        try {
+            await ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: ethers.utils.hexlify(sepolia.id) }],
+            })
+        } catch (error) {
+            logOut()
+        }
+    }
+    function pageReload() {
+        window.location.reload()
+    }
+    useEffect(() => {
+        async function initWeb3() {
+            try {
+                setListener(window.ethereum)
+                changetoSepoliNetworks(window.ethereum)
+                // then add logic here
+            } catch (error: any) {
+                console.log(error)
+            }
+        }
+        initWeb3()
+        return () => removeListener(window.ethereum)
+    }, [])
     return (
         <>
             <LoadingScreen isLoading={isLoadingGetMyBalance} />
@@ -132,6 +170,7 @@ const Account = (props: any) => {
                     !props.darkTheme ? 'text-black' : 'text-white'
                 }`}
             /> */}
+
                 <div className="flex cursor-pointer">
                     <FontAwesomeIcon
                         icon={faWallet}
