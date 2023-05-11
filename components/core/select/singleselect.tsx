@@ -46,6 +46,7 @@ export default function SingleReactSelect({
             options={quizzes}
             defaultValue={selectedQuiz}
             onChange={updateQuizzes}
+            className="z-10"
         />
     )
 }

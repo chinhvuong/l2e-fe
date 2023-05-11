@@ -147,7 +147,7 @@ export default function LearningReviewDetail() {
                         </div>
                         <div className="sm:hidden">
                             <RatingStar
-                                id={overviewRating.overview.toString()}
+                                id={courseId}
                                 ratingScore={overviewRating.overview}
                                 hideScore
                             />

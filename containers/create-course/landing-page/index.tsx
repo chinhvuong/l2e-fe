@@ -171,7 +171,7 @@ export default function LandingPageContainer() {
                         </div>
                     </div>
                     {quizSelect?.length > 0 && (
-                        <div className="border-x border-b border-black">
+                        <div className="border border-black">
                             <div className="flex items-center space-x-5 mx-10 py-5">
                                 <div className="font-bold min-w-max">
                                     Final Test

@@ -71,8 +71,8 @@ export default function CreateQuizForm({ changeMode }: ICreateQuizFormProps) {
                 }),
             )
             .required('Quiz must have questions') // these constraints are shown if and only if inner constraints are satisfied
-            .min(1, 'Quiz have at least 1 question'),
-        name: yup.string().required('Quiz must have a name'),
+            .min(1, 'A Quiz must have at least 1 question'),
+        name: yup.string().required('A Quiz must have a name'),
     })
     const formik = useFormik({
         initialValues: {

@@ -2,7 +2,7 @@ import Button from '@/components/core/button'
 import { useCreateCourseContext } from '@/containers/create-course/create-course-context'
 import { useAppSelector } from '@/hooks'
 import { getCanSaveCourseState } from '@/store/course/selectors'
-import { getGlobalLoadingState } from '@/store/user/selectors'
+import { getGlobalLoadingState, getUserProfile } from '@/store/user/selectors'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router from 'next/router'
@@ -16,10 +16,12 @@ export default function Header() {
         updateCourse,
         upsertSections,
         chosenFinalTest,
+        updateProfile,
     } = useCreateCourseContext()
 
     const canSaveCourse = useAppSelector(getCanSaveCourseState)
     const isLoading = useAppSelector(getGlobalLoadingState)
+    const userProfile = useAppSelector(getUserProfile)
     const goBack = () => {
         Router.push('/instructor/courses')
     }
@@ -59,10 +61,16 @@ export default function Header() {
                 return el
             }),
         )
+        updateProfile({
+            name: userProfile.name,
+            avatar: userProfile.avatar,
+            title: userProfile.title,
+            bio: userProfile.bio,
+        })
     }
 
     return (
-        <div className="flex items-center justify-between bg-black h-[65px] w-full fixed top-0 z-10 px-5">
+        <div className="flex items-center justify-between bg-black h-[65px] w-full fixed top-0 z-40 px-5">
             <div
                 className="flex items-center space-x-3 cursor-pointer"
                 onClick={() => goBack()}

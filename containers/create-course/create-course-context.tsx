@@ -36,8 +36,11 @@ import { QuestionDetailType } from '@/store/questions/types'
 import { UpdateQuizzesState } from '@/store/quiz'
 import { getQuizDetailInfo, getQuizzez } from '@/store/quiz/selectors'
 import { QuizDetailType, QuizSelectType } from '@/store/quiz/types'
-import { updateGlobalLoadingState } from '@/store/user'
-import { User } from '@/store/user/types'
+import {
+    updateGlobalLoadingState,
+    updateUserBioLength,
+    updateUserInfo,
+} from '@/store/user'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, EditorState, convertFromHTML } from 'draft-js'
 import { noop } from 'lodash'
@@ -70,9 +73,9 @@ interface ICreateCourseContext {
     setPageNumberQuizzes: Dispatch<SetStateAction<number>>
     totalPageQuestions: number
     totalPageQuizzes: number
-    userProfile: User | undefined
     currentTab: string
     setCurrentTab: Dispatch<SetStateAction<string>>
+    updateProfile: UseMutateFunction<unknown, any, object, unknown>
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>(
@@ -100,7 +103,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const limit = 10
     const [totalPageQuestions, setTotalPageQuestions] = useState(1)
     const [totalPageQuizzes, setTotalPageQuizzes] = useState(1)
-    const [userProfile, setUserProfile] = useState()
     const router = useRouter()
     const [currentTab, setCurrentTab] = useState(() => {
         const list = router.route.split('/')
@@ -145,7 +147,6 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         useAPI.put(InstructorAPI.UPDATE_COURSE + courseDetail._id, {
             onError: noop,
             onSuccess: (response) => {
-                updateProfile({})
                 dispatch(updateCourseDetail(response))
                 if (response?.goals && response.goals.length > 0) {
                     let newList: string[] = [...response.goals]
@@ -299,7 +300,20 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         useAPI.getMutation(UserAPI.GET_USER_INFO, {
             onError: noop,
             onSuccess(response) {
-                setUserProfile(response)
+                dispatch(updateUserInfo(response))
+                dispatch(
+                    updateUserBioLength(
+                        EditorState.createWithContent(
+                            ContentState.createFromBlockArray(
+                                convertFromHTML(response.bio).contentBlocks,
+                            ),
+                        )
+                            .getCurrentContent()
+                            .getPlainText()
+                            .split(/(\s+)/)
+                            .filter((e) => e.trim().length > 0).length,
+                    ),
+                )
             },
         })
 
@@ -313,7 +327,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         if (courseId !== localStorage.getItem(COURSE_ID)) {
             setCourseId(localStorage.getItem(COURSE_ID) ?? '')
         } else {
-            if (localStorage.getItem(COURSE_ID) !== null) {
+            if (localStorage.getItem(COURSE_ID)) {
                 getCourseDetail({})
                 getUserInfo({})
             }
@@ -324,12 +338,11 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         if (courseId !== localStorage.getItem(COURSE_ID)) {
             setCourseId(localStorage.getItem(COURSE_ID) ?? '')
         } else {
-            if (
-                localStorage.getItem(COURSE_ID) !== null &&
-                router.pathname.includes('question')
-            ) {
+            if (localStorage.getItem(COURSE_ID)) {
                 getQuestionsList({})
-                changeURLQuestions()
+                if (router.pathname.includes('question')) {
+                    changeURLQuestions()
+                }
             }
         }
     }, [searchQuestions, pageNumberQuestions, courseId, router.pathname])
@@ -338,12 +351,11 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
         if (courseId !== localStorage.getItem(COURSE_ID)) {
             setCourseId(localStorage.getItem(COURSE_ID) ?? '')
         } else {
-            if (
-                localStorage.getItem(COURSE_ID) !== null &&
-                router.pathname.includes('quiz')
-            ) {
+            if (localStorage.getItem(COURSE_ID)) {
                 getQuizzesList({})
-                changeURLQuizzes()
+                if (router.pathname.includes('quiz')) {
+                    changeURLQuizzes()
+                }
             }
         }
     }, [searchQuizzes, pageNumberQuizzes, courseId, router.pathname])
@@ -396,9 +408,9 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 setPageNumberQuizzes,
                 totalPageQuestions,
                 totalPageQuizzes,
-                userProfile,
                 currentTab,
                 setCurrentTab,
+                updateProfile,
             }}
         >
             {children}

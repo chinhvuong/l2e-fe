@@ -220,7 +220,7 @@ export default function ValidateModal(props: IValidateModalProps) {
                                                 </div>
                                             </div>
                                             <div
-                                                className="absolute top-5 right-5 cursor-pointer bg-gray-300 px-2 rounded-full"
+                                                className="absolute top-0 right-5 cursor-pointer bg-gray-300 px-2 rounded-full"
                                                 onClick={() =>
                                                     handleShowModal(false)
                                                 }

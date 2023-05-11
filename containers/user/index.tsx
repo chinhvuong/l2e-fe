@@ -28,7 +28,7 @@ export default function UserDetailPreviewContainer(props: StaticUserProps) {
                         Courses
                     </div>
                 </div>
-                <div className="space-x-10">
+                <div>
                     <div>
                         {props.certificates !== undefined &&
                             props.certificates.map(

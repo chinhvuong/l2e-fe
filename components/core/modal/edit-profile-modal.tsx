@@ -217,12 +217,12 @@ export default function EditProfileModal(props: IProfileModalProps) {
                                                         type="image"
                                                         defaultPreview={
                                                             userProfile.avatar ??
-                                                            ''
+                                                            '/svgs/default_user_avatar.svg'
                                                         }
                                                         setFileLink={
                                                             handleAvatarChange
                                                         }
-                                                        imgClassName="basis-1/4"
+                                                        imgClassName="basis-1/5 mr-16"
                                                         childrenClassName="basis-3/4"
                                                     >
                                                         <div>

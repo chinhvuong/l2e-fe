@@ -28,7 +28,7 @@ export default function StudentFeedback() {
                             </div>
                             <div className="sm:hidden">
                                 <RatingStar
-                                    id={overviewRating.overview.toString()}
+                                    id={data._id}
                                     ratingScore={overviewRating.overview}
                                     hideScore
                                 />
