@@ -63,7 +63,7 @@ export default function ProfilePageContainer() {
                                     '/svgs/default_user_avatar.svg'
                                 }
                                 setFileLink={handleAvatarChange}
-                                imgClassName="basis-1/5 mr-10"
+                                imgClassName="basis-1/4 mr-10"
                                 childrenClassName="basis-3/4"
                             >
                                 <div>

@@ -4,6 +4,7 @@ import useAPI from '@/api/hooks/useAPI'
 import Loading from '@/components/core/animate/loading'
 import Button from '@/components/core/button'
 import Input from '@/components/core/input'
+import { ACCESS_TOKEN } from '@/constants/localStorage'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { claimReward } from '@/hooks/coursedex'
 import {
@@ -12,7 +13,7 @@ import {
     updateLoginState,
     updateTokenBalance,
 } from '@/store/user'
-import { getTokenBalanceState } from '@/store/user/selectors'
+import { getLoginState, getTokenBalanceState } from '@/store/user/selectors'
 import { sepolia } from '@/wallet/chains'
 import useWeb3 from '@/wallet/hooks/useWeb3'
 import {
@@ -46,6 +47,7 @@ const Account = (props: any) => {
     })
     const [disabled, setDisabled] = useState(false)
     const myAccountBalance = useAppSelector(getTokenBalanceState)
+    const loginState = useAppSelector(getLoginState)
 
     const dispatch = useAppDispatch()
 
@@ -77,7 +79,6 @@ const Account = (props: any) => {
         useAPI.post(UserAPI.CLAIM_TODAY_REWARD, {
             onError: noop,
             onSuccess: (response) => {
-                console.log('Hi')
                 dispatch(updateClaimDailyState(response.success))
                 getMyBalance({})
             },
@@ -116,9 +117,13 @@ const Account = (props: any) => {
             }
         }
     }
+
     useEffect(() => {
-        claimDailyReward({})
-    }, [])
+        if (localStorage.getItem(ACCESS_TOKEN)) {
+            claimDailyReward({})
+        }
+    }, [loginState])
+
     const setListener = (ethereum: any) => {
         ethereum.on('chainChanged', pageReload)
     }

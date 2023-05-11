@@ -24,7 +24,6 @@ import {
     useEffect,
     useState,
 } from 'react'
-import { useSelector } from 'react-redux'
 
 interface ICourseDetailContext {
     data: CourseDetailPreview | undefined
@@ -74,7 +73,7 @@ export const CourseDetailProvider: React.FC<React.PropsWithChildren<{}>> = ({
         ViewCourseDetailTabTitle.OVERVIEW,
     )
     const [isShowVideoModal, setIsShowVideoModal] = useState(false)
-    const loginState = useSelector(getLoginState)
+    const loginState = useAppSelector(getLoginState)
 
     const { mutate: getCourseDetail, isLoading: isLoadingCourseDetail } =
         useAPI.getMutation(

@@ -199,7 +199,7 @@ export const Card: FC<CardProps> = ({
                     </div>
                 </div>
                 <div className="flex space-x-3 items-center">
-                    {lectureDetail.name !== '' ? (
+                    {lectureDetail.name !== '' || index !== 0 ? (
                         <>
                             <div className="flex items-center">
                                 <FontAwesomeIcon

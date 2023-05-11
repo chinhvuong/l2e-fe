@@ -1,12 +1,12 @@
 import Button from '@/components/core/button'
 import Label from '@/components/core/label'
 import RatingStar from '@/components/core/rating-star'
+import { useAppSelector } from '@/hooks'
 import { getEnrollStatusState } from '@/store/course/selectors'
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router from 'next/router'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useAccount } from 'wagmi'
 import EnrollBtn from '../components/enroll-btn'
 import { useCourseDetailContext } from '../course-detail-context'
@@ -16,7 +16,7 @@ export interface ICourseLabelProps {}
 export default function CourseLabel() {
     const [scrollY, setScrollY] = useState(0)
     const { data } = useCourseDetailContext()
-    const isEnroll = useSelector(getEnrollStatusState)
+    const isEnroll = useAppSelector(getEnrollStatusState)
     const { address } = useAccount()
     const canEnroll = () => {
         if (data !== undefined) {

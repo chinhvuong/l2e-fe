@@ -105,6 +105,11 @@ export default function QuizContainer() {
         dispatch(updateGlobalLoadingState(isLoading || isLoadingDeleteQuiz))
     }, [isLoading, isLoadingDeleteQuiz])
 
+    useEffect(() => {
+        setSearchQuizzes('')
+        setPageNumberQuizzes(1)
+    }, [mode])
+
     return (
         <div>
             {showViewQuizModal && selectedQuiz && (

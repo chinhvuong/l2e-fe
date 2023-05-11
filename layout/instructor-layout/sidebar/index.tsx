@@ -1,4 +1,3 @@
-import { useAppDispatch } from '@/hooks'
 import Logo from '@/layout/main-layout/header/logo'
 import { faChartSimple, faTv } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,7 +10,6 @@ export default function Sidebar() {
     const menu = ['Courses', 'Performance']
     const menuTarget = ['courses', 'performance']
     const router = useRouter()
-    const dispatch = useAppDispatch()
     const [currentTab, setCurrentTab] = useState(() => {
         const list = router.route.split('/')
         return list[list.length - 1]
@@ -22,8 +20,10 @@ export default function Sidebar() {
     }
 
     const goToMenuTarget = (index: number) => {
-        setCurrentTab(menuTarget[index])
-        Router.push(`/instructor/${menuTarget[index]}`)
+        if (currentTab !== menuTarget[index]) {
+            setCurrentTab(menuTarget[index])
+            Router.push(`/instructor/${menuTarget[index]}`)
+        }
     }
 
     const getSidebarIcon = (name: string) => {
