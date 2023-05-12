@@ -17,8 +17,6 @@ import {
 } from '@/store/course/selectors'
 import { updateGlobalLoadingState } from '@/store/user'
 import { getBioLength, getUserProfile } from '@/store/user/selectors'
-import { convertFromHTML } from 'draft-convert'
-import { ContentState, EditorState } from 'draft-js'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -138,15 +136,14 @@ export default function Sidebar() {
                 validateCourse.curriculum.push("Fill all sections's titles")
             }
         })
+        let missingQuizContent = false
         lectures.map((lecture) => {
             lecture.map((el) => {
                 if (el.name === '') {
                     validateCourse.curriculum.push("Fill all lectures's titles")
                 }
                 if (el.quizzes.length <= 0) {
-                    validateCourse.curriculum.push(
-                        'Each lecture must have at least one quiz',
-                    )
+                    missingQuizContent = true
                 }
             })
         })
@@ -162,6 +159,11 @@ export default function Sidebar() {
                 })
             }
         })
+        if (missingQuizContent) {
+            validateCourse.curriculum.push(
+                'Each lecture must have at least one quiz',
+            )
+        }
         if (missingMainContent) {
             validateCourse.curriculum.push('Have content for all lectures')
         }
