@@ -46,6 +46,17 @@ export default function SingleReactSelect({
             options={quizzes}
             defaultValue={selectedQuiz}
             onChange={updateQuizzes}
+            className="z-10"
+            styles={{
+                option: (styles) => ({
+                    ...styles,
+                    cursor: 'pointer',
+                }),
+                control: (styles) => ({
+                    ...styles,
+                    cursor: 'pointer',
+                }),
+            }}
         />
     )
 }

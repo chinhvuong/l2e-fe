@@ -100,6 +100,7 @@ export default function CourseBasicCreateContainer() {
                             sectionId: item._id,
                             mode: '',
                             _id: 'new',
+                            isLoading: false,
                         },
                     ])
                 })
@@ -116,6 +117,7 @@ export default function CourseBasicCreateContainer() {
             lectures.map((item) => {
                 const el: any = { ...item }
                 delete el._id
+                delete el.isLoading
                 el.sectionId = sectionId
                 return el
             }),

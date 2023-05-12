@@ -3,24 +3,16 @@ import { QuestionDetailType } from './types'
 import { QuestionCreateType } from '@/api/dto/course.dto'
 import { v4 as uuidv4 } from 'uuid'
 
-const initialState = [
-    {
-        _id: '',
-        question: 'TEST REDUX 1 ?',
-        choices: ['SUCCESS', 'SUCCESS', 'SUCCESS'],
-        correctAnswer: 0,
-        courseId: '',
-        medias: [''],
-    },
-    {
-        _id: '',
-        question: 'TEST REDUX 2 ?',
-        choices: ['SUCCESS', 'SUCCESS', 'SUCCESS'],
-        correctAnswer: 0,
-        courseId: '',
-        medias: [''],
-    },
-]
+interface QuestionItem {
+    _id: string
+    question: string
+    choices: string[]
+    correctAnswer: number
+    courseId: string
+    medias: string[]
+}
+
+const initialState: QuestionItem[] = []
 
 export const questionsListDetailSlice = createSlice({
     name: 'questionsListDetailSlice',

@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import './style.scss'
-import { SIGN_MESSAGE } from '@/constants'
-import { useAppDispatch } from '@/hooks'
-import { updateAssetState, updateLoginState } from '@/store/user'
-import { useAccount, useContractRead, useSignMessage } from 'wagmi'
-import { getLoginState } from '@/store/user/selectors'
 import { usdtAbi } from '@/abi/usdt'
-import { useSelector } from 'react-redux'
-import { verifyMessage } from 'ethers/lib/utils'
-import useAPI from '@/api/hooks/useAPI'
 import { AuthAPI } from '@/api/api-path'
-import { noop } from 'lodash'
 import { AuthResponse } from '@/api/dto/auth.dto'
+import useAPI from '@/api/hooks/useAPI'
+import { SIGN_MESSAGE } from '@/constants'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/localStorage'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { updateAssetState, updateLoginState } from '@/store/user'
+import { getLoginState } from '@/store/user/selectors'
+import { verifyMessage } from 'ethers/lib/utils'
+import { noop } from 'lodash'
+import { useEffect, useState } from 'react'
+import { useAccount, useContractRead, useSignMessage } from 'wagmi'
+import './style.scss'
 export default function WalletLogic() {
     const [address, setAddress] = useState<string | undefined>(undefined)
     const { data: balance, refetch: refetchBalance } = useContractRead({
@@ -56,7 +55,7 @@ export default function WalletLogic() {
         dispatch(updateAssetState(asset))
     }, [balance, approve])
 
-    const loginState = useSelector(getLoginState)
+    const loginState = useAppSelector(getLoginState)
 
     const signMessage = useSignMessage({
         onSuccess: (data, variables) => {

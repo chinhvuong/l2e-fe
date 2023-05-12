@@ -74,6 +74,7 @@ export const getCurriculumLectureDetail =
                 quizzes: [],
                 sectionId: 'abc',
                 mode: '',
+                isLoading: false,
             }
         )
     }
@@ -88,11 +89,24 @@ export const getCurriculumLectureQuizzezDetail =
                 ) as CurriculumLecture
             }
         })
-        lectureDetail?.quizzes.forEach((item) => {
-            quizzezDetail.push({
-                label: item.name,
-                value: item._id,
+        lectureDetail?.quizzes &&
+            lectureDetail.quizzes.forEach((item) => {
+                quizzezDetail.push({
+                    label: item.name,
+                    value: item._id,
+                })
             })
-        })
         return quizzezDetail
     }
+
+export const getUpdateFileState = (state: RootState) => {
+    let isLoading = false
+    state.curriculum.lectures.forEach((lecture) => {
+        lecture.forEach((lesson) => {
+            if (lesson.isLoading) {
+                isLoading = true
+            }
+        })
+    })
+    return isLoading
+}

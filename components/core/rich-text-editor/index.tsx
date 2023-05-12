@@ -1,7 +1,7 @@
 import { convertToHTML } from 'draft-convert'
 import { ContentState, convertFromHTML, EditorState } from 'draft-js'
 import dynamic from 'next/dynamic'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EditorProps } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import './style.scss'
@@ -23,13 +23,21 @@ export default function RichTextEditor({
     defaultValue,
     updateTextLength,
 }: IRichTextEditorProps) {
-    const [editorState, setEditorState] = useState<EditorState>(
-        EditorState.createWithContent(
-            ContentState.createFromBlockArray(
-                convertFromHTML(defaultValue ?? '').contentBlocks,
+    const [editorState, setEditorState] = useState<EditorState>()
+
+    useEffect(() => {
+        setEditorState(
+            EditorState.createWithContent(
+                ContentState.createFromBlockArray(
+                    convertFromHTML(defaultValue ?? '').contentBlocks,
+                ),
             ),
-        ),
-    )
+        )
+    }, [])
+
+    if (!editorState) {
+        return <></>
+    }
 
     return (
         <div>

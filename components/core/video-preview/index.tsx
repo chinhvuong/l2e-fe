@@ -14,10 +14,7 @@ export default function VideoPreview({
     ...rest
 }: IVideoPreviewProps & HTMLAttributes<HTMLDivElement>) {
     return (
-        <div
-            {...rest}
-            className={`relative w-full video-preview ${className} min-h-[180px]`}
-        >
+        <div {...rest} className={`relative w-full video-preview ${className}`}>
             {video === null ? (
                 <img
                     src={'/svgs/thumbnails/thumbnail_1.svg'}

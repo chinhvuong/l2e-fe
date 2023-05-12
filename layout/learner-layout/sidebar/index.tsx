@@ -22,8 +22,10 @@ export default function Sidebar() {
     }
 
     const goToMenuTarget = (index: number) => {
-        setCurrentTab(menuTarget[index])
-        Router.push(`/instructor/${menuTarget[index]}`)
+        if (currentTab !== menuTarget[index]) {
+            setCurrentTab(menuTarget[index])
+            Router.push(`/instructor/${menuTarget[index]}`)
+        }
     }
 
     const getSidebarIcon = (name: string) => {

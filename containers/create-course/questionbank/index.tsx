@@ -108,6 +108,11 @@ export default function QuestionBankContainers() {
         dispatch(updateGlobalLoadingState(isLoading || isLoadingDeleteQuestion))
     }, [isLoading, isLoadingDeleteQuestion])
 
+    useEffect(() => {
+        setSearchQuestions('')
+        setPageNumberQuestions(1)
+    }, [mode])
+
     return (
         <div>
             <QuestionModal

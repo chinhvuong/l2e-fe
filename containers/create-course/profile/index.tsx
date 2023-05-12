@@ -10,15 +10,13 @@ import {
     updateUserNameState,
     updateUserTitleState,
 } from '@/store/user'
-import { getGlobalLoadingState } from '@/store/user/selectors'
+import { getGlobalLoadingState, getUserProfile } from '@/store/user/selectors'
 import Title from '../components/title'
-import { useCreateCourseContext } from '../create-course-context'
 
 export interface IProfilePageContainerProps {}
 
 export default function ProfilePageContainer() {
-    const { userProfile } = useCreateCourseContext()
-
+    const userProfile = useAppSelector(getUserProfile)
     const isLoading = useAppSelector(getGlobalLoadingState)
     const dispatch = useAppDispatch()
     const handleNameChange = (value: string) => {
@@ -65,7 +63,7 @@ export default function ProfilePageContainer() {
                                     '/svgs/default_user_avatar.svg'
                                 }
                                 setFileLink={handleAvatarChange}
-                                imgClassName="basis-1/5 mr-10"
+                                imgClassName="basis-1/4 mr-10"
                                 childrenClassName="basis-3/4"
                             >
                                 <div>

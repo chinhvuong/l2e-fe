@@ -72,8 +72,10 @@ export default function Sidebar() {
     }
 
     const goToMenuTarget = (index: number) => {
-        setCurrentTab(menuTarget[index])
-        Router.push(`/create-course/${courseId}/${menuTarget[index]}`)
+        if (currentTab !== menuTarget[index]) {
+            setCurrentTab(menuTarget[index])
+            Router.push(`/create-course/${courseId}/${menuTarget[index]}`)
+        }
     }
 
     const validateCourse = () => {
@@ -260,7 +262,6 @@ export default function Sidebar() {
                         <div className="rounded-[80px] py-[12px] px-[30px] shadow-sm font-semibold w-full flex justify-center bg-green-500 text-white cursor-not-allowed mt-10 mb-5">
                             Approved!
                         </div>
-
                         {!courseDetail.courseId ? (
                             <MintBtn id={courseDetail._id} />
                         ) : (

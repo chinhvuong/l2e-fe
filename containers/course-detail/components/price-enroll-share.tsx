@@ -1,19 +1,19 @@
 import { CourseDetailPreview } from '@/api/dto/course.dto'
 import Loading from '@/components/core/animate/loading'
 import Button from '@/components/core/button'
+import { useAppSelector } from '@/hooks'
 import { getEnrollStatusState } from '@/store/course/selectors'
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Router from 'next/router'
-import { useSelector } from 'react-redux'
-import EnrollBtn from './enroll-btn'
 import { useAccount } from 'wagmi'
+import EnrollBtn from './enroll-btn'
 export interface IPriceEnrollShareProps {
     data: CourseDetailPreview
 }
 
 export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
-    const isEnrolled = useSelector(getEnrollStatusState)
+    const isEnrolled = useAppSelector(getEnrollStatusState)
     const { address } = useAccount()
     const canEnroll = () => {
         if (

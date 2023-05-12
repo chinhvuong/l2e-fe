@@ -1,11 +1,11 @@
 import Loading from '@/components/core/animate/loading'
 import Button from '@/components/core/button'
+import { useAppSelector } from '@/hooks'
 import { enroll } from '@/hooks/coursedex'
 import { approve } from '@/hooks/usdt'
 import { getAssetState } from '@/store/user/selectors'
 import { ethers } from 'ethers'
-import React, { HtmlHTMLAttributes, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { HtmlHTMLAttributes, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useSigner } from 'wagmi'
 import { sepolia } from 'wagmi/chains'
@@ -14,7 +14,7 @@ type Props = HtmlHTMLAttributes<HTMLButtonElement> & {}
 
 const EnrollBtn = ({ ...rest }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
-    const asset = useSelector(getAssetState)
+    const asset = useAppSelector(getAssetState)
     const { data } = useCourseDetailContext()
     const { data: signer } = useSigner({
         chainId: sepolia.id,
