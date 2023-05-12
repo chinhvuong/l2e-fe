@@ -28,13 +28,26 @@ export default function LecturesListLearnerAccordion(
 ) {
     const { expand, lectures, isLearning, learningLectureIndex, sectionIndex } =
         props
-    const { handleChangeLecture, currentPosition } = useLearningCourseContext()
+    const { handleChangeLecture, currentPosition, lastCanLearnPosition } =
+        useLearningCourseContext()
 
     const handleLectureClick = (index: number) => {
         if (isLearning && index <= learningLectureIndex) {
             handleChangeLecture([sectionIndex, index])
         }
         handleChangeLecture([sectionIndex, index])
+    }
+
+    const isClickableLesson = (
+        isLearned: boolean,
+        lessonIdx: number,
+    ): boolean => {
+        return (
+            isLearned ||
+            (sectionIndex === 0 && lessonIdx === 0) ||
+            (sectionIndex === lastCanLearnPosition[0] &&
+                lessonIdx === lastCanLearnPosition[1])
+        )
     }
 
     return (
@@ -47,12 +60,13 @@ export default function LecturesListLearnerAccordion(
                         currentPosition[1] === index &&
                         'text-white bg-primary'
                     } ${
-                        lecture.learned || (sectionIndex === 0 && index === 0)
+                        isClickableLesson(lecture.learned, index)
                             ? 'cursor-pointer'
                             : 'cursor-not-allowed bg-gray-300'
                     } py-3`}
                     onClick={() => {
-                        lecture.learned && handleLectureClick(index)
+                        isClickableLesson(lecture.learned, index) &&
+                            handleLectureClick(index)
                     }}
                 >
                     <div className="flex px-5 space-x-3">

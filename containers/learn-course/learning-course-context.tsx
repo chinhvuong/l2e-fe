@@ -117,6 +117,7 @@ interface ILearningCourseContext {
     setSearchTerm: Dispatch<SetStateAction<string>>
     overviewRating: RatingOverView
     totalRating: number
+    lastCanLearnPosition: number[]
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -145,6 +146,9 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     >(undefined)
 
     const [currentPosition, setCurrentPosition] = useState<number[]>([0, 0])
+    const [lastCanLearnPosition, setLastCanLearnPosition] = useState<number[]>([
+        0, 0,
+    ])
     const [currentQuiz, setCurrentQuiz] = useState<LectureQuiz | undefined>(
         undefined,
     )
@@ -182,9 +186,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             onError: noop,
             onSuccess: (response) => {
                 setCourseDetail(response)
-                if (playingVideo === '') {
-                    getDefaultPlayedVideo(response)
-                }
+                getDefaultPlayedVideo(response)
             },
         },
     )
@@ -236,6 +238,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                     if (!lesson.learned && isFinishLearning) {
                         setCurrentQuiz(lesson.quizzes[0])
                         setCurrentPosition([sectionIndex, lessonIndex, 0])
+                        setLastCanLearnPosition([sectionIndex, lessonIndex, 0])
                         lessonId = lesson._id
                         setPlayingVideo(lesson.media)
                         isFinishLearning = false
@@ -327,6 +330,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 setSearchTerm,
                 overviewRating,
                 totalRating,
+                lastCanLearnPosition,
             }}
         >
             {children}

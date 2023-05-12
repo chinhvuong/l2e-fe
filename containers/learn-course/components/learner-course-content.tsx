@@ -31,7 +31,7 @@ export default function LearnerCourseContent() {
                 <div className="flex justify-center py-5 border-t">
                     <Button
                         className="btn-primary"
-                        disabled={learningPos[2] === 1 && course.finalTest.play}
+                        disabled={learningPos[2] === 0 || course.finalTest.play}
                         onClick={() => setShowPlayFinalTestModal(true)}
                     >
                         <div className="font-medium text-center">
