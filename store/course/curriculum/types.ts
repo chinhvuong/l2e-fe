@@ -22,6 +22,7 @@ export type CurriculumLecture = {
     quizzes: QuizDetailType[]
     sectionId: string
     mode: string
+    isLoading: boolean
 }
 
 export type TInputUpdateLecture = {

@@ -6,7 +6,6 @@ import VideoModal from '@/components/core/modal/video-modal'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
 import { useAppDispatch } from '@/hooks'
-import { updateCanSaveCourseState } from '@/store/course'
 import { updateCurriculumLectureMainContent } from '@/store/course/curriculum'
 import { CurriculumLecture } from '@/store/course/curriculum/types'
 import {
@@ -15,14 +14,18 @@ import {
     faFileVideo,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { noop } from 'lodash'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { useEffect, useState } from 'react'
 
 export interface IMainContentProps {
     lectureDetail: CurriculumLecture
+    updateCard: ActionCreatorWithPayload<CurriculumLecture, string>
 }
 
-export default function MainContent({ lectureDetail }: IMainContentProps) {
+export default function MainContent({
+    lectureDetail,
+    updateCard,
+}: IMainContentProps) {
     const [contentType, setContentType] = useState<string | null>(
         lectureDetail.mediaType !== '' ? lectureDetail.mediaType : null,
     )
@@ -32,6 +35,7 @@ export default function MainContent({ lectureDetail }: IMainContentProps) {
     const [uploadedFileURL, setUploadedFileURL] = useState<string | null>(
         lectureDetail.media !== '' ? lectureDetail.media : null,
     )
+    const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [uploadedVideoDuration, setUploadedVideoDuration] = useState('')
     const [showModal, setShowModal] = useState(false)
     const [article, setArticle] = useState<string>('')
@@ -43,7 +47,7 @@ export default function MainContent({ lectureDetail }: IMainContentProps) {
         newDetail.mediaName = contentName ?? ''
         newDetail.mediaType = 'video'
         dispatch(updateCurriculumLectureMainContent(newDetail))
-        setTimeout(() => dispatch(updateCanSaveCourseState(true)), 1000)
+        updateLectureLoadingState(false)
     }
 
     const removeLectureMainContent = () => {
@@ -87,8 +91,19 @@ export default function MainContent({ lectureDetail }: IMainContentProps) {
     const { mutate: uploadFile, isLoading: isLoadingUploadFile } = useAPI.post(
         FileAPI.UPLOAD_SINGLE_FILE,
         {
-            onError: noop,
+            onError: () => {
+                setContentType(null)
+                setUploadedFileURL(null)
+                updateLectureLoadingState(false)
+            },
             onSuccess: (response) => {
+                if (uploadedFile) {
+                    setContentName(uploadedFile.name)
+                    const objectUrl = URL.createObjectURL(uploadedFile)
+                    setUploadedFileURL(objectUrl)
+
+                    setContentType('video')
+                }
                 updateLectureMainContent(response.url)
             },
         },
@@ -97,6 +112,12 @@ export default function MainContent({ lectureDetail }: IMainContentProps) {
             'Access-Control-Allow-Origin': '*',
         },
     )
+
+    const updateLectureLoadingState = (value: boolean) => {
+        const newDetail = { ...lectureDetail }
+        newDetail.isLoading = value
+        dispatch(updateCard(newDetail))
+    }
 
     const handleUploadFile = () => {
         const inputFile = document.createElement('input')
@@ -108,16 +129,12 @@ export default function MainContent({ lectureDetail }: IMainContentProps) {
         inputFile.onchange = (e) => {
             const target = e.target as HTMLInputElement
             if (target.files && target.files[0]) {
-                setContentName(target.files[0].name)
-                const objectUrl = URL.createObjectURL(target.files[0])
-                setUploadedFileURL(objectUrl)
-
-                setContentType('video')
+                setUploadedFile(target.files[0])
 
                 const formData = new FormData()
                 formData.append('file', target.files[0])
 
-                dispatch(updateCanSaveCourseState(false))
+                updateLectureLoadingState(true)
                 uploadFile(formData)
             }
         }

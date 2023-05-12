@@ -80,10 +80,6 @@ export const getSaveCourseState = (state: RootState) => {
     return state.courseDetail.isSaved
 }
 
-export const getCanSaveCourseState = (state: RootState) => {
-    return state.courseDetail.canSaveCourse
-}
-
 export const getCanCreateCourseState = (state: RootState) => {
     return state.courseDetail.canCreateCourse
 }
@@ -101,4 +97,12 @@ export const getFinalTestSelection = (state: RootState) => {
         label: state.courseDetail.courseDetail.finalTest?.name,
         value: state.courseDetail.courseDetail.finalTest?._id,
     } as QuizSelectType
+}
+
+export const getUploadingThumbnailState = (state: RootState) => {
+    return state.courseDetail.isUploadingThumbnail
+}
+
+export const getUploadingPromotionalVideoState = (state: RootState) => {
+    return state.courseDetail.isUploadingPromotionalVideo
 }

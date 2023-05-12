@@ -71,7 +71,8 @@ const initialState: CourseDetailState = {
     reviews: [],
     isEnroll: false,
     isSaved: false,
-    canSaveCourse: true,
+    isUploadingThumbnail: false,
+    isUploadingPromotionalVideo: false,
     canCreateCourse: true,
     descriptionLength: 0,
 }
@@ -119,11 +120,17 @@ export const courseDetailSlice = createSlice({
         updateSaveCourseState(state, action: PayloadAction<boolean>) {
             state.isSaved = action.payload
         },
-        updateCanSaveCourseState(state, action: PayloadAction<boolean>) {
-            state.canSaveCourse = action.payload
-        },
         updateCanCreateCourseState(state, action: PayloadAction<boolean>) {
             state.canCreateCourse = action.payload
+        },
+        updateUploadingThumbnailState(state, action: PayloadAction<boolean>) {
+            state.isUploadingThumbnail = action.payload
+        },
+        updateUploadingPromotionalVideoState(
+            state,
+            action: PayloadAction<boolean>,
+        ) {
+            state.isUploadingPromotionalVideo = action.payload
         },
         updateDescriptionLength(state, action: PayloadAction<number>) {
             state.descriptionLength = action.payload
@@ -157,13 +164,14 @@ export const {
     updateCourseDetail,
     updateEnrollStatus,
     updateSaveCourseState,
-    updateCanSaveCourseState,
     updateCanCreateCourseState,
     updateDescriptionLength,
     updateCourseIdState,
     updateIdState,
     resetCourseDetailStore,
     updateFinaltestState,
+    updateUploadingThumbnailState,
+    updateUploadingPromotionalVideoState,
 } = courseDetailSlice.actions
 
 export default courseDetailSlice.reducer

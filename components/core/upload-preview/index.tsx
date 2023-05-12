@@ -2,7 +2,7 @@ import { FileAPI } from '@/api/api-path'
 import { UploadOneFileResponse } from '@/api/dto/course.dto'
 import useAPI from '@/api/hooks/useAPI'
 import { useAppDispatch } from '@/hooks'
-import { updateCanSaveCourseState } from '@/store/course'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { ReactNode, ReactText, useEffect, useState } from 'react'
 import Loading from '../animate/loading'
 import Button from '../button'
@@ -16,6 +16,7 @@ export interface IUploadPreviewProps {
     setFileLink?: Function
     imgClassName?: string
     childrenClassName?: string
+    updateLoadingState?: ActionCreatorWithPayload<boolean, string>
 }
 
 export default function UploadPreview({
@@ -26,6 +27,7 @@ export default function UploadPreview({
     setFileLink,
     imgClassName,
     childrenClassName,
+    updateLoadingState,
 }: IUploadPreviewProps) {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [uploadedFileURL, setUploadedFileURL] = useState(defaultPreview)
@@ -37,11 +39,12 @@ export default function UploadPreview({
         {
             onError: (err) => {
                 setUploadedFile(null)
-                dispatch(updateCanSaveCourseState(true))
+                setUploadedFileURL(defaultPreview)
+                updateLoadingState && dispatch(updateLoadingState(false))
             },
             onSuccess: (response: UploadOneFileResponse) => {
                 setFileLink && setFileLink(response.url)
-                setTimeout(() => dispatch(updateCanSaveCourseState(true)), 1000)
+                updateLoadingState && dispatch(updateLoadingState(false))
             },
         },
         {
@@ -75,7 +78,7 @@ export default function UploadPreview({
                 const formData = new FormData()
                 formData.append('file', target.files[0])
 
-                dispatch(updateCanSaveCourseState(false))
+                updateLoadingState && dispatch(updateLoadingState(true))
                 uploadFile(formData)
             }
         }
@@ -100,8 +103,7 @@ export default function UploadPreview({
                                 />
                             )}
                             {type === 'video' &&
-                                (uploadedFileURL ===
-                                '/images/placeholder.jpeg' ? (
+                                (uploadedFileURL === defaultPreview ? (
                                     <img
                                         src={uploadedFileURL}
                                         alt="Course image"

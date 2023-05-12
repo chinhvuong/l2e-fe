@@ -51,6 +51,7 @@ export const courseCurriculumSlice = createSlice({
                     quizzes: [],
                     sectionId: sectionId,
                     mode: '',
+                    isLoading: false,
                 },
             ])
         },
@@ -95,6 +96,7 @@ export const courseCurriculumSlice = createSlice({
                         quizzes: [],
                         sectionId: action.payload,
                         mode: '',
+                        isLoading: false,
                     })
                 }
             })
@@ -115,6 +117,7 @@ export const courseCurriculumSlice = createSlice({
                             el.quizzes = action.payload.quizzes
                             el.sectionId = action.payload.sectionId
                             el.mode = action.payload.mode
+                            el.isLoading = action.payload.isLoading
                         }
                     })
                 }
@@ -169,6 +172,7 @@ export const courseCurriculumSlice = createSlice({
                         sectionId:
                             state.sections[state.sections.length - 1]._id,
                         mode: '',
+                        isLoading: false,
                     },
                 ])
             } else {

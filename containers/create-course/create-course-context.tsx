@@ -238,7 +238,16 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             {},
         )
             .then((response) => {
-                dispatch(updateAllCurriculumLectures([...response.data]))
+                dispatch(
+                    updateAllCurriculumLectures([
+                        ...response.data.map((item: any) => {
+                            return {
+                                ...item,
+                                isLoading: false,
+                            }
+                        }),
+                    ]),
+                )
                 setIsLoadingCurriculum(false)
             })
             .catch(() => {
@@ -278,6 +287,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             lectures.map((item) => {
                 const el: any = { ...item }
                 delete el._id
+                delete el.isLoading
                 el.sectionId = sectionId
                 return el
             }),

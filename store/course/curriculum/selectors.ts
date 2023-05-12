@@ -74,6 +74,7 @@ export const getCurriculumLectureDetail =
                 quizzes: [],
                 sectionId: 'abc',
                 mode: '',
+                isLoading: false,
             }
         )
     }
@@ -97,3 +98,15 @@ export const getCurriculumLectureQuizzezDetail =
             })
         return quizzezDetail
     }
+
+export const getUpdateFileState = (state: RootState) => {
+    let isLoading = false
+    state.curriculum.lectures.forEach((lecture) => {
+        lecture.forEach((lesson) => {
+            if (lesson.isLoading) {
+                isLoading = true
+            }
+        })
+    })
+    return isLoading
+}

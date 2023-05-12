@@ -16,6 +16,8 @@ import {
     updateCoursePromotionalVideo,
     updateCourseThumbnail,
     updateDescriptionLength,
+    updateUploadingPromotionalVideoState,
+    updateUploadingThumbnailState,
 } from '@/store/course'
 import {
     getFinalTestSelection,
@@ -197,6 +199,7 @@ export default function LandingPageContainer() {
                             type="image"
                             defaultPreview={thumbnail}
                             setFileLink={handleThumbnailChange}
+                            updateLoadingState={updateUploadingThumbnailState}
                         >
                             <div>
                                 <span>
@@ -215,6 +218,9 @@ export default function LandingPageContainer() {
                             type="video"
                             defaultPreview={promotionalVideo}
                             setFileLink={handlePromotionalVideoChange}
+                            updateLoadingState={
+                                updateUploadingPromotionalVideoState
+                            }
                         >
                             <div>
                                 <span>{`Students who watch a well-made promo video are `}</span>
