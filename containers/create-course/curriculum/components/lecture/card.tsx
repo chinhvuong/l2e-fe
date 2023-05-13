@@ -280,6 +280,16 @@ export const Card: FC<CardProps> = ({
                                     defaultValue={quizSelected}
                                     isMulti
                                     onChange={updateLectureQuizzes}
+                                    styles={{
+                                        option: (styles) => ({
+                                            ...styles,
+                                            cursor: 'pointer',
+                                        }),
+                                        control: (styles) => ({
+                                            ...styles,
+                                            cursor: 'pointer',
+                                        }),
+                                    }}
                                 />
                             </div>
                         </div>

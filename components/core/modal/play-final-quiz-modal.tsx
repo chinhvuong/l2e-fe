@@ -43,6 +43,7 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
     const [totalQuestions, setTotalQuestions] = useState(0)
     const [percentage, setPercentage] = useState(0)
     const [text, setText] = useState('')
+    const CERTIFICATE_MARK = 60
     const dispatch = useAppDispatch()
 
     const countdownTimer = (expiredAt: string) => {
@@ -216,11 +217,11 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                         course.
                                                     </li>
                                                     <li>
-                                                        You will only pass the
+                                                        {`You will only pass the
                                                         final test and claim the
                                                         certificate if you
                                                         answer correctly over
-                                                        60% of total questions.
+                                                        ${CERTIFICATE_MARK}% of total questions.`}
                                                     </li>
                                                 </ul>
                                             </div>
@@ -251,7 +252,8 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                         className="h-[80px]"
                                                         styles={buildStyles({
                                                             pathColor:
-                                                                percentage > 60
+                                                                percentage >
+                                                                CERTIFICATE_MARK
                                                                     ? '#07DA63'
                                                                     : '#F48C06',
                                                             trailColor:
@@ -261,14 +263,16 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                         })}
                                                     />
                                                     <div className="mt-5 font-medium">
-                                                        {percentage > 60
+                                                        {percentage >
+                                                        CERTIFICATE_MARK
                                                             ? `Congratulation! You
                                                         passed the final test!
                                                         Claim your certificate
                                                         now.`
                                                             : `Sorry, you failed the final test...`}
                                                     </div>
-                                                    {percentage > 60 && (
+                                                    {percentage >
+                                                        CERTIFICATE_MARK && (
                                                         <div className="flex justify-center">
                                                             <Button
                                                                 className=" btn-primary mt-6"
@@ -304,9 +308,11 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                                         >
                                                                             <div className="pl-6">
                                                                                 <h1 className="font-semibold text-lg mb-3">
-                                                                                    {
-                                                                                        question?.question
-                                                                                    }
+                                                                                    {`${
+                                                                                        questionIndex +
+                                                                                        1
+                                                                                    }. ` +
+                                                                                        question?.question}
                                                                                 </h1>
                                                                             </div>
                                                                             <div className="grid grid-cols-2 gap-5 w-full">

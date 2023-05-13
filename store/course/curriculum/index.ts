@@ -123,22 +123,6 @@ export const courseCurriculumSlice = createSlice({
                 }
             })
         },
-        updateCurriculumLectureMainContent(
-            state,
-            action: PayloadAction<CurriculumLecture>,
-        ) {
-            state.lectures.forEach((item) => {
-                if (item[0].sectionId === action.payload.sectionId) {
-                    item.forEach((el) => {
-                        if (el._id === action.payload._id) {
-                            el.media = action.payload.media
-                            el.mediaName = action.payload.mediaName
-                            el.mediaType = action.payload.mediaType
-                        }
-                    })
-                }
-            })
-        },
         updateOrderCurriculumLecture(
             state,
             action: PayloadAction<CurriculumLecture[]>,
@@ -194,7 +178,6 @@ export const {
     updateAllCurriculumLectures,
     addCurriculumLecture,
     updateCurriculumLecture,
-    updateCurriculumLectureMainContent,
     updateOrderCurriculumLecture,
     deleteCurriculumLecture,
     resetCurriculumStore,

@@ -1,21 +1,28 @@
 import { CoursePreview } from '@/api/dto/course.dto'
 import UserProfileDetail from '@/components/common/user-profile-detail'
-import LoadingScreen from '@/components/core/animate/loading-screen'
 import CertificateCard from '@/components/core/certificate-card'
 import Divider from '@/components/core/divider'
 import HorizontalCourseCard from '@/components/core/horizontal-course-card'
+import { useAppDispatch } from '@/hooks'
 import { Certificate } from '@/store/certification/types'
+import { updateGlobalLoadingState } from '@/store/user'
 import { User } from '@/store/user/types'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 export interface StaticUserProps {
     user: User
     certificates: Certificate[]
 }
 export default function UserDetailPreviewContainer(props: StaticUserProps) {
     const router = useRouter()
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(updateGlobalLoadingState(router.isFallback))
+    }, [router.isFallback])
+
     return (
         <div className="mx-60 under_2xl:mx-20">
-            <LoadingScreen isLoading={router.isFallback} />
             <div className="h-full pt-5 px-14">
                 <div className="flex mb-5 space-x-5">
                     <div className="bg-primary w-1.5"></div>

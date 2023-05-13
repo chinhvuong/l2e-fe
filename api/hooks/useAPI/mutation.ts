@@ -19,7 +19,7 @@ const UseClientMutation = (
         await disconnect()
         localStorage.clear()
         dispatch(updateLoginState(false))
-        Router.push(`/`)
+        setTimeout(() => Router.push(`/`), 1000)
     }
 
     const makeRequest = (body: object) => {

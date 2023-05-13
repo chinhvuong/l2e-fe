@@ -24,7 +24,6 @@ import {
     getMyCourseDetail,
 } from '@/store/course/selectors'
 import { getQuizSelect } from '@/store/quiz/selectors'
-import { updateGlobalLoadingState } from '@/store/user'
 import {
     convertToCategoryID,
     convertToCategoryName,

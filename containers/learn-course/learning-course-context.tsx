@@ -253,6 +253,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                     data.sections[lastSectionIndex].lessons[lastLessonIndex]
                 setCurrentQuiz(lastLessonOfLastSection.quizzes[0])
                 setCurrentPosition([lastSectionIndex, lastLessonIndex, 1])
+                setLastCanLearnPosition([lastSectionIndex, lastLessonIndex, 1])
                 setIsCurrentLessonLearned(lastLessonOfLastSection.learned)
                 lessonId = lastLessonOfLastSection._id
                 setPlayingVideo(lastLessonOfLastSection.media)

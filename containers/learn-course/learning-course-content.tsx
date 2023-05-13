@@ -54,7 +54,7 @@ const LearningCourseContent = () => {
                 setIsShow={setIsPerfectScore}
             />
             <div className="w-3/4 border-r">
-                {courseDetail ? (
+                {courseDetail && playingVideo !== '' ? (
                     <ReactPlayer
                         url={playingVideo}
                         ref={playerRef}

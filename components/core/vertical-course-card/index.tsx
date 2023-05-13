@@ -33,7 +33,7 @@ export default function VerticalCourseCard({
             <RatingStar
                 id={data._id}
                 ratingScore={data.rating}
-                ratings={data?.ratingCount ? data.ratingCount.toString() : ''}
+                ratings={data?.ratingCount ? data.ratingCount.toString() : '0'}
             />
             <div className="font-bold">{data.price} USDT</div>
             <div className="flex gap-x-2">

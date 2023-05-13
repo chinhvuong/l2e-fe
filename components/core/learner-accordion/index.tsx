@@ -19,7 +19,7 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
     const { order, title, lectures, isLearning } = props
     const [selfExpand, setSelfExpand] = useState(false)
     const [learningLectureIndex, setLearningLectureIndex] = useState(0)
-    const { currentPosition } = useLearningCourseContext()
+    const { currentPosition, lastCanLearnPosition } = useLearningCourseContext()
 
     const countCompletedLessons = useMemo((): number => {
         let count = 0
@@ -53,7 +53,7 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                 className={`px-5 bg-course-section space-y-2 ${
                     !selfExpand ? 'border-t' : 'border-y'
                 } ${
-                    countCompletedLessons === lectures.length
+                    lastCanLearnPosition[0] >= order
                         ? 'bg-white'
                         : 'bg-slate-400'
                 } border-border-box py-4 shadow-md cursor-pointer`}

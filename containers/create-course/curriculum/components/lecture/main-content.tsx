@@ -6,7 +6,6 @@ import VideoModal from '@/components/core/modal/video-modal'
 import RichTextEditor from '@/components/core/rich-text-editor'
 import Hyperlink from '@/containers/create-course/components/hyperlink'
 import { useAppDispatch } from '@/hooks'
-import { updateCurriculumLectureMainContent } from '@/store/course/curriculum'
 import { CurriculumLecture } from '@/store/course/curriculum/types'
 import {
     faFileLines,
@@ -46,8 +45,8 @@ export default function MainContent({
         newDetail.media = url
         newDetail.mediaName = contentName ?? ''
         newDetail.mediaType = 'video'
-        dispatch(updateCurriculumLectureMainContent(newDetail))
-        updateLectureLoadingState(false)
+        newDetail.isLoading = false
+        dispatch(updateCard(newDetail))
     }
 
     const removeLectureMainContent = () => {
@@ -56,7 +55,7 @@ export default function MainContent({
         newDetail.media = ''
         newDetail.mediaName = ''
         newDetail.mediaType = ''
-        dispatch(updateCurriculumLectureMainContent(newDetail))
+        dispatch(updateCard(newDetail))
     }
 
     useEffect(() => {
