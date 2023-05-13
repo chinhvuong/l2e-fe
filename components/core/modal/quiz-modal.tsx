@@ -33,11 +33,11 @@ export default function QuizModal(props: IQuizModalProps) {
                     <div className="flex justify-center items-center fixed inset-0 z-40 outline-none focus:outline-none">
                         <div className="relative">
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                <div className="p-10">
+                                <div className="p-10 max-h-[550px] overflow-y-auto scrollbar">
                                     <div className="text-xl font-bold px-6 pb-5">
                                         Quiz: {quiz.name}
                                     </div>
-                                    <div className="space-y-5 max-w-3xl max-h-80 overflow-y-auto scrollbar">
+                                    <div className="space-y-5 max-w-3xl ">
                                         {quiz &&
                                             quiz.questions.map(
                                                 (
