@@ -21,7 +21,7 @@ export default function NavBar() {
                     {menu.map((item, index) => {
                         return (
                             <div
-                                className={`font-bold cursor-pointer py-3 under_lg:text-xs ${
+                                className={`font-bold cursor-pointer py-3 under_lg:text-sm ${
                                     currentTab === item
                                         ? 'border-b-2 border-hyperlink text-hyperlink'
                                         : 'text-description'

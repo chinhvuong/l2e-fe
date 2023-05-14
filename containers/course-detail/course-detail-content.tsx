@@ -54,7 +54,7 @@ export default function CourseDetailContent() {
             <NavBar />
             <div className="flex justify-center" ref={courseContent}>
                 <div className="flex justify-between 2xl:w-[1250px]">
-                    <div className="2xl:w-[820px] xl:w-[800px] lg:w-[640px] 2xl:ml-8 sm:mx-4 space-y-7 mt-10 min-h-[650px]">
+                    <div className="2xl:w-[820px] xl:w-[800px] lg:w-[640px] 2xl:ml-8 under_xl:mx-10 space-y-7 mt-10">
                         {data ? (
                             <>{getViewCourseDetailContent(currentTab)}</>
                         ) : (

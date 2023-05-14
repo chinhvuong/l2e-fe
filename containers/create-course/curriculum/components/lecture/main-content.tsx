@@ -196,7 +196,7 @@ export default function MainContent({
             return (
                 <div className="px-10 py-5 border-t border-black">
                     <div className="flex justify-between">
-                        <div className="flex items-start space-x-3">
+                        <div className="flex items-start space-x-3 under_xl:flex-col under_xl:space-x-0 under_xl:space-y-2">
                             <div className="basis-1/2">
                                 {!uploadedFileURL ? (
                                     <img

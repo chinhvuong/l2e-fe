@@ -126,7 +126,9 @@ export default function Select({
                             : 'bg-white cursor-pointer'
                     }`}
                 >
-                    <div className="flex items-center">{selectedItem}</div>
+                    <div className="flex items-center line-clamp-1">
+                        {selectedItem}
+                    </div>
                     <FontAwesomeIcon
                         icon={faChevronDown}
                         className="text-[12px]"

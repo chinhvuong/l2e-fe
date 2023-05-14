@@ -129,7 +129,7 @@ export default function LandingPageContainer() {
         <div>
             <Title title={'Landing page'} />
             {!isLoading && courseDetail._id !== '' && (
-                <div className="py-10 px-14 space-y-5">
+                <div className="py-10 px-14 under_xl:py-5 under_xl:px-7 space-y-5">
                     <Input
                         id="landing-page-title"
                         charLimit={{ minLength: 10, maxLength: 60 }}
@@ -146,7 +146,7 @@ export default function LandingPageContainer() {
                         defaultValue={subtitle}
                         updateInput={handleSubtitleChange}
                     />
-                    <div className="flex justify-between space-x-5">
+                    <div className="flex justify-between space-x-5 under_lg:space-x-0 under_lg:flex-col under_lg:space-y-5">
                         <Select
                             label="Language"
                             selectList={Object.values(languageList)}

@@ -7,6 +7,7 @@ import {
 import { User } from '@/store/user/types'
 import { faAward, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ContentState, EditorState, convertFromHTML } from 'draft-js'
 import parse from 'html-react-parser'
 import { useEffect } from 'react'
 
@@ -21,6 +22,21 @@ export default function UserProfileDetail({
     className,
     showShortDescription = false,
 }: IUserProfileDetailProps) {
+    const getBioLength = (value: string) => {
+        if (value === null || value === undefined || value === '') {
+            return 0
+        } else {
+            return EditorState.createWithContent(
+                ContentState.createFromBlockArray(
+                    convertFromHTML(value).contentBlocks,
+                ),
+            )
+                .getCurrentContent()
+                .getPlainText()
+                .split(/(\s+)/)
+                .filter((e) => e.trim().length > 0).length
+        }
+    }
     const convertStringToHTML = () => {
         if (data.bio) {
             const element = document.getElementById('instructor-bio-content')
@@ -41,14 +57,19 @@ export default function UserProfileDetail({
     }
 
     const getUIContent = (content: string) => {
-        let formattedData = content.replace(
-            /'<li>'/g,
-            '<li class="list-disc list-inside ml-2">',
-        )
-        formattedData = formattedData.replace(
-            /'<ul>'/g,
-            '<ul class="space-y-3">',
-        )
+        let formattedData = ''
+        if (getBioLength(content) === 0) {
+            formattedData = '<p>No Description</p>'
+        } else {
+            formattedData = content.replace(
+                /'<li>'/g,
+                '<li class="list-disc list-inside ml-2">',
+            )
+            formattedData = formattedData.replace(
+                /'<ul>'/g,
+                '<ul class="space-y-3">',
+            )
+        }
 
         return (
             <div className="text-justify space-y-3">{parse(formattedData)}</div>
@@ -68,7 +89,10 @@ export default function UserProfileDetail({
             </div>
             {showShortDescription && (
                 <>
-                    <div className="text-description mt-1">{data?.title}</div>
+                    <div className="text-description mt-1">
+                        {(data?.title || (data?.title && data.title === '')) ??
+                            'No title'}
+                    </div>
                     <div className="flex space-x-5 py-3">
                         <FacebookIcon fillColor="#000000" width="20px" />
                         <TwitterIcon fillColor="#000000" width="20px" />

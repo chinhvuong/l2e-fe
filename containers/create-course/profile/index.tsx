@@ -43,7 +43,7 @@ export default function ProfilePageContainer() {
         <div>
             <Title title={'Profile'} />
             {!isLoading && userProfile && (
-                <div className="py-10 px-14 space-y-5">
+                <div className="py-10 px-14 under_xl:py-5 under_xl:px-7 space-y-5">
                     <div>
                         <Input
                             id="your-name"
@@ -63,7 +63,7 @@ export default function ProfilePageContainer() {
                                     '/svgs/default_user_avatar.svg'
                                 }
                                 setFileLink={handleAvatarChange}
-                                imgClassName="basis-1/4 mr-10"
+                                imgClassName="basis-1/4 mr-10 under_xl:mr-0"
                                 childrenClassName="basis-3/4"
                             >
                                 <div>

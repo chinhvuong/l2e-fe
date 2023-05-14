@@ -11,7 +11,7 @@ export default function RatingAnalysisBar(props: IRatingAnalysisBarProps) {
 
     return (
         <div className="flex items-center space-x-5">
-            <div className="relative bg-border-box w-[420px] lg:w-[270px] md:w-[200px] sm:w-[25vw] h-[10px] rounded-[80px]">
+            <div className="relative bg-border-box w-[420px] lg:w-[270px] md:w-[50vw] sm:w-[50vw] h-[10px] rounded-[80px]">
                 <div
                     className={`h-[10px] rounded-[80px] bg-description absolute z-10}`}
                     style={{ width: `${props.percent}%` }}

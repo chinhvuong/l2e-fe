@@ -40,7 +40,7 @@ export default function CreateCourseLayout({
                         className="flex justify-center w-full app-transition main-transition h-full bg-white"
                         id="content"
                     >
-                        <div className="flex pt-[120px] w-[1200px] space-x-7">
+                        <div className="flex pt-[100px] w-[1200px] under_xl:w-full pr-7 space-x-7">
                             <ToastContainer style={{ width: 'max-content' }} />
                             <Sidebar />
                             <div className="w-full h-full bg-white border shadow-xl">
