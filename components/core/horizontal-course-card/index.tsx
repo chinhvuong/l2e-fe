@@ -55,7 +55,7 @@ export default function HorizontalCourseCard({
             />
             <div className="space-y-3">
                 <div>
-                    <div className="font-semibold text-xl line-clamp-2">
+                    <div className="font-semibold text-xl line-clamp-2 under_xl:line-clamp-1 under_xl:text-base">
                         {data.name}
                     </div>
                 </div>

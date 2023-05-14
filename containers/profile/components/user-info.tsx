@@ -33,7 +33,7 @@ export default function UserInfoDetail() {
 
     return (
         <>
-            <div className="h-full pt-9 px-[4.5rem]">
+            <div className="h-full pt-9 px-[4.5rem] under_xl:px-8">
                 <div className="flex justify-between">
                     <div className="font-semibold text-[30px]">Profile</div>
                     <div className="text-white">

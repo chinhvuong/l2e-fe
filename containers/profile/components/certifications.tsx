@@ -35,7 +35,7 @@ export default function CertificationsList() {
 
     return (
         <>
-            <div className="h-full pt-9 px-[3.5rem]">
+            <div className="h-full pt-9 px-[3.5rem] under_xl:px-8">
                 <div className="font-semibold text-[30px] px-4">
                     Certificates
                 </div>
@@ -45,7 +45,7 @@ export default function CertificationsList() {
                         setSearch={setSearch}
                         className="mt-3"
                     />
-                    <div className="w-[220px]">
+                    <div className="w-[220px] under_xl:mb-5">
                         <Select
                             label="Sort by"
                             selectList={Object.values(SortLabelCertificate)}

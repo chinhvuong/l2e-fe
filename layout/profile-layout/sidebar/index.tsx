@@ -59,7 +59,7 @@ export default function Sidebar() {
     }
 
     return (
-        <div className="bg-second w-[300px] flex flex-col items-center pt-4">
+        <div className="bg-second w-[300px] flex flex-col items-center pt-8">
             <Logo
                 darkTheme={true}
                 onClick={() => goToHomePage()}
@@ -79,7 +79,9 @@ export default function Sidebar() {
                         >
                             <div className="flex space-x-3 items-center">
                                 {getSidebarIcon(item)}
-                                <div className="text-white">{item}</div>
+                                <div className="text-white under_xl:hidden">
+                                    {item}
+                                </div>
                             </div>
                         </div>
                     )

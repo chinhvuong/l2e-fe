@@ -51,7 +51,6 @@ export default function WalletLogic() {
                 localStorage.setItem(ACCESS_TOKEN, response.accessToken)
                 localStorage.setItem(REFRESH_TOKEN, response.refreshToken)
                 dispatch(updateLoginState(true))
-                localStorage.removeItem(RECONNECT_WALLET)
             }
         },
     })
@@ -64,6 +63,7 @@ export default function WalletLogic() {
             asset.approve = Number(approve)
         }
         if (localStorage.getItem(RECONNECT_WALLET) === 'SUCCESS') {
+            localStorage.removeItem(RECONNECT_WALLET)
             signMessage?.signMessage &&
                 signMessage.signMessage({ message: String(SIGN_MESSAGE) })
         }

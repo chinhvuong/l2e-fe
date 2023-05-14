@@ -100,7 +100,7 @@ export default function LearnerCoursesContainer() {
 
     return (
         <>
-            <div className="h-full mt-9 px-[3.5rem]">
+            <div className="h-full mt-9 px-[3.5rem] under_xl:px-8">
                 <div className="flex justify-between px-4">
                     <div className="font-semibold text-[30px]">Courses</div>
                 </div>
@@ -110,7 +110,7 @@ export default function LearnerCoursesContainer() {
                         setSearch={setSearch}
                         className="mt-3"
                     />
-                    <div className="w-[220px]">
+                    <div className="w-[220px] under_xl:mb-5">
                         <Select
                             label="Sort by"
                             selectList={Object.values(SortLabel)}

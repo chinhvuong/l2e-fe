@@ -11,6 +11,7 @@ export interface Certificate {
     createdAt: string
     updatedAt: string
     course: CourseDetailPreview
+    image: string
 }
 
 export interface CertificateState {

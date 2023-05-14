@@ -1,5 +1,5 @@
 import Router from 'next/router'
-import React, { HTMLAttributes } from 'react'
+import React, { HTMLAttributes, useEffect, useState } from 'react'
 interface ILogo {
     darkTheme: boolean
     imgClass?: string
@@ -17,23 +17,22 @@ const Logo = ({
     }
     return (
         <div
-            className={`cursor-pointer ${className}`}
+            className={`cursor-pointer ${className} under_xl:w-12`}
             {...rest}
             onClick={() => goToHomePage()}
         >
-            {darkTheme ? (
-                <img
-                    src="/svgs/logos/logo_light.svg"
-                    alt=""
-                    className={`${imgClass}`}
-                />
-            ) : (
-                <img
-                    src="/svgs/logos/logo_dark.svg"
-                    alt=""
-                    className={`${imgClass}`}
-                />
-            )}
+            <img
+                src={`/svgs/logos/logo_${darkTheme ? 'light' : 'dark'}.svg`}
+                alt=""
+                className={`${imgClass} under_xl:hidden`}
+            />
+            <img
+                src={`/svgs/logos/logo_icon_${
+                    darkTheme ? 'light' : 'dark'
+                }.svg`}
+                alt=""
+                className={`${imgClass} above_xl:hidden`}
+            />
         </div>
     )
 }

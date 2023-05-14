@@ -17,6 +17,15 @@ import {
 } from '@/store/course/selectors'
 import { updateGlobalLoadingState } from '@/store/user'
 import { getBioLength, getUserProfile } from '@/store/user/selectors'
+import {
+    faFileCircleQuestion,
+    faHome,
+    faList,
+    faQuestion,
+    faUser,
+    faUsersViewfinder,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { noop } from 'lodash'
 import Router, { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
@@ -39,8 +48,8 @@ export default function Sidebar() {
         'Landing page',
         'Intended learners',
         'Curriculum',
-        'Question',
-        'Quiz',
+        'Questions',
+        'Quizzes',
         'Profile',
     ]
 
@@ -75,6 +84,89 @@ export default function Sidebar() {
         if (currentTab !== menuTarget[index]) {
             setCurrentTab(menuTarget[index])
             Router.push(`/create-course/${courseId}/${menuTarget[index]}`)
+        }
+    }
+
+    const getSidebarIcon = (name: string, index: number) => {
+        switch (name) {
+            case 'Landing page':
+                return (
+                    <div className="w-[25px] flex justify-center">
+                        <FontAwesomeIcon
+                            icon={faHome}
+                            className={`text-[20px] ${
+                                currentTab === menuTarget[index]
+                                    ? 'text-white'
+                                    : 'text-black'
+                            }`}
+                        />
+                    </div>
+                )
+            case 'Intended learners':
+                return (
+                    <div className="w-[25px] flex justify-center">
+                        <FontAwesomeIcon
+                            icon={faUsersViewfinder}
+                            className={`text-[20px] ${
+                                currentTab === menuTarget[index]
+                                    ? 'text-white'
+                                    : 'text-black'
+                            }`}
+                        />
+                    </div>
+                )
+            case 'Curriculum':
+                return (
+                    <div className="w-[25px] flex justify-center">
+                        <FontAwesomeIcon
+                            icon={faList}
+                            className={`text-[20px] ${
+                                currentTab === menuTarget[index]
+                                    ? 'text-white'
+                                    : 'text-black'
+                            }`}
+                        />
+                    </div>
+                )
+            case 'Questions':
+                return (
+                    <div className="w-[25px] flex justify-center">
+                        <FontAwesomeIcon
+                            icon={faQuestion}
+                            className={`text-[20px] ${
+                                currentTab === menuTarget[index]
+                                    ? 'text-white'
+                                    : 'text-black'
+                            }`}
+                        />
+                    </div>
+                )
+            case 'Quizzes':
+                return (
+                    <div className="w-[25px] flex justify-center">
+                        <FontAwesomeIcon
+                            icon={faFileCircleQuestion}
+                            className={`text-[20px] ${
+                                currentTab === menuTarget[index]
+                                    ? 'text-white'
+                                    : 'text-black'
+                            }`}
+                        />
+                    </div>
+                )
+            case 'Profile':
+                return (
+                    <div className="w-[25px] flex justify-center">
+                        <FontAwesomeIcon
+                            icon={faUser}
+                            className={`text-[20px] ${
+                                currentTab === menuTarget[index]
+                                    ? 'text-white'
+                                    : 'text-black'
+                            }`}
+                        />
+                    </div>
+                )
         }
     }
 
@@ -252,7 +344,18 @@ export default function Sidebar() {
                                 key={index}
                                 onClick={() => handleChangeTab(index)}
                             >
-                                {item}
+                                <div className="flex space-x-3 items-center">
+                                    {getSidebarIcon(item, index)}
+                                    <div
+                                        className={`${
+                                            currentTab === menuTarget[index]
+                                                ? 'text-white'
+                                                : 'text-black'
+                                        }`}
+                                    >
+                                        {item}
+                                    </div>
+                                </div>
                             </div>
                         )
                     })}

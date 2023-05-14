@@ -54,6 +54,7 @@ export default function CertificateCard({
         >
             <img
                 src={
+                    data.image ??
                     'https://marketplace.canva.com/EAFIEvneNCM/1/0/1600w/canva-golden-elegant-certificate-of-appreciation-0bN-aLORS9U.jpg'
                 }
                 alt=""

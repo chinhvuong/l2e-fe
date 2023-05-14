@@ -40,6 +40,7 @@ module.exports = {
                     'linear-gradient(to right, #FF0000, rgba(254,207,87,1))',
             },
             screens: {
+                above_xl: { min: '1024px' },
                 under_xl: { max: '1023px' },
                 under_2xl: { max: '1279px' },
                 under_lg: { max: '767px' },
@@ -48,16 +49,6 @@ module.exports = {
                 lg: { max: '1023px', min: '768px' },
                 md: { max: '767px', min: '640px' },
                 sm: { max: '639px' },
-            },
-            boxShadow: {
-                '3xl': '0 0.125rem 0.25rem ',
-            },
-            minHeight: {
-                r: '3.625rem',
-            },
-            margin: {
-                r2: '-2rem',
-                'r2.5': '2.5rem',
             },
         },
     },

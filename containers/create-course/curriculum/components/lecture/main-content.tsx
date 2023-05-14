@@ -39,6 +39,7 @@ export default function MainContent({
     const [showModal, setShowModal] = useState(false)
     const [article, setArticle] = useState<string>('')
     const dispatch = useAppDispatch()
+    const defaultPreview = '/images/placeholder.jpeg'
 
     const updateLectureMainContent = (url: string) => {
         const newDetail = { ...lectureDetail }
@@ -195,11 +196,19 @@ export default function MainContent({
                     <div className="flex justify-between">
                         <div className="flex items-start space-x-3">
                             <div className="basis-1/2">
-                                <VideoModal
-                                    isShow={showModal}
-                                    setIsShow={setShowModal}
-                                    url={uploadedFileURL}
-                                />
+                                {!uploadedFileURL ? (
+                                    <img
+                                        src={defaultPreview}
+                                        alt="Lesson video"
+                                        className="w-full"
+                                    />
+                                ) : (
+                                    <VideoModal
+                                        isShow={showModal}
+                                        setIsShow={setShowModal}
+                                        url={uploadedFileURL}
+                                    />
+                                )}
                             </div>
                             <div>
                                 <div className="font-bold">{contentName}</div>

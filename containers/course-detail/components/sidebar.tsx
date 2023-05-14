@@ -33,6 +33,7 @@ export default function Sidebar() {
                                 onClick={() =>
                                     setIsShowVideoModal(!isShowVideoModal)
                                 }
+                                className="w-[320px]"
                             />
                         )}
                         <div className="space-y-4 mt-4 pb-6">

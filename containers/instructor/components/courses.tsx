@@ -171,7 +171,7 @@ export default function InstructorCoursesContainer() {
 
     return (
         <>
-            <div className="mt-9 px-[3.5rem]">
+            <div className="mt-9 px-[3.5rem] under_xl:px-8">
                 <div className="flex justify-between px-4">
                     <div className="font-semibold text-[30px]">Courses</div>
                     <div className="text-white">
@@ -186,7 +186,7 @@ export default function InstructorCoursesContainer() {
                         setSearch={setSearch}
                         className="mt-3"
                     />
-                    <div className="w-[220px]">
+                    <div className="w-[220px] under_xl:mb-5">
                         <Select
                             label="Sort by"
                             selectList={Object.values(SortLabel)}

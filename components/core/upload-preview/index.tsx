@@ -103,7 +103,8 @@ export default function UploadPreview({
                                 />
                             )}
                             {type === 'video' &&
-                                (uploadedFileURL === defaultPreview ? (
+                                (uploadedFileURL ===
+                                '/images/placeholder.jpeg' ? (
                                     <img
                                         src={uploadedFileURL}
                                         alt="Course image"
