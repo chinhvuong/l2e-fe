@@ -41,6 +41,7 @@ import {
     updateUserBioLength,
     updateUserInfo,
 } from '@/store/user'
+import { getUserProfile } from '@/store/user/selectors'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ContentState, EditorState, convertFromHTML } from 'draft-js'
 import { noop } from 'lodash'
@@ -76,6 +77,7 @@ interface ICreateCourseContext {
     currentTab: string
     setCurrentTab: Dispatch<SetStateAction<string>>
     updateProfile: UseMutateFunction<unknown, any, object, unknown>
+    handleUpdateCourseDetail: () => void
 }
 
 export const CreateCourseContext = createContext<ICreateCourseContext>(
@@ -87,6 +89,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
     const dispatch = useAppDispatch()
     const courseDetail = useAppSelector(getMyCourseDetail)
+    const userProfile = useAppSelector(getUserProfile)
     const chosenFinalTest = useAppSelector(getFinalTestSelection)
     const courseSections = useAppSelector(getCurriculumSectionsForm)
     const courseLectures = useAppSelector(getCurriculumLecturesForm)
@@ -333,6 +336,49 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             onSuccess: noop,
         })
 
+    const handleUpdateCourseDetail = () => {
+        updateCourse({
+            include: courseDetail.include,
+            finalTest: chosenFinalTest.value,
+            _id: courseDetail._id,
+            owner: courseDetail.owner,
+            author: courseDetail.author,
+            name: courseDetail.name,
+            overview: courseDetail.overview,
+            description: courseDetail.description,
+            price: courseDetail.price,
+            rating: courseDetail.rating,
+            reviews: courseDetail.reviews,
+            language: courseDetail.language,
+            approved: courseDetail.approved,
+            requirements: courseDetail.requirements,
+            goals: courseDetail.goals,
+            thumbnail: courseDetail.thumbnail,
+            promotionalVideo: courseDetail.promotionalVideo,
+            category: courseDetail.category,
+            createdAt: courseDetail.createdAt,
+            updatedAt: courseDetail.updatedAt,
+            __v: courseDetail.__v,
+            students: courseDetail.students,
+            courseId: courseDetail.courseId,
+            sections: courseDetail.sections,
+            lastApproveRequestAt: courseDetail.lastApproveRequestAt,
+        })
+        upsertSections(
+            courseSections.map((item) => {
+                const el: any = { ...item }
+                delete el._id
+                return el
+            }),
+        )
+        updateProfile({
+            name: userProfile.name,
+            avatar: userProfile.avatar,
+            title: userProfile.title,
+            bio: userProfile.bio,
+        })
+    }
+
     useEffect(() => {
         if (courseId !== localStorage.getItem(COURSE_ID)) {
             setCourseId(localStorage.getItem(COURSE_ID) ?? '')
@@ -421,6 +467,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 currentTab,
                 setCurrentTab,
                 updateProfile,
+                handleUpdateCourseDetail,
             }}
         >
             {children}

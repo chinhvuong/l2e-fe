@@ -41,8 +41,12 @@ export default function Sidebar() {
     const bioLength = useAppSelector(getBioLength)
     const dispatch = useAppDispatch()
 
-    const { getCourseDetail, currentTab, setCurrentTab } =
-        useCreateCourseContext()
+    const {
+        getCourseDetail,
+        currentTab,
+        setCurrentTab,
+        handleUpdateCourseDetail,
+    } = useCreateCourseContext()
 
     const menu = [
         'Landing page',
@@ -295,6 +299,7 @@ export default function Sidebar() {
             validate.userProfile.length === 0
         ) {
             if (value) {
+                handleUpdateCourseDetail()
                 requestApprove({ id: courseDetail._id, notes: [] })
             }
         } else {
