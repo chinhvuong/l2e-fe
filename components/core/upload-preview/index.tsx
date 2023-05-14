@@ -87,7 +87,7 @@ export default function UploadPreview({
     return (
         <div className="space-y-3">
             <div className="font-bold ml-[25px]">{label}</div>
-            <div className="flex">
+            <div className="flex under_lg:flex-col">
                 <div className={`basis-1/2 ${imgClassName}`}>
                     {isLoading ? (
                         <div className="flex justify-center items-center h-full">
@@ -121,12 +121,14 @@ export default function UploadPreview({
                     )}
                 </div>
                 <div
-                    className={`basis-1/2 ml-5 space-y-3 ${childrenClassName}`}
+                    className={`basis-1/2 ml-5 under_lg:ml-0 under_lg:mt-5 text-justify space-y-3 ${childrenClassName}`}
                 >
                     {children}
-                    <Button onClick={() => handleUploadFile()}>
-                        <div>Upload</div>
-                    </Button>
+                    <div className="under_lg:flex under_lg:justify-center">
+                        <Button onClick={() => handleUploadFile()}>
+                            <div>Upload</div>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -45,29 +45,29 @@ export default function Header() {
             <div className="flex items-center justify-between bg-black h-[90px] w-full px-5 text-white">
                 <div className="flex items-center">
                     <Logo darkTheme className="w-[90px]" />
-                    <div className="ml-6 pl-6 border-l border-border-box text-lg font-medium">
+                    <div className="ml-6 pl-6 border-l border-border-box text-lg font-medium under_xl:text-base under_xl:mr-5 line-clamp-2 under_xl:max-w-[300px]">
                         {courseDetail?.name ?? ''}
                     </div>
                 </div>
-                <div className="flex items-center space-x-10">
+                <div className="flex items-center space-x-10 under_xl:space-x-5 under_xl:w-fit">
                     {isCurrentLessonLearned && (
-                        <Button
-                            className="btn-primary"
-                            onClick={() => setShowPlayQuizModal(true)}
-                        >
-                            <div className="font-medium text-center">
-                                Answer Quiz
-                            </div>
-                        </Button>
+                        <div className="w-fit">
+                            <Button
+                                className="btn-primary"
+                                onClick={() => setShowPlayQuizModal(true)}
+                            >
+                                <div className="font-medium text-center under_xl:text-sm">
+                                    Answer Quiz
+                                </div>
+                            </Button>
+                        </div>
                     )}
                     <div className="flex">
                         <FontAwesomeIcon
                             icon={faWallet}
-                            className={`text-[25px] cursor-pointer under_lg:hidden text-white`}
+                            className={`text-[25px] cursor-pointer text-white`}
                         />
-                        <div className="under_xl:hidden ml-5">
-                            {myAccountBalance} WL
-                        </div>
+                        <div className="ml-5">{myAccountBalance} WL</div>
                     </div>
                     <div>
                         <CircularProgressbar

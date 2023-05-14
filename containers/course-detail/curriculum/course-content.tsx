@@ -54,7 +54,7 @@ export default function CourseContent({ sections }: ICourseContentProps) {
         <div>
             <div className="font-semibold text-[26px]">Course content</div>
             <div
-                className={`flex justify-between my-4 under_lg:block under_lg:space-y-1`}
+                className={`flex justify-between my-4 under_lg:block under_lg:space-y-1 under_lg:pr-7`}
             >
                 <div>{getCurriculumDescription(sections)}</div>
                 <div

@@ -22,11 +22,11 @@ export default function StudentFeedback() {
                         Student feedback
                     </div>
                     <div className="flex justify-between under_lg:flex-wrap under_lg:justify-center mt-3">
-                        <div className="flex flex-col items-center sm:hidden w-full">
+                        <div className="flex flex-col items-center w-full under_lg:mb-5">
                             <div className="text-primary text-[70px] font-bold leading-[95px]">
                                 {Number(overviewRating.overview).toFixed(1)}
                             </div>
-                            <div className="sm:hidden">
+                            <div>
                                 <RatingStar
                                     id={data._id}
                                     ratingScore={overviewRating.overview}

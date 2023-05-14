@@ -24,7 +24,7 @@ export default function NavBarLearner({
 
     return (
         <div
-            className={`flex pl-20 space-x-10 bg-white drop-shadow-lg sticky z-20 top-0`}
+            className={`flex pl-20 space-x-10 bg-white drop-shadow-lg sticky z-20 top-0 under_xl:pl-0 under_xl:justify-center`}
         >
             {menu.map((item, index) => {
                 return (
@@ -41,6 +41,16 @@ export default function NavBarLearner({
                     </div>
                 )
             })}
+            <div
+                className={`font-bold hover:cursor-pointer py-3 above_xl:hidden ${
+                    currentTabName === 'Curriculum'
+                        ? 'border-b-2 border-second text-second'
+                        : 'text-description'
+                }`}
+                onClick={() => handleChangeTab('Curriculum')}
+            >
+                {'Curriculum'}
+            </div>
         </div>
     )
 }

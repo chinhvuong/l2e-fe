@@ -43,15 +43,15 @@ export default function IntendedLearnersContainer() {
         <div>
             <Title title={'Intended learners'} />
             {!isLoading && (
-                <div className="py-10 px-14 space-y-5">
-                    <div>
+                <div className="py-10 px-14 under_xl:py-5 under_xl:px-7 space-y-5">
+                    <div className="text-justify">
                         <span>{`The following descriptions will be publicly visible on your `}</span>
                         <Hyperlink>Landing Page</Hyperlink>
                         <span>{` and will have a direct
                     impact on your course performance. These descriptions will
                     help learners decide if your course is right for them.`}</span>
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 text-justify">
                         <Subtitle title="What will students learn in your course?"></Subtitle>
                         <div>
                             <span>{`You must enter at least 4 `}</span>
@@ -73,7 +73,7 @@ export default function IntendedLearnersContainer() {
                     />
                     <div className="space-y-2">
                         <Subtitle title="What are the requirements or prerequisites for taking your course?"></Subtitle>
-                        <div>
+                        <div className="text-justify">
                             {`List the required skills, experience, tools or equipment learners should have prior to taking your course. If there are no requirements, use this space as an opportunity to lower the barrier for beginners.`}
                         </div>
                     </div>

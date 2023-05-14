@@ -11,21 +11,42 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parse from 'html-react-parser'
 import { useState } from 'react'
 import { useUpdateProfileContext } from '../update-profile-context'
+import { ContentState, EditorState, convertFromHTML } from 'draft-js'
 
 export default function UserInfoDetail() {
     const { userInfo } = useUpdateProfileContext()
     const [isShowProfileModal, setIsShowProfileModal] = useState(false)
 
-    const getUIContent = (content: string) => {
-        let formattedData = content.replace(
-            /'<li>'/g,
-            '<li class="list-disc list-inside ml-2">',
-        )
-        formattedData = formattedData.replace(
-            /'<ul>'/g,
-            '<ul class="space-y-3">',
-        )
+    const getBioLength = (value: string) => {
+        if (value === '') {
+            return 0
+        } else {
+            return EditorState.createWithContent(
+                ContentState.createFromBlockArray(
+                    convertFromHTML(value).contentBlocks,
+                ),
+            )
+                .getCurrentContent()
+                .getPlainText()
+                .split(/(\s+)/)
+                .filter((e) => e.trim().length > 0).length
+        }
+    }
 
+    const getUIContent = (content: string) => {
+        let formattedData = ''
+        if (getBioLength(content) === 0) {
+            formattedData = 'No Description'
+        } else {
+            formattedData = content.replace(
+                /'<li>'/g,
+                '<li class="list-disc list-inside ml-2">',
+            )
+            formattedData = formattedData.replace(
+                /'<ul>'/g,
+                '<ul class="space-y-3">',
+            )
+        }
         return (
             <div className="text-justify space-y-3">{parse(formattedData)}</div>
         )
@@ -111,7 +132,7 @@ export default function UserInfoDetail() {
                                 <div className="text-justify space-y-3">
                                     {userInfo?.bio
                                         ? getUIContent(userInfo?.bio)
-                                        : 'No description'}
+                                        : 'No Description'}
                                 </div>
                             </div>
                             <EditProfileModal

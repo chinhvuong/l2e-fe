@@ -1,4 +1,3 @@
-import { useAppDispatch } from '@/hooks'
 import Logo from '@/layout/main-layout/header/logo'
 import { faChartSimple, faTv } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,7 +10,6 @@ export default function Sidebar() {
     const menu = ['Courses', 'Performance']
     const menuTarget = ['courses', 'performance']
     const router = useRouter()
-    const dispatch = useAppDispatch()
     const [currentTab, setCurrentTab] = useState(() => {
         const list = router.route.split('/')
         return list[list.length - 1]
@@ -56,11 +54,11 @@ export default function Sidebar() {
     }
 
     return (
-        <div className="bg-second w-[300px] flex flex-col items-center pt-8">
+        <div className="bg-second w-[300px] under_xl:w-fit flex flex-col items-center pt-8">
             <Logo
                 darkTheme={true}
                 onClick={() => goToHomePage()}
-                className="mb-10 cursor-pointer"
+                className="mb-10 cursor-pointer under_xl:mx-5"
             />
             <div className="space-y-2 flex flex-col w-full">
                 {menu.map((item, index) => {
@@ -74,7 +72,7 @@ export default function Sidebar() {
                             key={index}
                             onClick={() => handleChangeTab(index)}
                         >
-                            <div className="flex space-x-3 items-center">
+                            <div className="flex space-x-3 items-center under_xl:justify-center">
                                 {getSidebarIcon(item)}
                                 <div className="text-white under_xl:hidden">
                                     {item}

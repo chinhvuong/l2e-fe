@@ -14,7 +14,7 @@ import Router from 'next/router'
 export interface IHeaderProps {}
 
 export default function Header() {
-    const { handleUpdateCourseDetail } = useCreateCourseContext()
+    const { handleUpdateCourseDetail, courseDetail } = useCreateCourseContext()
 
     const isUploadingFile = useAppSelector(getUpdateFileState)
     const isUploadingThumbnail = useAppSelector(getUploadingThumbnailState)
@@ -50,7 +50,8 @@ export default function Header() {
                     isLoading ||
                     isUploadingFile ||
                     isUploadingThumbnail ||
-                    isUploadingPromotionalVideo
+                    isUploadingPromotionalVideo ||
+                    (courseDetail.approved && courseDetail?.courseId !== 0)
                 }
             >
                 <div className="font-semibold">Save</div>

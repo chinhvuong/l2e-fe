@@ -337,7 +337,7 @@ export default function Sidebar() {
 
     return (
         <>
-            <div className="flex flex-col justify-start w-[300px] pt-7">
+            <div className="flex flex-col justify-start w-[300px] under_xl:w-fit pt-7">
                 <div className="space-y-2 flex flex-col">
                     {menu.map((item, index) => {
                         return (
@@ -353,7 +353,7 @@ export default function Sidebar() {
                                 <div className="flex space-x-3 items-center">
                                     {getSidebarIcon(item, index)}
                                     <div
-                                        className={`${
+                                        className={`under_xl:hidden ${
                                             currentTab === menuTarget[index]
                                                 ? 'text-white'
                                                 : 'text-black'
@@ -368,13 +368,13 @@ export default function Sidebar() {
                 </div>
                 {courseDetail.approved ? (
                     <>
-                        <div className="rounded-[80px] py-[12px] px-[30px] shadow-sm font-semibold w-full flex justify-center bg-green-500 text-white cursor-not-allowed mt-10 mb-5">
+                        <div className="under_xl:text-xs under_xl:py-2 under_xl:px-4 rounded-[80px] py-[12px] px-[30px] shadow-sm font-semibold w-full flex justify-center bg-green-500 text-white cursor-not-allowed mt-10 mb-5">
                             Approved!
                         </div>
                         {!courseDetail.courseId ? (
                             <MintBtn id={courseDetail._id} />
                         ) : (
-                            <div className="rounded-[80px] py-[12px] px-[30px] shadow-sm font-semibold w-full flex justify-center bg-green-500 text-white cursor-not-allowed">
+                            <div className="under_xl:text-xs under_xl:py-2 under_xl:px-4 rounded-[80px] py-[12px] px-[30px] shadow-sm font-semibold w-full flex justify-center bg-green-500 text-white cursor-not-allowed">
                                 Minted!
                             </div>
                         )}
