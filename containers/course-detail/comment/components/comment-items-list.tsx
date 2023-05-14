@@ -38,6 +38,8 @@ export default function CommentItemsList(props: ICommentItemsListProps) {
     useEffect(() => {
         if (parentComment.length !== 0) {
             setCommentList(parentComment.slice(0, numberOfShowedComments))
+        } else {
+            setCommentList([])
         }
     }, [parentComment])
 

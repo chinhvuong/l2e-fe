@@ -14,7 +14,7 @@ import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import type { Identifier, XYCoord } from 'dnd-core'
 import { FC, useRef, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import Select, { ActionMeta } from 'react-select'
+import Select, { ActionMeta, SingleValue } from 'react-select'
 import { ItemTypes } from '../type'
 import MainContent from './main-content'
 import Resource from './resource'
@@ -77,20 +77,18 @@ export const Card: FC<CardProps> = ({
     }
 
     const updateLectureQuizzes = (
-        values: readonly QuizSelectType[],
+        newValue: SingleValue<QuizSelectType>,
         actionMeta: ActionMeta<QuizSelectType>,
     ) => {
         const newDetail = { ...lectureDetail }
         const newlist = [] as QuizDetailType[]
-        values.forEach((item) => {
-            newlist.push({
-                _id: item.value,
-                questions: [],
-                courseId: '',
-                name: item.label,
-                createdAt: '',
-                updatedAt: '',
-            })
+        newlist.push({
+            _id: String(newValue?.value),
+            questions: [],
+            courseId: '',
+            name: String(newValue?.label),
+            createdAt: '',
+            updatedAt: '',
         })
         newDetail.quizzes = newlist
         dispatch(updateCard(newDetail))
@@ -278,7 +276,7 @@ export const Card: FC<CardProps> = ({
                                 <Select
                                     options={quizSelect}
                                     defaultValue={quizSelected}
-                                    isMulti
+                                    isMulti={false}
                                     onChange={updateLectureQuizzes}
                                     styles={{
                                         option: (styles) => ({
