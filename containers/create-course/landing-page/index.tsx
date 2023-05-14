@@ -114,9 +114,11 @@ export default function LandingPageContainer() {
         dispatch(updateCourseDescription(value))
     }
     const handleThumbnailChange = (value: string) => {
+        setThumbnail(value)
         dispatch(updateCourseThumbnail(value))
     }
     const handlePromotionalVideoChange = (value: string) => {
+        setPromotionalVideo(value)
         dispatch(updateCoursePromotionalVideo(value))
     }
     const updateDescriptionLengthChange = (value: number) => {
