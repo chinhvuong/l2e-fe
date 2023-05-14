@@ -58,7 +58,7 @@ export default function CertificateCard({
                     'https://marketplace.canva.com/EAFIEvneNCM/1/0/1600w/canva-golden-elegant-certificate-of-appreciation-0bN-aLORS9U.jpg'
                 }
                 alt=""
-                className="w-[25%] min-w-[170px]"
+                className="under_xl:w-[120px] h-fit w-[25%]"
             />
             <div className="space-y-3">
                 <div className="font-semibold text-xl line-clamp-2">

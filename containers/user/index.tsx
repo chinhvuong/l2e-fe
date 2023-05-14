@@ -23,7 +23,7 @@ export default function UserDetailPreviewContainer(props: StaticUserProps) {
 
     return (
         <div className="mx-60 under_2xl:mx-20">
-            <div className="h-full pt-5 px-14">
+            <div className="h-full pt-5 px-14 under_xl:px-0">
                 <div className="flex mb-5 space-x-5">
                     <div className="bg-primary w-1.5"></div>
                     <div className="font-semibold text-[28px]">Profile</div>
@@ -32,7 +32,7 @@ export default function UserDetailPreviewContainer(props: StaticUserProps) {
                     <UserProfileDetail data={props.user} showShortDescription />
                 )}
             </div>
-            <div className="h-full px-14 mt-10 mb-5">
+            <div className="h-full px-14 mt-10 mb-5 under_xl:px-0">
                 <div className="flex mb-5 space-x-5">
                     <div className="bg-primary w-1.5"></div>
                     <div className="font-semibold text-[28px] -mx-4">
@@ -75,7 +75,7 @@ export default function UserDetailPreviewContainer(props: StaticUserProps) {
                     )}
                 </div>
             </div>
-            <div className="h-full px-14">
+            <div className="h-full px-14 under_xl:px-0">
                 <div className="flex mb-5 space-x-5">
                     <div className="bg-primary w-1.5"></div>
                     <div className="font-semibold text-[28px] -mx-4">

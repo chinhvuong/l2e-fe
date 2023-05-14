@@ -7,7 +7,6 @@ import {
 import { User } from '@/store/user/types'
 import { faAward, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ContentState, EditorState, convertFromHTML } from 'draft-js'
 import parse from 'html-react-parser'
 import { useEffect } from 'react'
 
@@ -22,21 +21,6 @@ export default function UserProfileDetail({
     className,
     showShortDescription = false,
 }: IUserProfileDetailProps) {
-    const getBioLength = (value: string) => {
-        if (value === null || value === undefined || value === '') {
-            return 0
-        } else {
-            return EditorState.createWithContent(
-                ContentState.createFromBlockArray(
-                    convertFromHTML(value).contentBlocks,
-                ),
-            )
-                .getCurrentContent()
-                .getPlainText()
-                .split(/(\s+)/)
-                .filter((e) => e.trim().length > 0).length
-        }
-    }
     const convertStringToHTML = () => {
         if (data.bio) {
             const element = document.getElementById('instructor-bio-content')
@@ -58,18 +42,15 @@ export default function UserProfileDetail({
 
     const getUIContent = (content: string) => {
         let formattedData = ''
-        if (getBioLength(content) === 0) {
-            formattedData = '<p>No Description</p>'
-        } else {
-            formattedData = content.replace(
-                /'<li>'/g,
-                '<li class="list-disc list-inside ml-2">',
-            )
-            formattedData = formattedData.replace(
-                /'<ul>'/g,
-                '<ul class="space-y-3">',
-            )
-        }
+
+        formattedData = content.replace(
+            /'<li>'/g,
+            '<li class="list-disc list-inside ml-2">',
+        )
+        formattedData = formattedData.replace(
+            /'<ul>'/g,
+            '<ul class="space-y-3">',
+        )
 
         return (
             <div className="text-justify space-y-3">{parse(formattedData)}</div>
