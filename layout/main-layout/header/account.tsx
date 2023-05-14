@@ -179,7 +179,7 @@ const Account = (props: any) => {
                         onMouseLeave={() => setHoverWallet(false)}
                     />
                     <div className="under_xl:hidden ml-5">
-                        {myAccountBalance} ABC
+                        {myAccountBalance} WL
                     </div>
                     <div
                         className={`w-[270px] absolute z-30 right-10 ${

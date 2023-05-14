@@ -41,10 +41,12 @@ export default function MainContent({
     const dispatch = useAppDispatch()
     const defaultPreview = '/images/placeholder.jpeg'
 
+    console.log('lectureDetail', lectureDetail)
+
     const updateLectureMainContent = (url: string) => {
         const newDetail = { ...lectureDetail }
         newDetail.media = url
-        newDetail.mediaName = contentName ?? ''
+        newDetail.mediaName = uploadedFile?.name ?? ''
         newDetail.mediaType = 'video'
         newDetail.isLoading = false
         dispatch(updateCard(newDetail))
@@ -211,7 +213,9 @@ export default function MainContent({
                                 )}
                             </div>
                             <div>
-                                <div className="font-bold">{contentName}</div>
+                                <div className="font-bold">
+                                    {contentName || uploadedFile?.name}
+                                </div>
                                 <div className="mb-5">
                                     {uploadedVideoDuration}
                                 </div>

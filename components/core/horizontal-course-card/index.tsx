@@ -51,7 +51,7 @@ export default function HorizontalCourseCard({
             <img
                 src={data.thumbnail ?? '/images/placeholder.jpeg'}
                 alt=""
-                className="w-[25%] min-w-[170px]"
+                className="under_xl:w-[120px] h-fit w-[25%]"
             />
             <div className="space-y-3">
                 <div>
@@ -70,12 +70,12 @@ export default function HorizontalCourseCard({
                                     : ''
                             }
                         />
-                        <div className="font-bold text-xl">
+                        <div className="font-bold text-xl under_xl:text-sm">
                             {data.price} USDT
                         </div>
                     </>
                 )}
-                <div className="flex space-x-3">
+                <div className="flex gap-3 flex-wrap">
                     {showStatus && (
                         <>
                             <Label

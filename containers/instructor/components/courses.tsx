@@ -172,8 +172,10 @@ export default function InstructorCoursesContainer() {
     return (
         <>
             <div className="mt-9 px-[3.5rem] under_xl:px-8">
-                <div className="flex justify-between px-4">
-                    <div className="font-semibold text-[30px]">Courses</div>
+                <div className="flex items-center justify-between px-4">
+                    <div className="font-semibold text-[30px] under_xl:text-2xl">
+                        Courses
+                    </div>
                     <div className="text-white">
                         <Button onClick={() => goToCreateCoursePage()}>
                             Create course

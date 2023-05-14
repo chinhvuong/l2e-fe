@@ -291,7 +291,8 @@ export default function Sidebar() {
         if (
             validate.landingPage.length === 0 &&
             validate.intendedLearners.length === 0 &&
-            validate.curriculum.length === 0
+            validate.curriculum.length === 0 &&
+            validate.userProfile.length === 0
         ) {
             if (value) {
                 requestApprove({ id: courseDetail._id, notes: [] })

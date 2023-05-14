@@ -66,7 +66,7 @@ export default function Header() {
                             className={`text-[25px] cursor-pointer under_lg:hidden text-white`}
                         />
                         <div className="under_xl:hidden ml-5">
-                            {myAccountBalance} ABC
+                            {myAccountBalance} WL
                         </div>
                     </div>
                     <div>

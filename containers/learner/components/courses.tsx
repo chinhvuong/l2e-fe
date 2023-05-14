@@ -101,8 +101,10 @@ export default function LearnerCoursesContainer() {
     return (
         <>
             <div className="h-full mt-9 px-[3.5rem] under_xl:px-8">
-                <div className="flex justify-between px-4">
-                    <div className="font-semibold text-[30px]">Courses</div>
+                <div className="flex items-center justify-between px-4">
+                    <div className="font-semibold text-[30px] under_xl:text-2xl">
+                        Courses
+                    </div>
                 </div>
                 <div className="flex under_xl:block space-x-5 under_xl:space-x-0 px-4">
                     <Search

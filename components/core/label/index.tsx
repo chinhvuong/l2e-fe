@@ -9,7 +9,7 @@ export interface ILabelProps {
 export default function Label(props: ILabelProps) {
     return (
         <div
-            className={`text-[9px] rounded-[80px] px-2 py-1 w-fit text-white font-semibold ${
+            className={`text-[9px] rounded-[80px] px-2 py-1 w-fit text-white font-semibold line-clamp-1 ${
                 props.hidden && 'hidden'
             }`}
             style={
