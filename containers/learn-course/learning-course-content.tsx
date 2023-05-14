@@ -33,6 +33,8 @@ const LearningCourseContent = () => {
                 return <LearningReviewDetail />
             case 'Comments':
                 return <LearningCommentsDetail />
+            case 'Curriculum':
+                return <LearnerCourseContent />
             default:
                 return <></>
         }
@@ -53,7 +55,7 @@ const LearningCourseContent = () => {
                 isShow={isPerfectScore}
                 setIsShow={setIsPerfectScore}
             />
-            <div className="w-3/4 border-r">
+            <div className="w-3/4 border-r under_xl:w-full">
                 {courseDetail && playingVideo !== '' ? (
                     <ReactPlayer
                         url={playingVideo}
@@ -91,7 +93,7 @@ const LearningCourseContent = () => {
                 />
                 <div className="px-12 mt-8">{getTabContent()}</div>
             </div>
-            <div className="w-1/4">
+            <div className="w-1/4 under_xl:hidden">
                 <LearnerCourseContent />
             </div>
         </div>
