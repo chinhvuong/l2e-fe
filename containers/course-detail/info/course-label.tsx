@@ -19,7 +19,7 @@ export default function CourseLabel() {
     const isEnroll = useAppSelector(getEnrollStatusState)
     const { address } = useAccount()
     const canEnroll = () => {
-        if (data !== undefined) {
+        if (data) {
             if (
                 String(address).toLowerCase() !==
                     data.author.walletAddress.toLowerCase() &&
@@ -64,7 +64,7 @@ export default function CourseLabel() {
                         {/* <div className="under_xl:hidden">
                             {data.isBestseller && <Label name="Bestseller" />}
                         </div> */}
-                        <div className="under_lg:hidden">
+                        <div className="under_lg:hidden flex items-center space-x-5">
                             <div>
                                 <Label
                                     name={data.category.name}
@@ -98,7 +98,7 @@ export default function CourseLabel() {
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="items-center space-x-3 hidden under_2xl:flex">
                     <div className="font-semibold text-2xl under_xl:text-base text-white">
                         {data.price} USDT
                     </div>
