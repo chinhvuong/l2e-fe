@@ -10,6 +10,7 @@ import CommentForm from './comment-form'
 import { noop } from 'lodash'
 import { useAppDispatch } from '@/hooks'
 import { updateGlobalLoadingState } from '@/store/user'
+import Router from 'next/router'
 
 export interface ICommentItemProps {
     data: Comment
@@ -102,6 +103,12 @@ export default function CommentItem(props: ICommentItemProps) {
         deleteComment({})
     }
 
+    const goToUserDetailPage = (id: string) => {
+        if (id) {
+            Router.push('/user/' + id)
+        }
+    }
+
     useEffect(() => {
         dispatch(
             updateGlobalLoadingState(
@@ -133,7 +140,12 @@ export default function CommentItem(props: ICommentItemProps) {
                         />
                     )}
                     <div className="space-y-1">
-                        <div className="font-bold text-lg mt-1">
+                        <div
+                            className="font-bold text-lg mt-1 cursor-pointer"
+                            onClick={() =>
+                                goToUserDetailPage(props.data.user?._id)
+                            }
+                        >
                             {props.data.user?.name ?? 'Anonymous'}
                         </div>
                         <div className="text-description text-xs">

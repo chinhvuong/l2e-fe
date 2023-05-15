@@ -11,6 +11,7 @@ import { noop } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import CommentForm from '../../comment/components/comment-form'
+import Router from 'next/router'
 
 export interface IReviewItemProps {
     data: Rating
@@ -93,6 +94,11 @@ export default function ReviewItem(props: IReviewItemProps) {
         updateRating({ rating: ratingCount, content: text })
         setIsEdit(false)
     }
+    const goToUserDetailPage = (id: string) => {
+        if (id) {
+            Router.push('/user/' + id)
+        }
+    }
 
     useEffect(() => {
         dispatch(
@@ -129,7 +135,10 @@ export default function ReviewItem(props: IReviewItemProps) {
                     />
                 )}
                 <div className="space-y-2">
-                    <div className="font-bold mt-1">
+                    <div
+                        className="font-bold mt-1 cursor-pointer"
+                        onClick={() => goToUserDetailPage(props.data.user?._id)}
+                    >
                         {props.data.user?.name ?? 'Anonymous'}
                     </div>
                     <div className="flex items-center space-x-5">
