@@ -59,17 +59,27 @@ export default function HorizontalCourseCard({
                         {data.name}
                     </div>
                 </div>
+                <div className="font-light text-xs truncate">
+                    {data.author.name ?? 'Anonymous'}
+                </div>
                 {showDetail && (
                     <>
-                        <RatingStar
-                            id={data._id}
-                            ratingScore={data.rating}
-                            ratings={
-                                data?.ratingCount
-                                    ? data.ratingCount.toString()
-                                    : ''
-                            }
-                        />
+                        <div className="flex space-x-3">
+                            <RatingStar
+                                id={data._id}
+                                ratingScore={data.rating}
+                                ratings={
+                                    data?.ratingCount
+                                        ? data.ratingCount.toString()
+                                        : ''
+                                }
+                            />
+                            <div className="font-light text-xs truncate mt-1">
+                                {`${data.students} ${
+                                    data.students > 1 ? 'students' : 'student'
+                                }`}
+                            </div>
+                        </div>
                         <div className="font-bold text-xl under_xl:text-sm">
                             {data.price} USDT
                         </div>

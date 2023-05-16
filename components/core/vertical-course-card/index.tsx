@@ -35,6 +35,11 @@ export default function VerticalCourseCard({
                 ratingScore={data.rating}
                 ratings={data?.ratingCount ? data.ratingCount.toString() : '0'}
             />
+            <div className="font-light text-xs truncate">
+                {`${data.students} ${
+                    data.students > 1 ? 'students' : 'student'
+                }`}
+            </div>
             <div className="font-bold">{data.price} USDT</div>
             <div className="flex gap-x-2">
                 {/* <Label name="Bestseller" hidden={!data.isBestseller} /> */}
