@@ -1,6 +1,4 @@
 import VideoPreview from '@/components/core/video-preview'
-import { useAppSelector } from '@/hooks'
-import { getLoginState } from '@/store/user/selectors'
 import { useCourseDetailContext } from '../course-detail-context'
 import IncludeList from './include-list'
 import PriceEnrollShare from './price-enroll-share'
@@ -10,7 +8,7 @@ export interface ISidebarProps {}
 export default function Sidebar() {
     const { data, isShowVideoModal, setIsShowVideoModal } =
         useCourseDetailContext()
-    const loginState = useAppSelector(getLoginState)
+
     const includeList = {
         duration: '65 hours on-demand video',
         resource: '49 downloadable resources',
@@ -41,7 +39,7 @@ export default function Sidebar() {
                                 <div className="font-semibold text-[36px]">
                                     {data.price + ' USDT'}
                                 </div>
-                                {loginState && <PriceEnrollShare data={data} />}
+                                <PriceEnrollShare data={data} />
                                 <IncludeList data={includeList} />
                             </div>
                         </div>

@@ -21,7 +21,7 @@ const HomePageContainer = (props: StaticCourseListProps) => {
         }
         return props.courseList.length < 5 ? (
             <>
-                <div className="flex justify-center mt-12 mb-4">
+                <div className="flex justify-center mt-12 mb-6">
                     <div className="2xl:w-[1135px] xl:w-[885px] lg:w-[635px] md:w-[485px] sm:w-[285px] mb-[10px]">
                         <div className="font-bold text-[30px]">
                             Popular courses

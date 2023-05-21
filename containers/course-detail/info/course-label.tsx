@@ -57,14 +57,14 @@ export default function CourseLabel() {
         >
             <div className="flex items-center justify-between">
                 <div className="space-y-1 under_xl:w-[50%]">
-                    <div className="font-bold text-white text-lg under_xl:text-base line-clamp-1 under_lg:line-clamp-2 under_lg:mr-5">
+                    <div className="font-bold text-white text-lg under_xl:text-base line-clamp-1 under_xl:line-clamp-2 under_xl:mr-5">
                         {data.name}
                     </div>
                     <div className="flex items-center space-x-4">
                         {/* <div className="under_xl:hidden">
                             {data.isBestseller && <Label name="Bestseller" />}
                         </div> */}
-                        <div className="under_lg:hidden flex items-center space-x-5">
+                        <div className="under_xl:hidden flex items-center space-x-5">
                             <div>
                                 <Label
                                     name={data.category.name}

@@ -63,12 +63,14 @@ export default function ReviewDetail() {
         },
     )
     const onSearchRating = () => {
-        setIsLoading(true)
-        if (selectedRating === 'All') {
-            setTimeout(() => setIsLoading(false), 1000)
-            setTimeout(getRatingCourseDetail, 1000)
-        } else {
-            setTimeout(getFilterRatingCourseDetail, 1000)
+        if (searchTerm !== '') {
+            setIsLoading(true)
+            if (selectedRating === 'All') {
+                setTimeout(() => setIsLoading(false), 1000)
+                setTimeout(getRatingCourseDetail, 1000)
+            } else {
+                setTimeout(getFilterRatingCourseDetail, 1000)
+            }
         }
     }
 
@@ -110,7 +112,8 @@ export default function ReviewDetail() {
                             </div>
                             <FontAwesomeIcon
                                 icon={faMagnifyingGlass}
-                                className="bg-primary p-4 rounded-full text-white"
+                                className="bg-primary p-4 rounded-full text-white cursor-pointer"
+                                onClick={onSearchRating}
                             />
                         </div>
                         <div className="mb-8">

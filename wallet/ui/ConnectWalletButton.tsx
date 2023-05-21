@@ -8,7 +8,7 @@ const ConnectWalletButton = () => {
             {connectors.map((x) => (
                 <button
                     key={x.name}
-                    className="bg-primary rounded-[80px] py-[12px] px-[30px] cursor-pointer"
+                    className="bg-primary rounded-[80px] py-[12px] px-[30px] cursor-pointer text-white"
                     onClick={() => connect({ connector: x })}
                 >
                     Connect Wallet

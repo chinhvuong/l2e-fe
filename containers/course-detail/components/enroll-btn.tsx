@@ -3,7 +3,7 @@ import Button from '@/components/core/button'
 import { useAppSelector } from '@/hooks'
 import { enroll } from '@/hooks/coursedex'
 import { approve } from '@/hooks/usdt'
-import { getAssetState } from '@/store/user/selectors'
+import { getAssetState, getLoginState } from '@/store/user/selectors'
 import { ethers } from 'ethers'
 import { HtmlHTMLAttributes, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -15,6 +15,7 @@ type Props = HtmlHTMLAttributes<HTMLButtonElement> & {}
 const EnrollBtn = ({ ...rest }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
     const asset = useAppSelector(getAssetState)
+    const loginState = useAppSelector(getLoginState)
     const { data } = useCourseDetailContext()
     const { data: signer } = useSigner({
         chainId: sepolia.id,
@@ -23,7 +24,18 @@ const EnrollBtn = ({ ...rest }: Props) => {
         if (isLoading || !data?.price || !courseId) {
             return
         }
-        if (asset.balance >= data.price) {
+        if (!loginState) {
+            toast.error(`You haven't connected wallet!`, {
+                position: 'top-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
+                progress: undefined,
+                theme: 'light',
+            })
+        } else if (asset.balance >= data.price) {
             setIsLoading(true)
             try {
                 if (asset.approve / 10 ** 18 <= Number(data.price)) {

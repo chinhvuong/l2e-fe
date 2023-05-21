@@ -51,7 +51,7 @@ export default function AboutUsContainer() {
                 <div className="flex justify-center text-lg">
                     <div className="w-[55%] text-center">
                         This is a non-profit team-based graduation project about
-                        education. The website provides courses with
+                        education. The website provides educational courses with
                         certificates saved on Blockchain.
                     </div>
                 </div>

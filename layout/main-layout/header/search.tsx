@@ -52,6 +52,7 @@ export default function Search(props: ISearch) {
         [],
     )
     const goToSearchPageCourse = () => {
+        setOpenResultSelect(false)
         router.push(
             {
                 pathname: '/course/search',
@@ -74,6 +75,13 @@ export default function Search(props: ISearch) {
             debounceLoadData.cancel()
         }
     }, [router.query.query])
+
+    useEffect(() => {
+        if (!router.pathname.includes('/course/search')) {
+            setSearchTerm('')
+            debounceLoadData('')
+        }
+    }, [router.pathname])
 
     return (
         <div className="relative flex-grow">
@@ -100,7 +108,7 @@ export default function Search(props: ISearch) {
             </div>
             {result.length > 0 && (
                 <div
-                    className={`absolute z-10 border border-description mt-[2px] w-full ${
+                    className={`absolute z-10 border border-description mt-1 w-full ${
                         !openResultSelect && 'hidden'
                     }`}
                     onClick={() => setOpenResultSelect(!openResultSelect)}

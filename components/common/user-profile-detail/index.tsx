@@ -8,6 +8,7 @@ import { User } from '@/store/user/types'
 import { faAward, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parse from 'html-react-parser'
+import Router, { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 export interface IUserProfileDetailProps {
@@ -21,6 +22,7 @@ export default function UserProfileDetail({
     className,
     showShortDescription = false,
 }: IUserProfileDetailProps) {
+    const router = useRouter()
     const convertStringToHTML = () => {
         if (data.bio) {
             const element = document.getElementById('instructor-bio-content')
@@ -57,6 +59,12 @@ export default function UserProfileDetail({
         )
     }
 
+    const goToUserDetailPage = () => {
+        if (!router.pathname.includes('user') && data._id) {
+            Router.push('/user/' + data._id)
+        }
+    }
+
     useEffect(() => {
         if (data && data.bio) {
             convertStringToHTML()
@@ -65,7 +73,10 @@ export default function UserProfileDetail({
 
     return (
         <>
-            <div className="font-semibold text-2xl mb-1 text-hyperlink cursor-pointer">
+            <div
+                className="font-semibold text-2xl mb-1 text-hyperlink cursor-pointer"
+                onClick={goToUserDetailPage}
+            >
                 {data?.name}
             </div>
             {showShortDescription && (
