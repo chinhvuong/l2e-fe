@@ -45,7 +45,7 @@ export default function ValidateModal(props: IValidateModalProps) {
                     <div className="flex justify-center items-center fixed inset-0 z-40 outline-none focus:outline-none">
                         <div className="relative">
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                <div className="p-10 max-h-[550px] overflow-y-auto scrollbar">
+                                <div className="px-10 my-12 max-h-[550px] overflow-y-auto scrollbar">
                                     <div className="space-y-5 max-w-3xl">
                                         <div className="pb-5 space-y-5">
                                             <div>

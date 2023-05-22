@@ -199,7 +199,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                     >
                         <div className="relative">
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                <div className="p-10 max-h-[550px] overflow-y-auto scrollbar">
+                                <div className="px-10 my-12 max-h-[550px] overflow-y-auto scrollbar">
                                     <div className="text-xl font-bold px-6 pb-5">
                                         Quiz: {quiz.name}
                                     </div>
