@@ -5,15 +5,23 @@ import LoadingScreen from '@/components/core/animate/loading-screen'
 import Button from '@/components/core/button'
 import WelcomeBackModal from '@/components/core/modal/welcome-back-modal'
 import VerticalCourseCard from '@/components/core/vertical-course-card'
-import { useAppSelector } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { updateGlobalLoadingState } from '@/store/user'
 import { getClaimState } from '@/store/user/selectors'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 export interface StaticCourseListProps {
     courseList: any
 }
 const HomePageContainer = (props: StaticCourseListProps) => {
+    const router = useRouter()
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(updateGlobalLoadingState(router.isFallback))
+    }, [router.isFallback])
     const isClaim = useAppSelector(getClaimState)
     const getCourseListUI = () => {
         if (!props.courseList) {

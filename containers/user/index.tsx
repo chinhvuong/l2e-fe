@@ -12,6 +12,7 @@ import { useEffect } from 'react'
 export interface StaticUserProps {
     user: User
     certificates: Certificate[]
+    courseList: CoursePreview[]
 }
 export default function UserDetailPreviewContainer(props: StaticUserProps) {
     const router = useRouter()
@@ -41,34 +42,33 @@ export default function UserDetailPreviewContainer(props: StaticUserProps) {
                 </div>
                 <div>
                     <div>
-                        {props.certificates !== undefined &&
-                            props.certificates.map(
-                                (certificate: Certificate, index: number) => {
+                        {props.courseList !== undefined &&
+                            props.courseList.map(
+                                (course: CoursePreview, index: number) => {
                                     return (
                                         <div
-                                            key={certificate._id}
+                                            key={course._id}
                                             className={`${
                                                 index ===
-                                                    props.certificates.length -
+                                                    props.courseList.length -
                                                         1 && 'pb-6'
                                             }`}
                                         >
                                             <HorizontalCourseCard
-                                                key={certificate.course._id}
-                                                data={
-                                                    certificate.course as CoursePreview
-                                                }
+                                                key={course._id}
+                                                data={course}
                                                 clickMode={'view'}
                                             />
                                             {index !==
-                                                props.certificates.length -
-                                                    1 && <Divider />}
+                                                props.courseList.length - 1 && (
+                                                <Divider />
+                                            )}
                                         </div>
                                     )
                                 },
                             )}
                     </div>
-                    {props.certificates && props.certificates.length === 0 && (
+                    {props.courseList && props.courseList.length === 0 && (
                         <div className="flex justify-center text-xl font-bold my-10">
                             No results found.
                         </div>
