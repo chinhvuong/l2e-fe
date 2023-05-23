@@ -71,7 +71,7 @@ export default function CertificateCard({
                     </div>
                     <div>
                         <span>Final Test score: </span>
-                        {`${data.finalGrade}/100`}
+                        {`${Math.ceil(data.finalGrade)}/100`}
                     </div>
                     <div>
                         <span>Level: </span>
