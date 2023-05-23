@@ -337,7 +337,7 @@ export default function Sidebar() {
 
     return (
         <>
-            <div className="flex flex-col justify-start w-[300px] under_xl:w-fit pt-7">
+            <div className="flex flex-col justify-start w-[320px] under_xl:w-fit pt-7">
                 <div className="space-y-2 flex flex-col">
                     {menu.map((item, index) => {
                         return (

@@ -53,10 +53,7 @@ export default function CertificateCard({
             className={`flex w-full space-x-5 cursor-pointer hover:bg-gray-300 p-5 ${className}`}
         >
             <img
-                src={
-                    data.image ??
-                    'https://marketplace.canva.com/EAFIEvneNCM/1/0/1600w/canva-golden-elegant-certificate-of-appreciation-0bN-aLORS9U.jpg'
-                }
+                src={data.image ?? '/images/placeholder.jpeg'}
                 alt=""
                 className="under_xl:w-[120px] h-fit w-[25%]"
             />

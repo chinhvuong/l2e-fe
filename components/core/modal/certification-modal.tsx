@@ -55,7 +55,8 @@ export default function CertificateModal(props: ICertificateModalProps) {
                                 <div className="flex flex-col items-center justify-between py-10 px-20 w-[700px]">
                                     <img
                                         src={
-                                            'https://marketplace.canva.com/EAFIEvneNCM/1/0/1600w/canva-golden-elegant-certificate-of-appreciation-0bN-aLORS9U.jpg'
+                                            certificate.image ??
+                                            '/images/placeholder.jpeg'
                                         }
                                         alt=""
                                         className="w-f p-1 m-1"
@@ -72,13 +73,15 @@ export default function CertificateModal(props: ICertificateModalProps) {
                                                     Mint Certificate
                                                 </div>
                                                 {isLoadingMintCertificate && (
-                                                    <Loading className="!text-white" />
+                                                    <Loading className="!text-white ml-2" />
                                                 )}
                                             </Button>
                                         ) : (
                                             <div>
-                                                This certification is already on
-                                                chain
+                                                {certificate.status ===
+                                                    'ON_CHAIN' &&
+                                                    `This certification is already on
+                                                chain`}
                                             </div>
                                         )}
                                     </div>
