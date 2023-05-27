@@ -64,18 +64,8 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
             if (distance < 0) {
                 clearInterval(countdown)
                 setTimer("Time's up!")
-                currentQuiz &&
-                    submitQuizAnswer({
-                        gameId: currentQuiz.gameId,
-                        answers: currentQuiz.questions.map(
-                            (question, index) => {
-                                return {
-                                    questionId: question._id,
-                                    answer: answers[index],
-                                }
-                            },
-                        ),
-                    })
+                clearInterval(timerId)
+                setTimerId(undefined)
             }
         }, 1000)
         return countdown
@@ -207,7 +197,7 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                         <>
                                             <div className="text-lg font-medium px-6 pb-5">
                                                 {isCurrentLessonLearned
-                                                    ? 'Try your best to complete this quiz with perfect score!'
+                                                    ? 'Try your best to complete this quiz with the perfect score!'
                                                     : `Completed this quiz before moving to the
                                         next lesson!`}
                                             </div>
@@ -337,6 +327,11 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                     className="btn-primary mt-10 w-full"
                                                     onClick={() =>
                                                         handleSubmitQuiz()
+                                                    }
+                                                    disabled={
+                                                        timer === "Time's up" ||
+                                                        answers.length !==
+                                                            totalQuestions
                                                     }
                                                 >
                                                     <div className="font-medium w-full text-center">

@@ -72,16 +72,8 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
             if (distance < 0) {
                 clearInterval(countdown)
                 setTimer("Time's up!")
-                finalTest &&
-                    submitFinalTestAnswer({
-                        gameId: finalTest.gameId,
-                        answers: finalTest.questions.map((question, index) => {
-                            return {
-                                questionId: question._id,
-                                answer: answers[index],
-                            }
-                        }),
-                    })
+                clearInterval(timerId)
+                setTimerId(undefined)
             }
         }, 1000)
         return countdown
@@ -395,6 +387,12 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                         className="btn-primary mt-10 w-full"
                                                         onClick={() =>
                                                             handleSubmitFinalTest()
+                                                        }
+                                                        disabled={
+                                                            timer ===
+                                                                "Time's up" ||
+                                                            answers.length !==
+                                                                totalQuestions
                                                         }
                                                     >
                                                         <div className="font-medium w-full text-center">
