@@ -389,10 +389,15 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                             handleSubmitFinalTest()
                                                         }
                                                         disabled={
-                                                            timer ===
-                                                                "Time's up" ||
-                                                            answers.length !==
-                                                                totalQuestions
+                                                            !(
+                                                                timer !==
+                                                                    "Time's up!" &&
+                                                                answers.filter(
+                                                                    (item) =>
+                                                                        item,
+                                                                ).length !==
+                                                                    totalQuestions
+                                                            )
                                                         }
                                                     >
                                                         <div className="font-medium w-full text-center">

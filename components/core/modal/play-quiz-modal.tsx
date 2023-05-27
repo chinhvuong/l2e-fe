@@ -329,9 +329,14 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                         handleSubmitQuiz()
                                                     }
                                                     disabled={
-                                                        timer === "Time's up" ||
-                                                        answers.length !==
-                                                            totalQuestions
+                                                        !(
+                                                            timer !==
+                                                                "Time's up!" &&
+                                                            answers.filter(
+                                                                (item) => item,
+                                                            ).length !==
+                                                                totalQuestions
+                                                        )
                                                     }
                                                 >
                                                     <div className="font-medium w-full text-center">
