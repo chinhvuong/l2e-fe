@@ -45,7 +45,7 @@ export default function ReviewItem(props: IReviewItemProps) {
         String(address).toLowerCase() ===
         props.data.user.walletAddress.toLowerCase()
     const [isEdit, setIsEdit] = useState(false)
-    const [ratingCount, setRatingCount] = useState(0)
+    const [ratingCount, setRatingCount] = useState(props.data.rating)
     const getTimeAgo = () => {
         const yearAgo =
             new Date().getFullYear() -

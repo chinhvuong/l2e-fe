@@ -12,7 +12,8 @@ export default function RatingBar({
     selectedRatingPoint,
     setRating,
 }: IRatingBarProps) {
-    const [draftRatingPoint, setDraftRatingPoint] = useState(0)
+    const [draftRatingPoint, setDraftRatingPoint] =
+        useState(selectedRatingPoint)
     const totalStars = [1, 2, 3, 4, 5]
     const starDescription = [
         'What do you think?',
