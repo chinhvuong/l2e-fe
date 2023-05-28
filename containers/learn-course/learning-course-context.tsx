@@ -118,6 +118,7 @@ interface ILearningCourseContext {
     overviewRating: RatingOverView
     totalRating: number
     lastCanLearnPosition: number[]
+    isLearner: boolean
 }
 
 export const LearningCourseContext = createContext<ILearningCourseContext>(
@@ -139,6 +140,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
     const [currentTab, setCurrentTab] = useState('Overview')
     const overviewRating = useAppSelector(getOverViewRatings)
     const totalRating = useAppSelector(getTotalRatings)
+    const [isLearner, setIsLearner] = useState(true)
     const router = useRouter()
 
     const [courseDetail, setCourseDetail] = useState<
@@ -187,6 +189,12 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
             onSuccess: (response) => {
                 setCourseDetail(response)
                 getDefaultPlayedVideo(response)
+                setIsLearner(
+                    String(address).toLowerCase() !==
+                        response.author.walletAddress.toLowerCase() &&
+                        String(address).toLowerCase() !==
+                            response.owner.toLowerCase(),
+                )
             },
         },
     )
@@ -245,7 +253,14 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                     }
                 })
             })
-            if (isFinishLearning) {
+            if (
+                isFinishLearning ||
+                !(
+                    String(address).toLowerCase() !==
+                        data.author.walletAddress.toLowerCase() &&
+                    String(address).toLowerCase() !== data.owner.toLowerCase()
+                )
+            ) {
                 const lastSectionIndex = data.sections.length - 1
                 const lastLessonIndex =
                     data.sections[lastSectionIndex].lessons.length - 1
@@ -332,6 +347,7 @@ export const LearningCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 overviewRating,
                 totalRating,
                 lastCanLearnPosition,
+                isLearner,
             }}
         >
             {children}

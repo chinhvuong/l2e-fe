@@ -22,6 +22,7 @@ const LearningCourseContent = () => {
         setIsPerfectScore,
         currentTab,
         setCurrentTab,
+        isLearner,
     } = useLearningCourseContext()
     const getTabContent = () => {
         switch (currentTab) {
@@ -67,6 +68,7 @@ const LearningCourseContent = () => {
                         height="65vh"
                         onEnded={() => {
                             !isCurrentLessonLearned &&
+                                isLearner &&
                                 setShowPlayQuizModal(true)
                         }}
                     />

@@ -8,7 +8,6 @@ import { debounce, noop } from 'lodash'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import './style.scss'
 
 interface ISearch {
@@ -22,7 +21,6 @@ export default function Search(props: ISearch) {
 
     const [openResultSelect, setOpenResultSelect] = useState(true)
     const clickOutSideRef = React.useRef(null)
-    const dispatch = useDispatch()
 
     useOutsideClick(clickOutSideRef, () => {
         setOpenResultSelect(false)
@@ -77,10 +75,9 @@ export default function Search(props: ISearch) {
     }, [router.query.query])
 
     useEffect(() => {
-        if (!router.pathname.includes('/course/search')) {
-            setSearchTerm('')
-            debounceLoadData('')
-        }
+        setSearchTerm('')
+        debounceLoadData('')
+        setResult([])
     }, [router.pathname])
 
     return (

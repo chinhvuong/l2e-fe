@@ -9,7 +9,8 @@ import {
 } from '../learning-course-context'
 
 export default function LearnerCourseContent() {
-    const { courseDetail, currentPosition } = useLearningCourseContext()
+    const { courseDetail, currentPosition, isLearner } =
+        useLearningCourseContext()
     const [showFinalTestModal, setShowPlayFinalTestModal] = useState(false)
 
     const getLearnerCourseContentUI = (course: LearningCourseRes) => {
@@ -28,17 +29,21 @@ export default function LearnerCourseContent() {
                         />
                     )
                 })}
-                <div className="flex justify-center py-5 border-t">
-                    <Button
-                        className="btn-primary"
-                        disabled={learningPos[2] === 0 || course.finalTest.play}
-                        onClick={() => setShowPlayFinalTestModal(true)}
-                    >
-                        <div className="font-medium text-center">
-                            Take the Final Test
-                        </div>
-                    </Button>
-                </div>
+                {isLearner && (
+                    <div className="flex justify-center py-5 border-t">
+                        <Button
+                            className="btn-primary"
+                            disabled={
+                                learningPos[2] === 0 || course.finalTest.play
+                            }
+                            onClick={() => setShowPlayFinalTestModal(true)}
+                        >
+                            <div className="font-medium text-center">
+                                Take the Final Test
+                            </div>
+                        </Button>
+                    </div>
+                )}
             </div>
         )
     }

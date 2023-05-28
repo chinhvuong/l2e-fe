@@ -34,6 +34,7 @@ export default function LearningReviewDetail() {
         getRatingCourseDetail,
         searchTerm,
         setSearchTerm,
+        isLearner,
     } = useLearningCourseContext()
     const dispatch = useAppDispatch()
     const [selectedRating, setSelectedRating] = useState('All')
@@ -129,7 +130,7 @@ export default function LearningReviewDetail() {
 
     return (
         <div className="space-y-10">
-            {canRating && (
+            {canRating && isLearner && (
                 <div>
                     <RatingBar
                         selectedRatingPoint={ratingCount}

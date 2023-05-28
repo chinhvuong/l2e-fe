@@ -19,7 +19,8 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
     const { order, title, lectures, isLearning } = props
     const [selfExpand, setSelfExpand] = useState(false)
     const [learningLectureIndex, setLearningLectureIndex] = useState(0)
-    const { currentPosition, lastCanLearnPosition } = useLearningCourseContext()
+    const { currentPosition, lastCanLearnPosition, isLearner } =
+        useLearningCourseContext()
 
     const countCompletedLessons = useMemo((): number => {
         let count = 0
@@ -72,21 +73,25 @@ export default function LearnerAccordion(props: ILearnerAccordionProps) {
                         />
                     </div>
                 </div>
-                <div className="flex space-x-2 items-center">
-                    {countCompletedLessons === lectures.length ? (
-                        <FontAwesomeIcon
-                            icon={faCheckCircle}
-                            className="text-green-500"
-                        />
-                    ) : (
-                        <FontAwesomeIcon
-                            icon={faCircle}
-                            className="text-description"
-                        />
-                    )}
+                {isLearner ? (
+                    <div className="flex space-x-2 items-center">
+                        {countCompletedLessons === lectures.length ? (
+                            <FontAwesomeIcon
+                                icon={faCheckCircle}
+                                className="text-green-500"
+                            />
+                        ) : (
+                            <FontAwesomeIcon
+                                icon={faCircle}
+                                className="text-description"
+                            />
+                        )}
 
-                    <div className="text-xs">{`${countCompletedLessons}/${lectures.length}`}</div>
-                </div>
+                        <div className="text-xs">{`${countCompletedLessons}/${lectures.length}`}</div>
+                    </div>
+                ) : (
+                    <div className="text-xs">{`Lecture(s): ${lectures.length}`}</div>
+                )}
             </div>
             <LecturesListLearnerAccordion
                 expand={selfExpand}

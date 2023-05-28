@@ -28,8 +28,12 @@ export default function LecturesListLearnerAccordion(
 ) {
     const { expand, lectures, isLearning, learningLectureIndex, sectionIndex } =
         props
-    const { handleChangeLecture, currentPosition, lastCanLearnPosition } =
-        useLearningCourseContext()
+    const {
+        handleChangeLecture,
+        currentPosition,
+        lastCanLearnPosition,
+        isLearner,
+    } = useLearningCourseContext()
 
     const handleLectureClick = (index: number) => {
         if (isLearning && index <= learningLectureIndex) {
@@ -43,6 +47,7 @@ export default function LecturesListLearnerAccordion(
         lessonIdx: number,
     ): boolean => {
         return (
+            !isLearner ||
             isLearned ||
             (sectionIndex === 0 && lessonIdx === 0) ||
             (sectionIndex === lastCanLearnPosition[0] &&
@@ -70,16 +75,20 @@ export default function LecturesListLearnerAccordion(
                     }}
                 >
                     <div className="flex px-5 space-x-3">
-                        {lecture.learned ? (
-                            <FontAwesomeIcon
-                                icon={faCheckCircle}
-                                className="text-green-500 mt-0.5 bg-white rounded-full"
-                            />
-                        ) : (
-                            <FontAwesomeIcon
-                                icon={faCircle}
-                                className="mt-0.5 text-description group-hover:text-white"
-                            />
+                        {isLearner && (
+                            <>
+                                {lecture.learned ? (
+                                    <FontAwesomeIcon
+                                        icon={faCheckCircle}
+                                        className="text-green-500 mt-0.5 bg-white rounded-full"
+                                    />
+                                ) : (
+                                    <FontAwesomeIcon
+                                        icon={faCircle}
+                                        className="mt-0.5 text-description group-hover:text-white"
+                                    />
+                                )}
+                            </>
                         )}
                         <div className="space-y-3 w-full">
                             <div className="text-sm">

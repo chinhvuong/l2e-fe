@@ -15,6 +15,7 @@ export default function Header() {
         myAccountBalance,
         setShowPlayQuizModal,
         isCurrentLessonLearned,
+        isLearner,
     } = useLearningCourseContext()
     const [percentage, setPercentage] = useState(0)
     const [text, setText] = useState('')
@@ -49,40 +50,44 @@ export default function Header() {
                         {courseDetail?.name ?? ''}
                     </div>
                 </div>
-                <div className="flex items-center space-x-10 under_xl:space-x-5 under_xl:w-fit">
-                    {isCurrentLessonLearned && (
-                        <div className="w-fit">
-                            <Button
-                                className="btn-primary"
-                                onClick={() => setShowPlayQuizModal(true)}
-                            >
-                                <div className="font-medium text-center under_xl:text-sm">
-                                    Answer Quiz
-                                </div>
-                            </Button>
+                {isLearner && (
+                    <div className="flex items-center space-x-10 under_xl:space-x-5 under_xl:w-fit">
+                        {isCurrentLessonLearned && (
+                            <div className="w-fit">
+                                <Button
+                                    className="btn-primary"
+                                    onClick={() => setShowPlayQuizModal(true)}
+                                >
+                                    <div className="font-medium text-center under_xl:text-sm">
+                                        Answer Quiz
+                                    </div>
+                                </Button>
+                            </div>
+                        )}
+                        <div className="flex">
+                            <FontAwesomeIcon
+                                icon={faWallet}
+                                className={`text-[25px] cursor-pointer text-white`}
+                            />
+                            <div className="ml-5">{myAccountBalance} WL</div>
                         </div>
-                    )}
-                    <div className="flex">
-                        <FontAwesomeIcon
-                            icon={faWallet}
-                            className={`text-[25px] cursor-pointer text-white`}
-                        />
-                        <div className="ml-5">{myAccountBalance} WL</div>
+                        <div>
+                            <CircularProgressbar
+                                value={percentage}
+                                text={text}
+                                className="h-[60px]"
+                                styles={buildStyles({
+                                    pathColor:
+                                        percentage === 100
+                                            ? '#07DA63'
+                                            : '#F48C06',
+                                    trailColor: '#4d4c4c',
+                                    textColor: '#FFFFFF',
+                                })}
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <CircularProgressbar
-                            value={percentage}
-                            text={text}
-                            className="h-[60px]"
-                            styles={buildStyles({
-                                pathColor:
-                                    percentage === 100 ? '#07DA63' : '#F48C06',
-                                trailColor: '#4d4c4c',
-                                textColor: '#FFFFFF',
-                            })}
-                        />
-                    </div>
-                </div>
+                )}
             </div>
         </>
     )
