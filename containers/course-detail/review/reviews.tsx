@@ -112,7 +112,7 @@ export default function ReviewDetail() {
                             </div>
                             <FontAwesomeIcon
                                 icon={faMagnifyingGlass}
-                                className="bg-primary p-4 rounded-full text-white cursor-pointer"
+                                className="bg-primary hover:bg-primary-hover p-4 rounded-full text-white cursor-pointer"
                                 onClick={onSearchRating}
                             />
                         </div>

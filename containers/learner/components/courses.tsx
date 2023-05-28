@@ -125,8 +125,7 @@ export default function LearnerCoursesContainer() {
                 </div>
                 <div className="space-x-10">
                     <div>
-                        {!isLoading &&
-                            allMyCourses &&
+                        {allMyCourses &&
                             allMyCourses?.data &&
                             allMyCourses.data.map(
                                 (course: CoursePreview, index: number) => {

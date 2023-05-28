@@ -202,7 +202,6 @@ export default function InstructorCoursesContainer() {
                 <div className="space-x-10">
                     <div>
                         {!isLoadingSigner &&
-                            !isLoadingAllMyCourses &&
                             allMyCourses &&
                             allMyCourses?.data &&
                             allMyCourses.data.map(

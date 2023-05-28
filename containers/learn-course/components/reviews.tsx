@@ -198,7 +198,7 @@ export default function LearningReviewDetail() {
                         </div>
                         <FontAwesomeIcon
                             icon={faMagnifyingGlass}
-                            className="bg-primary p-4 rounded-full text-white"
+                            className="bg-primary hover:bg-primary-hover p-4 rounded-full text-white cursor-pointer"
                             onClick={() => onSearchRating()}
                         />
                     </div>
