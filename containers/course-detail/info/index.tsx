@@ -83,6 +83,9 @@ export default function CourseInfo() {
                                 {data.name}
                             </div>
                             <div className="text-[20px]">{data.overview}</div>
+                            <div className="font-light text-sm truncate">
+                                Course ID: {data.courseId}
+                            </div>
                             <div className="flex items-center flex-wrap">
                                 <div className="flex items-center space-x-4 mr-4 my-2">
                                     {category && (

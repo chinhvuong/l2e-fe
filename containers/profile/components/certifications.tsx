@@ -44,6 +44,7 @@ export default function CertificationsList() {
                         darkTheme={false}
                         setSearch={setSearch}
                         className="mt-3"
+                        placeholder="Search for any certificates"
                     />
                     <div className="w-[220px] under_xl:mb-5">
                         <Select
@@ -55,7 +56,7 @@ export default function CertificationsList() {
                         />
                     </div>
                 </div>
-                <div className="mt-10">
+                <div>
                     {certificationsList?.map((certification, index) => (
                         <div
                             key={index}

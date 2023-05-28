@@ -42,7 +42,7 @@ export default function NavBarLearner({
                 )
             })}
             <div
-                className={`font-bold hover:cursor-pointer py-3 above_xl:hidden ${
+                className={`font-bold hover:cursor-pointer py-3 hidden under_xl:block ${
                     currentTabName === 'Curriculum'
                         ? 'border-b-2 border-second text-second'
                         : 'text-description'

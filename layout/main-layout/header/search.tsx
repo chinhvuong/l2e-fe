@@ -104,6 +104,7 @@ export default function Search(props: ISearch) {
                     type="text"
                     value={searchTerm}
                     onKeyDown={handleEnterEvent}
+                    placeholder="Search for any courses"
                 ></input>
             </div>
             {result.length > 0 && (

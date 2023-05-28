@@ -48,6 +48,9 @@ const Account = (props: any) => {
     const [disabled, setDisabled] = useState(false)
     const myAccountBalance = useAppSelector(getTokenBalanceState)
     const loginState = useAppSelector(getLoginState)
+    const [userAvatar, setUserAvatar] = useState(
+        '/svgs/default_user_avatar.svg',
+    )
 
     const dispatch = useAppDispatch()
 
@@ -81,6 +84,13 @@ const Account = (props: any) => {
             onSuccess: (response) => {
                 dispatch(updateClaimDailyState(response.success))
                 getMyBalance({})
+            },
+        })
+    const { mutate: getUserInfo, isLoading: isLoadingGetUserInfo } =
+        useAPI.getMutation(UserAPI.GET_USER_INFO, {
+            onError: noop,
+            onSuccess(response) {
+                setUserAvatar(response.avatar)
             },
         })
     const validateInput = (value: string): boolean => {
@@ -119,10 +129,14 @@ const Account = (props: any) => {
     }
 
     useEffect(() => {
-        if (localStorage.getItem(ACCESS_TOKEN)) {
+        if (localStorage.getItem(ACCESS_TOKEN) && loginState) {
             claimDailyReward({})
         }
     }, [loginState])
+
+    useEffect(() => {
+        getUserInfo({})
+    }, [])
 
     const setListener = (ethereum: any) => {
         ethereum.on('chainChanged', pageReload)
@@ -161,10 +175,16 @@ const Account = (props: any) => {
             updateGlobalLoadingState(
                 isLoadingGetMyBalance ||
                     isLoadingClaimDailyReward ||
-                    isLoadingClaimToken,
+                    isLoadingClaimToken ||
+                    isLoadingGetUserInfo,
             ),
         )
-    }, [isLoadingGetMyBalance, isLoadingClaimDailyReward, isLoadingClaimToken])
+    }, [
+        isLoadingGetMyBalance,
+        isLoadingClaimDailyReward,
+        isLoadingClaimToken,
+        isLoadingGetUserInfo,
+    ])
 
     return (
         <>
@@ -213,7 +233,11 @@ const Account = (props: any) => {
                             )}
                             <Button
                                 className="btn-primary mt-3 w-full"
-                                disabled={disabled}
+                                disabled={
+                                    disabled ||
+                                    !isValidWalletInput ||
+                                    input === ''
+                                }
                                 onClick={() => handleClaimToken()}
                             >
                                 <div className="font-medium w-full text-center">
@@ -228,8 +252,8 @@ const Account = (props: any) => {
                 </div>
                 <div className="relative">
                     <img
-                        src="https://cdn.wallpapersafari.com/21/24/pELVjk.jpg"
-                        alt=""
+                        src={userAvatar}
+                        alt="user avatar"
                         className="rounded-full h-[35px] w-[35px] cursor-pointer"
                         onMouseEnter={() => setHoverUser(true)}
                         onMouseLeave={() => setHoverUser(false)}

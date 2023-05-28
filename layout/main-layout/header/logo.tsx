@@ -24,14 +24,14 @@ const Logo = ({
             <img
                 src={`/svgs/logos/logo_${darkTheme ? 'light' : 'dark'}.svg`}
                 alt=""
-                className={`${imgClass} under_xl:hidden`}
+                className={`${imgClass} block under_xl:hidden`}
             />
             <img
                 src={`/svgs/logos/logo_icon_${
                     darkTheme ? 'light' : 'dark'
                 }.svg`}
                 alt=""
-                className={`${imgClass} above_xl:hidden`}
+                className={`${imgClass} hidden under_xl:block`}
             />
         </div>
     )

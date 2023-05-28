@@ -142,6 +142,7 @@ export default function QuizContainer() {
                         darkTheme={false}
                         setSearch={setSearchQuizzes}
                         className="mx-10 my-5"
+                        placeholder="Search for any quizzes"
                     />
                     <div className="grid grid-cols-1 divide-y divide-gray-300">
                         {quizzezDetail?.map((item, index) => (

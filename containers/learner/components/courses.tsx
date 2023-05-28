@@ -111,6 +111,7 @@ export default function LearnerCoursesContainer() {
                         darkTheme={false}
                         setSearch={setSearch}
                         className="mt-3"
+                        placeholder="Search for any courses"
                     />
                     <div className="w-[220px] under_xl:mb-5">
                         <Select

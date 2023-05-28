@@ -143,6 +143,7 @@ export default function QuestionBankContainers() {
                         darkTheme={false}
                         setSearch={setSearchQuestions}
                         className="mx-10 my-5"
+                        placeholder="Search for any questions"
                     />
                     <div className="grid grid-cols-1">
                         {questionListsDetail?.map((item, index) => (

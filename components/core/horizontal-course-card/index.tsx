@@ -54,10 +54,8 @@ export default function HorizontalCourseCard({
                 className="under_xl:w-[120px] h-fit w-[25%]"
             />
             <div className="space-y-3">
-                <div>
-                    <div className="font-semibold text-xl line-clamp-2 under_xl:line-clamp-1 under_xl:text-base">
-                        {data.name}
-                    </div>
+                <div className="font-semibold text-xl line-clamp-2 under_xl:line-clamp-1 under_xl:text-base">
+                    {data.name}
                 </div>
                 <div className="font-light text-xs truncate">
                     {data.author.name ?? 'Anonymous'}

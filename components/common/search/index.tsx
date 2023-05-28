@@ -8,9 +8,15 @@ interface ISearch {
     darkTheme: boolean
     setSearch: React.Dispatch<React.SetStateAction<string>>
     className?: string
+    placeholder: string
 }
 
-export default function Search({ darkTheme, setSearch, className }: ISearch) {
+export default function Search({
+    darkTheme,
+    setSearch,
+    className,
+    placeholder,
+}: ISearch) {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value)
     }
@@ -27,6 +33,7 @@ export default function Search({ darkTheme, setSearch, className }: ISearch) {
                     className="ml-[20px] w-[320px] xl:w-[120px] outline-none"
                     onChange={debounceLoadData}
                     type="text"
+                    placeholder={placeholder}
                 ></input>
             </div>
         </div>

@@ -40,7 +40,6 @@ module.exports = {
                     'linear-gradient(to right, #FF0000, rgba(254,207,87,1))',
             },
             screens: {
-                above_xl: { min: '1024px' },
                 under_xl: { max: '1023px' },
                 under_2xl: { max: '1279px' },
                 under_lg: { max: '767px' },
