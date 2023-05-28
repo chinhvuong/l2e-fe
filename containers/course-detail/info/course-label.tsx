@@ -23,7 +23,8 @@ export default function CourseLabel() {
             if (
                 String(address).toLowerCase() !==
                     data.author.walletAddress.toLowerCase() &&
-                String(address).toLowerCase() !== data.owner.toLowerCase()
+                String(address).toLowerCase() !== data.owner.toLowerCase() &&
+                isEnroll === false
             ) {
                 return true
             } else {
@@ -48,7 +49,7 @@ export default function CourseLabel() {
     if (!data) {
         return <></>
     }
-
+    console.log(canEnroll())
     return (
         <div
             className={`h-[80px] w-full bg-black z-20 py-3 px-[30px] 2xl:-top-1 under_2xl:bottom-0 under_2xl:fixed ${
@@ -102,21 +103,16 @@ export default function CourseLabel() {
                     <div className="font-semibold text-2xl under_xl:text-base text-white">
                         {data.price} USDT
                     </div>
-                    {canEnroll() &&
-                        (isEnroll ? (
-                            <Button
-                                className="btn-primary"
-                                onClick={() =>
-                                    Router.push(`/learn/${data._id}`)
-                                }
-                            >
-                                <div className="font-medium text-[20px]">
-                                    Learn
-                                </div>
-                            </Button>
-                        ) : (
-                            <EnrollBtn className="btn-primary flex gap-4 items-center" />
-                        ))}
+                    {canEnroll() === false ? (
+                        <Button
+                            className="w-full flex items-center justify-center"
+                            onClick={() => Router.push(`/learn/${data._id}`)}
+                        >
+                            <div className="font-medium text-[20px]">Learn</div>
+                        </Button>
+                    ) : (
+                        <EnrollBtn />
+                    )}
                     <FontAwesomeIcon
                         icon={faShareNodes}
                         className="text-[20px] rounded-full bg-white py-[14px] px-[16px] border border-black"
