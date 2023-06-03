@@ -5,8 +5,8 @@ export interface Rating {
     course: string
     content: string
     rating: number
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     user: User
 }
 

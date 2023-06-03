@@ -87,10 +87,7 @@ export default function Search(props: ISearch) {
                     !props.darkTheme && 'border-[1px] border-black'
                 }`}
             >
-                <FontAwesomeIcon
-                    icon={faMagnifyingGlass}
-                    onClick={() => goToSearchPageCourse()}
-                />
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="w-4 h-4" />
                 <input
                     className="mx-[20px] w-full outline-none"
                     onChange={(e) => {
@@ -117,7 +114,10 @@ export default function Search(props: ISearch) {
                             className={`flex bg-white items-center text-black space-x-[18px] px-4 py-4 hover:bg-gray-300 cursor-pointer`}
                             key={item._id}
                         >
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            <FontAwesomeIcon
+                                icon={faMagnifyingGlass}
+                                className="w-4 h-4"
+                            />
                             <a
                                 className={`flex items-center font-bold line-clamp-2`}
                                 href={'course/' + item._id}

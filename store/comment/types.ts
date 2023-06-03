@@ -6,8 +6,8 @@ export interface Comment {
     content: string
     like: number
     level: number
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     replies: Comment[]
     user: User
 }

@@ -22,8 +22,8 @@ export interface CourseDetail {
     students: number
     language: string
     finalTest: number
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     approved: boolean
     category: number
     thumbnail: string
@@ -62,6 +62,6 @@ export interface Rating {
     courseId: number
     rating: number
     comment: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
 }
