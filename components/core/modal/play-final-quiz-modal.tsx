@@ -339,10 +339,12 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                                                                       `bg-red-400 bg-opacity-10 text-red-400 border-red-400`
                                                                                             }`}
                                                                                             onClick={() =>
+                                                                                                !isFinish &&
                                                                                                 handleCheckAnswer(
                                                                                                     questionIndex,
                                                                                                     choiceIndex,
-                                                                                                    !question?.correctAnswer,
+                                                                                                    !question?.correctAnswer ||
+                                                                                                        isStart,
                                                                                                 )
                                                                                             }
                                                                                         >
@@ -394,8 +396,9 @@ export default function PlayFinalTestModal(props: IPlayFinalTestModalProps) {
                                                                     "Time's up!" &&
                                                                 answers.filter(
                                                                     (item) =>
-                                                                        item,
-                                                                ).length !==
+                                                                        item !==
+                                                                        undefined,
+                                                                ).length ===
                                                                     totalQuestions
                                                             )
                                                         }

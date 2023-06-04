@@ -281,7 +281,8 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                                                         handleCheckAnswer(
                                                                                             questionIndex,
                                                                                             choiceIndex,
-                                                                                            !question?.correctAnswer,
+                                                                                            !question?.correctAnswer ||
+                                                                                                isStart,
                                                                                         )
                                                                                     }
                                                                                 >
@@ -333,8 +334,10 @@ export default function PlayQuizModal(props: IPlayQuizModalProps) {
                                                             timer !==
                                                                 "Time's up!" &&
                                                             answers.filter(
-                                                                (item) => item,
-                                                            ).length !==
+                                                                (item) =>
+                                                                    item !==
+                                                                    undefined,
+                                                            ).length ===
                                                                 totalQuestions
                                                         )
                                                     }
