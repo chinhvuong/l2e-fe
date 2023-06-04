@@ -32,6 +32,14 @@ export default function CourseLabel() {
             }
         }
     }
+    const canInstruct = () => {
+        return (
+            data &&
+            String(address).toLowerCase() !==
+                data.author.walletAddress.toLowerCase() &&
+            String(address).toLowerCase() !== data.owner.toLowerCase()
+        )
+    }
     useEffect(() => {
         const handleScroll = () => {
             setScrollY(window.scrollY)
@@ -49,7 +57,6 @@ export default function CourseLabel() {
     if (!data) {
         return <></>
     }
-    console.log(canEnroll())
     return (
         <div
             className={`h-[80px] w-full bg-black z-20 py-3 px-[30px] 2xl:-top-1 under_2xl:bottom-0 under_2xl:fixed ${
@@ -108,7 +115,9 @@ export default function CourseLabel() {
                             className="w-full flex items-center justify-center"
                             onClick={() => Router.push(`/learn/${data._id}`)}
                         >
-                            <div className="font-medium text-[20px]">Learn</div>
+                            <div className="font-medium text-[20px]">
+                                {canInstruct() ? 'Learn' : 'Instruct'}
+                            </div>
                         </Button>
                     ) : (
                         <EnrollBtn />

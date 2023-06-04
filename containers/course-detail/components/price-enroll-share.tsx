@@ -29,6 +29,14 @@ export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
             }
         }
     }
+    const canInstruct = () => {
+        return (
+            data &&
+            String(address).toLowerCase() !==
+                data.author.walletAddress.toLowerCase() &&
+            String(address).toLowerCase() !== data.owner.toLowerCase()
+        )
+    }
     return (
         <div>
             <div className="flex items-center space-x-4 mt-3 mb-5">
@@ -37,7 +45,9 @@ export default function PriceEnrollShare({ data }: IPriceEnrollShareProps) {
                         className="w-full flex items-center justify-center"
                         onClick={() => Router.push(`/learn/${data._id}`)}
                     >
-                        <div className="font-medium text-[20px]">Learn</div>
+                        <div className="font-medium text-[20px]">
+                            {canInstruct() ? 'Learn' : 'Instruct'}
+                        </div>
                     </Button>
                 ) : (
                     <EnrollBtn />
