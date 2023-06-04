@@ -199,7 +199,7 @@ const Account = (props: any) => {
                         onMouseLeave={() => setHoverWallet(false)}
                     />
                     <div className="under_xl:hidden ml-5">
-                        {myAccountBalance} WL
+                        {Math.floor(myAccountBalance)} WL
                     </div>
                     <div
                         className={`w-[270px] absolute z-30 right-10 ${
@@ -252,7 +252,7 @@ const Account = (props: any) => {
                 </div>
                 <div className="relative">
                     <img
-                        src={userAvatar}
+                        src={userAvatar ?? '/images/placeholder.jpeg'}
                         alt="user avatar"
                         className="rounded-full h-[35px] w-[35px] cursor-pointer"
                         onMouseEnter={() => setHoverUser(true)}
