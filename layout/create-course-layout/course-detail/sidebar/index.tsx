@@ -385,7 +385,12 @@ export default function Sidebar() {
                         className="mt-10"
                     >
                         <div className="font-semibold w-full flex justify-center">
-                            Submit for Review
+                            <span className="under_xl:hidden block">
+                                Submit for Review
+                            </span>
+                            <span className="under_xl:block hidden">
+                                Submit
+                            </span>
                         </div>
                     </Button>
                 ) : (

@@ -251,10 +251,9 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                         }),
                     ]),
                 )
-                setIsLoadingCurriculum(false)
             })
-            .catch(() => {
-                setIsLoadingCurriculum(false)
+            .catch((err) => {
+                console.log(err)
             })
     }
 
@@ -276,6 +275,7 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                         handleGetLessons(item._id)
                     })
                     dispatch(updateAllCurriculumSections(sectionsBasicInfo))
+                    setIsLoadingCurriculum(false)
                 },
             },
         )
@@ -294,7 +294,9 @@ export const CreateCourseProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 el.sectionId = sectionId
                 return el
             }),
-        ).finally(() => setIsLoadingCurriculum(false))
+        ).catch((err) => {
+            console.log(err)
+        })
     }
 
     const { mutate: upsertSections, isLoading: isLoadingUpsertSections } =
