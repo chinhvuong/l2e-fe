@@ -19,17 +19,15 @@ export default function CurriculumContainer() {
     return (
         <div>
             <Title title={'Curriculum'} />
-            {courseSections.length > 0 && courseLectures.length > 0 && (
-                <div className="py-10 px-14 under_xl:py-5 under_xl:px-7 space-y-5">
-                    <Section
-                        addItem={addCurriculumSection}
-                        updateItem={updateCurriculumSectionName}
-                        deleteItem={deleteCurriculumSection}
-                        getItems={getCurriculumSectionsForm}
-                        getItemDetail={getCurriculumSectionDetail}
-                    ></Section>
-                </div>
-            )}
+            <div className="py-10 px-14 under_xl:py-5 under_xl:px-7 space-y-5">
+                <Section
+                    addItem={addCurriculumSection}
+                    updateItem={updateCurriculumSectionName}
+                    deleteItem={deleteCurriculumSection}
+                    getItems={getCurriculumSectionsForm}
+                    getItemDetail={getCurriculumSectionDetail}
+                ></Section>
+            </div>
         </div>
     )
 }
